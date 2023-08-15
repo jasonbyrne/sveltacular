@@ -1,0 +1,15 @@
+@mixin dark-theme {
+	--sv-color-bg: #333;
+	--sv-color-fg: #f0f0f0;
+	--sv-color-light: #ccc;
+	--sv-color-dim: #aaa;
+	--sv-color-link: #7ceeff;
+	--sv-color-link-hover: #d3c67b;
+}
+
+body {
+	@include dark-theme();
+
+	background: var(--sv-color-bg);
+	color: var(--sv-color-fg);
+}

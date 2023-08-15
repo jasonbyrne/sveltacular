@@ -89,13 +89,13 @@
 		&.link {
 			background-color: transparent;
 			border-color: transparent;
-			color: #1e88e5;
+			color: var(--sv-color-link);
 			text-decoration: underline;
 
 			&:hover {
 				background-color: transparent;
 				border-color: transparent;
-				color: #1976d2;
+				color: var(--sv-color-link-hover);
 			}
 		}
 
@@ -112,12 +112,13 @@
 
 		&.tertiary {
 			background-color: transparent;
-			border-color: #b7b7b7;
-			color: #000;
+			border-color: var(--sv-color-fg);
+			color: var(--sv-color-fg);
 
 			&:hover {
-				background-color: #4c4c4c;
-				border-color: #4c4c4c;
+				background-color: var(--sv-color-fg);
+				color: var(--sv-color-bg);
+				border-color: var(--sv-color-bg);
 			}
 		}
 	}

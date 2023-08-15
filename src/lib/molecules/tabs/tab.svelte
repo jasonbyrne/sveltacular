@@ -45,7 +45,7 @@
 			font-size: 0.8rem;
 			font-weight: 300;
 			cursor: pointer;
-			color: #999;
+			color: var(--sv-color-light);
 			height: 2rem;
 			overflow: hidden;
 			padding: 0 1rem;
@@ -87,6 +87,7 @@
 			border-top: solid 0.2rem #ccc;
 			padding-top: 1rem;
 			z-index: 1;
+			color: var(--sv-color-fg);
 		}
 
 		&.active {
