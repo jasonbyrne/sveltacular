@@ -9,7 +9,8 @@ const config: StorybookConfig = {
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
 		'@storybook/preset-scss',
-		'@storybook/addon-svelte-csf'
+		'@storybook/addon-svelte-csf',
+		'storybook-dark-mode'
 	],
 	framework: {
 		name: '@storybook/sveltekit',
