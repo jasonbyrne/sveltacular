@@ -1,0 +1,41 @@
+<script lang="ts">
+	import type { FormFieldSizeOptions } from '$src/types/form.js';
+
+	export let size: FormFieldSizeOptions = 'md';
+</script>
+
+<div class={size}>
+	<slot />
+</div>
+
+<style lang="scss">
+	div {
+		position: absolute;
+		border: solid 0.1rem #000;
+		padding: 1rem;
+		margin: 1rem;
+		background-color: #fff;
+		border-radius: 1rem;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+		width: 20rem;
+		max-width: 70%;
+		z-index: 9999;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		&.sm {
+			width: 15rem;
+			max-width: 50%;
+		}
+
+		&.lg {
+			width: 25rem;
+			max-width: 80%;
+		}
+
+		&.xl {
+			width: 90%;
+		}
+	}
+</style>
