@@ -11,11 +11,13 @@
 	export let value = '';
 	export let items: DropdownOption[] = [];
 	export let size: FormFieldSizeOptions = 'md';
+	export let disabled = false;
+	export let required = false;
 </script>
 
 <FormField {size}>
-	<FormLabel {id}><slot /></FormLabel>
-	<select {id} bind:value on:change={() => dispatch('change', value)}>
+	<FormLabel {id} {required}><slot /></FormLabel>
+	<select {id} bind:value on:change={() => dispatch('change', value)} {required} {disabled}>
 		{#each items as item}
 			<option value={item.value}>{item.name}</option>
 		{/each}

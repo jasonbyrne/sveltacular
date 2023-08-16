@@ -11,13 +11,16 @@
 	export let value = '';
 	export let placeholder = '';
 	export let rows = 4;
+	export let disabled = false;
+	export let required = false;
+	export let readonly = false;
 </script>
 
 <FormField {size}>
 	{#if $$slots.default}
-		<FormLabel {id}><slot /></FormLabel>
+		<FormLabel {id} {required}><slot /></FormLabel>
 	{/if}
-	<textarea {id} {placeholder} {rows} bind:value />
+	<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
 </FormField>
 
 <style lang="scss">

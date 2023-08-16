@@ -12,6 +12,7 @@
 	export let nullable = false;
 	export let enabled = true;
 	export let type: 'date' | 'datetime-local' = 'date';
+	export let required = false;
 
 	const defaultValue = value || currentDateTime();
 
@@ -25,10 +26,10 @@
 </script>
 
 <FormField>
-	<FormLabel {id}><slot /></FormLabel>
+	<FormLabel {id} {required}><slot /></FormLabel>
 	<div class:nullable class:disabled>
 		<span class="input">
-			<input {...{ type }} {id} {placeholder} {disabled} bind:value />
+			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} />
 		</span>
 		{#if nullable}
 			<span class="toggle">

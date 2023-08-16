@@ -8,18 +8,22 @@
 
 	type AllowedInputTypes = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
 
+	export let label: string | undefined = undefined;
 	export let value = '';
 	export let placeholder = '';
 	export let size: FormFieldSizeOptions = 'md';
 	export const type: AllowedInputTypes = 'text';
+	export let disabled = false;
+	export let required = false;
+	export let readonly = false;
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required}>{label}</FormLabel>
 	{/if}
 	<div>
-		<input {id} {placeholder} bind:value {...{ type }} />
+		<input {id} {placeholder} bind:value {...{ type }} {disabled} {readonly} {required} />
 	</div>
 </FormField>
 

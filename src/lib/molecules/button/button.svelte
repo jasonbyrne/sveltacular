@@ -7,7 +7,8 @@
 	export let size: FormFieldSizeOptions = 'md';
 	export let style: ButtonStyle = 'secondary';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let block: boolean = false;
+	export let block = false;
+	export let disabled = false;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
@@ -19,7 +20,7 @@
 	};
 </script>
 
-<button {type} on:click={click} class="{size} {style}" class:block>
+<button {type} on:click={click} class="{size} {style}" class:block {disabled}>
 	<slot />
 </button>
 
