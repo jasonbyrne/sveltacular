@@ -22,6 +22,10 @@ const config = {
 			$types: './src/types',
 			$static: './static'
 		}
+	},
+	onwarn: (warning, handler) => {
+		if (warning.code === 'a11y-interactive-supports-focus') return;
+		handler(warning);
 	}
 };
 

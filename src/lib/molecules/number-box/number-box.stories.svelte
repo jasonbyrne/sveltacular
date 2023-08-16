@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
-	import Numberbox from './numberbox.svelte';
+	import NumberBox from './number-box.svelte';
 </script>
 
-<Meta title="Number Input" component={Numberbox} />
+<Meta title="Number Input" component={NumberBox} />
 
 <Template let:args>
-	<Numberbox {...args}>Value</Numberbox>
+	<NumberBox {...args}>Value</NumberBox>
 </Template>
 
 <Story name="Stanard" args={{ placeholder: 'Enter a Number', type: 'number' }} />
