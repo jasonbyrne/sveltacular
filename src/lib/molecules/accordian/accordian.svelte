@@ -23,8 +23,8 @@
 	.accordian {
 		background: #eee;
 		color: #000;
-		height: 3rem;
-		transition: height 0.3s ease;
+		max-height: 3rem;
+		transition: max-height 1s ease;
 		overflow: hidden;
 
 		button {
@@ -44,7 +44,7 @@
 				width: 1rem;
 				height: 1rem;
 				display: block;
-				transition: transform 0.3s ease;
+				transition: transform 0.3s linear;
 			}
 
 			&:hover {
@@ -54,10 +54,16 @@
 
 		.menu {
 			padding: 1rem;
+			opacity: 0;
+			transition: opacity 0.3s linear;
 		}
 
 		&.expanded {
-			height: auto;
+			max-height: 800px;
+
+			.menu {
+				opacity: 1;
+			}
 
 			.icon {
 				transform: rotate(180deg);
