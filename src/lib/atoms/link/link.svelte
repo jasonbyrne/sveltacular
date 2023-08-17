@@ -3,14 +3,15 @@
 	export let target: string | undefined = undefined;
 	export let underline: 'none' | 'hover' | 'always' = 'none';
 	export let disabled = false;
+	export let display: 'inline' | 'block' | 'inline-block' = 'inline';
 </script>
 
 {#if disabled}
-	<span class="link underline-{underline}">
+	<span class="link underline-{underline} {display}">
 		<slot />
 	</span>
 {:else}
-	<a {href} {target} class="link underline-{underline}">
+	<a {href} {target} class="link underline-{underline} {display}">
 		<slot />
 	</a>
 {/if}
@@ -24,6 +25,15 @@
 		&.underline-none,
 		&.underline-hover {
 			text-decoration: none;
+		}
+
+		&.block {
+			display: block;
+			width: 100%;
+		}
+
+		&.inline-block {
+			display: inline-block;
 		}
 	}
 
