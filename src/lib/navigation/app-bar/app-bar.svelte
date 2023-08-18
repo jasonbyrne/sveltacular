@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FormFieldSizeOptions } from '$src/types/form.js';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	export let isFixed = true;
 	export let position: 'top' | 'bottom' = 'top';

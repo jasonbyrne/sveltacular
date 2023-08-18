@@ -5,7 +5,7 @@
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { FormFieldSizeOptions } from '$src/types/form.js';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 
 	export let open = false;

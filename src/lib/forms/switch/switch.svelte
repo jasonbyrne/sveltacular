@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uniqueId } from '$src/helpers/unique-id.js';
+	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { createEventDispatcher } from 'svelte';
 
 	export let isChecked = false;

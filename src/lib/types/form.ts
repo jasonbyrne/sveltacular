@@ -16,3 +16,5 @@ export type DropdownOption = {
 };
 
 export type AllowedTextInputTypes = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
+
+export type RadioButtonValue = string | number | boolean | undefined;

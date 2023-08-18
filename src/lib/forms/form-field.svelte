@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FormFieldSizeOptions } from '$types/form.js';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const maxWidthMap = {
 		sm: '10rem',

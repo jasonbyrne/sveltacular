@@ -9,7 +9,7 @@
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
-	import type { DataCol, DataRow } from '$src/types/data.js';
+	import type { DataCol, DataRow } from '$src/lib/types/data.js';
 
 	export let data: DataRow[];
 	export let cols: DataCol[];

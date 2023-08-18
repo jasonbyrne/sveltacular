@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigateTo } from '$src/helpers/navigate-to.js';
+	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
 
 	export let title: string | undefined = undefined;
 	export let href: string | undefined = undefined;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { navigateTo } from '$src/helpers/navigate-to.js';
-	import type { ButtonStyle, FormFieldSizeOptions } from '$src/types/form.js';
+	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
+	import type { ButtonStyle, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import { createEventDispatcher } from 'svelte';
 
 	export let href: string | undefined = undefined;

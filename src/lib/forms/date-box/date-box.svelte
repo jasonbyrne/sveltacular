@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { currentDateTime } from '$src/helpers/date.js';
-	import { uniqueId } from '$src/helpers/unique-id.js';
+	import { currentDateTime } from '$src/lib/helpers/date.js';
+	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckInput from '$src/lib/forms/check-box/check-input.svelte';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';

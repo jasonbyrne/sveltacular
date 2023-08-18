@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import DropdownBox from './dropdown-box.svelte';
-	import type { DropdownOption } from '$src/types/form.js';
+	import type { DropdownOption } from '$src/lib/types/form.js';
 
 	const items: DropdownOption[] = [
 		{ name: 'SvelteKit', value: 'svelte ' },

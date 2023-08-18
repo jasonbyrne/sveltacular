@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { uniqueId } from '$src/helpers/unique-id.js';
+	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
-	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/types/form.js';
+	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
