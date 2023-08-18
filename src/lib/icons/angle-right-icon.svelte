@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvgIcon from '../atoms/svg-icon.svelte';
+	import SvgIcon from './svg-icon.svelte';
 </script>
 
 <SvgIcon>

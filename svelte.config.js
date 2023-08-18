@@ -15,8 +15,6 @@ const config = {
 		alias: {
 			$src: './src',
 			$lib: './src/lib',
-			$atoms: './src/lib/atoms',
-			$molecules: './src/lib/molecules',
 			$styles: './src/styles',
 			$assets: './src/assets',
 			$types: './src/types',
