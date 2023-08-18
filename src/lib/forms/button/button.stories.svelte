@@ -21,6 +21,14 @@
 	<Button style="danger">Click Me</Button>
 </Story>
 
+<Story name="Positive">
+	<Button style="positive">Click Me</Button>
+</Story>
+
+<Story name="Negative">
+	<Button style="negative">Click Me</Button>
+</Story>
+
 <Story name="Link">
 	<Button style="link">Click Me</Button>
 </Story>

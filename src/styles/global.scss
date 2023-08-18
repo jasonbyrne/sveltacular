@@ -13,3 +13,7 @@ body {
 	background: var(--sv-color-bg);
 	color: var(--sv-color-fg);
 }
+
+* {
+	box-sizing: border-box;
+}

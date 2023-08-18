@@ -5,12 +5,13 @@
 		sm: '10rem',
 		md: '20rem',
 		lg: '30rem',
-		xl: 'auto'
+		xl: 'auto',
+		full: '100%'
 	};
 
 	export let size: FormFieldSizeOptions = 'md';
 
-	$: displayType = size == 'xl' ? 'block' : 'inline-block';
+	$: displayType = ['xl', 'full'].includes(size) ? 'block' : 'inline-block';
 	$: maxWidth = maxWidthMap[size];
 </script>
 

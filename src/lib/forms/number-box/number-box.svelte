@@ -18,6 +18,7 @@
 	export let max = 1000000;
 	export let decimals = 0;
 	export let symbol: string | null = null;
+	export let units: string | null = null;
 
 	$: hasSymbol = symbol !== null;
 
@@ -44,6 +45,9 @@
 		{#if symbol}
 			<span class="symbol">{symbol}</span>
 		{/if}
+		{#if units}
+			<span class="units">{units}</span>
+		{/if}
 	</div>
 </FormField>
 
@@ -58,6 +62,16 @@
 			color: #000;
 			font-size: 1.125rem;
 			line-height: 1.75rem;
+		}
+
+		.units {
+			position: absolute;
+			top: 0.32rem;
+			right: 2.5rem;
+			color: #888;
+			font-size: 1rem;
+			line-height: 1.75rem;
+			text-align: right;
 		}
 
 		input {

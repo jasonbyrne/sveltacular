@@ -72,6 +72,14 @@
 			padding: 1rem 2rem;
 		}
 
+		&.full {
+			width: 100%;
+			padding: 0.5rem 0;
+			display: block;
+			min-width: auto;
+			flex-grow: 1;
+		}
+
 		&:hover {
 			background-color: #4c4c4c;
 		}
@@ -87,7 +95,8 @@
 			}
 		}
 
-		&.link {
+		&.link,
+		&.ghost {
 			background-color: transparent;
 			border-color: transparent;
 			color: var(--sv-color-link);
@@ -100,7 +109,29 @@
 			}
 		}
 
+		&.positive {
+			background-color: #43a047;
+			border-color: #43a047;
+			color: #fff;
+
+			&:hover {
+				background-color: #388e3c;
+				border-color: #388e3c;
+			}
+		}
+
 		&.danger {
+			background-color: #8d0200;
+			border-color: #8d0200;
+			color: #fff;
+
+			&:hover {
+				background-color: #c62828;
+				border-color: #c62828;
+			}
+		}
+
+		&.negative {
 			background-color: #e53935;
 			border-color: #e53935;
 			color: #fff;

@@ -4,28 +4,35 @@
 	import DialogHeader from '$src/lib/modals/dialog-header.svelte';
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { FormFieldSizeOptions } from '$src/types/form.js';
+	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/types/form.js';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '../forms/button/button.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
+	import TextBox from '../forms/text-box/text-box.svelte';
 
 	export let open = false;
 	export let title: string | undefined = undefined;
 	export let size: FormFieldSizeOptions = 'md';
-	export let yesText = 'Yes';
-	export let noText = 'No';
+	export let okText = 'Yes';
+	export let cancelText = 'No';
 	export let showCloseButton = true;
+	export let placeholder = '';
+	export let type: AllowedTextInputTypes = 'text';
+	export let required = false;
 
-	const dispatch = createEventDispatcher<{ yes: void; no: void }>();
+	let value = '';
+
+	const dispatch = createEventDispatcher<{ ok: string; cancel: void }>();
 
 	const no = () => {
 		open = false;
-		dispatch('no');
+		dispatch('cancel');
 	};
 
 	const yes = () => {
+		if (required && !value) return;
 		open = false;
-		dispatch('yes');
+		dispatch('ok', value);
 	};
 </script>
 
@@ -40,16 +47,18 @@
 					<Divider />
 				{/if}
 				<DialogBody>
-					<slot />
+					<TextBox bind:value {placeholder} {type} {required} size="full">
+						<slot />
+					</TextBox>
 				</DialogBody>
 				<Divider />
 			</div>
 			<DialogFooter>
 				<Button on:click={no} style="secondary" size="full">
-					{noText}
+					{cancelText}
 				</Button>
 				<Button on:click={yes} style="primary" size="full">
-					{yesText}
+					{okText}
 				</Button>
 			</DialogFooter>
 		</Dialog>

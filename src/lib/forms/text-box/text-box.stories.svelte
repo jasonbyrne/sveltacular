@@ -6,5 +6,13 @@
 <Meta title="Forms/TextBox" component={TextBox} />
 
 <Story name="Stanard">
-	<TextBox type="text" placeholder="Placeholder text">Form Field</TextBox>
+	<TextBox
+		type="text"
+		placeholder="Placeholder text"
+		helperText="Here is some additional requirements for the input.">Form Field</TextBox
+	>
+</Story>
+
+<Story name="Units">
+	<TextBox type="text" units="cm" value="10" placeholder="Placeholder text">Desired Length</TextBox>
 </Story>

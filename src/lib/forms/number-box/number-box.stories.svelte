@@ -15,3 +15,8 @@
 	name="Currency"
 	args={{ placeholder: 'Price of tea in china', type: 'currency', decimals: 0, symbol: '$' }}
 />
+
+<Story
+	name="Units"
+	args={{ placeholder: 'Enter your weight', type: 'number', decimals: 0, units: 'pounds' }}
+/>

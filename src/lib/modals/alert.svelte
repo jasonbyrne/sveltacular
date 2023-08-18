@@ -33,7 +33,7 @@
 				<Divider />
 			</div>
 			<DialogFooter>
-				<Button on:click={close}>
+				<Button on:click={close} size="full">
 					{buttonText}
 				</Button>
 			</DialogFooter>
