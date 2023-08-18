@@ -5,7 +5,7 @@
 	export let style: 'standard' | 'badge' | 'square' = 'standard';
 </script>
 
-<span class="pill {size}">
+<span class="pill {size} {style}">
 	<slot />
 </span>
 
@@ -13,7 +13,7 @@
 	.pill {
 		display: inline-block;
 		padding: 0.25rem 0.5rem;
-		border-radius: 50%;
+		border-radius: 1.5rem;
 		background-color: #f1f5f9;
 		font-size: 0.75rem;
 		font-weight: 500;

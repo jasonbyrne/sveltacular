@@ -20,3 +20,11 @@
 <Story name="X-Large">
 	<Pill size="xl">Extra Large</Pill>
 </Story>
+
+<Story name="Badge">
+	<Pill size="lg" style="badge">Badge</Pill>
+</Story>
+
+<Story name="Square">
+	<Pill size="lg" style="square">Square</Pill>
+</Story>
