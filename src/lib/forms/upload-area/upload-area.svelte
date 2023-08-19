@@ -81,8 +81,6 @@
 		border: 2px dashed #ccc;
 		border-radius: 0.25rem;
 		color: #ccc;
-		font-size: 1.5rem;
-		font-weight: bold;
 		cursor: pointer;
 
 		&.disabled {
@@ -93,6 +91,27 @@
 		&.isDragging {
 			background-color: #bbf;
 			color: #333;
+		}
+
+		label {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			padding: 1rem;
+			cursor: pointer;
+
+			.icon {
+				width: 50%;
+			}
+
+			.text {
+				font-size: 1rem;
+				letter-spacing: 0.075rem;
+				margin-top: 1rem;
+			}
 		}
 	}
 </style>

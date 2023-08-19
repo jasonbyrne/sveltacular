@@ -1,16 +1,20 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { createEventDispatcher } from 'svelte';
-	import type { RadioButtonValue } from '$src/lib/types/form.js';
 
-	export let value: RadioButtonValue = undefined;
-	export let group: RadioButtonValue[] = [];
+	export let value: string = '';
 	export let isChecked = false;
 	export let disabled = false;
 	export let name: string | undefined = undefined;
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: boolean }>();
+	const dispatch = createEventDispatcher<{ change: { isChecked: boolean; value: string } }>();
+
+	const onChecked = (event: Event) => {
+		const target = event.target as HTMLInputElement;
+		isChecked = target.checked;
+		dispatch('change', { isChecked, value });
+	};
 </script>
 
 <div>
@@ -20,9 +24,8 @@
 		{disabled}
 		{name}
 		bind:value
-		bind:group
 		bind:checked={isChecked}
-		on:change={() => dispatch('change', isChecked)}
+		on:change={onChecked}
 	/>
 	{#if $$slots.default}
 		<label for={id}>
