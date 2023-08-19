@@ -1,14 +1,8 @@
-<script context="module" lang="ts">
-	import { writable, type Writable } from 'svelte/store';
-	import { setContext } from 'svelte';
-
-	export interface TabContext {
-		active: Writable<string | null>;
-	}
-	export const tabContext = 'tabContext';
-</script>
-
 <script lang="ts">
+	import { writable } from 'svelte/store';
+	import { setContext } from 'svelte';
+	import { tabContext, type TabContext } from './tab-context.js';
+
 	const ctx: TabContext = {
 		active: writable(null)
 	};

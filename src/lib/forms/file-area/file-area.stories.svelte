@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
-	import UploadArea from './upload-area.svelte';
+	import FileArea from './file-area.svelte';
 </script>
 
-<Meta title="Forms/UploadArea" component={UploadArea} />
+<Meta title="Forms/FileArea" component={FileArea} />
 
 <Story name="Stanard">
 	<div style="width: 300px; height: 300px;">
-		<UploadArea />
+		<FileArea />
 	</div>
 </Story>

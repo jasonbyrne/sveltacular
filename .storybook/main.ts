@@ -4,6 +4,7 @@ import path from 'path';
 
 const config: StorybookConfig = {
 	stories: ['../src/lib/**/*.stories.@(js|jsx|ts|tsx|svelte)'],
+	staticDirs: [{ from: '../static', to: '/assets' }],
 	addons: [
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',

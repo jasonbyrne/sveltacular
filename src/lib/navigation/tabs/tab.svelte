@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
-	import { type TabContext, tabContext } from './tab-group.svelte';
+	import { tabContext, type TabContext } from './tab-context.js';
 
 	export let title: string;
 	export let active = false;

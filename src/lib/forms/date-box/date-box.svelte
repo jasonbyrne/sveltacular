@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { currentDateTime } from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import CheckInput from '$src/lib/forms/check-box/check-input.svelte';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 
 	const id = uniqueId();
 
-	export let value = '';
+	export let value: string | undefined = undefined;
 	export let placeholder = '';
 	export let nullable = false;
 	export let enabled = true;
@@ -15,13 +14,15 @@
 	export let required = false;
 
 	const defaultValue = value || currentDateTime();
+	const getDefaultValue = () => (type == 'date' ? defaultValue.substring(0, 10) : defaultValue);
 
 	const checkChanged = () => {
 		if (nullable) {
-			value = enabled ? defaultValue : '';
+			value = enabled ? getDefaultValue() : '';
 		}
 	};
 
+	if (!value) value = getDefaultValue();
 	$: disabled = !enabled;
 </script>
 
@@ -33,7 +34,7 @@
 		</span>
 		{#if nullable}
 			<span class="toggle">
-				<CheckInput bind:isChecked={enabled} on:change={checkChanged} />
+				<input type="checkbox" bind:checked={enabled} on:change={checkChanged} />
 			</span>
 		{/if}
 	</div>
@@ -68,8 +69,8 @@
 
 			.toggle {
 				position: absolute;
-				top: 0.55rem;
-				left: 0.75rem;
+				top: 0.7rem;
+				left: 0.4rem;
 			}
 		}
 
