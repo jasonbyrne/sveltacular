@@ -20,6 +20,7 @@ export { default as Link } from './generic/link/link.svelte';
 export { default as Pill } from './generic/pill/pill.svelte';
 export { default as Scorecard } from './generic/scorecard/scorecard.svelte';
 export { default as Overlay } from './generic/overlay.svelte';
+export { default as Image } from './images/image.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
