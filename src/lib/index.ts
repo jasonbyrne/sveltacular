@@ -22,6 +22,7 @@ export { default as Scorecard } from './generic/scorecard/scorecard.svelte';
 export { default as Overlay } from './generic/overlay.svelte';
 export { default as Image } from './images/image.svelte';
 export { default as Menu } from './generic/menu/menu.svelte';
+export { default as Date } from './generic/date/date.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
@@ -53,6 +54,12 @@ export { default as TableFooter } from './tables/table-footer.svelte';
 export { default as TableFooterCell } from './tables/table-footer-cell.svelte';
 export { default as TableFooterRow } from './tables/table-footer-row.svelte';
 export { default as TableRow } from './tables/table-row.svelte';
+// Typography
+export { default as Heading } from './typography/heading.svelte';
+export { default as Subtitle } from './typography/subtitle.svelte';
+export { default as Text } from './typography/text.svelte';
+export { default as CodeBlock } from './typography/code-block.svelte';
+
 // Types
 export * from './types/data.js';
 export * from './types/form.js';
