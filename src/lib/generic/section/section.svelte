@@ -4,7 +4,7 @@
 
 <style lang="scss">
 	section {
-		margin: 0 auto;
-		padding: 0 1rem;
+		padding: 0;
+		margin: 1rem 1rem;
 	}
 </style>

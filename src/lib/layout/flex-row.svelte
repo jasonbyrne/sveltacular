@@ -1,11 +1,16 @@
 <script lang="ts">
-	export let gap = 1;
+	export let marginBottom: string | number = '1rem';
+	export let marginTop: string | number = '1rem';
+	export let gap: string | number = '1rem';
 	export let layout: 'stretch' | 'center' | 'end' | 'start' = 'stretch';
 	export let size: 'auto' | 'full' = 'full';
 	export let wrap = false;
 </script>
 
-<div style={`gap: ${gap}rem`} class="{layout} {size} {wrap ? 'wrap' : 'nowrap'}">
+<div
+	style={`margin: ${marginTop} ${marginBottom}; gap: ${gap}`}
+	class="{layout} {size} {wrap ? 'wrap' : 'nowrap'}"
+>
 	<slot />
 </div>
 
@@ -16,6 +21,7 @@
 		justify-content: center;
 		align-items: center;
 		flex-wrap: nowrap;
+		column-gap: 1rem;
 
 		*.auto {
 			width: auto;

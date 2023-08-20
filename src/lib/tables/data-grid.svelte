@@ -10,7 +10,10 @@
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
 	import type { DataCol, DataRow } from '$src/lib/types/data.js';
+	import Text from '../typography/text.svelte';
+	import TableCaption from './table-caption.svelte';
 
+	export let caption: string = '';
 	export let data: DataRow[];
 	export let cols: DataCol[];
 
@@ -18,11 +21,14 @@
 </script>
 
 <Table>
+	{#if caption}
+		<TableCaption>{caption}</TableCaption>
+	{/if}
 	<TableHeader>
 		<TableHeaderRow>
 			{#each cols as col}
 				{#if !col.hide}
-					<TableHeaderCell>{col.label}</TableHeaderCell>
+					<TableHeaderCell type={col.type || typeof data[0][col.key]}>{col.label}</TableHeaderCell>
 				{/if}
 			{/each}
 		</TableHeaderRow>
@@ -32,7 +38,13 @@
 			<TableRow>
 				{#each cols as col}
 					{#if !col.hide}
-						<TableCell>{row[col.key]}</TableCell>
+						<TableCell type={col.type || typeof row[col.key]}>
+							{#if col.format}
+								{col.format(row, col.key)}
+							{:else}
+								{row[col.key]}
+							{/if}
+						</TableCell>
 					{/if}
 				{/each}
 			</TableRow>
@@ -40,7 +52,9 @@
 	</TableBody>
 	<TableFooter>
 		<TableFooterRow>
-			<TableFooterCell colspan={colCount}>Page 1 of 50</TableFooterCell>
+			<TableFooterCell colspan={colCount}>
+				<Text transform="uppercase">Page 1 of 50</Text>
+			</TableFooterCell>
 		</TableFooterRow>
 	</TableFooter>
 </Table>
