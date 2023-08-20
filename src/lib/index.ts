@@ -13,6 +13,8 @@ export { default as TextBox } from './forms/text-box/text-box.svelte';
 export { default as FormField } from './forms/form-field.svelte';
 export { default as FormLabel } from './forms/form-label.svelte';
 export { default as Form } from './forms/form.svelte';
+export { default as FormHeader } from './forms/form-header.svelte';
+export { default as FormFooter } from './forms/form-footer.svelte';
 // Generic
 export { default as Card } from './generic/card/card.svelte';
 export { default as Divider } from './generic/divider/divider.svelte';
@@ -23,6 +25,10 @@ export { default as Overlay } from './generic/overlay.svelte';
 export { default as Image } from './images/image.svelte';
 export { default as Menu } from './generic/menu/menu.svelte';
 export { default as Date } from './generic/date/date.svelte';
+export { default as Panel } from './generic/panel/panel.svelte';
+export { default as Section } from './generic/section/section.svelte';
+export { default as Header } from './generic/header/header.svelte';
+export { default as Dot } from './generic/dot/dot.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
@@ -59,6 +65,7 @@ export { default as Heading } from './typography/heading.svelte';
 export { default as Subtitle } from './typography/subtitle.svelte';
 export { default as Text } from './typography/text.svelte';
 export { default as CodeBlock } from './typography/code-block.svelte';
+export { default as Paragraph } from './typography/paragraph.svelte';
 
 // Types
 export * from './types/data.js';

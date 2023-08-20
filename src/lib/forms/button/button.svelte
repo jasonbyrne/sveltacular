@@ -8,6 +8,7 @@
 	export let style: ButtonStyle = 'secondary';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let block = false;
+	export let flex = false;
 	export let disabled = false;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
@@ -20,7 +21,7 @@
 	};
 </script>
 
-<button {type} on:click={click} class="{size} {style}" class:block {disabled}>
+<button {type} on:click={click} class="{size} {style} {flex ? 'flex' : ''}" class:block {disabled}>
 	<slot />
 </button>
 
@@ -48,6 +49,10 @@
 			box-shadow 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
+
+		&.flex {
+			flex-grow: 1;
+		}
 
 		&.block {
 			display: block;

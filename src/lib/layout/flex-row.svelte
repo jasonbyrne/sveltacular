@@ -2,9 +2,10 @@
 	export let gap = 1;
 	export let layout: 'stretch' | 'center' | 'end' | 'start' = 'stretch';
 	export let size: 'auto' | 'full' = 'full';
+	export let wrap = false;
 </script>
 
-<div style={`gap: ${gap}rem`} class="{layout} {size}">
+<div style={`gap: ${gap}rem`} class="{layout} {size} {wrap ? 'wrap' : 'nowrap'}">
 	<slot />
 </div>
 
@@ -14,18 +15,19 @@
 		width: 100%;
 		justify-content: center;
 		align-items: center;
+		flex-wrap: nowrap;
 
 		*.auto {
 			width: auto;
 		}
 
+		&.wrap {
+			flex-wrap: wrap;
+		}
+
 		&.stretch {
 			justify-content: space-between;
 			align-items: stretch;
-
-			div {
-				flex: 1;
-			}
 		}
 
 		&.end {

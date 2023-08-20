@@ -10,7 +10,7 @@
 
 <style lang="scss">
 	div {
-		position: absolute;
+		position: relative;
 		border: solid 0.1rem #000;
 		padding: 1rem;
 		margin: 1rem;
@@ -20,9 +20,6 @@
 		width: 20rem;
 		max-width: 70%;
 		z-index: 9999;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 
 		&.sm {
 			width: 15rem;

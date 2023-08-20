@@ -6,7 +6,7 @@
 	<slot />
 </div>
 
-<style>
+<style lang="scss">
 	div {
 		display: none;
 		position: fixed;
@@ -18,7 +18,9 @@
 		z-index: 9998;
 
 		&.show {
-			display: block;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 </style>

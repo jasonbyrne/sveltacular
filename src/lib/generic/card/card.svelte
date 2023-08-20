@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
+	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 
 	export let title: string | undefined = undefined;
 	export let href: string | undefined = undefined;
+	export let size: FormFieldSizeOptions = 'md';
 
 	$: role = href ? 'link' : 'listitem';
 
@@ -12,7 +14,7 @@
 	};
 </script>
 
-<li {role} on:click={onClick}>
+<li {role} on:click={onClick} class="{size} {role}">
 	{#if title}
 		<strong>{title}</strong>
 	{/if}
@@ -24,7 +26,6 @@
 		display: inline-block;
 		position: relative;
 		width: 100%;
-		max-width: 30rem;
 		margin-right: 1rem;
 		margin-bottom: 1rem;
 		padding: 1rem;
@@ -40,6 +41,27 @@
 
 		&[role='link'] {
 			cursor: pointer;
+
+			&:hover {
+				transform: translateY(-0.25rem);
+				box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+			}
+		}
+
+		&.sm {
+			max-width: 15rem;
+		}
+
+		&.md {
+			max-width: 20rem;
+		}
+
+		&.lg {
+			max-width: 25rem;
+		}
+
+		&.xl {
+			max-width: 30rem;
 		}
 	}
 </style>
