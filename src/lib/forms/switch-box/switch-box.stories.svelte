@@ -5,10 +5,22 @@
 
 <Meta title="Forms/SwitchBox" component={SwitchBox} />
 
-<Story name="Standard">
-	<SwitchBox isChecked={true}>Turn on sync</SwitchBox>
+<Story name="Medium">
+	<SwitchBox checked={true}>Turn on sync</SwitchBox>
+</Story>
+
+<Story name="Large">
+	<SwitchBox checked={true} size="lg">Turn on sync</SwitchBox>
+</Story>
+
+<Story name="X-Large">
+	<SwitchBox checked={true} size="xl">Turn on sync</SwitchBox>
+</Story>
+
+<Story name="Small">
+	<SwitchBox checked={true} size="sm">Turn on sync</SwitchBox>
 </Story>
 
 <Story name="No Label">
-	<SwitchBox isChecked={false} />
+	<SwitchBox checked={false} />
 </Story>

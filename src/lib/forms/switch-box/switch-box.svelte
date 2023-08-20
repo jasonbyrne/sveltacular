@@ -1,85 +1,159 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
+	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 	import { createEventDispatcher } from 'svelte';
 
-	export let isChecked = false;
+	export let checked = false;
+	export let unCheckedColor = '#ccc';
+	export let checkedColor = '#007bff';
+	export let size: FormFieldSizeOptions = 'md';
 
 	const id = uniqueId();
 	const dispatch = createEventDispatcher<{ change: boolean }>();
-
-	const onClick = () => {
-		isChecked = !isChecked;
-	};
 </script>
 
-<div class:isChecked>
-	<input
-		type="checkbox"
-		bind:checked={isChecked}
-		on:change={() => dispatch('change', isChecked)}
-		{id}
-	/>
+<label
+	class="switch-box {checked ? 'checked' : ''} {size}"
+	style={`--checked-color: ${checkedColor}; --unchecked-color: ${unCheckedColor};`}
+>
+	<input type="checkbox" bind:checked on:change={() => dispatch('change', checked)} {id} />
 	<!-- svelte-ignore a11y-interactive-supports-focus -->
-	<span
-		class="switch"
-		on:click={onClick}
-		on:keypress={onClick}
-		role="checkbox"
-		aria-checked={isChecked}
-	>
-		<span class="switch__toggle" />
+	<span class="switch">
+		<span class="slider" />
 	</span>
 	{#if $$slots.default}
-		<label for={id}>
+		<div class="text">
 			<slot />
-		</label>
+		</div>
 	{/if}
-</div>
+</label>
 
 <style lang="scss">
-	div {
-		line-height: 2rem;
-		font-size: 1rem;
+	label {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
 
 		input {
-			display: none;
+			width: 0;
+			height: 0;
 		}
 
 		.switch {
-			display: inline-block;
-			width: 40px;
-			height: 20px;
-			background-color: #ccc;
-			border-radius: 10px;
+			background-color: var(--unchecked-color);
 			position: relative;
 			cursor: pointer;
 			transition: background-color 0.2s ease-in-out;
 			vertical-align: middle;
 		}
 
-		.switch__toggle {
-			display: inline-block;
-			width: 16px;
-			height: 16px;
-			background-color: #fff;
+		.slider {
 			border-radius: 50%;
 			position: absolute;
-			top: 2px;
-			left: 2px;
 			transition: left 0.2s ease-in-out;
+			background: #fff;
 		}
 
-		&.isChecked .switch {
-			background-color: #55f;
+		&.checked .switch {
+			background-color: var(--checked-color);
 		}
 
-		&.isChecked .switch__toggle {
-			left: 22px;
+		/* Sizes */
+
+		&.xl {
+			.switch {
+				width: 4rem;
+				height: 2rem;
+				border-radius: 1rem;
+			}
+
+			.slider {
+				width: 1.6rem;
+				height: 1.6rem;
+				top: 0.2rem;
+				left: 0.2rem;
+			}
+
+			&.checked .slider {
+				left: 2.25rem;
+			}
+
+			.text {
+				font-size: 1.5rem;
+				margin-left: 1rem;
+			}
 		}
 
-		label {
-			vertical-align: middle;
-			margin-left: 0.5rem;
+		&.lg {
+			.switch {
+				width: 3rem;
+				height: 1.5rem;
+				border-radius: 0.75rem;
+			}
+
+			.slider {
+				width: 1.2rem;
+				height: 1.2rem;
+				top: 0.15rem;
+				left: 0.15rem;
+			}
+
+			&.checked .slider {
+				left: 1.65rem;
+			}
+
+			.text {
+				font-size: 1.2rem;
+				margin-left: 0.8rem;
+			}
+		}
+
+		&.md {
+			.switch {
+				width: 2.5rem;
+				height: 1.4rem;
+				border-radius: 0.7rem;
+			}
+
+			.slider {
+				width: 1.2rem;
+				height: 1.2rem;
+				top: 0.1rem;
+				left: 0.1rem;
+			}
+
+			&.checked .slider {
+				left: 1.4rem;
+			}
+
+			.text {
+				font-size: 1rem;
+				margin-left: 0.65rem;
+			}
+		}
+
+		&.sm {
+			.switch {
+				width: 1.5rem;
+				height: 0.75rem;
+				border-radius: 0.375rem;
+			}
+
+			.slider {
+				width: 0.6rem;
+				height: 0.6rem;
+				top: 0.075rem;
+				left: 0.075rem;
+			}
+
+			&.checked .slider {
+				left: 0.825rem;
+			}
+
+			.text {
+				font-size: 0.8rem;
+				margin-left: 0.5rem;
+			}
 		}
 	}
 </style>

@@ -21,6 +21,7 @@ export { default as Pill } from './generic/pill/pill.svelte';
 export { default as Scorecard } from './generic/scorecard/scorecard.svelte';
 export { default as Overlay } from './generic/overlay.svelte';
 export { default as Image } from './images/image.svelte';
+export { default as Menu } from './generic/menu/menu.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
@@ -60,3 +61,5 @@ export * from './helpers/date.js';
 export * from './helpers/navigate-to.js';
 export * from './helpers/round-to-decimals.js';
 export * from './helpers/unique-id.js';
+// Data
+export * as Data from './data/index.js';
