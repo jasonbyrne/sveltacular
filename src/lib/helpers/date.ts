@@ -62,3 +62,11 @@ export const dateTimeToHuman = (dateTime: string) => {
 	});
 	return `${datePart} @ ${timePart}`;
 };
+
+// From JavaScript date to YYYY-MM-DD HH:MM format
+export const dateTimeToInput = (dateTime?: Date) => {
+	dateTime = dateTime || new Date();
+	const offset = dateTime.getTimezoneOffset();
+	dateTime.setMinutes(dateTime.getMinutes() - offset);
+	return dateTime.toISOString().split('.')[0].slice(0, -3);
+};
