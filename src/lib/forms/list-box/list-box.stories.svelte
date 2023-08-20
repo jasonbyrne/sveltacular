@@ -10,6 +10,11 @@
 		{ name: 'React', value: 'react ' },
 		{ name: 'Vue', value: 'vue ' }
 	];
+
+	let searchLog: string[] = [];
+	const addToSearchLog = (e: CustomEvent<string>) => {
+		searchLog = [...searchLog, e.detail];
+	};
 </script>
 
 <Meta title="Forms/ListBox" component={ListBox} />
@@ -23,7 +28,12 @@
 
 <Story name="Searchable">
 	<div>
-		<ListBox items={UnitedStates} searchable>State or Territory</ListBox>
+		<ListBox items={UnitedStates} searchable on:search={addToSearchLog}>State or Territory</ListBox>
 	</div>
 	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
+	<ul>
+		{#each searchLog as item}
+			<li>{item}</li>
+		{/each}
+	</ul>
 </Story>

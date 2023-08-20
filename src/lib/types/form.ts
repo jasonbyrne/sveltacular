@@ -1,5 +1,3 @@
-import type { Writable } from 'svelte/store';
-
 export type FormFieldSizeOptions = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 export type ButtonStyle =

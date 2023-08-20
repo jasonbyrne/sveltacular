@@ -6,6 +6,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
+	import debounce from '$src/lib/helpers/debounce.js';
 
 	export let value = '';
 	export let items: DropdownOption[] = [];
@@ -48,9 +49,17 @@
 			if (highlightIndex == -1) open = false;
 			return;
 		}
+		if (e.key.length == 1) {
+			open = true;
+			highlightIndex = 0;
+			triggerSearch();
+		}
 	};
 
-	const dispatch = createEventDispatcher<{ change: string }>();
+	const triggerSearch = debounce(() => {
+		dispatch('search', searchText);
+	}, 300);
+	const dispatch = createEventDispatcher<{ change: string; search: string }>();
 	const id = uniqueId();
 	let text = getText();
 	let open = false;
