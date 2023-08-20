@@ -3,7 +3,7 @@ export { default as Button } from './forms/button/button.svelte';
 export { default as CheckBox } from './forms/check-box/check-box.svelte';
 export { default as CheckBoxGroup } from './forms/check-box/check-box-group.svelte';
 export { default as DateBox } from './forms/date-box/date-box.svelte';
-export { default as DropdownBox } from './forms/dropdown-box/dropdown-box.svelte';
+export { default as ListBox } from './forms/list-box/list-box.svelte';
 export { default as FileBox } from './forms/file-box/file-box.svelte';
 export { default as FileArea } from './forms/file-area/file-area.svelte';
 export { default as NumberBox } from './forms/number-box/number-box.svelte';

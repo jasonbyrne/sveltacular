@@ -1,3 +1,5 @@
+import type { Writable } from 'svelte/store';
+
 export type FormFieldSizeOptions = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 export type ButtonStyle =
@@ -14,6 +16,8 @@ export type DropdownOption = {
 	value: string;
 	name: string;
 };
+
+export type MenuOption = DropdownOption & { index: number };
 
 export type AllowedTextInputTypes = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
 

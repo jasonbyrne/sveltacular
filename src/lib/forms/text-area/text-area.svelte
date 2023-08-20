@@ -16,12 +16,7 @@
 	export let readonly = false;
 </script>
 
-<FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
-	{/if}
-	<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
-</FormField>
+<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
 
 <style lang="scss">
 	textarea {

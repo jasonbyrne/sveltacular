@@ -9,10 +9,10 @@
 	<TextBox
 		type="text"
 		placeholder="Placeholder text"
-		helperText="Here is some additional requirements for the input.">Form Field</TextBox
-	>
+		helperText="Here is some additional requirements for the input."
+	/>
 </Story>
 
 <Story name="Units">
-	<TextBox type="text" units="cm" value="10" placeholder="Placeholder text">Desired Length</TextBox>
+	<TextBox type="text" units="cm" value="10" placeholder="Placeholder text" />
 </Story>
