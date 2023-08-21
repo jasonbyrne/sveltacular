@@ -8,13 +8,13 @@
 
 	export let value = '';
 	export let placeholder = '';
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
 	export let required = false;
 	export let readonly = false;
 	export let multiple = false;
 	export let mimeTypes: string[] = [];
-	export let capture: 'environment' | 'user' | 'none' = 'none';
+	export let capture: boolean | undefined | 'environment' | 'user' = undefined;
 </script>
 
 <FormField {size}>

@@ -1,15 +1,7 @@
-<div>
-	<slot />
-</div>
+<script>
+	import FlexRow from '../layout/flex-row.svelte';
+</script>
 
-<style>
-	div {
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		display: flex;
-		align-content: stretch;
-		align-items: stretch;
-		justify-content: space-between;
-		gap: 5rem;
-	}
-</style>
+<FlexRow layout="stretch">
+	<slot />
+</FlexRow>

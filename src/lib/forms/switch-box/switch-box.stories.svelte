@@ -5,8 +5,12 @@
 
 <Meta title="Forms/SwitchBox" component={SwitchBox} />
 
-<Story name="Medium">
+<Story name="Default">
 	<SwitchBox checked={true}>Turn on sync</SwitchBox>
+</Story>
+
+<Story name="Medium">
+	<SwitchBox checked={true} size="md">Turn on sync</SwitchBox>
 </Story>
 
 <Story name="Large">

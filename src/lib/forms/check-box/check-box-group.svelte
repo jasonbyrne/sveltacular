@@ -11,7 +11,7 @@
 
 	export let group: string[] = [];
 	export let items: Array<DropdownOption & { isChecked?: true }> = [];
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
 	export let required = false;
 
@@ -30,7 +30,9 @@
 </script>
 
 <FormField {size}>
-	<FormLabel {id} {required}><slot /></FormLabel>
+	{#if $$slots.default}
+		<FormLabel {id} {required}><slot /></FormLabel>
+	{/if}
 	<div>
 		{#each items as item}
 			<CheckBox {disabled} value={item.value} bind:isChecked={item.isChecked} on:change={onChecked}

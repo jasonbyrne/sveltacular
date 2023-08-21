@@ -6,7 +6,7 @@
 	export let checked = false;
 	export let unCheckedColor = '#ccc';
 	export let checkedColor = '#007bff';
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 
 	const id = uniqueId();
 	const dispatch = createEventDispatcher<{ change: boolean }>();
@@ -153,6 +153,32 @@
 			.text {
 				font-size: 0.8rem;
 				margin-left: 0.5rem;
+			}
+		}
+
+		&.full {
+			width: 100%;
+
+			.switch {
+				width: 2.5rem;
+				height: 1.4rem;
+				border-radius: 0.7rem;
+			}
+
+			.slider {
+				width: 1.2rem;
+				height: 1.2rem;
+				top: 0.1rem;
+				left: 0.1rem;
+			}
+
+			&.checked .slider {
+				left: 1.4rem;
+			}
+
+			.text {
+				font-size: 1rem;
+				margin-left: 0.65rem;
 			}
 		}
 	}

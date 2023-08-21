@@ -3,7 +3,7 @@
 	import CodeBlock from './code-block.svelte';
 </script>
 
-<Meta title="Typeography/CodeBlock" component={CodeBlock} />
+<Meta title="Typography/CodeBlock" component={CodeBlock} />
 
 <Story name="Default">
 	<CodeBlock>const lang = "JavaScript";</CodeBlock>

@@ -6,8 +6,7 @@
 
 	const id = uniqueId();
 
-	export let size: FormFieldSizeOptions = 'xl';
-
+	export let size: FormFieldSizeOptions = 'full';
 	export let value = '';
 	export let placeholder = '';
 	export let rows = 4;
@@ -16,7 +15,12 @@
 	export let readonly = false;
 </script>
 
-<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
+<FormField {size}>
+	{#if $$slots.default}
+		<FormLabel {id} {required}><slot /></FormLabel>
+	{/if}
+	<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
+</FormField>
 
 <style lang="scss">
 	textarea {

@@ -3,10 +3,12 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
+	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 
 	const id = uniqueId();
 
 	export let value: string | undefined = undefined;
+	export let size: FormFieldSizeOptions = 'full';
 	export let placeholder = '';
 	export let nullable = false;
 	export let enabled = true;
@@ -26,8 +28,10 @@
 	$: disabled = !enabled;
 </script>
 
-<FormField>
-	<FormLabel {id} {required}><slot /></FormLabel>
+<FormField {size}>
+	{#if $$slots.default}
+		<FormLabel {id} {required}><slot /></FormLabel>
+	{/if}
 	<div class:nullable class:disabled>
 		<span class="input">
 			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} />

@@ -9,7 +9,7 @@
 		full: '100%'
 	};
 
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 
 	$: displayType = ['xl', 'full'].includes(size) ? 'block' : 'inline-block';
 	$: maxWidth = maxWidthMap[size];

@@ -12,3 +12,7 @@
 <Story name="Text Area (large)">
 	<TextArea placeholder="Placeholder text" rows={10} size="lg" />
 </Story>
+
+<Story name="Text Area (with label)">
+	<TextArea placeholder="Placeholder text" rows={10}>Comments</TextArea>
+</Story>

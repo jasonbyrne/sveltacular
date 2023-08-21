@@ -9,13 +9,15 @@
 
 	export let value = '';
 	export let items: DropdownOption[] = [];
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
 	export let required = false;
 </script>
 
 <FormField {size}>
-	<FormLabel {id} {required}><slot /></FormLabel>
+	{#if $$slots.default}
+		<FormLabel {id} {required}><slot /></FormLabel>
+	{/if}
 	<div>
 		{#each items as item}
 			<RadioBox bind:group={value} {disabled} value={item.value}>{item.name}</RadioBox>

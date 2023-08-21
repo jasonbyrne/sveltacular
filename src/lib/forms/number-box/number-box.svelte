@@ -11,7 +11,7 @@
 
 	export let value = 0;
 	export let placeholder = '';
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let type: AllowedInputTypes = 'number';
 	export let step = 1;
 	export let min = 0;

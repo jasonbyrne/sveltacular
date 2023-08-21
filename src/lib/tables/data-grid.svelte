@@ -16,7 +16,7 @@
 	type Action = undefined | ((row: DataRow) => unknown);
 
 	export let caption: string = '';
-	export let data: DataRow[];
+	export let rows: DataRow[];
 	export let cols: DataCol[];
 	export let pagination: Pagination | undefined = undefined;
 	export let editRow: Action = undefined;
@@ -24,8 +24,8 @@
 
 	const getColType = (col: DataCol) => {
 		if (col.type) return col.type;
-		if (data.length === 0) return 'string';
-		return typeof data[0][col.key];
+		if (rows.length === 0) return 'string';
+		return typeof rows[0][col.key];
 	};
 
 	const clickEdit = async (row: DataRow) => {
@@ -36,10 +36,17 @@
 		if (deleteRow) await deleteRow(row);
 	};
 
+	const format = (row: DataRow, key: string) => {
+		const col = cols.find((col) => col.key === key);
+		if (!col) return row[key];
+		if (col.format) return col.format(row, key);
+		return row[key];
+	};
+
 	$: hasActionRow = editRow || deleteRow;
 	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionRow ? 1 : 0);
 	$: totalPages = pagination
-		? Math.ceil((pagination.total || data.length) / pagination.perPage)
+		? Math.ceil((pagination.total || rows.length) / pagination.perPage)
 		: 1;
 </script>
 
@@ -60,15 +67,15 @@
 		</TableHeaderRow>
 	</TableHeader>
 	<TableBody>
-		{#each data as row}
+		{#each rows as row}
 			<TableRow>
 				{#each cols as col}
 					{#if !col.hide}
 						<TableCell type={col.type || typeof row[col.key]}>
-							{#if col.format}
-								{col.format(row, col.key)}
+							{#if col.link}
+								<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
 							{:else}
-								{row[col.key]}
+								{format(row, col.key)}
 							{/if}
 						</TableCell>
 					{/if}

@@ -9,7 +9,7 @@
 	export let value = '';
 	export let placeholder = '';
 	export let helperText = '';
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let type: AllowedTextInputTypes = 'text';
 	export let disabled = false;
 	export let required = false;

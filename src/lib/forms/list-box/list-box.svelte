@@ -10,7 +10,7 @@
 
 	export let value = '';
 	export let items: DropdownOption[] = [];
-	export let size: FormFieldSizeOptions = 'md';
+	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
 	export let required = false;
 	export let searchable = false;
@@ -74,7 +74,9 @@
 </script>
 
 <FormField {size}>
-	<FormLabel {id} {required}><slot /></FormLabel>
+	{#if $$slots.default}
+		<FormLabel {id} {required}><slot /></FormLabel>
+	{/if}
 	<div class:open>
 		<input
 			type="text"
