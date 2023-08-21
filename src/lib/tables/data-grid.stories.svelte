@@ -3,7 +3,7 @@
 	import DataGrid from './data-grid.svelte';
 	import type { Pagination } from '../index.js';
 
-	const data = [
+	const rows = [
 		{
 			id: 1,
 			name: 'John Doe',
@@ -38,6 +38,8 @@
 		}
 	];
 
+	const badCol = { key: 'foobar', label: 'Foo' };
+
 	const cols = [
 		{ key: 'name', label: 'Name' },
 		{ key: 'age', label: 'Age' },
@@ -59,20 +61,32 @@
 	const pagination: Pagination = {
 		page: 1,
 		perPage: 25,
-		total: data.length
+		total: rows.length
 	};
 </script>
 
 <Meta title="Tables/DataGrid" component={DataGrid} />
 
 <Story name="Standard">
-	<DataGrid {data} {cols} caption="Employees" />
+	<DataGrid {rows} {cols} caption="Employees" />
 </Story>
 
 <Story name="With Edit">
-	<DataGrid {data} {cols} caption="Employees" editRow={() => true} />
+	<DataGrid {rows} {cols} caption="Employees" editRow={() => true} />
 </Story>
 
 <Story name="With Pagination">
-	<DataGrid {data} {cols} caption="Employees" {pagination} />
+	<DataGrid {rows} {cols} caption="Employees" {pagination} />
+</Story>
+
+<Story name="No Data">
+	<DataGrid rows={[]} {cols} caption="Employees" />
+</Story>
+
+<Story name="Bad Columns">
+	<DataGrid {rows} cols={[...cols, badCol]} caption="Employees" {pagination} />
+</Story>
+
+<Story name="No Columns">
+	<DataGrid {rows} cols={[]} />
 </Story>

@@ -67,31 +67,41 @@
 		</TableHeaderRow>
 	</TableHeader>
 	<TableBody>
-		{#each rows as row}
+		{#if rows.length == 0}
 			<TableRow>
-				{#each cols as col}
-					{#if !col.hide}
-						<TableCell type={col.type || typeof row[col.key]}>
-							{#if col.link}
-								<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
-							{:else}
-								{format(row, col.key)}
+				<TableCell colspan={colCount}>
+					<div class="empty">
+						<Text>No data</Text>
+					</div>
+				</TableCell>
+			</TableRow>
+		{:else}
+			{#each rows as row}
+				<TableRow>
+					{#each cols as col}
+						{#if !col.hide}
+							<TableCell type={col.type || typeof row[col.key]}>
+								{#if col.link}
+									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
+								{:else}
+									{format(row, col.key)}
+								{/if}
+							</TableCell>
+						{/if}
+					{/each}
+					{#if hasActionRow}
+						<TableCell type="actions">
+							{#if editRow}
+								<button on:click={() => clickEdit(row)}>Edit</button>
+							{/if}
+							{#if deleteRow}
+								<button on:click={() => clickDelete(row)}>Delete</button>
 							{/if}
 						</TableCell>
 					{/if}
-				{/each}
-				{#if hasActionRow}
-					<TableCell type="actions">
-						{#if editRow}
-							<button on:click={() => clickEdit(row)}>Edit</button>
-						{/if}
-						{#if deleteRow}
-							<button on:click={() => clickDelete(row)}>Delete</button>
-						{/if}
-					</TableCell>
-				{/if}
-			</TableRow>
-		{/each}
+				</TableRow>
+			{/each}
+		{/if}
 	</TableBody>
 	{#if pagination}
 		<TableFooter>
@@ -105,3 +115,13 @@
 		</TableFooter>
 	{/if}
 </Table>
+
+<style>
+	.empty {
+		text-align: center;
+		padding: 2rem;
+		text-transform: uppercase;
+		color: rgba(100, 100, 100, 0.5);
+		letter-spacing: 0.2rem;
+	}
+</style>
