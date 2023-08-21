@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import DataGrid from './data-grid.svelte';
+	import type { Pagination } from '../index.js';
 
 	const data = [
 		{
@@ -54,10 +55,24 @@
 			}
 		}
 	];
+
+	const pagination: Pagination = {
+		page: 1,
+		perPage: 25,
+		total: data.length
+	};
 </script>
 
 <Meta title="Tables/DataGrid" component={DataGrid} />
 
 <Story name="Standard">
 	<DataGrid {data} {cols} caption="Employees" />
+</Story>
+
+<Story name="With Edit">
+	<DataGrid {data} {cols} caption="Employees" editRow={() => true} />
+</Story>
+
+<Story name="With Pagination">
+	<DataGrid {data} {cols} caption="Employees" {pagination} />
 </Story>

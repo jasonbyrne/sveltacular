@@ -1,10 +1,10 @@
 <script lang="ts">
-	export let marginBottom: string | number = '1rem';
-	export let marginTop: string | number = '1rem';
+	export let marginBottom: string | number = 0;
+	export let marginTop: string | number = 0;
 	export let gap: string | number = '1rem';
 </script>
 
-<div style={`margin: ${marginTop} ${marginBottom}; gap: ${gap}`}>
+<div style={`margin-top: ${marginTop}; margin-bottom: ${marginBottom}; gap: ${gap}`}>
 	<slot />
 </div>
 

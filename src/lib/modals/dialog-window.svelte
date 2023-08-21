@@ -13,7 +13,6 @@
 		position: relative;
 		border: solid 0.1rem #000;
 		padding: 1rem;
-		margin: 1rem;
 		background-color: #fff;
 		border-radius: 1rem;
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -33,6 +32,12 @@
 
 		&.xl {
 			width: 90%;
+			max-width: 90%;
+		}
+
+		&.full {
+			width: 100%;
+			max-width: none;
 		}
 	}
 </style>

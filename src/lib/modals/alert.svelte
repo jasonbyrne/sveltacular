@@ -20,18 +20,16 @@
 {#if open}
 	<Overlay>
 		<Dialog {size}>
-			<div>
-				{#if title}
-					<DialogHeader on:close={close} {showCloseButton}>
-						{title}
-					</DialogHeader>
-					<Divider />
-				{/if}
-				<DialogBody>
-					<slot />
-				</DialogBody>
+			{#if title}
+				<DialogHeader on:close={close} {showCloseButton}>
+					{title}
+				</DialogHeader>
 				<Divider />
-			</div>
+			{/if}
+			<DialogBody>
+				<slot />
+			</DialogBody>
+			<Divider />
 			<DialogFooter>
 				<Button on:click={close} size="full">
 					{buttonText}
@@ -40,9 +38,3 @@
 		</Dialog>
 	</Overlay>
 {/if}
-
-<style>
-	div {
-		padding-bottom: 3rem;
-	}
-</style>

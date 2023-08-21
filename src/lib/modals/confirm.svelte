@@ -32,18 +32,16 @@
 {#if open}
 	<Overlay>
 		<Dialog {size}>
-			<div class="body">
-				{#if title}
-					<DialogHeader on:close={no} {showCloseButton}>
-						{title}
-					</DialogHeader>
-					<Divider />
-				{/if}
-				<DialogBody>
-					<slot />
-				</DialogBody>
+			{#if title}
+				<DialogHeader on:close={no} {showCloseButton}>
+					{title}
+				</DialogHeader>
 				<Divider />
-			</div>
+			{/if}
+			<DialogBody>
+				<slot />
+			</DialogBody>
+			<Divider />
 			<DialogFooter>
 				<Button on:click={no} style="secondary" size="full">
 					{noText}
@@ -55,9 +53,3 @@
 		</Dialog>
 	</Overlay>
 {/if}
-
-<style>
-	.body {
-		padding-bottom: 3rem;
-	}
-</style>

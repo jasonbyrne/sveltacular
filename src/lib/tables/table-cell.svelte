@@ -21,5 +21,9 @@
 			text-align: center;
 			text-transform: uppercase;
 		}
+
+		&.actions {
+			text-align: right;
+		}
 	}
 </style>
