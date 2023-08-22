@@ -13,10 +13,12 @@
 
 <style lang="scss">
 	header {
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
 		background: #fff;
 		color: #000;
-		padding: 0.5rem;
 		position: absolute;
 		top: 0;
 		left: 0;

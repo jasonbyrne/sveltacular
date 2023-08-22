@@ -48,6 +48,7 @@ export { default as Breadcrumbs } from './navigation/breadcrumbs/breadcrumbs.sve
 export { default as SideBar } from './navigation/side-bar/side-bar.svelte';
 export { default as TabGroup } from './navigation/tabs/tab-group.svelte';
 export { default as Tab } from './navigation/tabs/tab.svelte';
+export { default as AppLogo } from './navigation/app-bar/app-logo.svelte';
 // Tables
 export { default as DataGrid } from './tables/data-grid.svelte';
 export { default as Table } from './tables/table.svelte';
