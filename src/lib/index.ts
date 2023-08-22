@@ -23,6 +23,7 @@ export { default as Pill } from './generic/pill/pill.svelte';
 export { default as Scorecard } from './generic/scorecard/scorecard.svelte';
 export { default as Overlay } from './generic/overlay.svelte';
 export { default as Image } from './images/image.svelte';
+export { default as Icon } from './images/icon.svelte';
 export { default as Menu } from './generic/menu/menu.svelte';
 export { default as Date } from './generic/date/date.svelte';
 export { default as Panel } from './generic/panel/panel.svelte';

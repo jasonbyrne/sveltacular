@@ -9,12 +9,12 @@
 
 <Story name="Without Caption">
 	<div style="width: 100px; height: 100px">
-		<Image {sources} />
+		<Image src={sources} />
 	</div>
 </Story>
 
 <Story name="With Caption">
 	<div style="width: 300px; height: 300px">
-		<Image {sources}>Svelte Logo</Image>
+		<Image src={sources}>Svelte Logo</Image>
 	</div>
 </Story>

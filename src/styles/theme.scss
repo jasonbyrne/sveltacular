@@ -1,0 +1,91 @@
+:root {
+	/* BASE */
+	--base-color-bg: #fff;
+	--base-color-fg: #000;
+	--base-link-fg: #543fd7;
+	--base-link-hover-fg: #00f;
+	/* BUTTONS */
+	--button-primary-bg: #543fd7;
+	--button-primary-fg: #fff;
+	--button-primary-hover-bg: #00f;
+	--button-primary-hover-fg: #fff;
+	--button-secondary-bg: #5b5b5b;
+	--button-secondary-fg: #fff;
+	--button-secondary-hover-bg: #000;
+	--button-secondary-hover-fg: #fff;
+	--button-success-bg: #00522a;
+	--button-success-fg: #fff;
+	--button-success-hover-bg: #075500;
+	--button-success-hover-fg: #fff;
+	--button-danger-bg: #a00;
+	--button-danger-fg: #fff;
+	--button-danger-hover-bg: #c00;
+	--button-danger-hover-fg: #fff;
+	--button-ghost-bg: #fff;
+	--button-ghost-fg: #000;
+	--button-ghost-hover-bg: #000;
+	--button-ghost-hover-fg: #fff;
+	/* FORMS */
+	--form-input-bg: #fff;
+	--form-input-fg: #000;
+	--form-input-border: #000;
+	--form-input-border-focus: #000;
+	--form-input-border-error: #a00;
+	--form-input-border-error-focus: #c00;
+	--form-input-placeholder: #ccc;
+	/* NAVIGATION */
+	--nav-bg: #ccc;
+	--nav-fg: #000;
+	--nav-link-fg: #543fd7;
+	--nav-link-hover-fg: #00f;
+	--nav-link-active-fg: #000;
+	--nav-link-active-hover-fg: #000;
+	/* SIDEBAR */
+	--sidebar-bg: #fff;
+	--sidebar-fg: #000;
+	--sidebar-link-fg: #543fd7;
+	--sidebar-link-hover-fg: #00f;
+	--sidebar-link-active-fg: #000;
+	--sidebar-link-active-hover-fg: #000;
+	/* FOOTER */
+	--footer-bg: #fff;
+	--footer-fg: #000;
+	--footer-link-fg: #543fd7;
+	--footer-link-hover-fg: #00f;
+	/* TABLES */
+	--table-bg: #fff;
+	--table-fg: #000;
+	--table-border: #000;
+	--table-header-bg: #fff;
+	--table-header-fg: #000;
+	--table-header-border: #000;
+	--table-row-even-bg: #fff;
+	--table-row-even-fg: #000;
+	--table-row-even-border: #000;
+	--table-row-odd-bg: #fff;
+	--table-row-odd-fg: #000;
+	--table-row-odd-border: #000;
+	--table-footer-bg: #fff;
+	--table-footer-fg: #000;
+	--table-footer-border: #000;
+	/* TOOLTIP */
+	--tooltip-bg: #000;
+	--tooltip-fg: #fff;
+	/* MODAL */
+	--modal-bg: #fff;
+	--modal-fg: #000;
+	--modal-header-bg: #fff;
+	--modal-header-fg: #000;
+	--modal-header-border: #000;
+	--modal-body-bg: #fff;
+	--modal-body-fg: #000;
+	--modal-body-border: #000;
+	--modal-footer-bg: #fff;
+	--modal-footer-fg: #000;
+	--modal-footer-border: #000;
+	/* CARD */
+	--card-bg: #fff;
+	--card-fg: #000;
+	--card-link-fg: #543fd7;
+	--card-link-hover-fg: #00f;
+}

@@ -17,8 +17,8 @@
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		background: #fff;
-		color: #000;
+		background: var(--nav-bg, #fff);
+		color: var(--nav-fg, #000);
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -65,6 +65,11 @@
 
 		&.padding-xl {
 			padding: 1.5rem;
+		}
+
+		&.isTransparent {
+			background: transparent;
+			color: inherit;
 		}
 	}
 </style>
