@@ -1,24 +1,32 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { navigateTo } from '$src/lib/index.js';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
-	export let href: string;
+	export let href: string | undefined = undefined;
 	export let title: string;
 
+	const dispatch = createEventDispatcher<{ click: void }>();
 	const open: Writable<boolean> = getContext('app-nav-state');
+	const click = () => {
+		if (href) navigateTo(href);
+		dispatch('click');
+	};
 </script>
 
-<a {href} class={$open ? 'open' : 'closed'}>
+<button class={$open ? 'open' : 'closed'} on:click={click}>
 	{#if $$slots.default}
 		<div class="icon">
 			<slot />
 		</div>
 	{/if}
-	<div class="title">{title}</div>
-</a>
+	<div class="title">
+		{title}
+	</div>
+</button>
 
 <style lang="scss">
-	a {
+	button {
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
@@ -26,6 +34,10 @@
 		height: 100%;
 		color: var(--nav-link-color, black);
 		text-decoration: none;
+		appearance: none;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
 
 		&:hover {
 			color: var(--nav-link-hover-color, black);
@@ -39,11 +51,12 @@
 	}
 
 	@media (max-width: 640px) {
-		a.open {
+		button.open {
 			flex-direction: row;
 			gap: 1rem;
 			width: 100%;
 			padding: 1rem;
+			text-align: left;
 
 			&:hover {
 				text-decoration: none;
