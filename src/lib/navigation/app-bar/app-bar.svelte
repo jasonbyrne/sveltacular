@@ -1,10 +1,18 @@
 <script lang="ts">
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import { setContext } from 'svelte';
 
 	export let isFixed = true;
 	export let position: 'top' | 'bottom' = 'top';
 	export let size: FormFieldSizeOptions | 'xs' = 'md';
 	export let padding: 'none' | FormFieldSizeOptions = 'md';
+
+	setContext('app-bar', {
+		isFixed,
+		position,
+		size,
+		padding
+	});
 </script>
 
 <header class="{position} {size} padding-{padding} {isFixed ? 'fixed' : 'absolute'}">

@@ -66,7 +66,7 @@
 
 <Story name="Bottom (Large)">
 	<AppBar size="lg" position="bottom" isFixed={true}>
-		<AppNav align="center" spacing="spread">
+		<AppNav align="center" spacing="space-evenly">
 			<AppNavItem href="/about" title="About">
 				<Icon href="/assets/icons/question.svg" />
 			</AppNavItem>
