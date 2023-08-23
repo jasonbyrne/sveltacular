@@ -22,10 +22,10 @@ npm i sveltacular
 
 Then use it like this:
 
-```html
+```svelte
 <script lang="ts">
 	import { Button } from 'sveltacular';
 </script>
 
-<button>Hello World</button>
+<Button>Hello World</Button>
 ```
