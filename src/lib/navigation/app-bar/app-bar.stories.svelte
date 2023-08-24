@@ -5,6 +5,7 @@
 	import AppNav from './app-nav.svelte';
 	import AppNavItem from './app-nav-item.svelte';
 	import Icon from '$src/lib/images/icon.svelte';
+	import AppBranding from './app-branding.svelte';
 </script>
 
 <Meta title="Navigation/AppBar" component={AppBar} />
@@ -34,7 +35,9 @@
 
 <Story name="Top (Large)">
 	<AppBar size="lg" position="top">
-		<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
+		<AppBranding>
+			<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
+		</AppBranding>
 		<AppNav>
 			<AppNavItem href="/about" title="About">
 				<Icon href="/assets/icons/question.svg" />
@@ -48,7 +51,10 @@
 
 <Story name="Top (X-Large)">
 	<AppBar size="xl" position="top">
-		<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
+		<AppBranding>
+			<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
+			<div>foobar</div>
+		</AppBranding>
 		<AppNav spacing="loose">
 			<AppNavItem href="/about" title="About">
 				<Icon href="/assets/icons/question.svg" />

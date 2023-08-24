@@ -13,7 +13,7 @@
 	$: finalSource = sources[sources.length - 1];
 </script>
 
-<div class={align}>
+<div class="image {align}">
 	{#if href}
 		<a {href}>
 			<picture>
@@ -43,6 +43,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
+		flex-grow: 1;
 
 		.caption {
 			position: absolute;

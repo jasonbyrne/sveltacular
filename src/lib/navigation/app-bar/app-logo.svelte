@@ -6,4 +6,15 @@
 	export let href: string;
 </script>
 
-<Image {src} {alt} {href} align="left" />
+<div class="logo">
+	<Image {src} {alt} {href} align="left" />
+</div>
+
+<style>
+	div {
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+</style>
