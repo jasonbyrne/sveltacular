@@ -27,9 +27,9 @@
 		width: 100%;
 		padding: 0.5rem 1rem;
 		border-radius: 0.25rem;
-		border: 1px solid #b7b7b7;
-		background-color: #fff;
-		color: #5c5c5c;
+		border: 1px solid var(--form-input-border, black);
+		background-color: var(--form-input-bg, white);
+		color: var(--form-input-fg, black);
 		font-size: 0.875rem;
 		font-weight: 500;
 		line-height: 1.25rem;
@@ -38,5 +38,9 @@
 			box-shadow 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
+
+		&::placeholder {
+			color: var(--form-input-placeholder, #a0aec0);
+		}
 	}
 </style>

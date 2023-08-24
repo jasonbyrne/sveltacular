@@ -40,7 +40,7 @@
 		}
 
 		.switch {
-			background-color: var(--unchecked-color);
+			background-color: var(--form-input-bg, white);
 			position: relative;
 			cursor: pointer;
 			transition: background-color 0.2s ease-in-out;
@@ -51,11 +51,16 @@
 			border-radius: 50%;
 			position: absolute;
 			transition: left 0.2s ease-in-out;
-			background: #fff;
+			background-color: var(--form-input-fg, black);
 		}
 
-		&.checked .switch {
-			background-color: var(--checked-color);
+		&.checked {
+			.switch {
+				background-color: var(--form-input-checked-bg, #3182ce);
+			}
+			.slider {
+				background-color: var(--form-input-checked-fg, white);
+			}
 		}
 
 		/* Sizes */

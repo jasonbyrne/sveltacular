@@ -7,24 +7,30 @@
 	/* BUTTONS */
 	--button-primary-bg: #543fd7;
 	--button-primary-fg: #fff;
+	--button-primary-border: #fff;
 	--button-primary-hover-bg: #00f;
 	--button-primary-hover-fg: #fff;
 	--button-secondary-bg: #5b5b5b;
 	--button-secondary-fg: #fff;
+	--button-secondary-border: #fff;
 	--button-secondary-hover-bg: #000;
 	--button-secondary-hover-fg: #fff;
-	--button-success-bg: #00522a;
-	--button-success-fg: #fff;
-	--button-success-hover-bg: #075500;
-	--button-success-hover-fg: #fff;
+	--button-positive-bg: #00522a;
+	--button-positive-fg: #fff;
+	--button-positive-border: #fff;
+	--button-positive-hover-bg: #0b8200;
+	--button-positive-hover-fg: #fff;
 	--button-danger-bg: #a00;
 	--button-danger-fg: #fff;
+	--button-danger-border: #fff;
 	--button-danger-hover-bg: #c00;
 	--button-danger-hover-fg: #fff;
-	--button-ghost-bg: #fff;
-	--button-ghost-fg: #000;
 	--button-ghost-hover-bg: #000;
 	--button-ghost-hover-fg: #fff;
+	--button-outline-fg: #fff;
+	--button-outline-border: #fff;
+	--button-outline-hover-bg: #000;
+	--button-outline-hover-fg: #fff;
 	/* FORMS */
 	--form-input-bg: #fff;
 	--form-input-fg: #000;
@@ -32,7 +38,9 @@
 	--form-input-border-focus: #000;
 	--form-input-border-error: #a00;
 	--form-input-border-error-focus: #c00;
-	--form-input-placeholder: #ccc;
+	--form-input-placeholder: #888;
+	--form-input-checked-bg: #3182ce;
+	--form-input-checked-fg: #fff;
 	/* NAVIGATION */
 	--nav-bg: #ccc;
 	--nav-fg: #000;

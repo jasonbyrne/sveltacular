@@ -13,8 +13,8 @@
 	<Button style="secondary">Click Me</Button>
 </Story>
 
-<Story name="Tertiary">
-	<Button style="tertiary">Click Me</Button>
+<Story name="Ghost">
+	<Button style="ghost">Click Me</Button>
 </Story>
 
 <Story name="Danger">
@@ -25,8 +25,8 @@
 	<Button style="positive">Click Me</Button>
 </Story>
 
-<Story name="Negative">
-	<Button style="negative">Click Me</Button>
+<Story name="Outline">
+	<Button style="outline">Click Me</Button>
 </Story>
 
 <Story name="Link">
