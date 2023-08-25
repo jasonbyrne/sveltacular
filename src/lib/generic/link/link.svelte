@@ -19,7 +19,6 @@
 <style lang="scss">
 	.link {
 		text-decoration: underline;
-		color: inherit;
 		cursor: pointer;
 
 		&.underline-none,
@@ -35,16 +34,9 @@
 		&.inline-block {
 			display: inline-block;
 		}
-	}
 
-	a.link {
-		&.underline-hover:hover {
+		&[href].underline-hover:hover {
 			text-decoration: underline;
 		}
-	}
-
-	span.link {
-		cursor: default;
-		color: rgba(255, 255, 255, 0.5);
 	}
 </style>

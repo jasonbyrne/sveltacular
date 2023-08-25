@@ -32,7 +32,7 @@
 		gap: 0.2rem;
 		align-items: center;
 		height: 100%;
-		color: var(--nav-link-color, black);
+		color: var(--nav-link-fg, black);
 		text-decoration: none;
 		appearance: none;
 		border: none;
@@ -40,13 +40,15 @@
 		cursor: pointer;
 
 		&:hover {
-			color: var(--nav-link-hover-color, black);
+			color: var(--nav-link-hover-fg, black);
 			text-decoration: underline;
 		}
 
 		.icon {
 			width: 100%;
 			height: 1.5rem;
+			fill: var(--nav-link-fg, black);
+			stroke: var(--nav-link-fg, black);
 		}
 	}
 

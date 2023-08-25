@@ -6,6 +6,13 @@
 	import AppNavItem from './app-nav-item.svelte';
 	import Icon from '$src/lib/images/icon.svelte';
 	import AppBranding from './app-branding.svelte';
+	import Breadcrumbs from '../breadcrumbs/breadcrumbs.svelte';
+
+	const crumbs = [
+		{ label: 'Search', href: 'https://www.google.com' },
+		{ label: 'Search Term', href: 'https://www.google.com' },
+		'Results'
+	];
 </script>
 
 <Meta title="Navigation/AppBar" component={AppBar} />
@@ -53,7 +60,7 @@
 	<AppBar size="xl" position="top">
 		<AppBranding>
 			<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-			<div>foobar</div>
+			<Breadcrumbs homeUrl="https://www.google.com" {crumbs} size="md" />
 		</AppBranding>
 		<AppNav spacing="loose">
 			<AppNavItem href="/about" title="About">

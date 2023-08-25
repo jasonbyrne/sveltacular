@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Link from '$src/lib/generic/link/link.svelte';
 	import AngleRightIcon from '$src/lib/icons/angle-right-icon.svelte';
 	import HomeIcon from '$src/lib/icons/home-icon.svelte';
 
@@ -18,9 +17,7 @@
 <nav class={size}>
 	{#if homeUrl}
 		<li class="icon">
-			<Link href={homeUrl} display="block">
-				<HomeIcon />
-			</Link>
+			<a href={homeUrl} class="home"><HomeIcon /></a>
 		</li>
 	{/if}
 	{#each crumbs as crumb, i}
@@ -28,9 +25,9 @@
 			<li>{getCrumLabel(crumb)}</li>
 		{:else}
 			<li>
-				<Link href={crumb.href}>
+				<a href={crumb.href}>
 					{crumb.label}
-				</Link>
+				</a>
 			</li>
 		{/if}
 		{#if i < crumbs.length - 1}
@@ -49,13 +46,28 @@
 		padding: 0;
 		margin: 0;
 		line-height: 1.5rem;
+		font-family: sans-serif;
 
 		li {
 			display: flex;
 			align-items: center;
 			vertical-align: middle;
 			margin-left: 0.5rem;
-			color: rgba(255, 255, 255, 0.5);
+			color: var(--breadcrumbs-fg, #333);
+
+			a {
+				color: var(--breadcrumbs-link-fg, #333);
+				text-decoration: none;
+
+				&:hover {
+					color: var(--breadcrumbs-link-hover-fg, black);
+					text-decoration: underline;
+				}
+			}
+
+			a.home {
+				width: 100%;
+			}
 
 			&:first-child {
 				margin-left: 0;
