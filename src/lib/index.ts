@@ -52,6 +52,7 @@ export { default as Tab } from './navigation/tabs/tab.svelte';
 export { default as AppLogo } from './navigation/app-bar/app-logo.svelte';
 export { default as AppNav } from './navigation/app-bar/app-nav.svelte';
 export { default as AppNavItem } from './navigation/app-bar/app-nav-item.svelte';
+export { default as AppBranding } from './navigation/app-bar/app-branding.svelte';
 // Tables
 export { default as DataGrid } from './tables/data-grid.svelte';
 export { default as Table } from './tables/table.svelte';
