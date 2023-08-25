@@ -13,7 +13,7 @@
 </script>
 
 {#if show}
-	<button on:click={onClick}>X</button>
+	<button type="button" on:click={onClick}>X</button>
 {/if}
 
 <style lang="scss">

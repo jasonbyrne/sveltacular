@@ -1,21 +1,10 @@
 <script lang="ts">
 	import toAgo from '$src/lib/helpers/ago.js';
+	import type { DateTimeStyle, DateType, TZStyle } from '$src/lib/types/date.js';
 
-	type DateTimeStyle = 'full' | 'long' | 'short' | 'medium';
-	type TZStyle = 'long' | 'short' | 'shortOffset' | 'longOffset' | 'shortGeneric' | 'longGeneric';
-
-	export let value: string | number = '';
+	export let value: string | number | Date = '';
 	export let lang = 'en-us';
-	export let type:
-		| 'date'
-		| 'time'
-		| 'datetime'
-		| 'ago'
-		| 'ymd'
-		| 'ymdhm'
-		| 'ymdhms'
-		| 'ymdhmt'
-		| 'ymdhmst' = 'datetime';
+	export let type: DateType = 'datetime';
 	export let style: DateTimeStyle = 'medium';
 	export let dateTimeSeparator: string | undefined = undefined;
 

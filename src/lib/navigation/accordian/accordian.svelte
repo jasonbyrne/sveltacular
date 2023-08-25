@@ -6,7 +6,7 @@
 </script>
 
 <div class:expanded class="accordian">
-	<button on:click={() => (expanded = !expanded)}>
+	<button type="button" on:click={() => (expanded = !expanded)}>
 		<span class="title">
 			{title}
 		</span>

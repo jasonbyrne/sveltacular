@@ -24,7 +24,7 @@
 
 <section class:active>
 	<header>
-		<button on:click={selectThisTab} type="button">
+		<button type="button" on:click={selectThisTab}>
 			{title}
 		</button>
 	</header>

@@ -88,7 +88,7 @@
 			on:focus={() => (open = true)}
 			on:keyup={onInputKeyPress}
 		/>
-		<button class="icon" on:click={toggle} on:keydown={toggle}>
+		<button type="button" class="icon" on:click={toggle} on:keydown={toggle}>
 			<AngleUpIcon />
 		</button>
 		<div class="dropdown">

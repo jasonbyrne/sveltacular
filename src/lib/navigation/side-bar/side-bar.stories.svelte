@@ -16,6 +16,6 @@
 	</SideBar>
 
 	<div style="text-align: right; position: relative; z-index: 99999">
-		<button on:click={() => (open = !open)}>Toggle</button>
+		<button type="button" on:click={() => (open = !open)}>Toggle</button>
 	</div>
 </Story>

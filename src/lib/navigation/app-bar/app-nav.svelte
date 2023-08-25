@@ -23,7 +23,7 @@
 </script>
 
 <div class="icon {$open ? 'open' : 'closed'} {collapse}">
-	<button on:click={toggle}>
+	<button type="button" on:click={toggle}>
 		<HamburgerIcon />
 	</button>
 </div>

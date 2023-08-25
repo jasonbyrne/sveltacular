@@ -92,10 +92,10 @@
 					{#if hasActionRow}
 						<TableCell type="actions">
 							{#if editRow}
-								<button on:click={() => clickEdit(row)}>Edit</button>
+								<button type="button" on:click={() => clickEdit(row)}>Edit</button>
 							{/if}
 							{#if deleteRow}
-								<button on:click={() => clickDelete(row)}>Delete</button>
+								<button type="button" on:click={() => clickDelete(row)}>Delete</button>
 							{/if}
 						</TableCell>
 					{/if}

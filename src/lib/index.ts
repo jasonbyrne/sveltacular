@@ -72,10 +72,14 @@ export { default as Subtitle } from './typography/subtitle.svelte';
 export { default as Text } from './typography/text.svelte';
 export { default as CodeBlock } from './typography/code-block.svelte';
 export { default as Paragraph } from './typography/paragraph.svelte';
+// Timeline
+export { default as Timeline } from './timeline/timeline.svelte';
 
 // Types
 export * from './types/data.js';
+export * from './types/date.js';
 export * from './types/form.js';
+export * from './types/timeline-item.js';
 // Helpers
 export * from './helpers/date.js';
 export * from './helpers/navigate-to.js';

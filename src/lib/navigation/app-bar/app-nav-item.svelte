@@ -14,7 +14,7 @@
 	};
 </script>
 
-<button class={$open ? 'open' : 'closed'} on:click={click}>
+<button type="button" class={$open ? 'open' : 'closed'} on:click={click}>
 	{#if $$slots.default}
 		<div class="icon">
 			<slot />
