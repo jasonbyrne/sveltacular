@@ -9,6 +9,7 @@
 	import Button from '../forms/button/button.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import TextBox from '../forms/text-box/text-box.svelte';
+	import DialogCloseButton from './dialog-close-button.svelte';
 
 	export let open = false;
 	export let title: string | undefined = undefined;
@@ -25,6 +26,7 @@
 	const dispatch = createEventDispatcher<{ ok: string; cancel: void }>();
 
 	const no = () => {
+		console.log('no');
 		open = false;
 		dispatch('cancel');
 	};
@@ -37,14 +39,15 @@
 </script>
 
 {#if open}
-	<Overlay>
+	<Overlay on:click={no}>
 		<Dialog {size}>
 			{#if title}
-				<DialogHeader on:close={no} {showCloseButton}>
+				<DialogHeader>
 					{title}
 				</DialogHeader>
 				<Divider />
 			{/if}
+			<DialogCloseButton show={showCloseButton} on:click={no} />
 			<DialogBody>
 				<TextBox bind:value {placeholder} {type} {required} size="full">
 					<slot />

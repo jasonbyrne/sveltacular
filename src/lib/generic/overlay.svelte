@@ -1,8 +1,23 @@
-<script>
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let show = true;
+
+	const dispatch = createEventDispatcher<{ click: void }>();
+
+	const onClick = () => {
+		dispatch('click');
+	};
+
+	const onKeyPress = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			onClick();
+		}
+	};
 </script>
 
-<div class:show>
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class:show on:click={onClick} on:keypress={onKeyPress}>
 	<slot />
 </div>
 
