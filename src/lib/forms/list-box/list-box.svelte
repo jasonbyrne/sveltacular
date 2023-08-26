@@ -8,12 +8,15 @@
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
 	import debounce from '$src/lib/helpers/debounce.js';
 
+	type SearchFunction = (text: string) => Promise<DropdownOption[]>;
+
 	export let value = '';
 	export let items: DropdownOption[] = [];
 	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
 	export let required = false;
 	export let searchable = false;
+	export let search: undefined | SearchFunction = undefined;
 
 	const getText = () => items.find((item) => item.value == value)?.name || '';
 	const onSelect = (e: CustomEvent<DropdownOption>) => {
@@ -56,10 +59,20 @@
 		}
 	};
 
-	const triggerSearch = debounce(() => {
+	const triggerSearch = debounce(async () => {
 		dispatch('search', searchText);
+		if (search) {
+			items = await search(searchText);
+			text = getText();
+		}
 	}, 300);
+
 	const dispatch = createEventDispatcher<{ change: string; search: string }>();
+	const updateText = async () => {
+		const textBox = document.getElementById(id) as HTMLInputElement;
+		// Don't change text if they're currently typing
+		if (document.activeElement != textBox) text = getText();
+	};
 	const id = uniqueId();
 	let text = getText();
 	let open = false;
@@ -71,7 +84,10 @@
 				.map((item, index) => ({ ...item, index }))
 				.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
 		: items.map((item, index) => ({ ...item, index }));
-	$: items && (text = getText());
+	// When items changes, update text, so it will match the text of that corresponding value in the dropdown
+	$: items && updateText();
+	// Do initial search
+	triggerSearch();
 </script>
 
 <FormField {size}>
