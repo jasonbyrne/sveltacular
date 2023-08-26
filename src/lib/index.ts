@@ -78,6 +78,9 @@ export { default as Paragraph } from './typography/paragraph.svelte';
 // Timeline
 export { default as Timeline } from './timeline/timeline.svelte';
 export { default as TimelineItem } from './timeline/timeline-item.svelte';
+// Placeholders
+export { default as Loading } from './placeholders/loading.svelte';
+export { default as SkeletonText } from './placeholders/skeleton-text.svelte';
 // Types
 export * from './types/data.js';
 export * from './types/date.js';

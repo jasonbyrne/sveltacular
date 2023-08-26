@@ -71,6 +71,7 @@
 				.map((item, index) => ({ ...item, index }))
 				.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
 		: items.map((item, index) => ({ ...item, index }));
+	$: items && (text = getText());
 </script>
 
 <FormField {size}>
@@ -87,6 +88,8 @@
 			readonly={!searchable}
 			on:focus={() => (open = true)}
 			on:keyup={onInputKeyPress}
+			data-value={value}
+			data-text={text}
 		/>
 		<button type="button" class="icon" on:click={toggle} on:keydown={toggle}>
 			<AngleUpIcon />

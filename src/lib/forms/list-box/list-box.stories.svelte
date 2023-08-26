@@ -5,13 +5,14 @@
 	import { UnitedStates } from '$src/lib/data/united-states.js';
 
 	const items: DropdownOption[] = [
-		{ name: 'SvelteKit', value: 'svelte ' },
-		{ name: 'Angular', value: 'angular ' },
-		{ name: 'React', value: 'react ' },
-		{ name: 'Vue', value: 'vue ' }
+		{ name: 'SvelteKit', value: 'svelte' },
+		{ name: 'Angular', value: 'angular' },
+		{ name: 'React', value: 'react=' },
+		{ name: 'Vue', value: 'vue' }
 	];
 
 	let searchLog: string[] = [];
+	let value = 'svelte';
 	const addToSearchLog = (e: CustomEvent<string>) => {
 		searchLog = [...searchLog, e.detail];
 	};
@@ -22,6 +23,13 @@
 <Story name="Simple">
 	<div>
 		<ListBox {items}>Best JavaScript Framework</ListBox>
+	</div>
+	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
+</Story>
+
+<Story name="Value Selected">
+	<div>
+		<ListBox {items} bind:value>Best JavaScript Framework</ListBox>
 	</div>
 	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
 </Story>
