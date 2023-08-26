@@ -30,6 +30,7 @@
 			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 			display: flex;
 			flex-direction: column;
+			font-family: var(--nav-font-family, sans-serif);
 		}
 
 		&.open {

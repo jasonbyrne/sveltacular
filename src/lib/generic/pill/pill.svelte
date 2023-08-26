@@ -18,6 +18,7 @@
 		font-size: 0.75rem;
 		font-weight: 500;
 		color: #4a5568;
+		font-family: var(--base-font-family, sans-serif);
 
 		&.sm {
 			font-size: 0.625rem;

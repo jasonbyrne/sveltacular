@@ -80,6 +80,7 @@
 		max-width: 100%;
 		max-height: 15rem;
 		overflow-y: auto;
+		font-family: var(--base-font-family, sans-serif);
 
 		&.closed {
 			display: none;

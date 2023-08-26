@@ -29,6 +29,7 @@
 	h5,
 	h6 {
 		margin: 0;
+		font-family: var(--base-headline-font-family, sans-serif);
 	}
 
 	h1 {

@@ -32,8 +32,8 @@
 		border-radius: 0.5rem;
 		background-color: #fff;
 		color: #555;
-		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-		transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+		transition: transform 0.2s ease-in-out;
+		font-family: var(--base-font-family, sans-serif);
 
 		strong {
 			display: block;

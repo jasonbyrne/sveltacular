@@ -19,5 +19,6 @@
 		position: relative;
 		display: block;
 		width: 100%;
+		font-family: var(--base-font-family, sans-serif);
 	}
 </style>

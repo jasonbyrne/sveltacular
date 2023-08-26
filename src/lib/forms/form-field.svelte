@@ -23,5 +23,6 @@
 	div {
 		margin-bottom: 1rem;
 		margin-right: 1rem;
+		font-family: var(--base-font-family, sans-serif);
 	}
 </style>

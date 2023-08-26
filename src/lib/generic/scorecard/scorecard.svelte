@@ -17,6 +17,7 @@
 		box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 		font-family: sans-serif;
 		min-width: 6rem;
+		font-family: var(--base-font-family, sans-serif);
 
 		div {
 			font-size: 2.5rem;

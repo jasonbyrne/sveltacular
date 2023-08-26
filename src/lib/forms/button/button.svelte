@@ -48,6 +48,7 @@
 			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
+		font-family: var(--base-font-family, sans-serif);
 
 		&.flex {
 			flex-grow: 1;

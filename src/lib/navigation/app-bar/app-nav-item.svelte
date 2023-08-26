@@ -32,6 +32,7 @@
 		gap: 0.2rem;
 		align-items: center;
 		height: 100%;
+		font-family: var(--nav-font-family, sans-serif);
 		color: var(--nav-link-fg, black);
 		text-decoration: none;
 		appearance: none;

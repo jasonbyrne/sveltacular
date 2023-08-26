@@ -15,6 +15,7 @@
 		font-weight: 500;
 		line-height: 2rem;
 		letter-spacing: 0.1rem;
+		font-family: var(--base-headline-font-family, sans-serif);
 
 		&.level1 {
 			font-size: 1.5rem;

@@ -4,6 +4,9 @@
 	--base-color-fg: #000;
 	--base-link-fg: #543fd7;
 	--base-link-hover-fg: #00f;
+	--base-font-family: 'Roboto', sans-serif;
+	--base-headline-font-family: 'Roboto', sans-serif;
+	--base-mono-font-family: 'Roboto Mono', monospace;
 	/* BUTTONS */
 	--button-primary-bg: #543fd7;
 	--button-primary-fg: #fff;
@@ -46,9 +49,11 @@
 	--nav-fg: #000;
 	--nav-link-fg: #black;
 	--nav-link-hover-fg: #black;
+	--nav-font-family: 'Roboto', sans-serif;
 	--breadcrumbs-fg: black;
 	--breadcrumbs-link-fg: black;
 	--breadcrumbs-link-hover-fg: #900;
+	--breadcrumbs-font-family: 'Roboto', sans-serif;
 	/* SIDEBAR */
 	--sidebar-bg: #fff;
 	--sidebar-fg: #000;
@@ -56,11 +61,13 @@
 	--sidebar-link-hover-fg: #00f;
 	--sidebar-link-active-fg: #000;
 	--sidebar-link-active-hover-fg: #000;
+	--sidebar-font-family: 'Roboto', sans-serif;
 	/* FOOTER */
 	--footer-bg: #fff;
 	--footer-fg: #000;
 	--footer-link-fg: #543fd7;
 	--footer-link-hover-fg: #00f;
+	--footer-font-family: 'Roboto', sans-serif;
 	/* TABLES */
 	--table-bg: #fff;
 	--table-fg: #000;

@@ -17,6 +17,7 @@
 		padding: 1rem;
 		border: soild 1px rgb(100, 100, 100, 0.5);
 		border-radius: 0.5rem;
+		font-family: var(--base-font-family, sans-serif);
 
 		&.no-border {
 			border: none;
@@ -27,6 +28,7 @@
 			font-weight: 500;
 			text-transform: uppercase;
 			letter-spacing: 0.1rem;
+			font-family: var(--base-headline-font-family, sans-serif);
 		}
 	}
 </style>

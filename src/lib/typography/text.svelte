@@ -8,6 +8,8 @@
 
 <style lang="scss">
 	div {
+		font-family: var(--base-font-family, sans-serif);
+
 		&.uppercase {
 			text-transform: uppercase;
 		}

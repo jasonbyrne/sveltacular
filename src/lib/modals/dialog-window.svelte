@@ -19,6 +19,7 @@
 		width: 20rem;
 		max-width: 70%;
 		z-index: 9999;
+		font-family: var(--base-font-family, sans-serif);
 
 		&.sm {
 			width: 15rem;

@@ -77,3 +77,9 @@
 </script>
 
 <time {datetime}>{text}</time>
+
+<style>
+	time {
+		font-family: var(--base-font-family, sans-serif);
+	}
+</style>

@@ -45,6 +45,7 @@
 		width: 100%;
 		align-items: center;
 		justify-content: center;
+		font-family: var(--nav-font-family, sans-serif);
 
 		&.left,
 		&.start {

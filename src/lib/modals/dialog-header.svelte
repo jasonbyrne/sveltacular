@@ -10,6 +10,7 @@
 		height: 1.75rem;
 		overflow: hidden;
 		color: #000;
+		font-family: var(--base-headline-font-family, sans-serif);
 
 		h1 {
 			margin: 0;

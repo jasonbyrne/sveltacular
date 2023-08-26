@@ -12,7 +12,7 @@
 		color: #fff;
 		padding: 1rem;
 		border-radius: 0.25rem;
-		font-family: 'Fira Code', monospace;
+		font-family: var(--base-mono-font-family, monospace);
 		font-size: 0.875rem;
 		line-height: 1.5;
 		overflow-x: auto;

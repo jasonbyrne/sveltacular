@@ -46,7 +46,7 @@
 		padding: 0;
 		margin: 0;
 		line-height: 1.5rem;
-		font-family: sans-serif;
+		font-family: var(--breadcrumbs-font-family, sans-serif);
 
 		li {
 			display: flex;
