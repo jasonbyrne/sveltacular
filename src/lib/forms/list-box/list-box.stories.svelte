@@ -18,10 +18,12 @@
 		searchLog = [...searchLog, e.detail];
 	};
 
-	const search = (e: CustomEvent<string>) => {
-		searchedItems = countriesArray.filter((country) =>
-			country.name.toLowerCase().includes(e.detail.toLowerCase())
+	const search = async (searchText: string) => {
+		console.log('search', searchText);
+		const result = countriesArray.filter((country) =>
+			country.name.toLowerCase().includes(searchText.toLowerCase().trim())
 		);
+		return result;
 	};
 	let searchedItems: { name: string; value: string }[] = [];
 	let searchValue = 'USA';
@@ -57,7 +59,7 @@
 
 <Story name="Searchable Pre-Selected">
 	<div>
-		<ListBox items={searchedItems} searchable on:search={search} bind:value={searchValue}
+		<ListBox bind:items={searchedItems} searchable {search} bind:value={searchValue}
 			>Countries</ListBox
 		>
 	</div>

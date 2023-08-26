@@ -1,6 +1,6 @@
 {
 	"name": "sveltacular",
-	"version": "0.0.21",
+	"version": "0.0.22",
 	"scripts": {
 		"watch": "npm run dev -- --open",
 		"dev": "vite dev",

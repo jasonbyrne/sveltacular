@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms//form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
 	import debounce from '$src/lib/helpers/debounce.js';
+	import { browser } from '$app/environment';
 
 	type SearchFunction = (text: string) => Promise<DropdownOption[]>;
 
@@ -16,26 +17,43 @@
 	export let disabled = false;
 	export let required = false;
 	export let searchable = false;
-	export let search: undefined | SearchFunction = undefined;
+	export let search: SearchFunction | undefined = undefined;
 
+	const id = uniqueId();
+	const dispatch = createEventDispatcher<{ change: string }>();
 	const getText = () => items.find((item) => item.value == value)?.name || '';
+
+	let text = getText();
+	let open = false;
+	let highlightIndex = -1;
+	let filteredItems: MenuOption[] = [];
+
+	// When an item is selected from the dropdown menu
 	const onSelect = (e: CustomEvent<DropdownOption>) => {
 		value = e.detail.value;
 		dispatch('change', value);
 		text = getText();
+		applyFilter();
 		open = false;
 	};
-	const toggle = () => {
-		open = !open;
-		if (open) document.getElementById(id)?.focus();
+
+	const focusOnInput = () => {
+		if (browser) document.getElementById(id)?.focus();
 	};
 
+	// Toggle open or closed
+	const toggle = () => {
+		open = !open;
+		focusOnInput();
+	};
+
+	// Handle key presses in the input
 	const onInputKeyPress = (e: KeyboardEvent) => {
 		if (e.key == 'Escape') {
 			open = false;
 			return;
 		}
-		if (e.key == 'Enter') {
+		if (e.key == 'Enter' || e.key == 'Tab') {
 			open = false;
 			if (highlightIndex > -1) {
 				onSelect(new CustomEvent('select', { detail: filteredItems[highlightIndex] }));
@@ -52,40 +70,51 @@
 			if (highlightIndex == -1) open = false;
 			return;
 		}
-		if (e.key.length == 1) {
+		if (e.key.length == 1 || e.key == 'Backspace' || e.key == 'Delete') {
 			open = true;
 			highlightIndex = 0;
 			triggerSearch();
 		}
 	};
 
+	// User is typing in the search box
 	const triggerSearch = debounce(async () => {
-		dispatch('search', searchText);
 		if (search) {
-			items = await search(searchText);
-			text = getText();
+			items = await search(text);
+			console.log(items);
 		}
+		updateText();
+		applyFilter();
+		open = true;
 	}, 300);
 
-	const dispatch = createEventDispatcher<{ change: string; search: string }>();
-	const updateText = async () => {
-		const textBox = document.getElementById(id) as HTMLInputElement;
-		// Don't change text if they're currently typing
-		if (document.activeElement != textBox) text = getText();
+	// Text or items have changed, we should apply the filter
+	const applyFilter = () => {
+		const searchText = text.trim().toLowerCase();
+		filteredItems = searchText
+			? items
+					.map((item, index) => ({ ...item, index }))
+					.filter((item) => item.name.toLowerCase().includes(searchText))
+			: items.map((item, index) => ({ ...item, index }));
 	};
-	const id = uniqueId();
-	let text = getText();
-	let open = false;
-	let highlightIndex = -1;
 
-	$: searchText = searchable ? text : '';
-	$: filteredItems = searchText
-		? items
-				.map((item, index) => ({ ...item, index }))
-				.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
-		: items.map((item, index) => ({ ...item, index }));
-	// When items changes, update text, so it will match the text of that corresponding value in the dropdown
-	$: items && updateText();
+	const clear = () => {
+		text = '';
+		value = '';
+		triggerSearch();
+		focusOnInput();
+	};
+
+	// When items change, we should change the text to match the value
+	const updateText = async () => {
+		if (browser) {
+			const textBox = document.getElementById(id) as HTMLInputElement;
+			// Don't change text if they're currently typing
+			if (document.activeElement != textBox) text = getText();
+			open = true;
+		}
+	};
+
 	// Do initial search
 	triggerSearch();
 </script>
@@ -110,12 +139,13 @@
 		<button type="button" class="icon" on:click={toggle} on:keydown={toggle}>
 			<AngleUpIcon />
 		</button>
+		<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
 		<div class="dropdown">
 			<Menu
 				items={filteredItems}
 				{open}
 				closeAfterSelect={false}
-				{searchText}
+				searchText={text}
 				on:select={onSelect}
 				size="full"
 				bind:highlightIndex
@@ -145,7 +175,7 @@
 			white-space: nowrap;
 		}
 
-		button.icon {
+		button {
 			border: 0;
 			appearance: none;
 			background: transparent;
@@ -153,13 +183,20 @@
 			margin: 0;
 			position: absolute;
 			top: 0.65rem;
-			right: 1rem;
 			width: 1rem;
 			height: 1rem;
-			transition: transform 0.3s linear;
 			z-index: 2;
 			color: var(--form-input-fg, black);
-			transform: rotate(180deg);
+
+			&.icon {
+				right: 1rem;
+				transition: transform 0.3s linear;
+				transform: rotate(180deg);
+			}
+
+			&.clear {
+				right: 3rem;
+			}
 		}
 
 		&.open .icon {
