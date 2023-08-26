@@ -4,6 +4,7 @@ export { default as CheckBox } from './forms/check-box/check-box.svelte';
 export { default as CheckBoxGroup } from './forms/check-box/check-box-group.svelte';
 export { default as DateBox } from './forms/date-box/date-box.svelte';
 export { default as ListBox } from './forms/list-box/list-box.svelte';
+export { default as BoolBox } from './forms/bool-box/bool-box.svelte';
 export { default as FileBox } from './forms/file-box/file-box.svelte';
 export { default as FileArea } from './forms/file-area/file-area.svelte';
 export { default as NumberBox } from './forms/number-box/number-box.svelte';
@@ -15,6 +16,7 @@ export { default as FormLabel } from './forms/form-label.svelte';
 export { default as Form } from './forms/form.svelte';
 export { default as FormHeader } from './forms/form-header.svelte';
 export { default as FormFooter } from './forms/form-footer.svelte';
+
 // Generic
 export { default as Card } from './generic/card/card.svelte';
 export { default as Divider } from './generic/divider/divider.svelte';
