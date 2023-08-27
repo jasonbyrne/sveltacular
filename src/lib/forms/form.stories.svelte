@@ -13,7 +13,7 @@
 
 <Story name="Default">
 	<Form action="get">
-		<FormHeader title="User" />
+		<FormHeader>User</FormHeader>
 		<FlexRow gap="1rem">
 			<FlexItem grow>
 				<TextBox size="full">First Name</TextBox>

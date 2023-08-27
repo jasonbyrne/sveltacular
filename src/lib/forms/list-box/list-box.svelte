@@ -140,7 +140,7 @@
 		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow}>
 			<AngleUpIcon />
 		</button>
-		{#if text}
+		{#if text && searchable}
 			<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
 		{/if}
 		<div class="dropdown">

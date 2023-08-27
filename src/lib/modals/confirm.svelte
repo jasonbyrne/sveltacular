@@ -20,13 +20,13 @@
 	const dispatch = createEventDispatcher<{ yes: void; no: void }>();
 
 	const no = () => {
-		open = false;
 		dispatch('no');
+		open = false;
 	};
 
 	const yes = () => {
-		open = false;
 		dispatch('yes');
+		open = false;
 	};
 </script>
 

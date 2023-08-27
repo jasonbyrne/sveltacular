@@ -8,6 +8,9 @@
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 	import DialogCloseButton from './dialog-close-button.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher<{ close: void }>();
 
 	export let open = false;
 	export let title: string | undefined = undefined;
@@ -15,7 +18,10 @@
 	export let buttonText = 'OK';
 	export let showCloseButton = true;
 
-	const close = () => (open = false);
+	const close = () => {
+		dispatch('close');
+		open = false;
+	};
 </script>
 
 {#if open}

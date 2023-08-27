@@ -4,12 +4,18 @@
 	import Overlay from '$src/lib/generic/overlay.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import DialogCloseButton from './dialog-close-button.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher<{ close: void }>();
 
 	export let open = false;
 	export let size: FormFieldSizeOptions = 'md';
 	export let showCloseButton = true;
 
-	const close = () => (open = false);
+	const close = () => {
+		dispatch('close');
+		open = false;
+	};
 </script>
 
 {#if open}

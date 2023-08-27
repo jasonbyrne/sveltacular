@@ -10,13 +10,14 @@
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
 	import type { DataCol, DataRow, Pagination } from '$src/lib/types/data.js';
+	import Loading from '../placeholders/loading.svelte';
 	import Text from '../typography/text.svelte';
 	import TableCaption from './table-caption.svelte';
 
 	type Action = undefined | ((row: DataRow) => unknown);
 
 	export let caption: string = '';
-	export let rows: DataRow[];
+	export let rows: DataRow[] | undefined = undefined;
 	export let cols: DataCol[];
 	export let pagination: Pagination | undefined = undefined;
 	export let editRow: Action = undefined;
@@ -24,7 +25,7 @@
 
 	const getColType = (col: DataCol) => {
 		if (col.type) return col.type;
-		if (rows.length === 0) return 'string';
+		if (!rows?.length) return 'string';
 		return typeof rows[0][col.key];
 	};
 
@@ -45,9 +46,8 @@
 
 	$: hasActionRow = editRow || deleteRow;
 	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionRow ? 1 : 0);
-	$: totalPages = pagination
-		? Math.ceil((pagination.total || rows.length) / pagination.perPage)
-		: 1;
+	$: totalPages =
+		pagination && rows ? Math.ceil((pagination.total || rows.length) / pagination.perPage) : 1;
 </script>
 
 <Table>
@@ -67,11 +67,15 @@
 		</TableHeaderRow>
 	</TableHeader>
 	<TableBody>
-		{#if rows.length == 0}
+		{#if !rows?.length}
 			<TableRow>
 				<TableCell colspan={colCount}>
 					<div class="empty">
-						<Text>No data</Text>
+						{#if rows === undefined}
+							<Loading />
+						{:else}
+							<Text>No data</Text>
+						{/if}
 					</div>
 				</TableCell>
 			</TableRow>
