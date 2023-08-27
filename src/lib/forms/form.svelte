@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import Section from '../generic/section/section.svelte';
 
-	export let action: 'get' | 'post' | 'put' | 'delete' = 'get';
+	export let method: 'get' | 'post' | 'put' | 'delete' = 'get';
+	export let title: string | undefined = undefined;
+	export let action: string | undefined = undefined;
 
 	const dispatch = createEventDispatcher<{ submit: void }>();
 
@@ -11,6 +14,8 @@
 	};
 </script>
 
-<form {action} on:submit={onSubmit}>
-	<slot />
-</form>
+<Section {title}>
+	<form {method} {action} on:submit={onSubmit}>
+		<slot />
+	</form>
+</Section>

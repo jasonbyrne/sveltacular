@@ -2,9 +2,13 @@
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	export let size: FormFieldSizeOptions = 'md';
+
+	const captureClick = (e: Event) => {
+		e.stopPropagation();
+	};
 </script>
 
-<div class={size}>
+<div class={size} on:click={captureClick}>
 	<slot />
 </div>
 

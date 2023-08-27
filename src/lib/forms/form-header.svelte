@@ -1,12 +1,13 @@
 <script lang="ts">
-	import Heading from '../typography/heading.svelte';
+	import type { SectionLevel } from '../types/generic.js';
+	import Headline from '../typography/headline.svelte';
 
 	export let title: string;
-	export let level: 1 | 2 | 3 | 4 | 5 | 6 = 4;
+	export let level: SectionLevel = 4;
 </script>
 
 <div>
-	<Heading {level}>{title}</Heading>
+	<Headline {level}>{title}</Headline>
 </div>
 
 <style lang="scss">

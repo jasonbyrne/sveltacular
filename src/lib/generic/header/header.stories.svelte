@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
-	import Header from './header.svelte';
 	import Button from '$src/lib/forms/button/button.svelte';
 	import Text from '$src/lib/typography/text.svelte';
+	import Header from './header.svelte';
 </script>
 
-<Meta title="Generic/Header" component={Header} />
+<Meta title="Generic/Headline" component={Header} />
 
 <Story name="Default">
-	<Header title="Header" subtitle="Subtitle">
+	<Header title="Headline" subtitle="Subtitle">
 		<Button>Button</Button>
 	</Header>
 	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>

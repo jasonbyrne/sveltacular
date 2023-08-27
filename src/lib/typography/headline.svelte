@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { SectionLevel } from '../types/generic.js';
 	import Text from './text.svelte';
 
 	export let transform: 'uppercase' | 'lowercase' | 'capitalize' | 'none' = 'none';
-	export let level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
+	export let level: SectionLevel = 1;
 </script>
 
 <Text {transform}>

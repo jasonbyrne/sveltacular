@@ -1,18 +1,22 @@
 <script lang="ts">
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
-	import Heading from '$src/lib/typography/heading.svelte';
+	import type { SectionLevel } from '$src/lib/types/generic.js';
+	import Headline from '$src/lib/typography/headline.svelte';
 	import Subtitle from '$src/lib/typography/subtitle.svelte';
+	import { getContext } from 'svelte';
 
-	export let level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
-	export let title: string;
+	const section: { title: string; level: SectionLevel } | undefined = getContext('section');
+
+	export let level: SectionLevel = section?.level || 2;
+	export let title: string = section?.title || '';
 	export let subtitle = '';
 	export let underline = false;
 </script>
 
-<header class:underline>
+<header class:underline data-level={level}>
 	<FlexRow>
 		<hgroup>
-			<Heading {level}>{title}</Heading>
+			<Headline {level}>{title}</Headline>
 			{#if subtitle}
 				<Subtitle {level}>{subtitle}</Subtitle>
 			{/if}

@@ -70,7 +70,7 @@ export { default as TableFooterCell } from './tables/table-footer-cell.svelte';
 export { default as TableFooterRow } from './tables/table-footer-row.svelte';
 export { default as TableRow } from './tables/table-row.svelte';
 // Typography
-export { default as Heading } from './typography/heading.svelte';
+export { default as Headline } from './typography/headline.svelte';
 export { default as Subtitle } from './typography/subtitle.svelte';
 export { default as Text } from './typography/text.svelte';
 export { default as CodeBlock } from './typography/code-block.svelte';
