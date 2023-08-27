@@ -13,10 +13,10 @@
 
 <Story
 	name="Currency"
-	args={{ placeholder: 'Price of tea in china', type: 'currency', decimals: 0, symbol: '$' }}
+	args={{ placeholder: 'Price of tea in china', type: 'currency', decimals: 0, prefix: '$' }}
 />
 
 <Story
 	name="Units"
-	args={{ placeholder: 'Enter your weight', type: 'number', decimals: 0, units: 'pounds' }}
+	args={{ placeholder: 'Enter your weight', type: 'number', decimals: 0, suffix: 'pounds' }}
 />

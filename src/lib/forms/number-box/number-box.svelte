@@ -17,10 +17,8 @@
 	export let min = 0;
 	export let max = 1000000;
 	export let decimals = 0;
-	export let symbol: string | null = null;
-	export let units: string | null = null;
-
-	$: hasSymbol = symbol !== null;
+	export let prefix: string | null = null;
+	export let suffix: string | null = null;
 
 	const valueChanged = () => {
 		value = roundToDecimals(value, decimals);
@@ -31,7 +29,11 @@
 	{#if $$slots.default}
 		<FormLabel {id}><slot /></FormLabel>
 	{/if}
-	<div class={type} class:hasSymbol>
+	<div class="input {type}">
+		{#if prefix}
+			<span class="prefix">{prefix}</span>
+		{/if}
+
 		<input
 			{id}
 			{placeholder}
@@ -42,58 +44,63 @@
 			{max}
 			on:change={valueChanged}
 		/>
-		{#if symbol}
-			<span class="symbol">{symbol}</span>
-		{/if}
-		{#if units}
-			<span class="units">{units}</span>
+
+		{#if suffix}
+			<span class="suffix">{suffix}</span>
 		{/if}
 	</div>
 </FormField>
 
 <style lang="scss">
-	div {
+	.input {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
 		position: relative;
-
-		.symbol {
-			position: absolute;
-			top: 0.32rem;
-			left: 0.5rem;
-			color: var(--form-input-fg, black);
-			font-size: 1.125rem;
-			line-height: 1.75rem;
-		}
-
-		.units {
-			position: absolute;
-			top: 0.32rem;
-			right: 2.5rem;
-			color: var(--form-input-fg, black);
-			font-size: 1rem;
-			line-height: 1.75rem;
-			text-align: right;
-		}
+		width: 100%;
+		height: 100%;
+		border-radius: 0.25rem;
+		border: 1px solid var(--form-input-border, black);
+		background-color: var(--form-input-bg, white);
+		color: var(--form-input-fg, black);
+		font-size: 1rem;
+		font-weight: 500;
+		line-height: 2rem;
+		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		user-select: none;
+		white-space: nowrap;
 
 		input {
+			background-color: transparent;
+			border: none;
+			line-height: 2rem;
+			font-size: 1rem;
 			width: 100%;
-			padding: 0.5rem 1rem;
-			border-radius: 0.25rem;
-			border: 1px solid var(--form-input-border, black);
-			background-color: var(--form-input-bg, white);
-			color: var(--form-input-fg, black);
-			font-size: 0.875rem;
-			font-weight: 500;
-			line-height: 1.25rem;
-			transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-				color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
-			user-select: none;
-			white-space: nowrap;
+			flex-grow: 1;
+			padding-left: 1rem;
+
+			&:focus {
+				outline: none;
+			}
 		}
 
-		&.hasSymbol {
-			input {
-				padding-left: 2rem;
-			}
+		.prefix,
+		.suffix {
+			font-size: 1rem;
+			line-height: 2rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
+			background-color: var(--base-accent-bg, #ccc);
+			color: var(--base-accent-fg, black);
+		}
+
+		.prefix {
+			border-right: 1px solid var(--form-input-border, black);
+		}
+
+		.suffix {
+			border-left: 1px solid var(--form-input-border, black);
 		}
 	}
 </style>

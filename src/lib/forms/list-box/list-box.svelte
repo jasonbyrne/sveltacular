@@ -42,9 +42,12 @@
 	};
 
 	// Toggle open or closed
-	const toggle = () => {
-		open = !open;
-		focusOnInput();
+	const toggle = () => (open = !open);
+
+	// Click arrow
+	const clickArrow = () => {
+		toggle();
+		if (open) focusOnInput();
 	};
 
 	// Handle key presses in the input
@@ -133,10 +136,12 @@
 			data-value={value}
 			data-text={text}
 		/>
-		<button type="button" class="icon" on:click={toggle} on:keydown={toggle}>
+		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow}>
 			<AngleUpIcon />
 		</button>
-		<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
+		{#if text}
+			<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
+		{/if}
 		<div class="dropdown">
 			<Menu
 				items={filteredItems}
