@@ -82,7 +82,7 @@
 
 	// User is typing in the search box
 	const triggerSearch = debounce(async () => {
-		if (search) {
+		if (search && searchable) {
 			items = await search(text);
 		}
 		updateText();
@@ -92,11 +92,12 @@
 	// Text or items have changed, we should apply the filter
 	const applyFilter = () => {
 		const searchText = text.trim().toLowerCase();
-		filteredItems = searchText
-			? items
-					.map((item, index) => ({ ...item, index }))
-					.filter((item) => item.name.toLowerCase().includes(searchText))
-			: items.map((item, index) => ({ ...item, index }));
+		filteredItems =
+			searchText && searchable
+				? items
+						.map((item, index) => ({ ...item, index }))
+						.filter((item) => item.name.toLowerCase().includes(searchText))
+				: items.map((item, index) => ({ ...item, index }));
 	};
 
 	const clear = () => {

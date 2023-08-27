@@ -1,5 +1,4 @@
 <script lang="ts">
-	import AngleRightIcon from '$src/lib/icons/angle-right-icon.svelte';
 	import HomeIcon from '$src/lib/icons/home-icon.svelte';
 
 	type Crumb = { label: string; href?: string } | string;
@@ -7,6 +6,7 @@
 	export let homeUrl: string | null = null;
 	export let crumbs: Crumb[] = [];
 	export let size: 'sm' | 'md' | 'lg' = 'md';
+	export let separator = '/';
 
 	const getCrumLabel = (crumb: Crumb) => {
 		if (typeof crumb === 'string') return crumb;
@@ -16,8 +16,8 @@
 
 <nav class={size}>
 	{#if homeUrl}
-		<li class="icon">
-			<a href={homeUrl} class="home"><HomeIcon /></a>
+		<li class="home">
+			<a href={homeUrl}><HomeIcon /></a>
 		</li>
 	{/if}
 	{#each crumbs as crumb, i}
@@ -31,9 +31,7 @@
 			</li>
 		{/if}
 		{#if i < crumbs.length - 1}
-			<li class="icon">
-				<AngleRightIcon />
-			</li>
+			<li class="separator">{separator}</li>
 		{/if}
 	{/each}
 </nav>
@@ -43,59 +41,56 @@
 		display: flex;
 		align-items: center;
 		list-style: none;
+		gap: 0.5rem;
 		padding: 0;
 		margin: 0;
 		line-height: 1.5rem;
 		font-family: var(--breadcrumbs-font-family, sans-serif);
 
 		li {
-			display: flex;
-			align-items: center;
-			vertical-align: middle;
-			margin-left: 0.5rem;
 			color: var(--breadcrumbs-fg, #333);
+			padding: 0;
+			margin: 0;
 
 			a {
 				color: var(--breadcrumbs-link-fg, #333);
 				text-decoration: none;
+				width: 100%;
 
 				&:hover {
 					color: var(--breadcrumbs-link-hover-fg, black);
 					text-decoration: underline;
 				}
 			}
-
-			a.home {
-				width: 100%;
-			}
-
-			&:first-child {
-				margin-left: 0;
-			}
-
-			&.icon {
-				padding-top: 2px;
-			}
 		}
 
 		&.sm {
 			li {
 				font-size: 0.75rem;
-				min-width: 12px;
+
+				&.home {
+					width: 12px;
+				}
 			}
 		}
 
 		&.md {
 			li {
 				font-size: 0.875rem;
-				min-width: 14px;
+
+				&.home {
+					width: 14px;
+				}
 			}
 		}
 
 		&.lg {
 			li {
 				font-size: 1rem;
-				min-width: 16px;
+
+				&.home {
+					width: 16px;
+				}
 			}
 		}
 	}
