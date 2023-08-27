@@ -19,12 +19,13 @@
 	{#if $$slots.default}
 		<FormLabel {id} {required}><slot /></FormLabel>
 	{/if}
-	<textarea {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
+	<textarea wrap="soft" {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
 </FormField>
 
 <style lang="scss">
 	textarea {
 		width: 100%;
+		height: auto;
 		padding: 0.5rem 1rem;
 		border-radius: 0.25rem;
 		border: 1px solid var(--form-input-border, black);
@@ -37,7 +38,8 @@
 			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out,
 			box-shadow 0.2s ease-in-out;
 		user-select: none;
-		white-space: nowrap;
+		resize: vertical;
+		white-space: normal;
 
 		&::placeholder {
 			color: var(--form-input-placeholder, #a0aec0);

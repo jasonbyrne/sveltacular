@@ -76,7 +76,6 @@
 		z-index: 999;
 		margin: 0;
 		padding: 0;
-		box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
 		max-width: 100%;
 		max-height: 15rem;
 		overflow-y: auto;

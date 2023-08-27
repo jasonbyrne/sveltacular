@@ -5,9 +5,9 @@
 	export let dateType: DateType = 'datetime';
 	export let dateStyle: DateTimeStyle = 'medium';
 	export let iconSize: 'sm' | 'md' | 'lg' = 'md';
-	export let date: string | number | Date;
-	export let title: string;
-	export let summary: string;
+	export let date: string | number | Date | undefined = undefined;
+	export let title: string | undefined = undefined;
+	export let summary: string | undefined = undefined;
 </script>
 
 <li class="icon-{iconSize}">
@@ -15,15 +15,21 @@
 		<slot name="icon" />
 	</div>
 	<div class="content">
-		<div class="date">
-			<DateTime value={date} type={dateType} style={dateStyle} />
-		</div>
-		<div class="title">
-			{title}
-		</div>
-		<div class="summary">
-			{summary}
-		</div>
+		{#if date}
+			<div class="date">
+				<DateTime value={date} type={dateType} style={dateStyle} />
+			</div>
+		{/if}
+		{#if title}
+			<div class="title">
+				{title}
+			</div>
+		{/if}
+		{#if summary}
+			<div class="summary">
+				{summary}
+			</div>
+		{/if}
 	</div>
 </li>
 
@@ -33,7 +39,7 @@
 		position: relative;
 
 		.content {
-			padding-left: 1rem;
+			padding-left: 1.25rem;
 			padding-top: 0.25rem;
 
 			.date {
@@ -77,6 +83,7 @@
 
 		&.icon-sm {
 			.content {
+				padding-left: 1rem;
 				padding-top: 0;
 			}
 
