@@ -26,7 +26,6 @@
 	const dispatch = createEventDispatcher<{ ok: string; cancel: void }>();
 
 	const no = () => {
-		console.log('no');
 		open = false;
 		dispatch('cancel');
 	};

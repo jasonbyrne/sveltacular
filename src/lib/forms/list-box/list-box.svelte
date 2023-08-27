@@ -81,11 +81,9 @@
 	const triggerSearch = debounce(async () => {
 		if (search) {
 			items = await search(text);
-			console.log(items);
 		}
 		updateText();
 		applyFilter();
-		open = true;
 	}, 300);
 
 	// Text or items have changed, we should apply the filter
@@ -111,7 +109,6 @@
 			const textBox = document.getElementById(id) as HTMLInputElement;
 			// Don't change text if they're currently typing
 			if (document.activeElement != textBox) text = getText();
-			open = true;
 		}
 	};
 

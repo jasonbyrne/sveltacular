@@ -19,7 +19,6 @@
 	};
 
 	const search = async (searchText: string) => {
-		console.log('search', searchText);
 		const result = countriesArray.filter((country) =>
 			country.name.toLowerCase().includes(searchText.toLowerCase().trim())
 		);
