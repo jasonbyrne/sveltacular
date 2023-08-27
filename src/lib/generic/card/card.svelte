@@ -24,6 +24,7 @@
 <style lang="scss">
 	li {
 		display: inline-block;
+		vertical-align: top;
 		position: relative;
 		width: 100%;
 		margin-right: 1rem;
@@ -44,7 +45,6 @@
 
 			&:hover {
 				transform: translateY(-0.25rem);
-				box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
 			}
 		}
 
