@@ -27,6 +27,7 @@
 	let open = false;
 	let highlightIndex = -1;
 	let filteredItems: MenuOption[] = [];
+	$: isSeachable = searchable || !!search;
 
 	// When an item is selected from the dropdown menu
 	const onSelect = (e: CustomEvent<DropdownOption>) => {
@@ -82,7 +83,7 @@
 
 	// User is typing in the search box
 	const triggerSearch = debounce(async () => {
-		if (search && searchable) {
+		if (search && isSeachable) {
 			items = await search(text);
 		}
 		updateText();
@@ -93,7 +94,7 @@
 	const applyFilter = () => {
 		const searchText = text.trim().toLowerCase();
 		filteredItems =
-			searchText && searchable
+			searchText && isSeachable
 				? items
 						.map((item, index) => ({ ...item, index }))
 						.filter((item) => item.name.toLowerCase().includes(searchText))
@@ -131,7 +132,7 @@
 			bind:value={text}
 			{required}
 			{disabled}
-			readonly={!searchable}
+			readonly={!isSeachable}
 			on:focus={() => (open = true)}
 			on:keyup={onInputKeyPress}
 			data-value={value}
@@ -140,7 +141,7 @@
 		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow}>
 			<AngleUpIcon />
 		</button>
-		{#if text && searchable}
+		{#if text && isSeachable}
 			<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
 		{/if}
 		<div class="dropdown">
@@ -211,7 +212,7 @@
 			top: 100%;
 			left: 0;
 			width: 100%;
-			z-index: 1;
+			z-index: 3;
 		}
 	}
 </style>

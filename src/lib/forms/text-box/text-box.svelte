@@ -3,8 +3,10 @@
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import { createEventDispatcher } from 'svelte';
 
 	const id = uniqueId();
+	const dipatch = createEventDispatcher<{ change: string; input: string }>();
 
 	export let value = '';
 	export let placeholder = '';
@@ -44,6 +46,7 @@
 		} else if (textCase === 'upper') {
 			value = value.toUpperCase();
 		}
+		dipatch('input', value);
 	};
 </script>
 

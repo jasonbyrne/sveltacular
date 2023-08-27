@@ -19,6 +19,7 @@ export { default as FormHeader } from './forms/form-header.svelte';
 export { default as FormFooter } from './forms/form-footer.svelte';
 export { default as FormSection } from './forms/form-section.svelte';
 export { default as InfoBox } from './forms/info-box/info-box.svelte';
+export { default as UrlBox } from './forms/url-box/url-box.svelte';
 // Generic
 export { default as Card } from './generic/card/card.svelte';
 export { default as Divider } from './generic/divider/divider.svelte';
