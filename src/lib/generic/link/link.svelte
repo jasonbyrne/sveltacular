@@ -7,7 +7,7 @@
 </script>
 
 {#if disabled}
-	<span class="link underline-{underline} {display}">
+	<span class="link disabled underline-{underline} {display}">
 		<slot />
 	</span>
 {:else}
@@ -19,7 +19,10 @@
 <style lang="scss">
 	.link {
 		text-decoration: underline;
-		cursor: pointer;
+
+		&.disabled {
+			cursor: not-allowed;
+		}
 
 		&.underline-none,
 		&.underline-hover {
@@ -37,6 +40,19 @@
 
 		&[href].underline-hover:hover {
 			text-decoration: underline;
+		}
+	}
+
+	a {
+		color: var(--link-fg, #77b9ff);
+		cursor: pointer;
+
+		&:visited {
+			color: var(--link-visited-fg, #459fff);
+		}
+
+		&:hover {
+			color: var(--link-hover-fg, #d00);
 		}
 	}
 </style>

@@ -1,5 +1,6 @@
+/*
+
 :root {
-	/* BASE */
 	--base-color-bg: #fff;
 	--base-color-fg: #000;
 	--base-link-fg: #543fd7;
@@ -9,7 +10,6 @@
 	--base-mono-font-family: 'Roboto Mono', monospace;
 	--base-accent-fg: #555;
 	--base-accent-bg: #ddd;
-	/* BUTTONS */
 	--button-primary-bg: #543fd7;
 	--button-primary-fg: #fff;
 	--button-primary-border: #fff;
@@ -36,7 +36,6 @@
 	--button-outline-border: #fff;
 	--button-outline-hover-bg: #000;
 	--button-outline-hover-fg: #fff;
-	/* FORMS */
 	--form-input-bg: #fff;
 	--form-input-fg: #000;
 	--form-input-border: #000;
@@ -46,7 +45,6 @@
 	--form-input-placeholder: #888;
 	--form-input-checked-bg: #3182ce;
 	--form-input-checked-fg: #fff;
-	/* NAVIGATION */
 	--nav-bg: #fff;
 	--nav-fg: #000;
 	--nav-link-fg: black;
@@ -56,7 +54,6 @@
 	--breadcrumbs-link-fg: black;
 	--breadcrumbs-link-hover-fg: #900;
 	--breadcrumbs-font-family: 'Roboto', sans-serif;
-	/* SIDEBAR */
 	--sidebar-bg: #fff;
 	--sidebar-fg: #000;
 	--sidebar-link-fg: #543fd7;
@@ -64,13 +61,11 @@
 	--sidebar-link-active-fg: #000;
 	--sidebar-link-active-hover-fg: #000;
 	--sidebar-font-family: 'Roboto', sans-serif;
-	/* FOOTER */
 	--footer-bg: #fff;
 	--footer-fg: #000;
 	--footer-link-fg: #543fd7;
 	--footer-link-hover-fg: #00f;
 	--footer-font-family: 'Roboto', sans-serif;
-	/* TABLES */
 	--table-bg: #fff;
 	--table-fg: #000;
 	--table-border: #000;
@@ -86,10 +81,8 @@
 	--table-footer-bg: #fff;
 	--table-footer-fg: #000;
 	--table-footer-border: #000;
-	/* TOOLTIP */
 	--tooltip-bg: #000;
 	--tooltip-fg: #fff;
-	/* MODAL */
 	--modal-bg: #fff;
 	--modal-fg: #000;
 	--modal-header-bg: #fff;
@@ -101,9 +94,10 @@
 	--modal-footer-bg: #fff;
 	--modal-footer-fg: #000;
 	--modal-footer-border: #000;
-	/* CARD */
 	--card-bg: #fff;
 	--card-fg: #000;
 	--card-link-fg: #543fd7;
 	--card-link-hover-fg: #00f;
 }
+
+*/

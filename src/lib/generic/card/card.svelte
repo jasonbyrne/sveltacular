@@ -31,6 +31,8 @@
 		margin-bottom: 1rem;
 		padding: 1rem;
 		border-radius: 0.5rem;
+		border: solid 1px rgb(100, 100, 100, 0.5);
+		box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 		background-color: #fff;
 		color: #555;
 		transition: transform 0.2s ease-in-out;

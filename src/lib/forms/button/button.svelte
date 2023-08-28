@@ -49,6 +49,7 @@
 		user-select: none;
 		white-space: nowrap;
 		font-family: var(--base-font-family, sans-serif);
+		text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
 
 		&.flex {
 			flex-grow: 1;
@@ -95,19 +96,19 @@
 			color: var(--button-primary-fg, #fff);
 
 			&:hover {
-				background-color: var(--button-primary-hover-bg, #1976d2);
+				background-color: var(--button-primary-hover-bg, #0052a3);
 				color: var(--button-primary-hover-fg, #fff);
 			}
 		}
 
 		&.secondary {
-			background-color: var(--button-secondary-bg, #e2e2e2);
-			border-color: var(--button-secondary-border, #e2e2e2);
-			color: var(--button-secondary-fg, #000);
+			background-color: var(--button-secondary-bg, #555);
+			border-color: var(--button-secondary-border, #aaa);
+			color: var(--button-secondary-fg, #fff);
 
 			&:hover {
-				background-color: var(--button-secondary-hover-bg, #d5d5d5);
-				color: var(--button-secondary-hover-fg, #000);
+				background-color: var(--button-secondary-hover-bg, #333);
+				color: var(--button-secondary-hover-fg, #fff);
 			}
 		}
 
@@ -130,7 +131,7 @@
 
 			&:hover {
 				background-color: var(--button-positive-hover-bg, #388e3c);
-				color: var(--button-positive-hover-fg, #388e3c);
+				color: var(--button-positive-hover-fg, #fff);
 			}
 		}
 

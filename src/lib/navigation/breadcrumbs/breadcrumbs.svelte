@@ -46,19 +46,20 @@
 		margin: 0;
 		line-height: 1.5rem;
 		font-family: var(--breadcrumbs-font-family, sans-serif);
+		text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
 
 		li {
-			color: var(--breadcrumbs-fg, #333);
+			color: var(--breadcrumbs-fg, #bbb);
 			padding: 0;
 			margin: 0;
 
 			a {
-				color: var(--breadcrumbs-link-fg, #333);
+				color: var(--breadcrumbs-link-fg, #bbb);
 				text-decoration: none;
 				width: 100%;
 
 				&:hover {
-					color: var(--breadcrumbs-link-hover-fg, black);
+					color: var(--breadcrumbs-link-hover-fg, white);
 					text-decoration: underline;
 				}
 			}
