@@ -22,6 +22,7 @@ export { default as InfoBox } from './forms/info-box/info-box.svelte';
 export { default as UrlBox } from './forms/url-box/url-box.svelte';
 // Generic
 export { default as Card } from './generic/card/card.svelte';
+export { default as CardContainer } from './generic/card/card-container.svelte';
 export { default as Divider } from './generic/divider/divider.svelte';
 export { default as Link } from './generic/link/link.svelte';
 export { default as Pill } from './generic/pill/pill.svelte';
