@@ -42,17 +42,4 @@
 			text-decoration: underline;
 		}
 	}
-
-	a {
-		color: var(--link-fg, #77b9ff);
-		cursor: pointer;
-
-		&:visited {
-			color: var(--link-visited-fg, #459fff);
-		}
-
-		&:hover {
-			color: var(--link-hover-fg, #d00);
-		}
-	}
 </style>

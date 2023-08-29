@@ -33,6 +33,17 @@
 		right: 0;
 		z-index: 999;
 		height: 3rem;
+		font-family: var(--base-font-family, sans-serif);
+
+		a {
+			color: var(--nav-link, rgb(33, 150, 243));
+			text-decoration: none;
+
+			&:hover {
+				color: var(--nav-link-hover, rgb(66, 165, 245));
+				text-decoration: underline;
+			}
+		}
 
 		&.fixed {
 			position: fixed;

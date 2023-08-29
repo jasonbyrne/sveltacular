@@ -55,9 +55,9 @@
 				display: block;
 				width: 0;
 				height: 0;
-				color: var(--form-input-checked-fg, white);
-				fill: var(--form-input-checked-bg, #3182ce);
-				stroke: var(--form-input-checked-fg, white);
+				color: var(--form-input-selected-fg, white);
+				fill: var(--form-input-selected-bg, #3182ce);
+				stroke: var(--form-input-selected-fg, white);
 				transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 			}
 		}
@@ -67,7 +67,7 @@
 			height: 0;
 
 			&:checked + .checkbox {
-				background-color: var(--form-input-checked-bg, #3182ce);
+				background-color: var(--form-input-selected-bg, #3182ce);
 
 				.checkmark {
 					width: 100%;

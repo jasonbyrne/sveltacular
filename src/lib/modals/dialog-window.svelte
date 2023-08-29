@@ -8,6 +8,8 @@
 	};
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class={size} on:click={captureClick}>
 	<slot />
 </div>
@@ -42,7 +44,13 @@
 
 		&.full {
 			width: 100%;
-			max-width: none;
+			max-width: 100%;
+		}
+	}
+
+	@media (max-width: 640px) {
+		div {
+			max-width: 100%;
 		}
 	}
 </style>

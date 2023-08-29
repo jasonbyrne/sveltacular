@@ -33,7 +33,7 @@
 		align-items: center;
 		height: 100%;
 		font-family: var(--nav-font-family, sans-serif);
-		color: var(--nav-link-fg, black);
+		color: var(--nav-link, black);
 		text-decoration: none;
 		appearance: none;
 		border: none;
@@ -41,15 +41,15 @@
 		cursor: pointer;
 
 		&:hover {
-			color: var(--nav-link-hover-fg, black);
+			color: var(--nav-link-hover, black);
 			text-decoration: underline;
 		}
 
 		.icon {
 			width: 100%;
 			height: 1.5rem;
-			fill: var(--nav-link-fg, black);
-			stroke: var(--nav-link-fg, black);
+			fill: var(--nav-link, black);
+			stroke: var(--nav-link, black);
 		}
 	}
 
@@ -63,7 +63,8 @@
 
 			&:hover {
 				text-decoration: none;
-				background-color: #bbb;
+				background-color: var(--nav-menu-hover-bg, #ddd);
+				color: var(--nav-menu-hover-fg, black);
 			}
 
 			.title {

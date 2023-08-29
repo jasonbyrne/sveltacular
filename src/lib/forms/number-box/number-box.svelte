@@ -91,8 +91,8 @@
 			line-height: 2rem;
 			padding-left: 1rem;
 			padding-right: 1rem;
-			background-color: var(--base-accent-bg, #ccc);
-			color: var(--base-accent-fg, black);
+			background-color: var(--form-input-accent-bg, #ccc);
+			color: var(--form-input-accent-fg, black);
 		}
 
 		.prefix {

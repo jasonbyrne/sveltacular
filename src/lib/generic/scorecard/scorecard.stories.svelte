@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import Scorecard from './scorecard.svelte';
+	import CardContainer from '../card/card-container.svelte';
 </script>
 
 <Meta title="Generic/Scorecard" component={Scorecard} />
@@ -28,4 +29,13 @@
 
 <Story name="Link">
 	<Scorecard value={12334} caption="above" href="https://www.google.com">Page Views</Scorecard>
+</Story>
+
+<Story name="In Container">
+	<CardContainer>
+		<Scorecard value={12334} href="https://www.google.com">Page Views</Scorecard>
+		<Scorecard value={2356}>Visits</Scorecard>
+		<Scorecard value={932}>Visitors</Scorecard>
+		<Scorecard value={3.74}>Pages/Visit</Scorecard>
+	</CardContainer>
 </Story>

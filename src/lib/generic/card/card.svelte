@@ -36,7 +36,6 @@
 		background-color: #fff;
 		color: #555;
 		transition: transform 0.2s ease-in-out;
-		font-family: var(--base-font-family, sans-serif);
 
 		strong {
 			display: block;

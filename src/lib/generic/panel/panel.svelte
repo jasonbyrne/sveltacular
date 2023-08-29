@@ -15,8 +15,9 @@
 		position: relative;
 		margin-bottom: 1rem;
 		padding: 1rem;
-		border: soild 1px rgb(100, 100, 100, 0.5);
+		border: soild 1px;
 		border-radius: 0.5rem;
+		border-color: var(--base-fg, #ccc);
 		font-family: var(--base-font-family, sans-serif);
 
 		&.no-border {
@@ -28,6 +29,7 @@
 			font-weight: 500;
 			text-transform: uppercase;
 			letter-spacing: 0.1rem;
+			color: var(--base-fg, #ccc);
 			font-family: var(--base-headline-font-family, sans-serif);
 		}
 	}

@@ -2,9 +2,15 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { tabContext, type TabContext } from './tab-context.js';
+	import type { TabStyle } from '$src/lib/types/generic.js';
+
+	export let style: TabStyle = 'traditional';
+	export let squared = false;
 
 	const ctx: TabContext = {
-		active: writable(null)
+		active: writable(null),
+		style,
+		squared
 	};
 
 	setContext(tabContext, ctx);

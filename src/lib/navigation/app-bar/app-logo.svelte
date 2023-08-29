@@ -26,10 +26,10 @@
 			width: 100%;
 			height: 100%;
 			text-decoration: none;
-			color: var(--nav-link-fg, #333);
+			color: var(--nav-link, #333);
 
 			&:hover {
-				color: var(--nav-link-hover-fg, #333);
+				color: var(--nav-link-hover, #333);
 			}
 		}
 	}

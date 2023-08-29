@@ -4,18 +4,13 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let checked = false;
-	export let unCheckedColor = '#ccc';
-	export let checkedColor = '#007bff';
 	export let size: FormFieldSizeOptions = 'full';
 
 	const id = uniqueId();
 	const dispatch = createEventDispatcher<{ change: boolean }>();
 </script>
 
-<label
-	class="switch-box {checked ? 'checked' : ''} {size}"
-	style={`--checked-color: ${checkedColor}; --unchecked-color: ${unCheckedColor};`}
->
+<label class="switch-box {checked ? 'checked' : ''} {size}">
 	<input type="checkbox" bind:checked on:change={() => dispatch('change', checked)} {id} />
 	<!-- svelte-ignore a11y-interactive-supports-focus -->
 	<span class="switch">
@@ -56,10 +51,10 @@
 
 		&.checked {
 			.switch {
-				background-color: var(--form-input-checked-bg, #3182ce);
+				background-color: var(--form-input-selected-bg, #3182ce);
 			}
 			.slider {
-				background-color: var(--form-input-checked-fg, white);
+				background-color: var(--form-input-selected-fg, white);
 			}
 		}
 

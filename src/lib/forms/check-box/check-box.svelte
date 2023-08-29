@@ -71,10 +71,10 @@
 				left: 0;
 				width: 0;
 				height: 0;
-				background-color: var(--form-input-checked-bg, #3182ce);
-				color: var(--form-input-checked-fg, white);
-				fill: var(--form-input-checked-bg, #3182ce);
-				stroke: var(--form-input-checked-fg, white);
+				background-color: var(--form-input-selected-bg, #3182ce);
+				color: var(--form-input-selected-fg, white);
+				fill: var(--form-input-selected-bg, #3182ce);
+				stroke: var(--form-input-selected-fg, white);
 				transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 			}
 		}

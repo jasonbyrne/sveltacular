@@ -69,9 +69,6 @@
 	.menu {
 		position: relative;
 		width: 8rem;
-		background: white;
-		color: #000;
-		border: 1px solid black;
 		list-style: none;
 		z-index: 999;
 		margin: 0;
@@ -80,6 +77,9 @@
 		max-height: 15rem;
 		overflow-y: auto;
 		font-family: var(--base-font-family, sans-serif);
+		border: 1px solid var(--form-input-border, black);
+		background-color: var(--form-input-bg, white);
+		color: var(--form-input-fg, black);
 
 		&.closed {
 			display: none;
@@ -114,14 +114,14 @@
 			&.instructions {
 				padding: 0.5rem 1rem;
 				font-style: italic;
-				color: #b7b7b7;
+				color: var(--form-input-placeholder, #aaa);
 				cursor: pointer;
 			}
 
 			div:hover,
 			div.selected {
-				background: #4e4eff;
-				color: #fff;
+				background: var(--form-input-selected-bg, #003c75);
+				color: var(--form-input-selected-fg, white);
 			}
 
 			.check {

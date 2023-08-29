@@ -26,6 +26,7 @@
 	button {
 		display: inline-block;
 		margin-right: 1rem;
+		margin-bottom: 1rem;
 		padding: 0;
 		border: none;
 		background: none;
