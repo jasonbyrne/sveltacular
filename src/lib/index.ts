@@ -61,6 +61,8 @@ export { default as AppLogo } from './navigation/app-bar/app-logo.svelte';
 export { default as AppNav } from './navigation/app-bar/app-nav.svelte';
 export { default as AppNavItem } from './navigation/app-bar/app-nav-item.svelte';
 export { default as AppBranding } from './navigation/app-bar/app-branding.svelte';
+export { default as Wizard } from './navigation/wizard/wizard.svelte';
+export { default as WizardStep } from './navigation/wizard/wizard-step.svelte';
 // Tables
 export { default as DataGrid } from './tables/data-grid.svelte';
 export { default as Table } from './tables/table.svelte';
@@ -94,5 +96,6 @@ export * from './helpers/date.js';
 export * from './helpers/navigate-to.js';
 export * from './helpers/round-to-decimals.js';
 export * from './helpers/unique-id.js';
+export * from './helpers/subscribable.js';
 // Data
 export * as Data from './data/index.js';
