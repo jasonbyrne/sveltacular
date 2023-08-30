@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
+	import { formatNumber, roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
@@ -13,12 +13,12 @@
 	export let placeholder = '';
 	export let size: FormFieldSizeOptions = 'full';
 	export let type: AllowedInputTypes = 'number';
-	export let step = 1;
 	export let min = 0;
 	export let max = 1000000;
 	export let decimals = 0;
 	export let prefix: string | null = null;
 	export let suffix: string | null = null;
+	export let step = 1;
 
 	const valueChanged = () => {
 		value = roundToDecimals(value, decimals);

@@ -36,6 +36,7 @@ export { default as Panel } from './generic/panel/panel.svelte';
 export { default as Section } from './generic/section/section.svelte';
 export { default as Header } from './generic/header/header.svelte';
 export { default as Dot } from './generic/dot/dot.svelte';
+export { default as Notice } from './generic/notice/notice.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';

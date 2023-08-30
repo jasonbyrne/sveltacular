@@ -14,6 +14,6 @@
 	$: decimals = allowCents ? 2 : 0;
 </script>
 
-<NumberBox bind:value {symbol} {decimals} {placeholder} {size} {min} {max} {step}
+<NumberBox bind:value prefix={symbol} {decimals} {placeholder} {size} {min} {max} {step}
 	><slot /></NumberBox
 >

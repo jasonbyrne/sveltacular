@@ -20,3 +20,8 @@
 	name="Units"
 	args={{ placeholder: 'Enter your weight', type: 'number', decimals: 0, suffix: 'pounds' }}
 />
+
+<Story
+	name="Decimals"
+	args={{ placeholder: 'Enter your weight', type: 'number', decimals: 2, step: 0.01, suffix: 'kg' }}
+/>

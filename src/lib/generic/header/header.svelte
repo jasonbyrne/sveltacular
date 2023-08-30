@@ -30,7 +30,7 @@
 <style lang="scss">
 	header {
 		margin-bottom: 1rem;
-		font-family: var(--base-head-font-family, sans-serif);
+		font-family: var(--base-headline-font-family, sans-serif);
 
 		&.underline {
 			padding-bottom: 0.5rem;
