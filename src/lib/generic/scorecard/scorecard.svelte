@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { navigateTo } from '$src/lib/index.js';
+	import { navigateTo, uniqueId } from '$src/lib/index.js';
+	import { getContext } from 'svelte';
+	import type { CardContainerContext } from '../card/card-container.js';
 
 	export let value: string | number;
 	export let caption: 'above' | 'below' | 'left' | 'right' = 'below';
@@ -10,12 +12,18 @@
 		navigateTo(href);
 	};
 
+	const id = uniqueId();
+	const container = getContext<CardContainerContext | undefined>('CardContainer');
+	if (container) {
+		container.register(id);
+	}
+
 	// Reactively format a string output of value, if it's a number, formatted with commas
 	$: formattedValue = typeof value === 'number' ? value.toLocaleString() : value;
 	$: isLink = !!href;
 </script>
 
-<button on:click={onClick} class:isLink>
+<button on:click={onClick} class:isLink {id}>
 	<figure class={caption}>
 		<span class="value">{formattedValue}</span>
 		<figcaption><slot /></figcaption>

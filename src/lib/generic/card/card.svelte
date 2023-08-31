@@ -16,8 +16,10 @@
 		navigateTo(href);
 	};
 
-	const container = getContext<CardContainerContext>('CardContainer');
-	container.register(id);
+	const container = getContext<CardContainerContext | undefined>('CardContainer');
+	if (container) {
+		container.register(id);
+	}
 </script>
 
 <li {role} {id} on:click={onClick} class="{size} {role}">

@@ -23,7 +23,7 @@
 		flex-wrap: nowrap;
 		column-gap: 1rem;
 
-		*.auto {
+		&.auto {
 			width: auto;
 		}
 

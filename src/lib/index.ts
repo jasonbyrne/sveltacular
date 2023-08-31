@@ -10,6 +10,7 @@ export { default as FileArea } from './forms/file-area/file-area.svelte';
 export { default as NumberBox } from './forms/number-box/number-box.svelte';
 export { default as MoneyBox } from './forms/money-box/money-box.svelte';
 export { default as RadioGroup } from './forms/radio-group/radio-group.svelte';
+export { default as RadioBox } from './forms/radio-group/radio-box.svelte';
 export { default as TextArea } from './forms/text-area/text-area.svelte';
 export { default as TextBox } from './forms/text-box/text-box.svelte';
 export { default as FormField } from './forms/form-field.svelte';

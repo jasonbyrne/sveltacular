@@ -19,6 +19,11 @@
 	>
 </Story>
 
+<Story name="With Title Only">
+	<Card title="Card Number One" size="full" />
+	<Card title="Card Number 2" />
+</Story>
+
 <Story name="Large Links">
 	<Card title="Card Number One" href="https://www.google.com" size="lg">
 		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis voluptates, voluptatum alias
@@ -173,5 +178,20 @@
 			recusandae corrupti unde dicta. Aliquam cupiditate quaerat iure, voluptatibus a quibusdam.
 			Quae voluptas dolor ipsa, accusantium numquam aut.
 		</Card>
+	</CardContainer>
+</Story>
+
+<Story name="Space Around">
+	<CardContainer spacing="space-between">
+		<Card title="Card Number One" size="md">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis voluptates, voluptatum alias
+			recusandae corrupti unde dicta. Aliquam cupiditate quaerat iure, voluptatibus a quibusdam.
+			Quae voluptas dolor ipsa, accusantium numquam aut.
+		</Card>
+		<Card title="Card Number 2" size="md">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis voluptates, voluptatum alias
+			recusandae corrupti unde dicta. Aliquam cupiditate quaerat iure, voluptatibus a quibusdam.
+			Quae voluptas dolor ipsa, accusantium numquam aut.</Card
+		>
 	</CardContainer>
 </Story>
