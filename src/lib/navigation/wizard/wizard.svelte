@@ -63,7 +63,7 @@
 
 	$: isFirstStep = currentStep <= 1;
 	$: isLastStep = currentStep >= Object.values(steps).length;
-	$: subtitle = steps[currentStep - 1];
+	$: subtitle = steps[currentStep];
 	$: total = Object.values(steps).length;
 </script>
 

@@ -63,3 +63,11 @@
 		>
 	</div>
 </Story>
+
+<Story name="Searchable Disabled">
+	<div>
+		<ListBox bind:items={searchedItems} searchable {search} bind:value={searchValue} disabled
+			>Countries</ListBox
+		>
+	</div>
+</Story>

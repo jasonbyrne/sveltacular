@@ -47,12 +47,14 @@
 
 	// Click arrow
 	const clickArrow = () => {
+		if (disabled) return;
 		toggle();
 		if (open) focusOnInput();
 	};
 
 	// Handle key presses in the input
 	const onInputKeyPress = (e: KeyboardEvent) => {
+		if (disabled) return;
 		if (e.key == 'Escape') {
 			open = false;
 			return;
@@ -102,6 +104,7 @@
 	};
 
 	const clear = () => {
+		if (disabled) return;
 		text = '';
 		value = '';
 		triggerSearch();
@@ -123,9 +126,9 @@
 
 <FormField {size}>
 	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+		<FormLabel {id} {required} {disabled}><slot /></FormLabel>
 	{/if}
-	<div class:open>
+	<div class="{open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}">
 		<input
 			type="text"
 			{id}
@@ -138,11 +141,13 @@
 			data-value={value}
 			data-text={text}
 		/>
-		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow}>
+		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow} {disabled}>
 			<AngleUpIcon />
 		</button>
 		{#if text && isSeachable}
-			<button type="button" class="clear" on:click={clear} on:keydown={clear}> X </button>
+			<button type="button" class="clear" on:click={clear} on:keydown={clear} {disabled}>
+				X
+			</button>
 		{/if}
 		<div class="dropdown">
 			<Menu
@@ -162,6 +167,12 @@
 <style lang="scss">
 	div {
 		position: relative;
+
+		&.disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+			pointer-events: none;
+		}
 
 		input {
 			width: 100%;
