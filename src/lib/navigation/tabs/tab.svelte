@@ -89,7 +89,6 @@
 		left: 0;
 		border-top: solid 0.2rem var(--tab-content-border, rgb(220, 220, 230));
 		padding-top: 1rem;
-		z-index: 1;
 		font-size: 1rem;
 	}
 

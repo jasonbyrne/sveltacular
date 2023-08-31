@@ -39,3 +39,12 @@
 		<Scorecard value={3.74}>Pages/Visit</Scorecard>
 	</CardContainer>
 </Story>
+
+<Story name="In Container (Compact)">
+	<CardContainer spacing="compact" align="left">
+		<Scorecard value={12334} href="https://www.google.com">Page Views</Scorecard>
+		<Scorecard value={2356}>Visits</Scorecard>
+		<Scorecard value={932}>Visitors</Scorecard>
+		<Scorecard value={3.74}>Pages/Visit</Scorecard>
+	</CardContainer>
+</Story>

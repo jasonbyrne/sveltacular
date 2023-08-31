@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
+	import { getContext } from 'svelte';
+	import type { CardContainerContext } from './card-container.js';
 
 	export let title: string | undefined = undefined;
 	export let href: string | undefined = undefined;
@@ -8,13 +10,17 @@
 
 	$: role = href ? 'link' : 'listitem';
 
+	const id = uniqueId();
 	const onClick = () => {
 		if (!href) return;
 		navigateTo(href);
 	};
+
+	const container = getContext<CardContainerContext>('CardContainer');
+	container.register(id);
 </script>
 
-<li {role} on:click={onClick} class="{size} {role}">
+<li {role} {id} on:click={onClick} class="{size} {role}">
 	{#if title}
 		<strong>{title}</strong>
 	{/if}
