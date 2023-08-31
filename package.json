@@ -1,6 +1,34 @@
 {
 	"name": "sveltacular",
 	"version": "0.0.36",
+	"description": "A Svelte component library",
+	"main": "dist/index.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jasonbyrne/sveltacular.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jasonbyrne/sveltacular/issues"
+	},
+	"homepage": "https://github.com/jasonbyrne/sveltacular#readme",
+	"license": "Apache-2.0",
+	"author": "Jason Byrne <jasonbyrne662@gmail.com>",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"component",
+		"library",
+		"ui",
+		"kit",
+		"storybook",
+		"vite",
+		"typescript",
+		"css",
+		"scss",
+		"helpers"
+	],
 	"scripts": {
 		"watch": "npm run dev -- --open",
 		"dev": "vite dev",
@@ -69,6 +97,5 @@
 		"vitest": "^0.34.0"
 	},
 	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"type": "module"
 }

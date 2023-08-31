@@ -13,7 +13,12 @@
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
-	const click = () => {
+	const click = (e: Event) => {
+		if (disabled) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
 		dispatch('click');
 		if (href) {
 			navigateTo(href);
@@ -50,6 +55,11 @@
 		white-space: nowrap;
 		font-family: var(--base-font-family, sans-serif);
 		text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
+
+		&[disabled] {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
 
 		&.flex {
 			flex-grow: 1;

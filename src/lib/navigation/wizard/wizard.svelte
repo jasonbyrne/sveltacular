@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { createEventDispatcher, setContext } from 'svelte';
 	import type { WizardContext, WizardState } from './wizard-context.js';
 	import { writable } from 'svelte/store';
 	import { subscribable } from '$src/lib/helpers/subscribable.js';
@@ -10,59 +10,64 @@
 
 	export let title: string;
 	export let level: SectionLevel = 3;
+	export let disabled = false;
 
+	let currentStep = 0;
+
+	const dispatch = createEventDispatcher<{ submit: void; next: number; previous: number }>();
 	const steps: { [key: number]: string } = {};
-	let wizardState: WizardState = {
-		current: 0,
-		total: 0
-	};
-	const wizardStore = writable(wizardState);
+	const wizardStore = writable<WizardState>({
+		currentStep,
+		totalSteps: 0,
+		disabled
+	});
 
-	const publish = (change: Partial<WizardState>) => {
-		wizardState = {
-			...wizardState,
-			...change
-		};
-		wizardStore.set(wizardState);
+	const publish = () => {
+		wizardStore.set({
+			currentStep,
+			totalSteps: Object.values(steps).length,
+			disabled
+		});
 	};
 
 	const register = (stepNumber: number, subtitle: string) => {
 		steps[stepNumber] = subtitle;
-		publish({
-			total: Object.values(steps).length
-		});
+		publish();
 	};
 
 	const next = () => {
-		publish({
-			current: wizardState.current + 1
-		});
+		if (currentStep >= Object.values(steps).length || disabled) return;
+		currentStep++;
+		dispatch('next', currentStep);
+		publish();
 	};
 
 	const previous = () => {
-		publish({
-			current: wizardState.current - 1
-		});
+		if (currentStep <= 1 || disabled) return;
+		currentStep--;
+		dispatch('previous', currentStep);
+		publish();
 	};
 
 	const done = () => {
-		alert('Done');
+		disabled = true;
+		dispatch('submit');
 	};
 
 	setContext<WizardContext>('wizard', {
-		step: subscribable(wizardStore),
-		register,
-		next,
-		previous
+		state: subscribable(wizardStore),
+		register
 	});
 
 	setTimeout(next, 100);
 
-	$: isFirstStep = wizardState.current <= 1;
-	$: subtitle = steps[wizardState.current];
+	$: isFirstStep = currentStep <= 1;
+	$: isLastStep = currentStep >= Object.values(steps).length;
+	$: subtitle = steps[currentStep - 1];
+	$: total = Object.values(steps).length;
 </script>
 
-<Section>
+<section class:disabled>
 	<Header {title} {subtitle} {level} />
 	<div class="content">
 		<slot />
@@ -70,24 +75,31 @@
 	<footer>
 		<div>
 			{#if !isFirstStep}
-				<Button type="button" style="secondary" on:click={previous}>Previous</Button>
+				<Button type="button" style="secondary" on:click={previous} {disabled}>Previous</Button>
 			{/if}
 		</div>
 		<div>
-			<div>Step {wizardState.current} of {wizardState.total}</div>
+			<div>Step {currentStep} of {total}</div>
 		</div>
 		<div>
-			{#if wizardState.current < wizardState.total}
-				<Button type="button" style="primary" on:click={next}>Next</Button>
+			{#if isLastStep}
+				<Button type="submit" style="primary" on:click={done} {disabled}>Done</Button>
 			{:else}
-				<Button type="submit" style="primary" on:click={done}>Done</Button>
+				<Button type="button" style="primary" on:click={next} {disabled}>Next</Button>
 			{/if}
 		</div>
 	</footer>
-</Section>
+</section>
 
-<style>
+<style lang="scss">
+	section {
+		&.disabled {
+			opacity: 0.5;
+		}
+	}
+
 	footer {
+		margin-top: 1rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
