@@ -3,7 +3,6 @@
 	import type { WizardContext, WizardState } from './wizard-context.js';
 	import { writable } from 'svelte/store';
 	import { subscribable } from '$src/lib/helpers/subscribable.js';
-	import Section from '$src/lib/generic/section/section.svelte';
 	import Header from '$src/lib/generic/header/header.svelte';
 	import Button from '$src/lib/forms/button/button.svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
@@ -11,10 +10,17 @@
 	export let title: string;
 	export let level: SectionLevel = 3;
 	export let disabled = false;
+	export let onNext: (step: number) => Promise<string[]> = async () => [];
+	export let onSubmit: () => Promise<string[]> = async () => [];
 
 	let currentStep = 0;
 
-	const dispatch = createEventDispatcher<{ submit: void; next: number; previous: number }>();
+	const dispatch = createEventDispatcher<{
+		done: void;
+		next: number;
+		previous: number;
+		errors: string[];
+	}>();
 	const steps: { [key: number]: string } = {};
 	const wizardStore = writable<WizardState>({
 		currentStep,
@@ -35,8 +41,18 @@
 		publish();
 	};
 
-	const next = () => {
+	const validate = async (callback: () => Promise<string[]>) => {
+		disabled = true;
+		const errors = await callback();
+		disabled = false;
+		dispatch('errors', errors);
+		return errors;
+	};
+
+	const next = async () => {
 		if (currentStep >= Object.values(steps).length || disabled) return;
+		const errors = await validate(() => onNext(currentStep));
+		if (errors.length) return;
 		currentStep++;
 		dispatch('next', currentStep);
 		publish();
@@ -49,9 +65,17 @@
 		publish();
 	};
 
-	const done = () => {
-		disabled = true;
-		dispatch('submit');
+	const reset = () => {
+		disabled = false;
+		currentStep = 1;
+		publish();
+	};
+
+	const done = async () => {
+		const errors = await validate(onSubmit);
+		if (errors.length) return;
+		dispatch('done');
+		reset();
 	};
 
 	setContext<WizardContext>('wizard', {

@@ -1,9 +1,12 @@
-import type { TabStyle } from '$src/lib/types/generic.js';
-import type { Writable } from 'svelte/store';
+import type { Subscribable } from '$src/lib/index.js';
+
+export type TabStyle = 'traditional' | 'underline' | 'outline' | 'overline';
+
+export type TabDefinition = { id: string; name: string };
 
 export interface TabContext {
-	active: Writable<string | null>;
+	active: Subscribable<string | null>;
 	style: TabStyle;
-	squared: boolean;
+	register: (id: string, name: string, isActive: boolean) => void;
 }
 export const tabContext = 'tabContext';

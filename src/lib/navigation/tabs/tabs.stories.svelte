@@ -58,8 +58,8 @@
 	</TabGroup>
 </Story>
 
-<Story name="Outline Squared">
-	<TabGroup style="outline" squared>
+<Story name="Overline">
+	<TabGroup style="overline">
 		<Tab title="Tab 1" active>
 			<Headline level={3}>Some Content</Headline>
 			<p>Tab 1 content</p>
