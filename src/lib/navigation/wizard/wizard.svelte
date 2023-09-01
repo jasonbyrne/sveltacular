@@ -127,5 +127,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: nowrap;
+
+		div {
+			width: 100%;
+		}
 	}
 </style>

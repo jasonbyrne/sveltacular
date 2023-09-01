@@ -8,8 +8,7 @@
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
 	import debounce from '$src/lib/helpers/debounce.js';
 	import { browser } from '$app/environment';
-
-	type SearchFunction = (text: string) => Promise<DropdownOption[]>;
+	import type { SearchFunction } from './list-box.js';
 
 	export let value = '';
 	export let items: DropdownOption[] = [];
@@ -18,13 +17,14 @@
 	export let required = false;
 	export let searchable = false;
 	export let search: SearchFunction | undefined = undefined;
+	export let placeholder = '';
 
 	const id = uniqueId();
 	const dispatch = createEventDispatcher<{ change: string }>();
 	const getText = () => items.find((item) => item.value == value)?.name || '';
 
 	let text = getText();
-	let open = false;
+	let isMenuOpen = false;
 	let highlightIndex = -1;
 	let filteredItems: MenuOption[] = [];
 	$: isSeachable = searchable || !!search;
@@ -35,7 +35,7 @@
 		dispatch('change', value);
 		text = getText();
 		applyFilter();
-		open = false;
+		isMenuOpen = false;
 	};
 
 	const focusOnInput = () => {
@@ -43,24 +43,24 @@
 	};
 
 	// Toggle open or closed
-	const toggle = () => (open = !open);
+	const toggle = () => (isMenuOpen = !open);
 
 	// Click arrow
 	const clickArrow = () => {
 		if (disabled) return;
 		toggle();
-		if (open) focusOnInput();
+		if (isMenuOpen) focusOnInput();
 	};
 
 	// Handle key presses in the input
 	const onInputKeyPress = (e: KeyboardEvent) => {
 		if (disabled) return;
 		if (e.key == 'Escape') {
-			open = false;
+			isMenuOpen = false;
 			return;
 		}
 		if (e.key == 'Enter' || e.key == 'Tab') {
-			open = false;
+			isMenuOpen = false;
 			if (highlightIndex > -1) {
 				onSelect(new CustomEvent('select', { detail: filteredItems[highlightIndex] }));
 			}
@@ -68,16 +68,16 @@
 		}
 		if (e.key == 'ArrowDown') {
 			highlightIndex = Math.min(highlightIndex + 1, filteredItems.length - 1);
-			open = true;
+			isMenuOpen = true;
 			return;
 		}
 		if (e.key == 'ArrowUp') {
 			highlightIndex = Math.max(highlightIndex - 1, -1);
-			if (highlightIndex == -1) open = false;
+			if (highlightIndex == -1) isMenuOpen = false;
 			return;
 		}
 		if (e.key.length == 1 || e.key == 'Backspace' || e.key == 'Delete') {
-			open = true;
+			isMenuOpen = true;
 			highlightIndex = 0;
 			triggerSearch();
 		}
@@ -122,6 +122,8 @@
 
 	// Do initial search
 	triggerSearch();
+
+	$: open = isMenuOpen && !disabled;
 </script>
 
 <FormField {size}>
@@ -135,8 +137,9 @@
 			bind:value={text}
 			{required}
 			{disabled}
+			{placeholder}
 			readonly={!isSeachable}
-			on:focus={() => (open = true)}
+			on:focus={() => (isMenuOpen = true)}
 			on:keyup={onInputKeyPress}
 			data-value={value}
 			data-text={text}

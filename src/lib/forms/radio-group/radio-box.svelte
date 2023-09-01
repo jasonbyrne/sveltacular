@@ -65,6 +65,7 @@
 		input {
 			width: 0;
 			height: 0;
+			position: absolute;
 
 			&:checked + .checkbox {
 				background-color: var(--form-input-selected-bg, #3182ce);

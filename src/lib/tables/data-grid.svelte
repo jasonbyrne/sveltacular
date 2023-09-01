@@ -10,6 +10,8 @@
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
 	import type { DataCol, DataRow, Pagination } from '$src/lib/types/data.js';
+	import Empty from '../generic/empty/empty.svelte';
+	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import Text from '../typography/text.svelte';
 	import TableCaption from './table-caption.svelte';
@@ -74,7 +76,9 @@
 						{#if rows === undefined}
 							<Loading />
 						{:else}
-							<Text>No data</Text>
+							<Empty>
+								<FolderOpenIcon />
+							</Empty>
 						{/if}
 					</div>
 				</TableCell>

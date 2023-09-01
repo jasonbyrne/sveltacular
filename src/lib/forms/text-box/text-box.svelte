@@ -54,7 +54,7 @@
 	{#if $$slots.default}
 		<FormLabel {id} {required}><slot /></FormLabel>
 	{/if}
-	<div class="input">
+	<div class="input {disabled ? 'disabled' : 'enabled'}">
 		{#if prefix}
 			<div class="prefix">{prefix}</div>
 		{/if}
@@ -100,6 +100,10 @@
 			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
+
+		&.disabled {
+			opacity: 0.5;
+		}
 
 		input {
 			background-color: transparent;

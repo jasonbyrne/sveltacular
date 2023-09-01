@@ -103,12 +103,12 @@
 
 		.inactive button {
 			background: var(--tab-traditional-inactive-bg, transparent);
-			color: var(--tab-traditional-inactive-fg, rgb(120, 120, 120));
+			color: var(--tab-traditional-inactive-fg, rgb(150, 150, 150));
 		}
 
 		.inactive button:hover {
 			background: var(--tab-traditional-hover-bg, transparent);
-			color: var(--tab-traditional-hover-fg, rgb(180, 180, 180));
+			color: var(--tab-traditional-hover-fg, rgb(220, 220, 220));
 		}
 
 		.active button {
@@ -132,12 +132,12 @@
 
 		.inactive button {
 			background: var(--tab-underline-inactive-bg, transparent);
-			color: var(--tab-underline-inactive-fg, rgb(100, 100, 100));
+			color: var(--tab-underline-inactive-fg, rgb(150, 150, 150));
 		}
 
 		.inactive button:hover {
 			background: var(--tab-underline-hover-bg, transparent);
-			color: var(--tab-underline-hover-fg, rgb(150, 150, 150));
+			color: var(--tab-underline-hover-fg, rgb(220, 220, 220));
 		}
 
 		.active button {
