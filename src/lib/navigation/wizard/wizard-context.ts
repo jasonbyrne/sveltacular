@@ -4,6 +4,7 @@ export type WizardState = {
 	currentStep: number;
 	totalSteps: number;
 	disabled: boolean;
+	errors: string[];
 };
 
 export interface WizardContext {

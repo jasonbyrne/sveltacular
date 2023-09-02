@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext, onDestroy } from 'svelte';
 	import type { WizardContext, WizardState } from './wizard-context.js';
+	import Notice from '$src/lib/generic/notice/notice.svelte';
 
 	const wizard = getContext<WizardContext>('wizard');
 	const state = wizard.state;
@@ -11,9 +12,17 @@
 	wizard.register(step, subtitle);
 
 	$: isCurrentStep = $state.currentStep === step;
+	$: errors = $state.errors;
 </script>
 
 <div class="step {isCurrentStep ? 'current' : ''}">
+	{#if errors.length}
+		<div class="errors">
+			{#each errors as error}
+				<Notice style="error">{error}</Notice>
+			{/each}
+		</div>
+	{/if}
 	<slot />
 </div>
 
@@ -23,6 +32,13 @@
 
 		&.current {
 			display: block;
+		}
+
+		.errors {
+			margin-bottom: 1rem;
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
 		}
 	}
 </style>

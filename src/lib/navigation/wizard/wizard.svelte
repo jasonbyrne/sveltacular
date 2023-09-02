@@ -10,10 +10,11 @@
 	export let title: string;
 	export let level: SectionLevel = 3;
 	export let disabled = false;
-	export let onNext: (step: number) => Promise<string[]> = async () => [];
-	export let onSubmit: () => Promise<string[]> = async () => [];
+	export let onNext: (step: number) => Promise<string[] | void> = async () => [];
+	export let onSubmit: () => Promise<string[] | void> = async () => [];
 
 	let currentStep = 0;
+	let errors: string[] = [];
 
 	const dispatch = createEventDispatcher<{
 		done: void;
@@ -25,14 +26,16 @@
 	const wizardStore = writable<WizardState>({
 		currentStep,
 		totalSteps: 0,
-		disabled
+		disabled,
+		errors
 	});
 
 	const publish = () => {
 		wizardStore.set({
 			currentStep,
 			totalSteps: Object.values(steps).length,
-			disabled
+			disabled,
+			errors
 		});
 	};
 
@@ -41,9 +44,9 @@
 		publish();
 	};
 
-	const validate = async (callback: () => Promise<string[]>) => {
+	const validate = async (callback: () => Promise<string[] | void>): Promise<string[]> => {
 		disabled = true;
-		const errors = await callback();
+		errors = (await callback()) || [];
 		disabled = false;
 		dispatch('errors', errors);
 		return errors;
@@ -52,7 +55,7 @@
 	const next = async () => {
 		if (currentStep >= Object.values(steps).length || disabled) return;
 		const errors = await validate(() => onNext(currentStep));
-		if (errors.length) return;
+		if (errors.length) return publish();
 		currentStep++;
 		dispatch('next', currentStep);
 		publish();
@@ -61,6 +64,7 @@
 	const previous = () => {
 		if (currentStep <= 1 || disabled) return;
 		currentStep--;
+		errors = [];
 		dispatch('previous', currentStep);
 		publish();
 	};
@@ -73,7 +77,7 @@
 
 	const done = async () => {
 		const errors = await validate(onSubmit);
-		if (errors.length) return;
+		if (errors.length) return publish();
 		dispatch('done');
 		reset();
 	};
