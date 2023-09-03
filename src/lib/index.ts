@@ -66,6 +66,7 @@ export { default as AppNavItem } from './navigation/app-bar/app-nav-item.svelte'
 export { default as AppBranding } from './navigation/app-bar/app-branding.svelte';
 export { default as Wizard } from './navigation/wizard/wizard.svelte';
 export { default as WizardStep } from './navigation/wizard/wizard-step.svelte';
+export { default as Pagination } from './navigation/pagination/pagination.svelte';
 // Tables
 export { default as DataGrid } from './tables/data-grid.svelte';
 export { default as Table } from './tables/table.svelte';

@@ -20,7 +20,7 @@
 	</div>
 </Story>
 
-<Story name="Skeleton Text">
+<Story name="Loading with SkeletonText">
 	<div>
 		<Loading type="block">
 			<SkeletonText min={80} />

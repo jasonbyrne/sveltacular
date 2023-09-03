@@ -7,7 +7,7 @@
 
 <Meta title="Modals/Confirm" component={Confirm} />
 
-<Story name="Confirm">
+<Story name="Default">
 	<Confirm title="Something Will Happen" open>Do you want to do this thing?</Confirm>
 </Story>
 

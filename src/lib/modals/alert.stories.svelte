@@ -5,7 +5,7 @@
 
 <Meta title="Modals/Alert" component={Alert} />
 
-<Story name="Alert">
+<Story name="Default">
 	<Alert title="Error" open>Something went wrong and we need to make sure you see this.</Alert>
 </Story>
 
