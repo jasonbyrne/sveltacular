@@ -161,12 +161,31 @@
 	{/if}
 </Table>
 
-<style>
+<style lang="scss">
 	.empty {
-		text-align: center;
 		padding: 2rem;
 		text-transform: uppercase;
-		color: rgba(100, 100, 100, 0.5);
 		letter-spacing: 0.2rem;
+	}
+
+	a {
+		color: var(--table-link-fg, #00f);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		color: var(--table-link-fg, #00f);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 </style>

@@ -44,7 +44,11 @@
 	const cols = [
 		{ key: 'name', label: 'Name' },
 		{ key: 'age', label: 'Age' },
-		{ key: 'email', label: 'Email' },
+		{
+			key: 'email',
+			label: 'Email',
+			link: (row: Record<string, unknown>, key: string) => `mailto:${row[key]}`
+		},
 		{ key: 'isActive', label: 'Active?' },
 		{
 			key: 'salary',

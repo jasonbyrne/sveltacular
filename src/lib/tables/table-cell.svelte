@@ -3,12 +3,7 @@
 	export let type: string | undefined = undefined;
 	export let width: number | string | undefined = undefined;
 
-	$: styleProperties = [
-		`text-align: ${
-			type === 'currency' || type === 'number' ? 'right' : type === 'boolean' ? 'center' : 'left'
-		}`,
-		`width: ${width ? width : 'auto'}`
-	];
+	$: styleProperties = [`width: ${width ? width : 'auto'}`];
 </script>
 
 <td {colspan} class={type} style={styleProperties.join('; ')}>
@@ -17,8 +12,9 @@
 
 <style lang="scss">
 	td {
-		padding: 0.25rem;
-		font-size: 1rem;
+		padding-left: 0.5rem;
+		font-size: 0.9rem;
+		line-height: 1.5rem;
 
 		&.currency,
 		&.number {
@@ -32,6 +28,10 @@
 
 		&.actions {
 			text-align: right;
+		}
+
+		&:last-child {
+			padding-right: 0.5rem;
 		}
 	}
 </style>
