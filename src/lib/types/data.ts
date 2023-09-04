@@ -6,5 +6,6 @@ export type DataCol<T extends DataRow = DataRow> = {
 	format?: (row: T, key: keyof T) => string;
 	link?: (row: T, key: keyof T) => string;
 	hide?: boolean;
+	width?: number | string;
 };
-export type Pagination = { page: number; perPage: number; total?: number };
+export type PaginationProperties = { page: number; perPage: number; total?: number };

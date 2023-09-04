@@ -9,21 +9,27 @@
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
-	import type { DataCol, DataRow, Pagination } from '$src/lib/types/data.js';
+	import type { DataCol, DataRow, PaginationProperties } from '$src/lib/types/data.js';
 	import Empty from '../generic/empty/empty.svelte';
 	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
+	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
-	import Text from '../typography/text.svelte';
 	import TableCaption from './table-caption.svelte';
 
 	type Action = undefined | ((row: DataRow) => unknown);
+	type PaginationEvent = (pagination: PaginationProperties) => Promise<DataRow[]>;
 
 	export let caption: string = '';
 	export let rows: DataRow[] | undefined = undefined;
 	export let cols: DataCol[];
-	export let pagination: Pagination | undefined = undefined;
+	export let pagination: PaginationProperties | undefined = undefined;
 	export let editRow: Action = undefined;
 	export let deleteRow: Action = undefined;
+
+	/**
+	 * Handle page change, which should return the new filtered/fetched rows.
+	 */
+	export let onPageChange: PaginationEvent | null = null;
 
 	const getColType = (col: DataCol) => {
 		if (col.type) return col.type;
@@ -46,10 +52,36 @@
 		return row[key];
 	};
 
+	const calculateTotalPages = () => {
+		if (!pagination || !rows) return 1;
+		const totalRows = Math.max(pagination.total || rows.length);
+		return Math.ceil(totalRows / pagination.perPage);
+	};
+
+	const changePage = async (e: CustomEvent<number>) => {
+		pagination = { page: e.detail, perPage: pagination?.perPage || 5 };
+		if (onPageChange) {
+			rows = await onPageChange(pagination);
+		}
+	};
+
+	const filterRows = () => {
+		// If we don't have rows or pagination, we don't need to filter the rows.
+		if (!rows?.length || !pagination) return rows;
+		// If we have an onPageChange handler, we don't need to filter the rows because that will be handled by the handler.
+		if (onPageChange) return rows;
+		// Filter the rows based on the current page and perPage.
+		const currentPage = pagination.page || 1;
+		const perPage = pagination.perPage || 5;
+		const startIndex = currentPage * perPage - perPage;
+		const endIndex = startIndex + perPage;
+		return rows.filter((_row, index) => index >= startIndex && index < endIndex);
+	};
+
 	$: hasActionRow = editRow || deleteRow;
 	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionRow ? 1 : 0);
-	$: totalPages =
-		pagination && rows ? Math.ceil((pagination.total || rows.length) / pagination.perPage) : 1;
+	$: totalPages = pagination && rows ? calculateTotalPages() : 1;
+	$: filteredRows = rows && pagination ? filterRows() : rows;
 </script>
 
 <Table>
@@ -60,7 +92,7 @@
 		<TableHeaderRow>
 			{#each cols as col}
 				{#if !col.hide}
-					<TableHeaderCell type={getColType(col)}>{col.label}</TableHeaderCell>
+					<TableHeaderCell type={getColType(col)} width={col.width}>{col.label}</TableHeaderCell>
 				{/if}
 			{/each}
 			{#if hasActionRow}
@@ -69,7 +101,7 @@
 		</TableHeaderRow>
 	</TableHeader>
 	<TableBody>
-		{#if !rows?.length}
+		{#if !filteredRows?.length}
 			<TableRow>
 				<TableCell colspan={colCount}>
 					<div class="empty">
@@ -84,11 +116,11 @@
 				</TableCell>
 			</TableRow>
 		{:else}
-			{#each rows as row}
+			{#each filteredRows as row}
 				<TableRow>
 					{#each cols as col}
 						{#if !col.hide}
-							<TableCell type={col.type || typeof row[col.key]}>
+							<TableCell type={col.type || typeof row[col.key]} width={col.width}>
 								{#if col.link}
 									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
 								{:else}
@@ -115,9 +147,14 @@
 		<TableFooter>
 			<TableFooterRow>
 				<TableFooterCell colspan={colCount}>
-					<Text transform="uppercase">
-						Page {pagination.page} of {totalPages}
-					</Text>
+					<Pagination
+						currentPage={pagination.page}
+						{totalPages}
+						style="flat"
+						size="sm"
+						align="center"
+						on:page={changePage}
+					/>
 				</TableFooterCell>
 			</TableFooterRow>
 		</TableFooter>

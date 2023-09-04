@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import DataGrid from './data-grid.svelte';
-	import type { Pagination } from '../index.js';
+	import { countriesArray } from '$src/lib/data/countries.js';
+	import type { PaginationProperties } from '../index.js';
 
 	const rows = [
 		{
@@ -58,7 +59,12 @@
 		}
 	];
 
-	const pagination: Pagination = {
+	const countryCols = [
+		{ key: 'name', label: 'Name' },
+		{ key: 'value', label: 'Abbreviation', width: '50px' }
+	];
+
+	const pagination: PaginationProperties = {
 		page: 1,
 		perPage: 25,
 		total: rows.length
@@ -76,7 +82,16 @@
 </Story>
 
 <Story name="With Pagination">
-	<DataGrid {rows} {cols} caption="Employees" {pagination} />
+	<DataGrid
+		rows={countriesArray}
+		cols={countryCols}
+		caption="Countries"
+		pagination={{
+			page: 4,
+			perPage: 5,
+			total: countriesArray.length
+		}}
+	/>
 </Story>
 
 <Story name="No Data">

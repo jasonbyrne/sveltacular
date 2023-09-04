@@ -2,13 +2,13 @@
 	import { createEventDispatcher } from 'svelte';
 
 	type NoticeStyle = 'outline' | 'attention' | 'success' | 'error' | 'info';
-	type NoticeSize = 'full' | 'sm' | 'md' | 'lg' | 'xl';
+	type NoticeSize = 'sm' | 'md' | 'lg' | 'xl';
 
 	const dispatch = createEventDispatcher<{ dismiss: void; hidden: void }>();
 
 	export let title: string | undefined = undefined;
 	export let style: NoticeStyle = 'info';
-	export let size: NoticeSize = 'full';
+	export let size: NoticeSize = 'md';
 	export let dismissable = false;
 
 	let visible = true;
@@ -64,9 +64,9 @@
 		max-width: 100%;
 		padding: 1rem;
 		border-radius: 0.2rem;
-		border: 2px solid var(--base-fg, black);
-		background: var(--base-bg, white);
-		color: var(--base-fg, black);
+		border: 2px solid var(--base-bg, black);
+		background: var(--base-fg, white);
+		color: var(--base-bg, black);
 		position: relative;
 		opacity: 1;
 		transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
@@ -120,12 +120,16 @@
 		}
 
 		&.xl {
-			width: 60rem;
+			.icon {
+				width: 3rem;
+				min-width: 3rem;
+			}
+			.content {
+				font-size: 1.15rem;
+			}
 		}
 
 		&.lg {
-			width: 40rem;
-
 			.icon {
 				width: 2.5rem;
 				min-width: 2.5rem;
@@ -136,7 +140,6 @@
 		}
 
 		&.md {
-			width: 25rem;
 			border-width: 1px;
 			border-radius: 3px;
 
@@ -150,7 +153,6 @@
 		}
 
 		&.sm {
-			width: 15rem;
 			border-width: 1px;
 			border-radius: 2px;
 

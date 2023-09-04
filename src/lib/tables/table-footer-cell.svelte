@@ -3,7 +3,9 @@
 </script>
 
 <td {colspan}>
-	<slot />
+	<div>
+		<slot />
+	</div>
 </td>
 
 <style>
@@ -12,5 +14,11 @@
 		font-size: 0.8rem;
 		font-family: sans-serif;
 		text-shadow: 1px 1px 1px black;
+	}
+
+	div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

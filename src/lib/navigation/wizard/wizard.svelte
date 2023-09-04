@@ -54,8 +54,10 @@
 
 	const next = async () => {
 		if (currentStep >= Object.values(steps).length || disabled) return;
-		const errors = await validate(() => onNext(currentStep));
-		if (errors.length) return publish();
+		if (currentStep) {
+			const errors = await validate(() => onNext(currentStep));
+			if (errors.length) return publish();
+		}
 		currentStep++;
 		dispatch('next', currentStep);
 		publish();

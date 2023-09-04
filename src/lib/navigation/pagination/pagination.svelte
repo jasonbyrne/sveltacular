@@ -4,6 +4,8 @@
 	export let currentPage = 1;
 	export let totalPages = 1;
 	export let align: 'center' | 'start' | 'end' = 'center';
+	export let style: 'default' | 'flat' = 'default';
+	export let size: 'sm' | 'md' | 'lg' | 'xl' = 'md';
 
 	const dispatch = createEventDispatcher<{ page: number }>();
 
@@ -37,81 +39,52 @@
 	$: showLast = currentPage < totalPages - 3;
 </script>
 
-<nav class={align}>
+<nav class="{align} {style} {size}">
 	{#if currentPage > 1}
-		<button on:click={() => changePage(currentPage - 1)} class="previous">Previous</button>
+		<button on:click={() => changePage(currentPage - 1)} class="previous page">Previous</button>
 	{/if}
 	{#if showFirst}
-		<button on:click={() => changePage(1)} class="first">1</button>
-		<div class="ellipsis">...</div>
+		<button on:click={() => changePage(1)} class="first page">1</button>
+		<div class="ellipsis page">···</div>
 	{/if}
 	{#each previousPages as page}
-		<button on:click={() => changePage(page)}>{page}</button>
+		<button on:click={() => changePage(page)} class="pre page">{page}</button>
 	{/each}
-	<div class="current">{currentPage}</div>
+	<div class="current page">{currentPage}</div>
 	{#each nextPages as page}
-		<button on:click={() => changePage(page)}>{page}</button>
+		<button on:click={() => changePage(page)} class="pro numbered page">{page}</button>
 	{/each}
 	{#if showLast}
-		<div class="ellipsis">...</div>
-		<button on:click={() => changePage(totalPages)} class="last">{totalPages}</button>
+		<div class="ellipsis page">···</div>
+		<button on:click={() => changePage(totalPages)} class="last page">{totalPages}</button>
 	{/if}
 	{#if currentPage < totalPages}
-		<button on:click={() => changePage(currentPage + 1)} class="next">Next</button>
+		<button on:click={() => changePage(currentPage + 1)} class="next page">Next</button>
 	{/if}
 </nav>
 
 <style lang="scss">
 	nav {
 		display: flex;
+		flex-direction: row;
+		gap: 0.2rem;
 		align-items: center;
 		justify-content: center;
-		gap: 0rem;
 
-		button {
-			appearance: none;
-			padding-left: 1rem;
-			padding-right: 1rem;
-			font-size: 1rem;
-			line-height: 1.4rem;
-			height: 1.5rem;
+		.page {
 			border: none;
-			cursor: pointer;
-			background-color: var(--form-input-background, white);
-			color: var(--form-input-text, black);
-
-			&:hover {
-				background-color: var(--form-input-border, black);
-				color: var(--form-input-background, white);
-			}
-
-			&.previous {
-				border-radius: 0.5rem 0 0 0.5rem;
-				border-right: solid 1px var(--form-input-border, black);
-			}
-
-			&.next {
-				border-radius: 0 0.5rem 0.5rem 0;
-				border-left: solid 1px var(--form-input-border, black);
-			}
+			background: none;
+			margin: 0;
+			color: var(--base-fg, #ccc);
+			text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
 		}
 
-		.ellipsis {
-			height: 1.5rem;
-			font-size: 1rem;
-			line-height: 1rem;
-			padding-left: 0.1rem;
-			padding-right: 0.1rem;
-			background-color: var(--form-input-background, white);
-			color: var(--form-input-text, black);
+		button {
+			cursor: pointer;
 		}
 
 		.current {
-			padding: 0.5rem 1rem;
-			border: 1px solid var(--form-input-border, black);
-			border-radius: 0.5rem;
-			background-color: var(--form-input-background, white);
-			color: var(--form-input-text, black);
+			font-weight: 700;
 		}
 
 		&.start {
@@ -120,6 +93,69 @@
 
 		&.end {
 			justify-content: flex-end;
+		}
+
+		&.sm {
+			.page {
+				font-size: 0.75rem;
+				padding: 0.5rem 0.65rem 0.5rem 0.65rem;
+			}
+
+			.current {
+				font-size: 0.95rem;
+			}
+		}
+
+		&.md {
+			.page {
+				font-size: 0.85rem;
+				padding: 0.5rem 0.65rem 0.5rem 0.65rem;
+			}
+
+			.current {
+				font-size: 1.05rem;
+			}
+		}
+
+		&.lg {
+			.page {
+				font-size: 0.95rem;
+				padding: 0.5rem 0.65rem 0.5rem 0.65rem;
+			}
+
+			.current {
+				font-size: 1.15rem;
+			}
+		}
+
+		&.xl {
+			.page {
+				font-size: 1.05rem;
+				padding: 0.5rem 0.65rem 0.5rem 0.65rem;
+			}
+
+			.current {
+				font-size: 1.25rem;
+			}
+		}
+	}
+
+	nav.flat {
+		button:hover {
+			color: var(--form-input-bg, #fff);
+			background: var(--form-input-fg, #000);
+			border-radius: 0.5rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		nav {
+			gap: 0rem;
+
+			.pre,
+			.pro {
+				display: none;
+			}
 		}
 	}
 </style>
