@@ -4,7 +4,7 @@
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
 
-	export let value: string;
+	export let value: string = '';
 	export let size: FormFieldSizeOptions = 'md';
 
 	const id = uniqueId();
@@ -76,7 +76,13 @@
 		const isNumeric = !isNaN(Number(event.key));
 		const isCursorHighlighting = props.target.selectionStart !== props.target.selectionEnd;
 		const isAcceptable = isNumeric || isDelete;
+		const isRightArrow = event.key === 'ArrowRight' || event.key === 'Tab';
+		const isLeftArrow = event.key === 'ArrowLeft';
+		// If they are trying to move the cursor, let them
+		if (isRightArrow || isLeftArrow) return;
+		// Do not allow any non-numeric characters
 		if (!isAcceptable) event.preventDefault();
+		// Parse what they typed and update the value
 		const newValue = (() => {
 			if (isCursorHighlighting) {
 				const start = props.target.selectionStart || 0;

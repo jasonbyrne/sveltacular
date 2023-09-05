@@ -20,7 +20,7 @@
 </Story>
 
 <Story name="No Value">
-	<PhoneBox value="" on:change={onChange}>Some Label</PhoneBox>
+	<PhoneBox on:change={onChange}>Some Label</PhoneBox>
 	<ul>
 		{#each changes as change}
 			<li>{change}</li>

@@ -46,6 +46,15 @@
 		} else if (textCase === 'upper') {
 			value = value.toUpperCase();
 		}
+		if (type === 'email') {
+			value = value.replace(/\s/g, '');
+		}
+		if (type === 'tel') {
+			value = value.replace(/[^0-9]/g, '');
+		}
+		if (type === 'url') {
+			value = value.replace(/\s/g, '');
+		}
 		dipatch('input', value);
 	};
 </script>
