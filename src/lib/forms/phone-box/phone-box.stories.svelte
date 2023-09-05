@@ -27,3 +27,7 @@
 		{/each}
 	</ul></Story
 >
+
+<Story name="Small">
+	<PhoneBox value="5551239876" size="sm">Some Label</PhoneBox>
+</Story>
