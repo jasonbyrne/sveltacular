@@ -55,13 +55,15 @@
 	const valueChanged = (event: Event) => {
 		const props = getTargetProperties(event);
 		const newValue = cleanValue(props.value);
-		if (props.name == 'areaCode' && newValue.length >= 10) {
-			return setValue(newValue);
-		}
+		// If they put in 10 digits, in any input, consider that the whole number
+		if (newValue.length >= 10) return setValue(newValue);
+		// If they put in 7 or more digits in the localExt input, flow the second 4 to the lastFour input
 		if (props.name == 'localExt' && newValue.length >= 7) {
 			return setValue(`${areaCode}${newValue}`);
 		}
+		// Otherwise, just accept it into the current input
 		props.target.value = newValue.slice(0, props.maxLength);
+		// Then focus on the next input
 		if (newValue.length >= props.maxLength) {
 			if (props.nextInput) props.nextInput.focus();
 		}
@@ -165,6 +167,18 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+		}
+
+		.areaCode {
+			flex-basis: 100px;
+		}
+
+		.localExt {
+			flex-basis: 80px;
+		}
+
+		.lastFour {
+			flex-basis: 140px;
 		}
 
 		input {
