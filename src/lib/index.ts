@@ -22,6 +22,7 @@ export { default as FormSection } from './forms/form-section.svelte';
 export { default as InfoBox } from './forms/info-box/info-box.svelte';
 export { default as UrlBox } from './forms/url-box/url-box.svelte';
 export { default as NewOrExistingCombo } from './forms/combo/new-or-existing-combo.svelte';
+export { default as PhoneBox } from './forms/phone-box/phone-box.svelte';
 // Generic
 export { default as Card } from './generic/card/card.svelte';
 export { default as CardContainer } from './generic/card/card-container.svelte';
