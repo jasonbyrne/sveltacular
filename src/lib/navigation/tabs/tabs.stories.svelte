@@ -74,3 +74,13 @@
 		</Tab>
 	</TabGroup>
 </Story>
+
+<Story name="With Link">
+	<TabGroup style="overline">
+		<Tab title="Tab 1" active>
+			<Headline level={3}>Some Content</Headline>
+			<p>Tab 1 content</p>
+		</Tab>
+		<Tab title="Tab Link" href="https://www.google.com" />
+	</TabGroup>
+</Story>

@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext, onDestroy } from 'svelte';
 	import { tabContext, type TabContext } from './tab-context.js';
-	import { uniqueId } from '$src/lib/index.js';
+	import { navigateTo, uniqueId } from '$src/lib/index.js';
+	import Loading from '$src/lib/placeholders/loading.svelte';
 
 	export let title: string;
+	export let href: string | undefined = undefined;
 	export let active = false;
 
 	const dispatch = createEventDispatcher<{ selectTab: string }>();
@@ -17,6 +19,10 @@
 	// Subscribe to future tab changes
 	const unsubscribe = ctx.active.subscribe((selectedId) => {
 		active = selectedId === id;
+		if (active && href) {
+			console.log('Navigating to', href);
+			navigateTo(href);
+		}
 	});
 
 	// Tear down
@@ -25,7 +31,11 @@
 
 <article class:active>
 	{#if active}
-		<slot />
+		{#if $$slots.default}
+			<slot />
+		{:else}
+			<Loading />
+		{/if}
 	{/if}
 </article>
 

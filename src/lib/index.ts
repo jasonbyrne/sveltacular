@@ -41,6 +41,9 @@ export { default as Header } from './generic/header/header.svelte';
 export { default as Dot } from './generic/dot/dot.svelte';
 export { default as Notice } from './generic/notice/notice.svelte';
 export { default as Empty } from './generic/empty/empty.svelte';
+export { default as Email } from './generic/email/email.svelte';
+export { default as Phone } from './generic/phone/phone.svelte';
+export { default as Address } from './generic/address/address.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
@@ -102,5 +105,8 @@ export * from './helpers/navigate-to.js';
 export * from './helpers/round-to-decimals.js';
 export * from './helpers/unique-id.js';
 export * from './helpers/subscribable.js';
+export * from './helpers/ucfirst.js';
+export * from './helpers/capitalize.js';
+export * from './helpers/split-new-lines.js';
 // Data
 export * as Data from './data/index.js';
