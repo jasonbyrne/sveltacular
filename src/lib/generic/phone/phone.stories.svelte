@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
-	import PhoneNumber from './phone-number.svelte';
+	import PhoneNumber from './phone.svelte';
 </script>
 
 <Meta title="Generic/PhoneNumber" component={PhoneNumber} />
