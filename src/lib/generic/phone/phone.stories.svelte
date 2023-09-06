@@ -3,7 +3,7 @@
 	import PhoneNumber from './phone.svelte';
 </script>
 
-<Meta title="Generic/PhoneNumber" component={PhoneNumber} />
+<Meta title="Generic/Phone" component={PhoneNumber} />
 
 <Story name="Default">
 	<PhoneNumber phoneNumber="555-555-5555" />
