@@ -48,6 +48,8 @@
 	const format = (row: DataRow, key: string) => {
 		const col = cols.find((col) => col.key === key);
 		if (!col) return row[key];
+		if ((row[key] === null || row[key] === undefined) && col.nullText) return col.nullText;
+		if (String(row[key]).trim() === '' && col.emptyText) return col.emptyText;
 		if (col.format) return col.format(row, key);
 		return row[key];
 	};
