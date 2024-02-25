@@ -11,7 +11,7 @@ export type ButtonStyle =
 	| 'link';
 
 export type DropdownOption = {
-	value: string;
+	value: string | null;
 	name: string;
 };
 

@@ -10,7 +10,7 @@
 	import { browser } from '$app/environment';
 	import type { SearchFunction } from './list-box.js';
 
-	export let value = '';
+	export let value: string | null = null;
 	export let items: DropdownOption[] = [];
 	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
@@ -20,7 +20,7 @@
 	export let placeholder = '';
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: string }>();
+	const dispatch = createEventDispatcher<{ change: string | null }>();
 	const getText = () => items.find((item) => item.value == value)?.name || '';
 
 	let text = getText();

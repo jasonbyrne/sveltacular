@@ -6,7 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let items: MenuOption[] = [];
-	export let value: string = '';
+	export let value: string | null = null;
 	export let instructions: string = '';
 	export let open = false;
 	export let size: FormFieldSizeOptions = 'md';

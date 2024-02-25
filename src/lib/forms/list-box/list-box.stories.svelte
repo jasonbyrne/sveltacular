@@ -12,6 +12,14 @@
 		{ name: 'Vue', value: 'vue' }
 	];
 
+	const itemsWithNull: DropdownOption[] = [
+		{ name: 'SvelteKit', value: 'svelte' },
+		{ name: 'Angular', value: 'angular' },
+		{ name: 'React', value: 'react=' },
+		{ name: 'Vue', value: 'vue' },
+		{ name: 'None', value: null }
+	];
+
 	let searchLog: string[] = [];
 	let value = 'svelte';
 	const addToSearchLog = (e: CustomEvent<string>) => {
@@ -33,6 +41,13 @@
 <Story name="Simple">
 	<div>
 		<ListBox {items}>Best JavaScript Framework</ListBox>
+	</div>
+	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
+</Story>
+
+<Story name="Simple with Null">
+	<div>
+		<ListBox items={itemsWithNull}>Best JavaScript Framework</ListBox>
 	</div>
 	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
 </Story>
