@@ -11,8 +11,8 @@
 	import type { SearchFunction } from '../list-box/list-box.js';
 
 	export let mode: 'new' | 'existing' = 'existing';
-	export let newValue = '';
-	export let existingValue = '';
+	export let newValue: string | null = '';
+	export let existingValue: string | null = '';
 	export let items: DropdownOption[] = [];
 	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;

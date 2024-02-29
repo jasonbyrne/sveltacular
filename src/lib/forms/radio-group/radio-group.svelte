@@ -7,7 +7,7 @@
 
 	const id = uniqueId();
 
-	export let value = '';
+	export let group: string = '';
 	export let items: DropdownOption[] = [];
 	export let size: FormFieldSizeOptions = 'full';
 	export let disabled = false;
@@ -20,7 +20,7 @@
 	{/if}
 	<div>
 		{#each items as item}
-			<RadioBox bind:group={value} {disabled} value={item.value}>{item.name}</RadioBox>
+			<RadioBox bind:group={group} {disabled} value={item.value}>{item.name}</RadioBox>
 		{/each}
 	</div>
 </FormField>

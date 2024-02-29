@@ -7,7 +7,7 @@
 
 	const id = uniqueId();
 
-	export let value: string | undefined = undefined;
+	export let value: string | undefined | null = undefined;
 	export let size: FormFieldSizeOptions = 'full';
 	export let placeholder = '';
 	export let nullable = false;

@@ -4,7 +4,7 @@
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
 
-	export let value: string = '';
+	export let value: string | null = '';
 	export let size: FormFieldSizeOptions = 'md';
 
 	const id = uniqueId();
@@ -103,7 +103,7 @@
 	};
 
 	// Set the initial value
-	setValue(value);
+	setValue(value ?? '');
 
 	$: areaCode || localExt || lastFour ? publishChange() : null;
 </script>

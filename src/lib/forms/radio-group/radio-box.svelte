@@ -2,7 +2,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 
-	type RadioValue = string | number | boolean | undefined;
+	type RadioValue = string | number | boolean | undefined | null;
 
 	export let value: RadioValue = undefined;
 	export let group: string | undefined = undefined;

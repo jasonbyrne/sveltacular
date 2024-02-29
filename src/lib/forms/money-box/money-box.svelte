@@ -2,7 +2,7 @@
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 	import NumberBox from '../number-box/number-box.svelte';
 
-	export let value: number;
+	export let value: number | null;
 	export let symbol = '$';
 	export let allowCents = false;
 	export let placeholder = '';

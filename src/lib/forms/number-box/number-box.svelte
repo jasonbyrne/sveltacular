@@ -9,7 +9,7 @@
 
 	type AllowedInputTypes = 'number' | 'currency';
 
-	export let value = 0;
+	export let value: number | null = 0;
 	export let placeholder = '';
 	export let size: FormFieldSizeOptions = 'full';
 	export let type: AllowedInputTypes = 'number';
@@ -21,6 +21,9 @@
 	export let step = 1;
 
 	const valueChanged = () => {
+		if (value === null || value === undefined) return;
+		if (value < min) value = min;
+		if (value > max) value = max;
 		value = roundToDecimals(value, decimals);
 	};
 </script>

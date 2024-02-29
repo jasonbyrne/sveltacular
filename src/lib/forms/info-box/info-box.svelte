@@ -6,7 +6,7 @@
 	import FormLabel from '../form-label.svelte';
 
 	export let size: FormFieldSizeOptions = 'md';
-	export let value: string;
+	export let value: string | null;
 	export let href: string | undefined = undefined;
 </script>
 

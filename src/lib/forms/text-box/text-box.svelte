@@ -8,7 +8,7 @@
 	const id = uniqueId();
 	const dipatch = createEventDispatcher<{ change: string; input: string }>();
 
-	export let value = '';
+	export let value: string | null = '';
 	export let placeholder = '';
 	export let helperText = '';
 	export let size: FormFieldSizeOptions = 'full';
@@ -41,21 +41,22 @@
 
 	// When the value changes, make sure it is in the correct case
 	const onInput = (e: Event) => {
+		const cleanValue = String(value);
 		if (textCase === 'lower') {
-			value = value.toLowerCase();
+			value = cleanValue.toLowerCase();
 		} else if (textCase === 'upper') {
-			value = value.toUpperCase();
+			value = cleanValue.toUpperCase();
 		}
 		if (type === 'email') {
-			value = value.replace(/\s/g, '');
+			value = cleanValue.replace(/\s/g, '');
 		}
 		if (type === 'tel') {
-			value = value.replace(/[^0-9]/g, '');
+			value = cleanValue.replace(/[^0-9]/g, '');
 		}
 		if (type === 'url') {
-			value = value.replace(/\s/g, '');
+			value = cleanValue.replace(/\s/g, '');
 		}
-		dipatch('input', value);
+		dipatch('input', cleanValue);
 	};
 </script>
 

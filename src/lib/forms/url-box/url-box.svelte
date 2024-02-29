@@ -4,13 +4,14 @@
 	import TextBox from '../text-box/text-box.svelte';
 
 	export let protocol: HttpProtocol = 'https';
-	export let value: string = '';
+	export let value: string | null = '';
 	export let size: FormFieldSizeOptions = 'lg';
 	export let placeholder = 'example.com';
 
 	// On input, parse the value and set the protocol
 	const onInput = () => {
-		const urlParts = value.split('://');
+		const cleanValue = value ?? '';
+		const urlParts = cleanValue.split('://');
 		if (['http', 'https'].includes(urlParts[0])) {
 			protocol = urlParts[0] as HttpProtocol;
 			value = urlParts[1];

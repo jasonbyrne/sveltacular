@@ -7,7 +7,7 @@
 	const id = uniqueId();
 
 	export let size: FormFieldSizeOptions = 'full';
-	export let value = '';
+	export let value: string | null = '';
 	export let placeholder = '';
 	export let rows = 4;
 	export let disabled = false;
