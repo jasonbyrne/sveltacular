@@ -33,7 +33,10 @@
 		}
 	};
 
-	if (!value) value = getDefaultValue();
+	if (!value) {
+		value = getDefaultValue();
+		if (nullable && !value) enabled = false;
+	}
 	$: disabled = !enabled;
 </script>
 
