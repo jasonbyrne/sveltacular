@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentDateTime } from '$src/lib/helpers/date.js';
+	import { currentDateTime, isDate, isDateOrDateTime, isDateTime } from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
@@ -8,6 +8,7 @@
 	const id = uniqueId();
 
 	export let value: string | undefined | null = undefined;
+	export let defaultValue: string | undefined | null = undefined;
 	export let size: FormFieldSizeOptions = 'full';
 	export let placeholder = '';
 	export let nullable = false;
@@ -15,8 +16,16 @@
 	export let type: 'date' | 'datetime-local' = 'date';
 	export let required = false;
 
-	const defaultValue = value || currentDateTime();
-	const getDefaultValue = () => (type == 'date' ? defaultValue.substring(0, 10) : defaultValue);
+	const _defaultValue = (defaultValue !== undefined) ? defaultValue : value || currentDateTime();
+	const getDefaultValue = () => {
+		if (nullable && !isDateOrDateTime(String(_defaultValue))) {
+			return null;
+		}
+		if (type === 'date') {
+			return isDate(String(_defaultValue)) ? _defaultValue : currentDateTime().substring(0, 10);
+		}
+		return isDateTime(String(_defaultValue)) ? _defaultValue : currentDateTime();
+	};
 
 	const checkChanged = () => {
 		if (nullable) {

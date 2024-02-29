@@ -70,3 +70,17 @@ export const dateTimeToInput = (dateTime?: Date) => {
 	dateTime.setMinutes(dateTime.getMinutes() - offset);
 	return dateTime.toISOString().split('.')[0].slice(0, -3);
 };
+
+// Is this date formatted in YYYY-MM-DD format?
+export const isDate = (date: string) => {
+	return /^\d{4}-\d{2}-\d{2}$/.test(date);
+};
+
+// Is this datetime formatted in YYYY-MM-DD HH:MM format?
+export const isDateTime = (dateTime: string) => {
+	return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(:\d{2})?$/.test(dateTime);
+};
+
+export const isDateOrDateTime = (dateOrDateTime: string) => {
+	return isDate(dateOrDateTime) || isDateTime(dateOrDateTime);
+};
