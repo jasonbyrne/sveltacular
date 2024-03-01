@@ -110,4 +110,4 @@ export * from './helpers/ucfirst.js';
 export * from './helpers/capitalize.js';
 export * from './helpers/split-new-lines.js';
 // Data
-export * as Data from './data/index.js';
+export * from './data/index.js';

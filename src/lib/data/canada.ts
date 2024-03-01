@@ -1,4 +1,4 @@
-export const Canada = [
+export const Canada_Provinces = [
 	{ name: 'Alberta', value: 'ALB' },
 	{ name: 'British Columbia', value: 'BC' },
 	{ name: 'Labrador', value: 'LAB' },
@@ -15,3 +15,5 @@ export const Canada = [
 	{ name: 'Saskatchewan', value: 'SAS' },
 	{ name: 'Yukon', value: 'YT' }
 ];
+
+export const Canada_ProvinceCodes = Canada_Provinces.map((row) => ({ ...row, name: row.value }));

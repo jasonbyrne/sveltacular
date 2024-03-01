@@ -2,8 +2,8 @@
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import ListBox from './list-box.svelte';
 	import type { DropdownOption } from '$src/lib/types/form.js';
-	import { UnitedStates } from '$src/lib/data/united-states.js';
-	import { countriesArray } from '$src/lib/data/countries.js';
+	import { Countries } from '$src/lib/data/countries.js';
+	import { US_States } from '$src/lib/data/united-states.js';
 
 	const items: DropdownOption[] = [
 		{ name: 'SvelteKit', value: 'svelte' },
@@ -27,7 +27,7 @@
 	};
 
 	const search = async (searchText: string) => {
-		const result = countriesArray.filter((country) =>
+		const result = Countries.filter((country) =>
 			country.name.toLowerCase().includes(searchText.toLowerCase().trim())
 		);
 		return result;
@@ -61,7 +61,7 @@
 
 <Story name="Searchable">
 	<div>
-		<ListBox items={UnitedStates} searchable on:search={addToSearchLog}>State or Territory</ListBox>
+		<ListBox items={US_States} searchable on:search={addToSearchLog}>State or Territory</ListBox>
 	</div>
 	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
 	<ul>

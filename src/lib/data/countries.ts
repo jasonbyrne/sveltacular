@@ -1,4 +1,4 @@
-export const countriesArray = [
+export const Countries = [
 	{ name: 'Aruba', value: 'ABW' },
 	{ name: 'Afghanistan', value: 'AFG' },
 	{ name: 'Angola', value: 'AGO' },
@@ -246,3 +246,5 @@ export const countriesArray = [
 	{ name: 'Zambia', value: 'ZMB' },
 	{ name: 'Zimbabwe', value: 'ZWE' }
 ];
+
+export const CountryCodes = Countries.map((row) => ({ ...row, name: row.value }));

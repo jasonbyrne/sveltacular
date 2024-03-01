@@ -1,4 +1,4 @@
-export const UnitedStates = [
+export const US_States = [
 	{ name: 'Alabama', value: 'AL', type: 'state' },
 	{ name: 'Alaska', value: 'AK', type: 'state' },
 	{ name: 'American Samoa', value: 'AS', type: 'territory' },
@@ -59,3 +59,5 @@ export const UnitedStates = [
 	{ name: 'Wisconsin', value: 'WI', type: 'state' },
 	{ name: 'Wyoming', value: 'WY', type: 'state' }
 ];
+
+export const US_StateCodes = US_States.map((row) => ({ ...row, name: row.value }));

@@ -1,11 +1,16 @@
-import { Canada } from './canada.js';
-import { countriesArray } from './countries.js';
-import { UnitedStates } from './united-states.js';
+import { Canada_Provinces, Canada_ProvinceCodes } from './canada.js';
+import { Countries, CountryCodes } from './countries.js';
+import { US_States, US_StateCodes } from './united-states.js';
+import { Colors } from './colors.js';
 
 const Data = {
-	US_States: UnitedStates,
-	Canadian_Provinces: Canada,
-	Countries: countriesArray
+	US_States,
+	US_StateCodes,
+	Canada_Provinces,
+	Canada_ProvinceCodes,
+	Countries,
+	CountryCodes,
+	Colors
 };
 
 export default Data;
