@@ -1,4 +1,4 @@
-export type DateUnit = 'day' | 'month' | 'year' | 'minute' | 'hour' | 'second';
+import type { DateUnit } from '../index.js';
 
 // Get the current date in YYYY-MM-DD format, taking timezone into account
 export const currentDate = () => {

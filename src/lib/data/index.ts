@@ -3,7 +3,7 @@ import { Countries, CountryCodes } from './countries.js';
 import { US_States, US_StateCodes } from './united-states.js';
 import { Colors } from './colors.js';
 
-const Data = {
+export const Data = {
 	US_States,
 	US_StateCodes,
 	Canada_Provinces,
@@ -12,5 +12,3 @@ const Data = {
 	CountryCodes,
 	Colors
 };
-
-export default Data;

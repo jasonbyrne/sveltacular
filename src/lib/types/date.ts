@@ -16,3 +16,5 @@ export type DateType =
 	| 'ymdhms'
 	| 'ymdhmt'
 	| 'ymdhmst';
+
+export type DateUnit = 'day' | 'month' | 'year' | 'minute' | 'hour' | 'second';
