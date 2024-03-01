@@ -8,7 +8,7 @@
 	const id = uniqueId();
 
 	export let value: string | undefined | null = undefined;
-	export let defaultValue: string | undefined | null = undefined;
+	export let defaultValue: string | undefined = undefined;
 	export let size: FormFieldSizeOptions = 'full';
 	export let placeholder = '';
 	export let nullable = false;
@@ -16,11 +16,8 @@
 	export let type: 'date' | 'datetime-local' = 'date';
 	export let required = false;
 
-	const _defaultValue = (defaultValue !== undefined) ? defaultValue : value || currentDateTime();
+	const _defaultValue = defaultValue || value || currentDateTime();
 	const getDefaultValue = () => {
-		if (nullable && !isDateOrDateTime(String(_defaultValue))) {
-			return null;
-		}
 		if (type === 'date') {
 			return isDate(String(_defaultValue)) ? _defaultValue : currentDateTime().substring(0, 10);
 		}
@@ -34,8 +31,8 @@
 	};
 
 	if (!value) {
-		value = getDefaultValue();
-		if (nullable && !value) enabled = false;
+		if (nullable) enabled = false;
+		else value = getDefaultValue();
 	}
 	$: disabled = !enabled;
 </script>
