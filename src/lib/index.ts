@@ -44,6 +44,7 @@ export { default as Empty } from './generic/empty/empty.svelte';
 export { default as Email } from './generic/email/email.svelte';
 export { default as Phone } from './generic/phone/phone.svelte';
 export { default as Address } from './generic/address/address.svelte';
+export { default as Toaster } from './generic/toaster/toaster.svelte';
 // Layout
 export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';

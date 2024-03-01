@@ -4,19 +4,29 @@
 	type NoticeStyle = 'outline' | 'attention' | 'success' | 'error' | 'info';
 	type NoticeSize = 'sm' | 'md' | 'lg' | 'xl';
 
-	const dispatch = createEventDispatcher<{ dismiss: void; hidden: void }>();
+	const dispatch = createEventDispatcher<{ dismiss: void; hidden: void, show: void }>();
 
 	export let title: string | undefined = undefined;
 	export let style: NoticeStyle = 'info';
 	export let size: NoticeSize = 'md';
 	export let dismissable = false;
+	export let dismissMilliseconds = 0;
 
 	let visible = true;
-	let fading = false;
+	let going = false;
+	let coming = false;
+
+	const hello = () => {
+		dispatch('show');
+		coming = true;
+		setTimeout(() => {
+			coming = false;
+		}, 500);
+	};
 
 	const goodbye = () => {
 		dispatch('dismiss');
-		fading = true;
+		going = true;
 		setTimeout(() => {
 			visible = false;
 			dispatch('hidden');
@@ -28,9 +38,15 @@
 		e.stopPropagation();
 		goodbye();
 	};
+
+	$: if (dismissMilliseconds > 0) {
+		setTimeout(goodbye, dismissMilliseconds);
+	}
+
+	hello();
 </script>
 
-<div class="notice {style} {size} {visible ? 'visible' : 'hidden'} {fading ? 'fading' : ''}">
+<div class="notice {style} {size} {visible ? 'visible' : 'hidden'} {going ? 'going' : ''} {coming ? 'coming' : ''}">
 	{#if $$slots.icon}
 		<div class="icon">
 			<slot name="icon" />
@@ -75,8 +91,12 @@
 			display: none;
 		}
 
-		&.fading {
+		&.going {
 			transform: translateY(-100%);
+			opacity: 0;
+		}
+
+		&.coming {
 			opacity: 0;
 		}
 

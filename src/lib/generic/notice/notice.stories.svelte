@@ -128,3 +128,13 @@
 		Your change have been saved.
 	</Notice>
 </Story>
+
+
+<Story name="Auto Dismiss">
+	<Notice title="New Post Saved" style="success" size="md" dismissable dismissMilliseconds={2000}>
+		<div slot="icon">
+			<CheckIcon />
+		</div>
+		Your change have been saved.
+	</Notice>
+</Story>
