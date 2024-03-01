@@ -10,6 +10,8 @@
 	export let block = false;
 	export let flex = false;
 	export let disabled = false;
+	export let noMargin = false;
+	export let collapse = false;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
@@ -26,7 +28,7 @@
 	};
 </script>
 
-<button {type} on:click={click} class="{size} {style} {flex ? 'flex' : ''}" class:block {disabled}>
+<button {type} on:click={click} class="{size} {style} {flex ? 'flex' : ''}" class:block class:noMargin class:collapse {disabled}>
 	<slot />
 </button>
 
@@ -59,6 +61,15 @@
 		&[disabled] {
 			opacity: 0.5;
 			cursor: not-allowed;
+		}
+
+		&.noMargin {
+			margin: 0;
+		}
+
+		&.collapse {
+			min-width: auto;
+			padding: 0.5rem;
 		}
 
 		&.flex {

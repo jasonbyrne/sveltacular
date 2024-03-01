@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { currentDateTime, isDate, isDateOrDateTime, isDateTime } from '$src/lib/helpers/date.js';
+	import { addUnits, currentDateTime, isDateString, isDateOrDateTimeString, isDateTimeString } from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
+	import Button from '../button/button.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	type DateIncrementStep = { label: string; value: number, unit: DateUnit };
 
 	const id = uniqueId();
 
@@ -15,19 +19,36 @@
 	export let enabled = true;
 	export let type: 'date' | 'datetime-local' = 'date';
 	export let required = false;
+	export let steps: DateIncrementStep[] = [];
+
+	const dipatch = createEventDispatcher<{ value: string | null, checkChanged: boolean }>();
 
 	const _defaultValue = defaultValue || value || currentDateTime();
 	const getDefaultValue = () => {
 		if (type === 'date') {
-			return isDate(String(_defaultValue)) ? _defaultValue : currentDateTime().substring(0, 10);
+			return isDateString(_defaultValue) ? _defaultValue : currentDateTime().substring(0, 10);
 		}
-		return isDateTime(String(_defaultValue)) ? _defaultValue : currentDateTime();
+		return isDateTimeString(_defaultValue) ? _defaultValue : currentDateTime();
 	};
 
 	const checkChanged = () => {
 		if (nullable) {
 			value = enabled ? getDefaultValue() : '';
 		}
+		dipatch('checkChanged', enabled);
+		onInput();
+	};
+
+	const incrementValue = (step: DateIncrementStep) => {
+		if (isDateOrDateTimeString(value)) {
+			const newDate = addUnits(step.value, step.unit, value);
+			newDate.setUTCDate(newDate.getUTCDate() + step.value);
+			value = newDate.toISOString().substring(0, type === 'date' ? 10 : 19);
+		}
+	};
+
+	const onInput = () => {
+		dipatch('value', enabled ? value : null);
 	};
 
 	if (!value) {
@@ -43,11 +64,18 @@
 	{/if}
 	<div class:nullable class:disabled>
 		<span class="input">
-			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} />
+			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} on:input={onInput} />
 		</span>
 		{#if nullable}
 			<span class="toggle">
 				<input type="checkbox" bind:checked={enabled} on:change={checkChanged} />
+			</span>
+		{/if}
+		{#if steps.length > 0}
+			<span class="steps">
+				{#each steps as step}
+					<Button noMargin={true} collapse={true} on:click={() => incrementValue(step)}>{step.label}</Button>
+				{/each}
 			</span>
 		{/if}
 	</div>
@@ -75,8 +103,18 @@
 	}
 
 	div {
-		display: block;
+		display: flex;
 		position: relative;
+		gap: 0.5rem;
+
+		.input {
+			flex-grow: 1;
+		}
+
+		.steps {
+			display: flex;
+			gap: 0.25rem;
+		}
 
 		&.nullable {
 			input {
