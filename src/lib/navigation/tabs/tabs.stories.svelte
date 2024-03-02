@@ -84,3 +84,20 @@
 		<Tab title="Tab Link" href="https://www.google.com" />
 	</TabGroup>
 </Story>
+
+<Story name="Second Tab Active">
+	<TabGroup>
+		<Tab title="Tab 1">
+			<Headline level={3}>Some Content</Headline>
+			<p>Tab 1 content</p>
+		</Tab>
+		<Tab title="Tab 2" active>
+			<Headline level={3}>Some Other Content</Headline>
+			<p>Tab 2 content</p>
+		</Tab>
+		<Tab title="Tab 3">
+			<Headline level={3}>Yet More Content</Headline>
+			<p>Tab 3 content</p>
+		</Tab>
+	</TabGroup>
+</Story>

@@ -2,7 +2,7 @@ import type { Subscribable } from '$src/lib/index.js';
 
 export type TabStyle = 'traditional' | 'underline' | 'outline' | 'overline';
 
-export type TabDefinition = { id: string; name: string };
+export type TabDefinition = { id: string; name: string; defaultActive: boolean };
 
 export interface TabContext {
 	active: Subscribable<string | null>;

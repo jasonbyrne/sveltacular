@@ -7,18 +7,22 @@
 	export let title: string;
 	export let href: string | undefined = undefined;
 	export let active = false;
+	export let id: string | undefined = undefined;
 
-	const dispatch = createEventDispatcher<{ selectTab: string }>();
+	const getId = () => id || title.trim().toLocaleLowerCase().replaceAll(' ', '_') || uniqueId();
+
+	const dispatch = createEventDispatcher<{ selected: string }>();
 	const ctx = getContext<TabContext>(tabContext);
 	const tabStyle = ctx.style || 'traditional';
-	const id = uniqueId();
+	const _id = getId();
 
 	// Register this tab
-	ctx.register(id, title, active);
+	ctx.register(_id, title, active);
 
 	// Subscribe to future tab changes
 	const unsubscribe = ctx.active.subscribe((selectedId) => {
-		active = selectedId === id;
+		active = selectedId === _id;
+		if (active) dispatch('selected', _id);
 		if (active && href) {
 			console.log('Navigating to', href);
 			navigateTo(href);
@@ -29,7 +33,7 @@
 	onDestroy(() => unsubscribe());
 </script>
 
-<article class:active>
+<article class:active class={tabStyle}>
 	{#if active}
 		{#if $$slots.default}
 			<slot />

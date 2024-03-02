@@ -1,22 +1,45 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
+	import { createEventDispatcher, setContext } from 'svelte';
 	import { tabContext, type TabContext, type TabDefinition, type TabStyle } from './tab-context.js';
-	import { subscribable } from '$src/lib/index.js';
+	import { getAnchor, navigateToAnchor, subscribable } from '$src/lib/index.js';
 
 	export let style: TabStyle = 'traditional';
+	const dispatch = createEventDispatcher<{ change: string | null }>();
 
 	// Keep track of tabs
 	const tabs = writable<TabDefinition[]>([]);
 	const register = (id: string, name: string, isActive: boolean) => {
-		tabs.update((value) => [...value, { id, name }]);
-		if (isActive) active.set(id);
+		tabs.update((value) => [...value, { id, name, defaultActive: isActive }]);
+		checkActive();
+	};
+
+	// Check if tab exists
+	const tabExists = (id: string) => {
+		const value = $tabs;
+		return value.some((tab) => tab.id === id);
+	};
+
+	// Debounce check for active tag
+	let timeout: NodeJS.Timeout | null = null;
+	const checkActive = () => {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			const anchor = getAnchor();
+			if (anchor && tabExists(anchor)) active.set(anchor);
+			else {
+				const defaultActiveTab = $tabs.find((tab) => tab.defaultActive);
+				if (defaultActiveTab) active.set(defaultActiveTab.id);
+			}
+		}, 10);
 	};
 
 	// Active tab
 	const active = writable<string | null>(null);
 	const selectTab = (id: string) => {
 		active.set(id);
+		navigateToAnchor(id);
+		dispatch('change', id);
 	};
 
 	// Tab Context

@@ -102,6 +102,7 @@ export * from './types/date.js';
 export * from './types/form.js';
 // Helpers
 export * from './helpers/ago.js';
+export * from './helpers/anchor.js';
 export * from './helpers/capitalize.js';
 export * from './helpers/date.js';
 export * from './helpers/debounce.js';
