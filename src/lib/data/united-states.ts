@@ -60,4 +60,4 @@ export const US_States = [
 	{ name: 'Wyoming', value: 'WY', type: 'state' }
 ];
 
-export const US_StateCodes = US_States.map((row) => ({ ...row, name: row.value }));
+export const US_StateCodes = US_States.map((row, index) => ({ ...row, name: row.value, index }));

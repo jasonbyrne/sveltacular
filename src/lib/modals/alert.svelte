@@ -16,6 +16,7 @@
 	export let title: string | undefined = undefined;
 	export let size: FormFieldSizeOptions = 'md';
 	export let buttonText = 'OK';
+	export let buttonStyle: 'primary' | 'secondary' | 'danger' = 'primary';
 	export let showCloseButton = true;
 
 	const close = () => {
@@ -39,7 +40,7 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button on:click={close} size="full">
+				<Button on:click={close} size="full" style={buttonStyle}>
 					{buttonText}
 				</Button>
 			</DialogFooter>

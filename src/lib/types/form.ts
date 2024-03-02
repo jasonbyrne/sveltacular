@@ -15,7 +15,7 @@ export type DropdownOption = {
 	name: string;
 };
 
-export type MenuOption = DropdownOption & { index: number };
+export type MenuOption = DropdownOption & { index?: number };
 
 export type AllowedTextInputTypes = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
 

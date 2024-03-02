@@ -15,6 +15,8 @@
 	export let size: FormFieldSizeOptions = 'md';
 	export let yesText = 'Yes';
 	export let noText = 'No';
+	export let yesStyle: 'primary' | 'secondary' | 'danger' = 'primary';
+	export let noStyle: 'primary' | 'secondary' | 'danger' = 'secondary';
 	export let showCloseButton = true;
 
 	const dispatch = createEventDispatcher<{ yes: void; no: void }>();
@@ -45,10 +47,10 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button on:click={no} style="secondary" size="full">
+				<Button on:click={no} style={noStyle} size="full">
 					{noText}
 				</Button>
-				<Button on:click={yes} style="primary" size="full">
+				<Button on:click={yes} style={yesStyle} size="full">
 					{yesText}
 				</Button>
 			</DialogFooter>

@@ -16,6 +16,8 @@
 	export let size: FormFieldSizeOptions = 'md';
 	export let okText = 'Yes';
 	export let cancelText = 'No';
+	export let okStyle: 'primary' | 'secondary' | 'danger' = 'primary';
+	export let cancelStyle: 'primary' | 'secondary' | 'danger' = 'secondary';
 	export let showCloseButton = true;
 	export let placeholder = '';
 	export let type: AllowedTextInputTypes = 'text';
@@ -54,10 +56,10 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button on:click={no} style="secondary" size="full">
+				<Button on:click={no} style={cancelStyle} size="full">
 					{cancelText}
 				</Button>
-				<Button on:click={yes} style="primary" size="full">
+				<Button on:click={yes} style={okStyle} size="full">
 					{okText}
 				</Button>
 			</DialogFooter>
