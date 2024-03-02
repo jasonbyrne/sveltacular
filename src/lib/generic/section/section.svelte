@@ -7,11 +7,12 @@
 	export let title: string | undefined = undefined;
 	export let level: SectionLevel = 2;
 	export let size: FormFieldSizeOptions = 'full';
+	export let hidden = false;
 
 	setContext('section', { level, title });
 </script>
 
-<section class="level-{level} {size}">
+<section class="level-{level} {size}" class:hidden>
 	{#if title}
 		<Header />
 	{/if}
@@ -24,6 +25,10 @@
 		margin-top: 1rem;
 		margin-bottom: 1rem;
 		font-family: var(--base-font-family, sans-serif);
+
+		&.hidden {
+			display: none;
+		}
 
 		&.sm {
 			max-width: 25rem;
