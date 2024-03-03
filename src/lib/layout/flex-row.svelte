@@ -2,14 +2,27 @@
 	export let marginBottom: string | number = 0;
 	export let marginTop: string | number = 0;
 	export let gap: string | number = '1rem';
-	export let layout: 'stretch' | 'center' | 'end' | 'start' = 'stretch';
 	export let size: 'auto' | 'full' = 'full';
 	export let wrap = false;
+
+	export let justifyContent: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | 'baseline' = 'space-between';
+	export let alignItems: 'start' | 'center' | 'end' | 'stretch' | 'auto' = 'stretch';
+	export let alignContent: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch' = 'stretch';
+
+	$: _marginTop = typeof marginTop === 'number' ? `${marginTop}px` : marginTop;
+	$: _marginBottom = typeof marginBottom === 'number' ? `${marginBottom}px` : marginBottom;
+	$: _justifyContent = ['start', 'end'].includes(justifyContent) ? `flex-${justifyContent}` : ['between', 'around', 'evenly'].includes(justifyContent) ? `space-${justifyContent}` : justifyContent;
+	$: _alignContent = ['start', 'end'].includes(alignContent) ? `flex-${alignContent}` : ['between', 'around'].includes(alignContent) ? `space-${alignContent}` : alignContent;
+	$: _alignItems = ['start', 'end'].includes(alignItems) ? `flex-${alignItems}` : alignItems;
+	$: _gap = typeof gap === 'number' ? `${gap}px` : gap;
 </script>
 
 <div
-	style={`margin-top: ${marginTop}; margin-bottom: ${marginBottom}; gap: ${gap}`}
-	class="{layout} {size} {wrap ? 'wrap' : 'nowrap'}"
+	style={`
+		margin-top: ${_marginTop}; margin-bottom: ${_marginBottom}; gap: ${_gap}; 
+		justify-content: ${_justifyContent}; align-items: ${_alignItems}; align-content: ${_alignContent};
+	`}
+	class="size-{size} {wrap ? 'wrap' : 'nowrap'}"
 >
 	<slot />
 </div>
@@ -18,32 +31,15 @@
 	div {
 		display: flex;
 		width: 100%;
-		justify-content: center;
-		align-items: center;
 		flex-wrap: nowrap;
 		column-gap: 1rem;
 
-		&.auto {
+		&.size-auto {
 			width: auto;
 		}
 
 		&.wrap {
 			flex-wrap: wrap;
-		}
-
-		&.stretch {
-			justify-content: space-between;
-			align-items: stretch;
-		}
-
-		&.end {
-			justify-content: flex-end;
-			align-items: flex-end;
-		}
-
-		&.start {
-			justify-content: flex-start;
-			align-items: flex-start;
 		}
 	}
 </style>
