@@ -1,6 +1,14 @@
 <script lang="ts">
+	import { setContext } from "svelte";
+	import { listContext, type ListContext, type ListStyle } from "./list.js";
+
     export let type: 'unordered' | 'ordered' = 'unordered';
-    export let style: 'none' | 'disc' | 'circle' | 'square' | 'decimal' | 'decimal-leading-zero' = 'none';
+    export let style: ListStyle = 'none';
+
+    const ctx: ListContext = {
+		style,
+	};
+	setContext(listContext, ctx);
 </script>
 
 {#if type === 'unordered'}
@@ -17,6 +25,12 @@
 
     .none {
         list-style-type: none;
+        padding-left: 0.5rem;
+    }
+
+    .striped {
+        list-style-type: none;
+        padding-left: 0;
     }
 
     .disc {
