@@ -21,6 +21,7 @@
 			text-align: right;
 		}
 
+		&.check,
 		&.boolean {
 			text-align: center;
 			text-transform: uppercase;

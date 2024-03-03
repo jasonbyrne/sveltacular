@@ -4,9 +4,6 @@
 	export let width: number | string | undefined = undefined;
 
 	$: styleProperties = [
-		`text-align: ${
-			type === 'currency' || type === 'number' ? 'right' : type === 'boolean' ? 'center' : 'left'
-		}`,
 		'text-overflow: ellipsis',
 		'overflow: hidden',
 		`width: ${width ? width : 'auto'}`
@@ -28,12 +25,14 @@
 		letter-spacing: 0.015em;
 		text-transform: uppercase;
 		text-shadow: 1px 1px 1px black;
+		text-align: left;
 
 		&.currency,
 		&.number {
 			text-align: right;
 		}
 
+		&.check,
 		&.boolean {
 			text-align: center;
 		}

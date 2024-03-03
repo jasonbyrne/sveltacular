@@ -2,10 +2,12 @@
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	export let size: FormFieldSizeOptions = 'md';
-	export let style: 'standard' | 'badge' | 'square' = 'standard';
+	export let style: 'standard' | 'positive' | 'negative' = 'standard';
+	export let shape: 'circular' | 'square' | 'rounded' | 'badge' = 'rounded';
+	export let fill: 'solid' | 'outline' = 'solid';
 </script>
 
-<span class="pill {size} {style}">
+<span class="pill {size} {style} {shape} {fill}">
 	<slot />
 </span>
 
@@ -42,5 +44,38 @@
 		&.square {
 			border-radius: 0;
 		}
+
+		&.outline {
+			background-color: transparent;
+			border: 1px solid #4a5568;
+			color: #4a5568;
+		}
+
+		&.circular {
+			border-radius: 50%;
+		}
+
+		&.positive {
+			background-color: #0a5200;
+			color: #fff;
+
+			&.outline {
+				background-color: transparent;
+				border: 1px solid #0a5200;
+				color: #0a5200;
+			}
+		}
+
+		&.negative {
+			background-color: #570000;
+			color: #fff;
+
+			&.outline {
+				background-color: transparent;
+				border: 1px solid #570000;
+				color: #570000;
+			}
+		}
+
 	}
 </style>

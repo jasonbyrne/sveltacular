@@ -22,9 +22,13 @@
 </Story>
 
 <Story name="Badge">
-	<Pill size="lg" style="badge">Badge</Pill>
+	<Pill size="lg" shape="badge">Badge</Pill>
 </Story>
 
 <Story name="Square">
-	<Pill size="lg" style="square">Square</Pill>
+	<Pill size="lg" shape="square">Square</Pill>
+</Story>
+
+<Story name="Positive">
+	<Pill size="lg" shape="circular" style="positive">X</Pill>
 </Story>

@@ -10,21 +10,27 @@
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
 	import type { DataCol, DataRow, PaginationProperties } from '$src/lib/types/data.js';
+	import Button from '../forms/button/button.svelte';
 	import Empty from '../generic/empty/empty.svelte';
+	import Pill from '../generic/pill/pill.svelte';
 	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
 
-	type Action = undefined | ((row: DataRow) => unknown);
+	type Action = (row: DataRow) => unknown;
 	type PaginationEvent = (pagination: PaginationProperties) => Promise<DataRow[]>;
 
-	export let caption: string = '';
+	export let captionSide: 'top' | 'bottom' = 'top';
+	export let captionAlign: 'left' | 'center' | 'right' = 'center';
 	export let rows: DataRow[] | undefined = undefined;
 	export let cols: DataCol[];
 	export let pagination: PaginationProperties | undefined = undefined;
-	export let editRow: Action = undefined;
-	export let deleteRow: Action = undefined;
+
+	export let actions: {
+		text: string;
+		onClick: Action
+	}[] = [];
 
 	/**
 	 * Handle page change, which should return the new filtered/fetched rows.
@@ -35,14 +41,6 @@
 		if (col.type) return col.type;
 		if (!rows?.length) return 'string';
 		return typeof rows[0][col.key];
-	};
-
-	const clickEdit = async (row: DataRow) => {
-		if (editRow) await editRow(row);
-	};
-
-	const clickDelete = async (row: DataRow) => {
-		if (deleteRow) await deleteRow(row);
 	};
 
 	const format = (row: DataRow, key: string) => {
@@ -80,15 +78,15 @@
 		return rows.filter((_row, index) => index >= startIndex && index < endIndex);
 	};
 
-	$: hasActionRow = editRow || deleteRow;
-	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionRow ? 1 : 0);
+	$: hasActionCol = actions.length > 0;
+	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionCol ? 1 : 0);
 	$: totalPages = pagination && rows ? calculateTotalPages() : 1;
 	$: filteredRows = rows && pagination ? filterRows() : rows;
 </script>
 
 <Table>
-	{#if caption}
-		<TableCaption>{caption}</TableCaption>
+	{#if $$slots.default}
+		<TableCaption side={captionSide} align={captionAlign}><slot /></TableCaption>
 	{/if}
 	<TableHeader>
 		<TableHeaderRow>
@@ -97,7 +95,7 @@
 					<TableHeaderCell type={getColType(col)} width={col.width}>{col.label}</TableHeaderCell>
 				{/if}
 			{/each}
-			{#if hasActionRow}
+			{#if hasActionCol}
 				<TableHeaderCell type="string" />
 			{/if}
 		</TableHeaderRow>
@@ -125,20 +123,23 @@
 							<TableCell type={col.type || typeof row[col.key]} width={col.width}>
 								{#if col.link}
 									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
+								{:else if col.type == 'email' && row[col.key]}
+									<a href={`mailto:${row[col.key]}`}>{format(row, col.key)}</a>
+								{:else if col.type == 'check'}
+									{#if row[col.key]}
+										<Pill shape="circular" style="positive">✔</Pill>
+									{/if}
 								{:else}
 									{format(row, col.key)}
 								{/if}
 							</TableCell>
 						{/if}
 					{/each}
-					{#if hasActionRow}
+					{#if hasActionCol}
 						<TableCell type="actions">
-							{#if editRow}
-								<button type="button" on:click={() => clickEdit(row)}>Edit</button>
-							{/if}
-							{#if deleteRow}
-								<button type="button" on:click={() => clickDelete(row)}>Delete</button>
-							{/if}
+							{#each actions as action}
+								<Button collapse={true} size="sm" type="button" on:click={() => action.onClick(row)}>{action.text}</Button>
+							{/each}
 						</TableCell>
 					{/if}
 				</TableRow>
@@ -171,19 +172,7 @@
 	}
 
 	a {
-		color: var(--table-link-fg, #00f);
-		text-decoration: none;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
-	button {
-		background: none;
-		border: none;
-		cursor: pointer;
-		color: var(--table-link-fg, #00f);
+		color: var(--table-link-fg, rgb(0, 0, 200));
 		text-decoration: none;
 
 		&:hover {

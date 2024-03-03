@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import DataGrid from './data-grid.svelte';
-	import { countriesArray } from '$src/lib/data/countries.js';
+	import { Countries } from '$src/lib/data/countries.js';
 	import type { PaginationProperties } from '../index.js';
 
 	const rows = [
@@ -47,9 +47,9 @@
 		{
 			key: 'email',
 			label: 'Email',
-			link: (row: Record<string, unknown>, key: string) => `mailto:${row[key]}`
+			type: 'email',
 		},
-		{ key: 'isActive', label: 'Active?' },
+		{ key: 'isActive', label: 'Active?', type: 'check'},
 		{
 			key: 'salary',
 			label: 'Salary',
@@ -78,32 +78,31 @@
 <Meta title="Tables/DataGrid" component={DataGrid} />
 
 <Story name="Standard">
-	<DataGrid {rows} {cols} caption="Employees" />
+	<DataGrid {rows} {cols} >Employees</DataGrid>
 </Story>
 
 <Story name="With Edit">
-	<DataGrid {rows} {cols} caption="Employees" editRow={() => true} />
+	<DataGrid {rows} {cols} actions={[{ text: 'Edit', onClick: () => true}]}>Employees</DataGrid>
 </Story>
 
 <Story name="With Pagination">
 	<DataGrid
-		rows={countriesArray}
+		rows={Countries}
 		cols={countryCols}
-		caption="Countries"
 		pagination={{
 			page: 4,
 			perPage: 5,
-			total: countriesArray.length
+			total: Countries.length
 		}}
-	/>
+	>Countries</DataGrid>
 </Story>
 
 <Story name="No Data">
-	<DataGrid rows={[]} {cols} caption="Employees" />
+	<DataGrid rows={[]} {cols} >Employees</DataGrid>
 </Story>
 
 <Story name="Bad Columns">
-	<DataGrid {rows} cols={[...cols, badCol]} caption="Employees" {pagination} />
+	<DataGrid {rows} cols={[...cols, badCol]} {pagination}>Employees</DataGrid>
 </Story>
 
 <Story name="No Columns">

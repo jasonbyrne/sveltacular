@@ -1,4 +1,9 @@
-<caption>
+<script lang="ts">
+	export let side: 'top' | 'bottom' = 'top';
+	export let align: 'left' | 'center' | 'right' = 'center';
+</script>
+
+<caption class="{side} {align}">
 	<slot />
 </caption>
 
@@ -12,5 +17,19 @@
 		text-transform: uppercase;
 		font-family: sans-serif;
 		text-shadow: 1px 1px 1px black;
+		text-align: center;
+		caption-side: top;
+
+		&.bottom {
+			caption-side: bottom;
+		}
+
+		&.left {
+			text-align: left;
+		}
+
+		&.right {
+			text-align: right;
+		}
 	}
 </style>
