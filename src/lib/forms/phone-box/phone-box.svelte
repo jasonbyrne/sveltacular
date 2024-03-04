@@ -34,6 +34,7 @@
 
 	const publishChange = () => {
 		value = cleanValue(`${areaCode}${localExt}${lastFour}`);
+		console.log('publishChange', value);
 		dispatch('change', value);
 		return value;
 	};
@@ -65,7 +66,7 @@
 		props.target.value = newValue.slice(0, props.maxLength);
 		// Then focus on the next input
 		if (newValue.length >= props.maxLength) {
-			if (props.nextInput) props.nextInput.focus();
+			setTimeout(() => props.nextInput && props.nextInput.focus(), 1);
 		}
 	};
 
@@ -94,7 +95,6 @@
 			return isDelete ? props.value.slice(0, -1) : props.value + event.key;
 		})();
 		if (newValue.length >= props.maxLength) {
-			event.preventDefault();
 			props.target.value = newValue.slice(0, props.maxLength);
 			if (props.nextInput) props.nextInput.focus();
 		}

@@ -3,7 +3,7 @@
 	import MobilePhoneIcon from '$src/lib/icons/mobile-phone-icon.svelte';
 	import PhoneIcon from '$src/lib/icons/phone-icon.svelte';
 
-	export let phoneNumber: string;
+	export let value: string;
 	export let type: 'sms' | 'mobile' | 'home' | 'work' | 'fax' | 'other' = 'mobile';
 
 	const getDigits = (phoneNumber: string) => {
@@ -19,8 +19,8 @@
 		return phoneNumber;
 	};
 
-	$: formattedPhoneNumber = formatPhoneNumber(phoneNumber);
-	$: phoneNumberDigits = getDigits(phoneNumber);
+	$: formattedPhoneNumber = formatPhoneNumber(value);
+	$: phoneNumberDigits = getDigits(value);
 	$: protocol = type === 'sms' ? 'sms:' : 'tel:';
 	$: isCellPhone = type == 'mobile' || type == 'sms';
 </script>
