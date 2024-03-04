@@ -11,17 +11,21 @@
 	export let open = false;
 	export let size: FormFieldSizeOptions = 'md';
 	export let showCloseButton = true;
+	export let dismissable = true;
 
 	const close = () => {
+		if (!dismissable) return;
 		dispatch('close');
 		open = false;
 	};
+
+	$: _showCloseButton = dismissable && showCloseButton;
 </script>
 
 {#if open}
 	<Overlay on:click={close}>
 		<Dialog {size}>
-			<DialogCloseButton show={showCloseButton} on:click={close} />
+			<DialogCloseButton show={_showCloseButton} on:click={close} />
 			<DialogBody>
 				<slot />
 			</DialogBody>

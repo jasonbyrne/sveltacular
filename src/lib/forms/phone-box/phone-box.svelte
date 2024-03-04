@@ -9,15 +9,28 @@
 
 	const id = uniqueId();
 	const dispatch = createEventDispatcher<{ change: string }>();
-	let areaCode: string;
-	let localExt: string;
-	let lastFour: string;
+	const fieldOrder = ['areaCode', 'localExt', 'lastFour'];
+	let areaCode = '';
+	let localExt = '';
+	let lastFour = '';
+
+	const getValueByField = (field: string) => {
+		if (field === 'areaCode') return areaCode;
+		if (field === 'localExt') return localExt;
+		if (field === 'lastFour') return lastFour;
+		return '';
+	};
+
+	const getValueByIndex = (index: number) => {
+		return getValueByField(fieldOrder[index]);
+	};
 
 	const getTargetProperties = (event: Event) => {
 		const target = event.target as HTMLInputElement;
 		const name = target.getAttribute('name');
-		const nextId = name == 'areaCode' ? 'localExt' : name == 'localExt' ? 'lastFour' : 'areaCode';
-		const prevId = name == 'areaCode' ? 'lastFour' : name == 'localExt' ? 'areaCode' : 'localExt';
+		const currentIndex = fieldOrder.indexOf(name ?? 'areaCode');
+		const nextId = currentIndex == 2 ? null : fieldOrder[currentIndex + 1];
+		const prevId = currentIndex == 0 ? null : fieldOrder[currentIndex - 1];
 		return {
 			target,
 			name,
@@ -32,9 +45,12 @@
 		return value.replace(/[^0-9]/g, '').slice(0, 10);
 	};
 
+	const getCombinedValue = () => {
+		return cleanValue(`${areaCode}${localExt}${lastFour}`);
+	};
+
 	const publishChange = () => {
-		value = cleanValue(`${areaCode}${localExt}${lastFour}`);
-		console.log('publishChange', value);
+		value = getCombinedValue();
 		dispatch('change', value);
 		return value;
 	};
@@ -65,18 +81,20 @@
 		// Otherwise, just accept it into the current input
 		props.target.value = newValue.slice(0, props.maxLength);
 		// Then focus on the next input
-		if (newValue.length >= props.maxLength) {
-			setTimeout(() => props.nextInput && props.nextInput.focus(), 1);
+		if (newValue.length >= props.maxLength && props.nextInput) {
+			props.nextInput.focus();
 		}
 	};
 
 	// Key down event handler, don't accept non-numeric characters
-	const keyDown = (event: KeyboardEvent) => {
+	const keyUp = (event: KeyboardEvent) => {
 		const props = getTargetProperties(event);
-		const isDelete = event.key === 'Delete' || event.key === 'Backspace';
+		const isBackspace = event.key === 'Backspace';
+		const isDelete = event.key === 'Delete';
+		const isBackspaceOrDelete = isBackspace || isDelete;
 		const isNumeric = !isNaN(Number(event.key));
 		const isCursorHighlighting = props.target.selectionStart !== props.target.selectionEnd;
-		const isAcceptable = isNumeric || isDelete;
+		const isAcceptable = isNumeric || isBackspaceOrDelete;
 		const isRightArrow = event.key === 'ArrowRight' || event.key === 'Tab';
 		const isLeftArrow = event.key === 'ArrowLeft';
 		// If they are trying to move the cursor, let them
@@ -88,18 +106,23 @@
 			if (isCursorHighlighting) {
 				const start = props.target.selectionStart || 0;
 				const end = props.target.selectionEnd || 0;
-				return isDelete
+				return isBackspaceOrDelete
 					? props.value.slice(0, start) + props.value.slice(end)
 					: props.value.slice(0, start) + event.key + props.value.slice(end);
 			}
-			return isDelete ? props.value.slice(0, -1) : props.value + event.key;
+			return props.value;
 		})();
 		if (newValue.length >= props.maxLength) {
+			console.log(event.key);
 			props.target.value = newValue.slice(0, props.maxLength);
 			if (props.nextInput) props.nextInput.focus();
 		}
 		// If backspace and the length is now 0, focus the previous input
-		if (isDelete && newValue.length === 0 && props.prevId) props.prevId.focus();
+		if (isBackspace) {
+			if (newValue.length === 0 && props.prevId) {
+				props.prevId.focus();
+			}
+		}
 	};
 
 	// Set the initial value
@@ -119,8 +142,8 @@
 				id="{id}-areaCode"
 				type="text"
 				on:input={valueChanged}
+				on:keyup={keyUp}
 				on:change={valueChanged}
-				on:keypress={keyDown}
 				bind:value={areaCode}
 				name="areaCode"
 				data-maxlength="3"
@@ -133,7 +156,7 @@
 				type="text"
 				on:input={valueChanged}
 				on:change={valueChanged}
-				on:keypress={keyDown}
+				on:keyup={keyUp}
 				bind:value={localExt}
 				name="localExt"
 				data-maxlength="3"
@@ -146,7 +169,7 @@
 				type="text"
 				on:input={valueChanged}
 				on:change={valueChanged}
-				on:keypress={keyDown}
+				on:keyup={keyUp}
 				bind:value={lastFour}
 				name="lastFour"
 				data-maxlength="4"

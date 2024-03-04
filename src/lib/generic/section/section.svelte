@@ -8,13 +8,14 @@
 	export let level: SectionLevel = 2;
 	export let size: FormFieldSizeOptions = 'full';
 	export let hidden = false;
+	export let align: 'left' | 'center' | 'right' = 'left';
 
 	setContext('section', { level, title });
 </script>
 
-<section class="level-{level} {size}" class:hidden>
+<section class="level-{level} {size} {align}" class:hidden>
 	{#if title}
-		<Header />
+		<Header {level} />
 	{/if}
 	<slot />
 </section>
@@ -25,6 +26,14 @@
 		margin-top: 1rem;
 		margin-bottom: 1rem;
 		font-family: var(--base-font-family, sans-serif);
+
+		&.center {
+			text-align: center;
+		}
+
+		&.right {
+			text-align: right;
+		}
 
 		&.hidden {
 			display: none;

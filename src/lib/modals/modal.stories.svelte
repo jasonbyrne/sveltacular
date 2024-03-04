@@ -13,6 +13,13 @@
 	</Modal>
 </Story>
 
+
+<Story name="Non-Dismissable">
+	<Modal open dismissable={false}>
+		<p>Modal content</p>
+	</Modal>
+</Story>
+
 <Story name="Modal (Small)">
 	<Modal open size="sm">
 		<DialogHeader>Title</DialogHeader>

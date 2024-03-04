@@ -52,14 +52,14 @@ export { default as FlexCol } from './layout/flex-col.svelte';
 export { default as FlexRow } from './layout/flex-row.svelte';
 export { default as FlexItem } from './layout/flex-item.svelte';
 // Modals
-export { default as AlertModal } from './modals/alert.svelte';
-export { default as ConfirmModal } from './modals/confirm.svelte';
-export { default as PromptModal } from './modals/prompt.svelte';
+export { default as Alert } from './modals/alert.svelte';
+export { default as Confirm } from './modals/confirm.svelte';
+export { default as Modal } from './modals/modal.svelte';
+export { default as Prompt } from './modals/prompt.svelte';
 export { default as DialogBody } from './modals/dialog-body.svelte';
 export { default as DialogFooter } from './modals/dialog-footer.svelte';
 export { default as DialogHeader } from './modals/dialog-header.svelte';
 export { default as DialogWindow } from './modals/dialog-window.svelte';
-export { default as Modal } from './modals/modal.svelte';
 // Navigation
 export { default as Accordian } from './navigation/accordian/accordian.svelte';
 export { default as AppBar } from './navigation/app-bar/app-bar.svelte';

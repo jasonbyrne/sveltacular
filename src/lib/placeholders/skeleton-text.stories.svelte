@@ -10,3 +10,10 @@
 	<SkeletonText />
 	<SkeletonText />
 </Story>
+
+
+<Story name="Pulse">
+	<SkeletonText animation="pulse" />
+	<SkeletonText animation="pulse" />
+	<SkeletonText animation="pulse" />
+</Story>
