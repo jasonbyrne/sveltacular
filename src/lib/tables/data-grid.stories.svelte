@@ -2,7 +2,17 @@
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import DataGrid from './data-grid.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
-	import type { PaginationProperties } from '../index.js';
+	import type { DataCol, JsonObject, PaginationProperties } from '../index.js';
+
+	interface MyRow extends JsonObject {
+		id: number;
+		name: string;
+		age: number;
+		email: string;
+		isActive: boolean;
+		salary: number;
+		updatedAt: string;
+	};
 
 	const rows = [
 		{
@@ -41,11 +51,11 @@
 			salary: 85733,
 			updatedAt: '2021-01-01T00:00:00Z'
 		}
-	];
+	] satisfies MyRow[];
 
 	const badCol = { key: 'foobar', label: 'Foo' };
 
-	const cols = [
+	const cols: DataCol[] = [
 		{ key: 'name', label: 'Name' },
 		{ key: 'age', label: 'Age' },
 		{
@@ -57,7 +67,7 @@
 		{
 			key: 'salary',
 			label: 'Salary',
-			format: (row: Record<string, unknown>, key: string) => 
+			format: (row, key) => 
 				new Intl.NumberFormat('en-US', {
 					style: 'currency',
 					currency: 'USD',

@@ -9,7 +9,7 @@
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
-	import type { DataCol, DataRow, PaginationProperties } from '$src/lib/types/data.js';
+	import type { DataCol, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
 	import Button from '../forms/button/button.svelte';
 	import Empty from '../generic/empty/empty.svelte';
 	import Pill from '../generic/pill/pill.svelte';
@@ -19,12 +19,12 @@
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
 
-	type Action = (row: DataRow) => unknown;
-	type PaginationEvent = (pagination: PaginationProperties) => Promise<DataRow[]>;
+	type Action = (row: JsonObject) => unknown;
+	type PaginationEvent = (pagination: PaginationProperties) => Promise<JsonObject[]>;
 
 	export let captionSide: 'top' | 'bottom' = 'top';
 	export let captionAlign: 'left' | 'center' | 'right' = 'center';
-	export let rows: DataRow[] | undefined = undefined;
+	export let rows: JsonObject[] | undefined = undefined;
 	export let cols: DataCol[];
 	export let pagination: PaginationProperties | undefined = undefined;
 
@@ -41,18 +41,20 @@
 	const getColType = (col: DataCol) => {
 		if (col.type) return col.type;
 		if (!rows?.length) return 'string';
-		return typeof rows[0][col.key];
+		const firstRow = rows[0];
+		if (!firstRow) return 'undefined';
+		if (col.key in firstRow) return typeof firstRow[col.key];
 	};
 
-	const format = (row: DataRow, key: string) => {
+	const format = <T extends JsonObject>(row: T, key: string): string => {
 		const col = cols.find((col) => col.key === key);
-		if (!col) return row[key];
+		if (!col) return key in row ? String(row[key]) : '';
 		if ((row[key] === null || row[key] === undefined) && col.nullText) return col.nullText;
 		if (String(row[key]).trim() === '' && col.emptyText) return col.emptyText;
 		if (col.format) return col.format(row, key);
 		if (col.type === 'date') return formatDateTime(String(row[key])).substring(0, 10);
 		if (col.type === 'date-time') return formatDateTime(String(row[key]));
-		return row[key];
+		return String(row[key]);
 	};
 
 	const calculateTotalPages = () => {
