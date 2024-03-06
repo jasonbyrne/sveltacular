@@ -121,3 +121,10 @@ export const isDateOrDateTimeString = (dateOrDateTime: unknown): dateOrDateTime 
 	if (typeof dateOrDateTime !== 'string') return false;
 	return isDateString(dateOrDateTime) || isDateTimeString(dateOrDateTime);
 };
+
+export const formatDateTime = (dateTime: string | Date) => {
+	const date = new Date(dateTime);
+	const offset = date.getTimezoneOffset();
+	date.setMinutes(date.getMinutes() - offset);
+	return date.toISOString().split('.')[0].slice(0, -3);
+};

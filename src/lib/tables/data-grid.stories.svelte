@@ -11,7 +11,8 @@
 			age: 30,
 			email: 'john.doe@gmail.com',
 			isActive: false,
-			salary: 100000
+			salary: 100000,
+			updatedAt: '2021-01-01T00:00:00Z'
 		},
 		{
 			id: 2,
@@ -19,7 +20,8 @@
 			age: 79,
 			email: 'jd1954@aol.com',
 			isActive: true,
-			salary: 50000
+			salary: 50000,
+			updatedAt: '2021-01-01T00:00:00Z'
 		},
 		{
 			id: 3,
@@ -27,7 +29,8 @@
 			age: 35,
 			email: 'johnnyboy23@yahoo.com',
 			isActive: false,
-			salary: 75000
+			salary: 75000,
+			updatedAt: '2021-01-01T00:00:00Z'
 		},
 		{
 			id: 4,
@@ -35,7 +38,8 @@
 			age: 40,
 			email: 'countrySky983@live.com',
 			isActive: false,
-			salary: 85733
+			salary: 85733,
+			updatedAt: '2021-01-01T00:00:00Z'
 		}
 	];
 
@@ -53,13 +57,17 @@
 		{
 			key: 'salary',
 			label: 'Salary',
-			format: (row: Record<string, unknown>, key: string) => {
-				return new Intl.NumberFormat('en-US', {
+			format: (row: Record<string, unknown>, key: string) => 
+				new Intl.NumberFormat('en-US', {
 					style: 'currency',
 					currency: 'USD',
 					maximumFractionDigits: 0
-				}).format(row[key] as number);
-			}
+				}).format(row[key] as number)
+		},
+		{
+			key: 'updatedAt',
+			label: 'Updated',
+			type: 'date',
 		}
 	];
 

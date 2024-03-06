@@ -3,13 +3,14 @@
 
 	export let size: FormFieldSizeOptions = 'md';
 	export let style: 'standard' | 'positive' | 'negative' = 'standard';
-	export let shape: 'circular' | 'square' | 'rounded' | 'badge' = 'rounded';
+	export let shape: 'circular' | 'square' | 'rounded' | 'badge' | 'circle' = 'rounded';
 	export let fill: 'solid' | 'outline' = 'solid';
+	export let compact = false;
 </script>
 
-<span class="pill {size} {style} {shape} {fill}">
-	<slot />
-</span>
+<div class="pill {size} {style} {shape} {fill}" class:compact>
+	<span><slot /></span>
+</div>
 
 <style lang="scss">
 	.pill {
@@ -21,6 +22,10 @@
 		font-weight: 500;
 		color: #4a5568;
 		font-family: var(--base-font-family, sans-serif);
+
+		&.compact {
+			padding: 0.125rem;
+		}
 
 		&.sm {
 			font-size: 0.625rem;
@@ -53,6 +58,36 @@
 
 		&.circular {
 			border-radius: 50%;
+		}
+
+		&.circle {
+			border-radius: 50%;
+			width: 1.75rem;
+			height: 1.75rem;
+			position: relative;
+
+			&.sm {
+				width: 1.25rem;
+				height: 1.25rem;
+			}
+
+			&.lg {
+				width: 2.25rem;
+				height: 2.25rem;
+			}
+
+			&.xl {
+				width: 3rem;
+				height: 3rem;
+			}
+
+			span {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
+			}
 		}
 
 		&.positive {

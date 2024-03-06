@@ -14,6 +14,7 @@
 	import Empty from '../generic/empty/empty.svelte';
 	import Pill from '../generic/pill/pill.svelte';
 	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
+	import { formatDateTime } from '../index.js';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
@@ -49,6 +50,8 @@
 		if ((row[key] === null || row[key] === undefined) && col.nullText) return col.nullText;
 		if (String(row[key]).trim() === '' && col.emptyText) return col.emptyText;
 		if (col.format) return col.format(row, key);
+		if (col.type === 'date') return formatDateTime(String(row[key])).substring(0, 10);
+		if (col.type === 'date-time') return formatDateTime(String(row[key]));
 		return row[key];
 	};
 
@@ -123,11 +126,11 @@
 							<TableCell type={col.type || typeof row[col.key]} width={col.width}>
 								{#if col.link}
 									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
-								{:else if col.type == 'email' && row[col.key]}
+									{:else if col.type == 'email' && row[col.key]}
 									<a href={`mailto:${row[col.key]}`}>{format(row, col.key)}</a>
 								{:else if col.type == 'check'}
 									{#if row[col.key]}
-										<Pill shape="circular" style="positive">✔</Pill>
+										<Pill shape="circle" style="positive" compact>✔</Pill>
 									{/if}
 								{:else}
 									{format(row, col.key)}
