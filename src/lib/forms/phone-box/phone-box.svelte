@@ -113,7 +113,6 @@
 			return props.value;
 		})();
 		if (newValue.length >= props.maxLength) {
-			console.log(event.key);
 			props.target.value = newValue.slice(0, props.maxLength);
 			if (props.nextInput) props.nextInput.focus();
 		}

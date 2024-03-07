@@ -16,7 +16,7 @@
 </Story>
 
 <Story name="Cents">
-	<MoneyBox bind:value={valueInCents} isCents allowCents size="md">Membership Dues</MoneyBox>
+	<MoneyBox bind:value={valueInCents} units="cents" allowCents size="md">Membership Dues</MoneyBox>
 	<Button on:click={() => valueInCents = 0}>Reset</Button>
 	<Button on:click={() => valueInCents = 2500}>Set to $25</Button>
 	{valueInCents}
