@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import MoneyBox from './money-box.svelte';
+	import Button from '../button/button.svelte';
 
 	let valueInCents = 2500;
 	let valueInDollars = 100;
@@ -15,6 +16,8 @@
 </Story>
 
 <Story name="Cents">
-	<MoneyBox bind:value={valueInCents} isCents allowCents>Membership Dues</MoneyBox>
+	<MoneyBox bind:value={valueInCents} isCents allowCents size="md">Membership Dues</MoneyBox>
+	<Button on:click={() => valueInCents = 0}>Reset</Button>
+	<Button on:click={() => valueInCents = 2500}>Set to $25</Button>
 	{valueInCents}
 </Story>
