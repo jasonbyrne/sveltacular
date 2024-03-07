@@ -10,10 +10,17 @@
 	export let step = 1;
 	export let min = 0;
 	export let max = 1000000;
+	export let isCents = false;
 
+	let innerValue: number | null = isCents && value ? Math.round(value / 100) : value;
 	$: decimals = allowCents ? 2 : 0;
+
+	const onChange = (e: CustomEvent<number | null>) => {
+		const dollars = e.detail;
+		if (dollars !== null) value = isCents ? Math.round(dollars * 100) : dollars;
+	};
 </script>
 
-<NumberBox bind:value prefix={symbol} {decimals} {placeholder} {size} {min} {max} {step}
-	><slot /></NumberBox
->
+<NumberBox bind:value={innerValue} prefix={symbol} {decimals} {placeholder} {size} {min} {max} {step} on:change={onChange}>
+	<slot />
+</NumberBox>

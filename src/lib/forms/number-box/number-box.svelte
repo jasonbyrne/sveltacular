@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { formatNumber, roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
+	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import { createEventDispatcher } from 'svelte';
 
 	const id = uniqueId();
+	const dipatch = createEventDispatcher<{ change: number | null; }>();
 
 	type AllowedInputTypes = 'number' | 'currency';
 
@@ -25,6 +27,26 @@
 		if (value < min) value = min;
 		if (value > max) value = max;
 		value = roundToDecimals(value, decimals);
+		dipatch('change', value);
+	};
+
+	const onInput = (e: Event) => {
+		const input = e.target as HTMLInputElement;
+		const newValue = parseFloat(input.value);
+		if (isNaN(newValue)) return;
+		value = newValue;
+	};
+
+	// Don't allow certain characters to be typed into the input
+	const onKeyPress = (e: KeyboardEvent) => {
+		const isNumber = !isNaN(Number(e.key));
+		const isDecimal = e.key === '.';
+		const isAllowed = isNumber || isDecimal || ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key);
+		if (!isAllowed) return e.preventDefault();
+		if (isDecimal && decimals === 0) return e.preventDefault();
+		const newValue = `${value}${e.key}`;
+		const decimalPart = newValue.split('.')[1];
+		if (decimalPart && decimalPart.length > decimals) return e.preventDefault();
 	};
 </script>
 
@@ -46,6 +68,8 @@
 			{min}
 			{max}
 			on:change={valueChanged}
+			on:input={onInput}
+			on:keypress={onKeyPress}
 		/>
 
 		{#if suffix}
