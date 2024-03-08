@@ -111,9 +111,11 @@ export * from './helpers/debounce.js';
 export * from './helpers/navigate-to.js';
 export * from './helpers/nobr.js';
 export * from './helpers/random.js';
+export * from './helpers/remove-properties.js';
 export * from './helpers/round-to-decimals.js';
 export * from './helpers/split-new-lines.js';
 export * from './helpers/subscribable.js';
+export * from './helpers/transform.js';
 export * from './helpers/ucfirst.js';
 export * from './helpers/unique-id.js';
 // Data

@@ -64,7 +64,7 @@ export const addUnits = (value: number, units: DateUnit, fromDateTime?: string |
 };
 
 // Convert datetime from YYYY-MM-DDTHH:MM+TZ format to YYYY-MM-DD HH:MM format
-export const dateTimeFromSupabase = (dateTime: string | null) => {
+export const dateTimeFromTz = (dateTime: string | null) => {
 	if (!dateTime) return '';
 	const date = new Date(dateTime);
 	const offset = date.getTimezoneOffset();
@@ -73,7 +73,7 @@ export const dateTimeFromSupabase = (dateTime: string | null) => {
 };
 
 // Convert datetime from YYYY-MM-DD HH:MM format to YYYY-MM-DDTHH:MM+TZ format
-export const dateTimeToSupabase = (dateTime: string) => {
+export const dateTimeToTz = (dateTime: string) => {
 	if (!dateTime) return null;
 	const date = new Date(dateTime);
 	const offset = date.getTimezoneOffset();
@@ -84,14 +84,14 @@ export const dateTimeToSupabase = (dateTime: string) => {
 /*
  * Convert datetime to human-readable format with AM/PM, no seconds
  */
-export const dateTimeToHuman = (dateTime: string) => {
+export const dateTimeToHuman = (dateTime: string, locale = 'en-US') => {
 	const date = new Date(dateTime);
-	const datePart = date.toLocaleString('en-US', {
+	const datePart = date.toLocaleString(locale, {
 		month: 'long',
 		day: 'numeric',
 		year: 'numeric'
 	});
-	const timePart = date.toLocaleString('en-US', {
+	const timePart = date.toLocaleString(locale, {
 		hour: 'numeric',
 		minute: 'numeric',
 		timeZoneName: 'short'
@@ -99,9 +99,17 @@ export const dateTimeToHuman = (dateTime: string) => {
 	return `${datePart} @ ${timePart}`;
 };
 
+export const toDateTime = (date?: string | Date) => {
+	return date ? new Date(date) : new Date();
+};
+
+export const toDate = (date?: Date | string) => {
+	return toDateTime(date).toISOString().split('T')[0];
+};
+
 // From JavaScript date to YYYY-MM-DD HH:MM format
-export const dateTimeToInput = (dateTime?: Date) => {
-	dateTime = dateTime || new Date();
+export const dateTimeToInput = (dateTime?: Date | string) => {
+	dateTime = toDateTime(dateTime);
 	const offset = dateTime.getTimezoneOffset();
 	dateTime.setMinutes(dateTime.getMinutes() - offset);
 	return dateTime.toISOString().split('.')[0].slice(0, -3);
@@ -127,4 +135,24 @@ export const formatDateTime = (dateTime: string | Date) => {
 	const offset = date.getTimezoneOffset();
 	date.setMinutes(date.getMinutes() - offset);
 	return date.toISOString().split('.')[0].slice(0, -3);
+};
+
+export const toHumanReadableDuration = (duration: number, singularUnits: string) => {
+	return duration > 0 && duration <= 1
+		? `${duration} ${singularUnits}`
+		: `${duration} ${singularUnits}s`;
+};
+
+export const diffDates = (start: string | Date, end: string | Date) => {
+	const startDate = new Date(start);
+	const endDate = new Date(end);
+	const duration = endDate.getTime() - startDate.getTime();
+	return duration;
+};
+
+export const isBetween = (date: string | Date, start: string | Date, end: string | Date) => {
+	const dateToCheck = new Date(date);
+	const startDate = new Date(start);
+	const endDate = new Date(end);
+	return dateToCheck >= startDate && dateToCheck <= endDate;
 };
