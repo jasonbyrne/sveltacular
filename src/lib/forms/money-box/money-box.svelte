@@ -3,7 +3,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
-	import { get } from 'svelte/store';
 	
 	const id = uniqueId();
 	const dipatch = createEventDispatcher<{ change: number | null; }>();
@@ -19,32 +18,31 @@
 	export let min: number = 0;
 	export let max: number | null = null;
 
-	let isValueInCents = units === 'cents';
-
-	$: if (value !== null && value >= 0) {
-		dollars = getDollarsFromValue();
-		cents = getCentsFromValue();
-	}
-
 	const getDollarsFromValue = () => {
-		if (!value) return 0;
-		if (isValueInCents) return Math.floor(value / 100);
-		return Math.floor(value);
+		if (!value) return '0';
+		if (isValueInCents) return String(Math.abs(Math.floor(value / 100)));
+		return String(Math.abs(Math.floor(value)));
 	}
 
 	const getCentsFromValue = () => {
-		if (!value) return 0;
-		if (isValueInCents) return Math.round(value % 100);
-		return Math.round((value - Math.floor(value)) * 100);
+		if (!value) return '00';
+		if (isValueInCents) return String(Math.abs(Math.round(value % 100))).padStart(2, '0');
+		return String(Math.abs(Math.round((value % 1) * 100))).padStart(2, '0');
 	}
 
+
+	let isValueInCents = units === 'cents';
 	const fieldOrder = ['dollars', 'cents'];
-	let dollars = getDollarsFromValue();
-	let cents = getCentsFromValue();
+	let dollars: string = getDollarsFromValue();
+	let cents: string = getCentsFromValue();
 	let lastState = [
 		{ value: String(dollars), selectionStart: 0, selectionEnd: 0 },
 		{ value: String(cents), selectionStart: 0, selectionEnd: 0 }
 	];
+	$: if (value !== null && value >= 0) {
+		dollars = getDollarsFromValue();
+		cents = getCentsFromValue();
+	}
 
 	const getTargetProperties = (e: KeyboardEvent | Event) => {
 		const target = e.target as HTMLInputElement;
@@ -91,17 +89,16 @@
 		};
 	};
 
-	const isNumericString = (value: string) => {
+	const isNumericString = (value: string | number) => {
 		return !isNaN(Number(value));
 	};
 
 	const moveExtraCentsToDollars = (centsValue: string, append = true) => {
 		if (centsValue.length > 2 && isNumericString(centsValue) && Number(centsValue) > 0) {
-			console.log('move to dollars');
 			const whole = centsValue.substring(0, centsValue.length -2);
 			const decimal = centsValue.substring(centsValue.length -2);
-			dollars = Number(append ? `${dollars}${whole}` : whole);
-			cents = Number(decimal);
+			dollars = append ? `${dollars}${whole}` : whole;
+			cents = decimal;
 		}
 	};
 
@@ -124,7 +121,6 @@
 		const target = getTargetProperties(e);
 		// Back arrow
 		if (target.key === 'ArrowLeft' && !target.isHighligted && target.previous && target.lastState.selectionStart === 0) {
-			console.log(target);
 			const preservedValue = String(target.previous.value);
 			focusAndHighlightText(target.previous);
 			target.previous.value = preservedValue;
@@ -152,11 +148,15 @@
 			target.element.value = target.lastState.value;
 			return e.preventDefault();
 		}
+		// No negative numbers
+		if (target.value.includes('-')) {
+			target.value = target.value.replace('-', '');
+		}
 		// If the input contains a decimal, break it into two parts
 		if (target.value.includes('.')) {
 			const parts = target.value.split('.');
-			dollars = Number(parts[0]);
-			cents = Number(parts[1]);
+			dollars = parts[0];
+			cents = parts[1].padEnd(2, '0').substring(0, 2);
 			return e.preventDefault();
 		}
 		// If input is in cents and it's more than 2 digits, move the first digits to dollars
@@ -167,12 +167,22 @@
 	};
 
 	const onSaveStateEvent = (e: Event) => {
+		if (dollars.length === 0) dollars = '0';
+		if (cents.length === 0) cents = '00';
 		updateLastState(e);
 	};
 
 	const onChange = () => {
-		if (isValueInCents) value = Math.round((dollars * 100) + cents);
-		else value = dollars + Math.round(cents / 100);
+		let centValue = Math.abs(isNumericString(cents) ? Number(cents) : 0);
+		let dollarValue = Math.abs(isNumericString(dollars) ? Number(dollars) : 0);
+		// Update value
+		if (isValueInCents) value = (dollarValue * 100) + centValue;
+		else value = dollarValue + (centValue / 100);
+		// Enforce min and max
+		if (min && value < min) value = min;
+		if (max && value > max) value = max;
+		// Cents should be padded to 2 digits, so that "5" becomes "05"
+		cents = String(centValue).padStart(2, '0');
 	};
 
 </script>
