@@ -32,3 +32,7 @@
 <Story name="Link">
 	<Button style="link">Click Me</Button>
 </Story>
+
+<Story name="Single Click">
+	<Button style="primary" repeatSubmitDelay="infinite">Single Click</Button>
+</Story>

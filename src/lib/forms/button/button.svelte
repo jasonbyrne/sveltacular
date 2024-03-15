@@ -12,6 +12,7 @@
 	export let disabled = false;
 	export let noMargin = false;
 	export let collapse = false;
+	export let repeatSubmitDelay: number | 'infinite' = 500;
 
 	const dispatch = createEventDispatcher<{ click: void }>();
 
@@ -22,6 +23,12 @@
 			return;
 		}
 		dispatch('click');
+		if (repeatSubmitDelay) {
+			disabled = true;
+			if (repeatSubmitDelay !== 'infinite') {
+				setTimeout(() => (disabled = false), repeatSubmitDelay);
+			}
+		}
 		if (href) {
 			navigateTo(href);
 		}
