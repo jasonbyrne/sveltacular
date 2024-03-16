@@ -1,12 +1,9 @@
 <script lang="ts" context="module">
-	import { Story } from '@storybook/addon-svelte-csf';
+	import { Story, Meta } from '@storybook/addon-svelte-csf';
 	import DateBox from './date-box.svelte';
-
-	export const meta = {
-		title: 'Forms/DateBox',
-		component: DateBox,
-	};
 </script>
+
+<Meta title="Forms/Date Box" component={DateBox} />
 
 <Story name="Date">
 	<DateBox type="date">Birthdate</DateBox>
@@ -21,9 +18,12 @@
 </Story>
 
 <Story name="Date (Steps)">
-	<DateBox type="date" steps={[
-		{ label: '1 Day', value: 1, unit: 'day' },
-		{ label: '1 Month', value: 1, unit: 'month' },
-		{ label: '1 Year', value: 1, unit: 'year' }
-	]}>End Date</DateBox>
+	<DateBox
+		type="date"
+		steps={[
+			{ label: '1 Day', value: 1, unit: 'day' },
+			{ label: '1 Month', value: 1, unit: 'month' },
+			{ label: '1 Year', value: 1, unit: 'year' }
+		]}>End Date</DateBox
+	>
 </Story>

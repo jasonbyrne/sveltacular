@@ -74,6 +74,7 @@ export { default as AppBranding } from './navigation/app-bar/app-branding.svelte
 export { default as Wizard } from './navigation/wizard/wizard.svelte';
 export { default as WizardStep } from './navigation/wizard/wizard-step.svelte';
 export { default as Pagination } from './navigation/pagination/pagination.svelte';
+export { default as DropdownItem } from './generic/dropdown-item/dropdown-item.svelte';
 // Tables
 export { default as DataGrid } from './tables/data-grid.svelte';
 export { default as Table } from './tables/table.svelte';
@@ -120,3 +121,16 @@ export * from './helpers/ucfirst.js';
 export * from './helpers/unique-id.js';
 // Data
 export * from './data/index.js';
+// Icons
+export { default as AngleRightIcon } from './icons/angle-right-icon.svelte';
+export { default as AngleUpIcon } from './icons/angle-up-icon.svelte';
+export { default as CheckIcon } from './icons/check-icon.svelte';
+export { default as EnvelopIcon } from './icons/envelope-icon.svelte';
+export { default as FolderOpenIcon } from './icons/folder-open-icon.svelte';
+export { default as HambugerIcon } from './icons/hamburger-icon.svelte';
+export { default as HomeIcon } from './icons/home-icon.svelte';
+export { default as LinkIcon } from './icons/link-icon.svelte';
+export { default as MobilePhoneIcon } from './icons/mobile-phone-icon.svelte';
+export { default as PhoneIcon } from './icons/phone-icon.svelte';
+export { default as SvgIcon } from './icons/svg-icon.svelte';
+export { default as UploadIcon } from './icons/upload-icon.svelte';
