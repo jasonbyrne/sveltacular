@@ -4,13 +4,14 @@
 	export let open = false;
 	export let text: string;
 	export let style: 'standard' | 'ghost' = 'standard';
+	export let icon: 'arrow' | 'none' = 'arrow';
 
 	const onClick = () => {
 		open = !open;
 	};
 </script>
 
-<div class="dropdown-button {style}" class:open>
+<div class="dropdown-button {style} icon-{icon}" class:open>
 	<button on:click={onClick}>
 		<div class="text">
 			{text}
@@ -88,6 +89,17 @@
 			.icon {
 				transition: transform 0.3s linear;
 				transform: rotate(180deg);
+			}
+		}
+
+		&.icon-none {
+			button {
+				.text {
+					padding-right: 0.5rem;
+				}
+				.icon {
+					display: none;
+				}
 			}
 		}
 

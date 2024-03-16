@@ -25,3 +25,11 @@
 		<DropdownItem>Baz</DropdownItem>
 	</DropdownButton>
 </Story>
+
+<Story name="Ghost, No Icon">
+	<DropdownButton text="Ghost Button" style="ghost" icon="none">
+		<DropdownItem>Foo</DropdownItem>
+		<DropdownItem href="#">Bar</DropdownItem>
+		<DropdownItem>Baz</DropdownItem>
+	</DropdownButton>
+</Story>
