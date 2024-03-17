@@ -1,23 +1,30 @@
 <script lang="ts">
 	import { AngleUpIcon } from '$src/lib/index.js';
+	import { hasContext } from 'svelte';
 
 	export let open = false;
-	export let text: string;
+	export let text: string | undefined = undefined;
 	export let style: 'standard' | 'ghost' = 'standard';
 	export let icon: 'arrow' | 'none' = 'arrow';
 
 	const onClick = () => {
 		open = !open;
 	};
+
+	$: hasText = text && text.length > 0;
 </script>
 
 <div class="dropdown-button {style} icon-{icon}" class:open>
-	<button on:click={onClick}>
-		<div class="text">
-			{text}
-		</div>
+	<button on:click={onClick} class:hasText>
+		{#if hasText}
+			<div class="text">
+				{text}
+			</div>
+		{/if}
 		<div class="icon">
-			<AngleUpIcon />
+			<span>
+				<AngleUpIcon />
+			</span>
 		</div>
 	</button>
 	{#if open}
@@ -34,7 +41,7 @@
 
 		button {
 			width: 100%;
-			min-width: 10rem;
+			min-width: 7rem;
 			position: relative;
 			text-align: left;
 			cursor: pointer;
@@ -49,7 +56,6 @@
 			line-height: 1.25rem;
 			padding: 0.5rem 1rem;
 			font-family: var(--base-font-family, sans-serif);
-			text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
 			background-color: var(--button-secondary-bg, #555);
 			border-color: var(--button-secondary-border, #aaa);
 			color: var(--button-secondary-fg, #fff);
@@ -59,18 +65,33 @@
 				color: var(--button-secondary-hover-fg, #fff);
 			}
 
-			.text {
-				padding-right: 2rem;
-			}
-
 			.icon {
 				display: block;
-				position: absolute;
-				top: 0;
-				right: 0;
-				height: 100%;
-				width: 2rem;
-				padding: 0.5rem;
+				text-align: center;
+				line-height: 1.5rem;
+
+				span {
+					display: inline-block;
+					width: 1rem;
+					height: 1rem;
+				}
+			}
+
+			&.hasText {
+				.text {
+					padding-right: 2rem;
+					min-height: 1.5rem;
+					line-height: 1.5rem;
+				}
+
+				.icon {
+					position: absolute;
+					top: 0;
+					right: 0;
+					height: 100%;
+					width: 2rem;
+					padding: 0.5rem;
+				}
 			}
 		}
 
@@ -81,8 +102,11 @@
 			min-width: 100%;
 			background-color: #fff;
 			color: #000;
-			border: 1px solid #ccc;
+			border-style: solid;
+			border-width: 1px;
+			border-color: var(--button-secondary-border, #aaa);
 			z-index: 999;
+			text-align: center;
 		}
 
 		&.open {

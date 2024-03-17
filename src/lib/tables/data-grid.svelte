@@ -11,27 +11,35 @@
 	import Table from '$src/lib/tables/table.svelte';
 	import type { DataCol, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
 	import Button from '../forms/button/button.svelte';
+	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
 	import Empty from '../generic/empty/empty.svelte';
 	import Pill from '../generic/pill/pill.svelte';
 	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
 	import { formatDateTime } from '../index.js';
+	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
 
-	type Action = (row: JsonObject) => unknown;
 	type PaginationEvent = (pagination: PaginationProperties) => Promise<JsonObject[]>;
+
+	interface Action {
+		text: string;
+		onClick: (row: JsonObject) => unknown;
+	}
+
+	interface Actions {
+		text?: string;
+		type?: string;
+		items: Action[];
+	}
 
 	export let captionSide: 'top' | 'bottom' = 'top';
 	export let captionAlign: 'left' | 'center' | 'right' = 'center';
 	export let rows: JsonObject[] | undefined = undefined;
 	export let cols: DataCol[];
 	export let pagination: PaginationProperties | undefined = undefined;
-
-	export let actions: {
-		text: string;
-		onClick: Action
-	}[] = [];
+	export let actions: Actions | undefined = undefined;
 
 	/**
 	 * Handle page change, which should return the new filtered/fetched rows.
@@ -83,7 +91,7 @@
 		return rows.filter((_row, index) => index >= startIndex && index < endIndex);
 	};
 
-	$: hasActionCol = actions.length > 0;
+	$: hasActionCol = actions?.items && actions.items.length > 0;
 	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionCol ? 1 : 0);
 	$: totalPages = pagination && rows ? calculateTotalPages() : 1;
 	$: filteredRows = rows && pagination ? filterRows() : rows;
@@ -128,7 +136,7 @@
 							<TableCell type={col.type || typeof row[col.key]} width={col.width}>
 								{#if col.link}
 									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
-									{:else if col.type == 'email' && row[col.key]}
+								{:else if col.type == 'email' && row[col.key]}
 									<a href={`mailto:${row[col.key]}`}>{format(row, col.key)}</a>
 								{:else if col.type == 'check'}
 									{#if row[col.key]}
@@ -140,11 +148,25 @@
 							</TableCell>
 						{/if}
 					{/each}
-					{#if hasActionCol}
+					{#if hasActionCol && actions}
 						<TableCell type="actions">
-							{#each actions as action}
-								<Button collapse={true} size="sm" type="button" on:click={() => action.onClick(row)}>{action.text}</Button>
-							{/each}
+							{#if actions.type === 'dropdown'}
+								<DropdownButton text={actions.text ?? ''} style="ghost">
+									{#each actions.items as action}
+										<DropdownItem on:click={() => action.onClick(row)}>{action.text}</DropdownItem>
+									{/each}
+								</DropdownButton>
+							{:else}
+								{#each actions.items as action}
+									<Button
+										collapse={true}
+										size="sm"
+										type="button"
+										style={actions.type == 'link' ? 'link' : 'secondary'}
+										on:click={() => action.onClick(row)}>{action.text}</Button
+									>
+								{/each}
+							{/if}
 						</TableCell>
 					{/if}
 				</TableRow>

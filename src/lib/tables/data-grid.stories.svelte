@@ -12,7 +12,7 @@
 		isActive: boolean;
 		salary: number;
 		updatedAt: string;
-	};
+	}
 
 	const rows = [
 		{
@@ -61,13 +61,13 @@
 		{
 			key: 'email',
 			label: 'Email',
-			type: 'email',
+			type: 'email'
 		},
-		{ key: 'isActive', label: 'Active?', type: 'check'},
+		{ key: 'isActive', label: 'Active?', type: 'check' },
 		{
 			key: 'salary',
 			label: 'Salary',
-			format: (row, key) => 
+			format: (row, key) =>
 				new Intl.NumberFormat('en-US', {
 					style: 'currency',
 					currency: 'USD',
@@ -77,7 +77,7 @@
 		{
 			key: 'updatedAt',
 			label: 'Updated',
-			type: 'date',
+			type: 'date'
 		}
 	];
 
@@ -91,16 +91,33 @@
 		perPage: 25,
 		total: rows.length
 	};
+
+	const editAction = {
+		type: 'button',
+		items: [{ text: 'Edit', onClick: () => true }]
+	};
+
+	const multiAction = {
+		type: 'dropdown',
+		items: [
+			{ text: 'Edit', onClick: () => true },
+			{ text: 'Delete', onClick: () => true }
+		]
+	};
 </script>
 
 <Meta title="Tables/DataGrid" component={DataGrid} />
 
 <Story name="Standard">
-	<DataGrid {rows} {cols} >Employees</DataGrid>
+	<DataGrid {rows} {cols}>Employees</DataGrid>
 </Story>
 
 <Story name="With Edit">
-	<DataGrid {rows} {cols} actions={[{ text: 'Edit', onClick: () => true}]}>Employees</DataGrid>
+	<DataGrid {rows} {cols} actions={editAction}>Employees</DataGrid>
+</Story>
+
+<Story name="With Multiple Ations">
+	<DataGrid {rows} {cols} actions={multiAction}>Employees</DataGrid>
 </Story>
 
 <Story name="With Pagination">
@@ -111,12 +128,12 @@
 			page: 4,
 			perPage: 5,
 			total: Countries.length
-		}}
-	>Countries</DataGrid>
+		}}>Countries</DataGrid
+	>
 </Story>
 
 <Story name="No Data">
-	<DataGrid rows={[]} {cols} >Employees</DataGrid>
+	<DataGrid rows={[]} {cols}>Employees</DataGrid>
 </Story>
 
 <Story name="Bad Columns">

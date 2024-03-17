@@ -1,6 +1,6 @@
 {
 	"name": "sveltacular",
-	"version": "0.0.75",
+	"version": "0.0.76",
 	"description": "A Svelte component library",
 	"main": "dist/index.js",
 	"module": "dist/index.js",
