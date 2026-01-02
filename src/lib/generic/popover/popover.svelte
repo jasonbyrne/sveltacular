@@ -82,11 +82,11 @@
 	.popover {
 		position: absolute;
 		z-index: 1000;
-		padding: 0.75rem;
-		background-color: var(--popover-bg, #fff);
-		border: 1px solid var(--popover-border, #ccc);
-		border-radius: 0.25rem;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		padding: var(--spacing-md);
+		background-color: var(--popover-bg);
+		border: var(--border-thin) solid var(--popover-border);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-lg);
 		min-width: 12rem;
 		max-width: 20rem;
 
@@ -94,28 +94,28 @@
 			bottom: 100%;
 			left: 50%;
 			transform: translateX(-50%);
-			margin-bottom: 0.5rem;
+			margin-bottom: var(--spacing-sm);
 		}
 
 		&.bottom {
 			top: 100%;
 			left: 50%;
 			transform: translateX(-50%);
-			margin-top: 0.5rem;
+			margin-top: var(--spacing-sm);
 		}
 
 		&.left {
 			right: 100%;
 			top: 50%;
 			transform: translateY(-50%);
-			margin-right: 0.5rem;
+			margin-right: var(--spacing-sm);
 		}
 
 		&.right {
 			left: 100%;
 			top: 50%;
 			transform: translateY(-50%);
-			margin-left: 0.5rem;
+			margin-left: var(--spacing-sm);
 		}
 	}
 </style>

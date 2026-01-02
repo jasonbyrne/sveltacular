@@ -26,35 +26,35 @@
 <style lang="scss">
 	.pill {
 		display: inline-block;
-		padding: 0.25rem 0.5rem;
-		border-radius: 1.5rem;
-		background-color: var(--base-fg, #000);
-		font-size: 0.75rem;
+		padding: var(--spacing-xs) var(--spacing-sm);
+		border-radius: var(--radius-pill);
+		background-color: var(--base-color-fg);
+		font-size: var(--font-sm);
 		font-weight: 500;
-		color: var(--base-bg, #fff);
-		font-family: var(--base-font-family, sans-serif);
+		color: var(--base-color-bg);
+		font-family: var(--base-font-family);
 
 		&.compact {
-			padding: 0.125rem;
+			padding: var(--spacing-xs);
 		}
 
 		&.sm {
-			font-size: 0.625rem;
-			padding: 0.125rem 0.25rem;
+			font-size: var(--font-xs);
+			padding: var(--spacing-xs) var(--spacing-xs);
 		}
 
 		&.lg {
-			font-size: 0.875rem;
-			padding: 0.375rem 0.75rem;
+			font-size: var(--font-base);
+			padding: var(--spacing-xs) var(--spacing-md);
 		}
 
 		&.xl {
-			font-size: 1rem;
-			padding: 0.5rem 1rem;
+			font-size: var(--font-md);
+			padding: var(--spacing-sm) var(--spacing-base);
 		}
 
 		&.badge {
-			border-radius: 0.5rem;
+			border-radius: var(--radius-lg);
 		}
 
 		&.square {
@@ -63,16 +63,16 @@
 
 		&.outline {
 			background-color: transparent;
-			border: 1px solid #4a5568;
-			color: #4a5568;
+			border: var(--border-thin) solid var(--gray-600);
+			color: var(--gray-600);
 		}
 
 		&.circular {
-			border-radius: 50%;
+			border-radius: var(--radius-full);
 		}
 
 		&.circle {
-			border-radius: 50%;
+			border-radius: var(--radius-full);
 			width: 1.75rem;
 			height: 1.75rem;
 			position: relative;
@@ -88,8 +88,8 @@
 			}
 
 			&.xl {
-				width: 3rem;
-				height: 3rem;
+				width: var(--spacing-2xl);
+				height: var(--spacing-2xl);
 			}
 
 			span {
@@ -102,24 +102,24 @@
 		}
 
 		&.positive {
-			background-color: #0a5200;
+			background-color: var(--color-success);
 			color: #fff;
 
 			&.outline {
 				background-color: transparent;
-				border: 1px solid #0a5200;
-				color: #0a5200;
+				border: var(--border-thin) solid var(--color-success);
+				color: var(--color-success);
 			}
 		}
 
 		&.negative {
-			background-color: #570000;
+			background-color: var(--color-error);
 			color: #fff;
 
 			&.outline {
 				background-color: transparent;
-				border: 1px solid #570000;
-				color: #570000;
+				border: var(--border-thin) solid var(--color-error);
+				color: var(--color-error);
 			}
 		}
 	}

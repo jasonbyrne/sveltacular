@@ -19,7 +19,7 @@
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
+		padding-left: var(--spacing-sm);
+		padding-right: var(--spacing-sm);
 	}
 </style>

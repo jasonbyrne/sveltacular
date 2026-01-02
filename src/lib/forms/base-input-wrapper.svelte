@@ -51,15 +51,19 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		border-radius: 0.25rem;
-		border: 1px solid var(--form-input-border, black);
-		background-color: var(--form-input-bg, white);
-		color: var(--form-input-fg, black);
-		font-size: 1rem;
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
 		font-weight: 500;
 		line-height: 2rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out),
+			fill var(--transition-base) var(--ease-in-out),
+			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
 
@@ -68,40 +72,40 @@
 		}
 
 		&.error {
-			border-color: var(--form-input-border-error, #a00);
+			border-color: var(--form-input-border-error);
 		}
 
 		.prefix,
 		.suffix {
-			font-size: 1rem;
+			font-size: var(--font-md);
 			line-height: 2rem;
-			padding-left: 1rem;
-			padding-right: 1rem;
-			background-color: var(--form-input-accent-bg, #ccc);
-			color: var(--form-input-accent-fg, black);
+			padding-left: var(--spacing-base);
+			padding-right: var(--spacing-base);
+			background-color: var(--form-input-accent-bg);
+			color: var(--form-input-accent-fg);
 		}
 
 		.prefix {
-			border-right: 1px solid var(--form-input-border, black);
+			border-right: var(--border-thin) solid var(--form-input-border);
 		}
 
 		.suffix {
-			border-left: 1px solid var(--form-input-border, black);
+			border-left: var(--border-thin) solid var(--form-input-border);
 		}
 	}
 
 	.helper-text {
-		font-size: 0.75rem;
+		font-size: var(--font-sm);
 		line-height: 1.25rem;
-		padding: 0.25rem;
-		color: var(--form-input-helper-text-fg, #666);
+		padding: var(--spacing-xs);
+		color: var(--form-input-helper-text-fg);
 	}
 
 	.error-text {
-		font-size: 0.75rem;
+		font-size: var(--font-sm);
 		line-height: 1.25rem;
-		padding: 0.25rem;
-		color: var(--form-input-error-fg, #a00);
+		padding: var(--spacing-xs);
+		color: var(--form-input-error-fg);
 	}
 </style>
 

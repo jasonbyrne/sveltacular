@@ -17,8 +17,8 @@
 	};
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class={size} onclick={captureClick} {...restProps}>
 	{@render children?.()}
 </div>
@@ -26,13 +26,13 @@
 <style lang="scss">
 	div {
 		position: relative;
-		border: solid 0.1rem #000;
-		padding: 1rem;
-		background-color: #fff;
-		border-radius: 1rem;
-		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+		border: solid var(--border-thin) var(--gray-300);
+		padding: var(--spacing-base);
+		background-color: var(--modal-bg);
+		border-radius: var(--radius-xl);
+		box-shadow: var(--shadow-xl);
 		z-index: 9999;
-		font-family: var(--base-font-family, sans-serif);
+		font-family: var(--base-font-family);
 
 		&.sm {
 			width: 25rem;

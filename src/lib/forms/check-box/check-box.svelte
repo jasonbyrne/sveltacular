@@ -59,25 +59,25 @@
 
 		.text {
 			display: block;
-			margin-left: 0.5em;
-			font-size: 1rem;
+			margin-left: var(--spacing-sm);
+			font-size: var(--font-md);
 			line-height: 2rem;
 		}
 
 		.checkbox {
 			position: relative;
 			display: block;
-			width: 1rem;
-			height: 1rem;
-			border: 1px solid var(--form-input-border, black);
-			background-color: var(--form-input-bg, white);
-			color: var(--form-input-fg, black);
+			width: var(--spacing-base);
+			height: var(--spacing-base);
+			border: var(--border-thin) solid var(--form-input-border);
+			background-color: var(--form-input-bg);
+			color: var(--form-input-fg);
 			transition:
-				background-color 0.2s ease-in-out,
-				border-color 0.2s ease-in-out,
-				color 0.2s ease-in-out,
-				fill 0.2s ease-in-out,
-				stroke 0.2s ease-in-out;
+				background-color var(--transition-base) var(--ease-in-out),
+				border-color var(--transition-base) var(--ease-in-out),
+				color var(--transition-base) var(--ease-in-out),
+				fill var(--transition-base) var(--ease-in-out),
+				stroke var(--transition-base) var(--ease-in-out);
 			user-select: none;
 
 			.checkmark {
@@ -87,13 +87,13 @@
 				left: 0;
 				width: 0;
 				height: 0;
-				background-color: var(--form-input-selected-bg, #3182ce);
-				color: var(--form-input-selected-fg, white);
-				fill: var(--form-input-selected-bg, #3182ce);
-				stroke: var(--form-input-selected-fg, white);
+				background-color: var(--form-input-selected-bg);
+				color: var(--form-input-selected-fg);
+				fill: var(--form-input-selected-bg);
+				stroke: var(--form-input-selected-fg);
 				transition:
-					width 0.2s ease-in-out,
-					height 0.2s ease-in-out;
+					width var(--transition-base) var(--ease-in-out),
+					height var(--transition-base) var(--ease-in-out);
 			}
 		}
 
@@ -102,8 +102,8 @@
 			height: 0;
 
 			&:checked + .checkbox {
-				background-color: var(--form-input-bg, white);
-				border-color: var(--form-input-border, black);
+				background-color: var(--form-input-bg);
+				border-color: var(--form-input-border);
 
 				.checkmark {
 					width: 100%;

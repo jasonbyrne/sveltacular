@@ -11,11 +11,11 @@
 <style lang="scss">
 	ul {
 		list-style: none;
-		padding-left: 1rem;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
+		padding-left: var(--spacing-base);
+		padding-top: var(--spacing-base);
+		padding-bottom: var(--spacing-base);
 		margin: 0;
-		border-left: 0.2rem solid #000;
-		font-family: var(--base-font-family, sans-serif);
+		border-left: var(--border-base) solid var(--base-color-fg);
+		font-family: var(--base-font-family);
 	}
 </style>

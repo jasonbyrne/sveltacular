@@ -1,13 +1,17 @@
 /*
-body {
-	background: #333;
-	color: #fff;
-	font-family: 'Roboto', sans-serif;
-	font-size: 16px;
-}
-
-*/
+ * Global Styles
+ * 
+ * Base styles using design tokens for consistency
+ */
 
 * {
 	box-sizing: border-box;
+}
+
+body {
+	background: var(--body-bg, var(--base-color-bg));
+	color: var(--body-fg, var(--base-color-fg));
+	font-family: var(--base-font-family);
+	font-size: var(--font-md);
+	line-height: 1.5;
 }

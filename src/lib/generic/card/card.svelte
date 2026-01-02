@@ -44,15 +44,15 @@
 		vertical-align: top;
 		position: relative;
 		width: 100%;
-		margin-right: 1rem;
-		margin-bottom: 1rem;
-		padding: 1rem;
-		border-radius: 0.5rem;
-		border: solid 1px rgb(100, 100, 100, 0.5);
-		box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-		background-color: #fff;
-		color: #555;
-		transition: transform 0.2s ease-in-out;
+		margin-right: var(--spacing-base);
+		margin-bottom: var(--spacing-base);
+		padding: var(--spacing-base);
+		border-radius: var(--radius-lg);
+		border: solid var(--border-thin) var(--gray-400);
+		box-shadow: var(--shadow-md);
+		background-color: var(--card-bg);
+		color: var(--card-fg);
+		transition: transform var(--transition-base) var(--ease-in-out);
 
 		strong {
 			display: block;

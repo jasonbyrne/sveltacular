@@ -17,11 +17,11 @@
 <style lang="scss">
 	label {
 		display: block;
-		margin-bottom: 0.5rem;
+		margin-bottom: var(--spacing-sm);
 
 		&.required::after {
 			content: '*';
-			margin-left: 0.25rem;
+			margin-left: var(--spacing-xs);
 		}
 
 		&.disabled {

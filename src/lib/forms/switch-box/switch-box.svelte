@@ -20,7 +20,7 @@
 
 <label class="switch-box {checked ? 'checked' : ''} {size}">
 	<input type="checkbox" bind:checked onchange={() => onChange?.(checked)} {id} />
-	<!-- svelte-ignore a11y-interactive-supports-focus -->
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<span class="switch">
 		<span class="slider" />
 	</span>
@@ -43,18 +43,18 @@
 		}
 
 		.switch {
-			background-color: var(--form-switch-unchecked-bg, rgb(80, 80, 80));
+			background-color: var(--form-switch-unchecked-bg);
 			position: relative;
 			cursor: pointer;
-			transition: background-color 0.2s ease-in-out;
+			transition: background-color var(--transition-base) var(--ease-in-out);
 			vertical-align: middle;
 		}
 
 		.slider {
-			border-radius: 50%;
+			border-radius: var(--radius-full);
 			position: absolute;
-			transition: left 0.2s ease-in-out;
-			background-color: var(--form-switch-unchecked-fg, white);
+			transition: left var(--transition-base) var(--ease-in-out);
+			background-color: var(--form-switch-unchecked-fg);
 		}
 
 		&.checked {

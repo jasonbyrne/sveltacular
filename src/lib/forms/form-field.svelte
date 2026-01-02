@@ -21,7 +21,7 @@
 
 <style lang="scss">
 	div {
-		margin-bottom: 1rem;
-		margin-right: 1rem;
+		margin-bottom: var(--spacing-base);
+		margin-right: var(--spacing-base);
 	}
 </style>

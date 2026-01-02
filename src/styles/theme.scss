@@ -1,103 +1,278 @@
 /*
+ * Sveltacular Design Token System
+ * 
+ * This file contains all design tokens used across the component library.
+ * Tokens are organized into logical categories for easy maintenance and theming.
+ */
 
 :root {
-	--base-color-bg: #fff;
-	--base-color-fg: #000;
-	--base-link-fg: #543fd7;
-	--base-link-hover-fg: #00f;
+	/* ============================================
+	   DESIGN TOKENS - Foundation
+	   ============================================ */
+
+	/* Spacing Scale */
+	--spacing-xs: 0.25rem;    /* 4px */
+	--spacing-sm: 0.5rem;     /* 8px */
+	--spacing-md: 0.75rem;     /* 12px */
+	--spacing-base: 1rem;      /* 16px */
+	--spacing-lg: 1.5rem;      /* 24px */
+	--spacing-xl: 2rem;        /* 32px */
+	--spacing-2xl: 3rem;       /* 48px */
+
+	/* Border Radius Scale */
+	--radius-xs: 0.125rem;     /* 2px */
+	--radius-sm: 0.25rem;      /* 4px */
+	--radius-md: 0.5rem;       /* 8px */
+	--radius-lg: 0.75rem;      /* 12px */
+	--radius-xl: 1rem;         /* 16px */
+	--radius-full: 50%;        /* Circular elements */
+	--radius-pill: 1.5rem;     /* 24px - Pill-shaped elements */
+
+	/* Font Size Scale */
+	--font-xs: 0.625rem;       /* 10px */
+	--font-sm: 0.75rem;        /* 12px */
+	--font-base: 0.875rem;     /* 14px */
+	--font-md: 1rem;           /* 16px */
+	--font-lg: 1.125rem;       /* 18px */
+	--font-xl: 1.25rem;        /* 20px */
+	--font-2xl: 1.5rem;        /* 24px */
+
+	/* Border Width Scale */
+	--border-thin: 1px;
+	--border-base: 2px;
+	--border-thick: 3px;
+
+	/* Shadow Scale */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+	--shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+	/* Transition Durations */
+	--transition-fast: 0.15s;
+	--transition-base: 0.2s;
+	--transition-slow: 0.3s;
+	--transition-slower: 0.5s;
+
+	/* Transition Easing */
+	--ease-in-out: ease-in-out;
+	--ease-out: ease-out;
+	--ease-in: ease-in;
+
+	/* ============================================
+	   COLOR PALETTE - Modernized & Friendly
+	   ============================================ */
+
+	/* Base Colors - Warmer, Softer Tones */
+	--base-color-bg: #fafafa;           /* Soft off-white instead of stark white */
+	--base-color-fg: #2d3748;           /* Warm dark gray instead of harsh black */
+	--base-link-fg: #4a90e2;            /* Warm blue instead of #543fd7 */
+	--base-link-hover-fg: #3182ce;      /* Darker warm blue */
+	--base-accent-fg: #4a5568;          /* Medium warm gray */
+	--base-accent-bg: #e2e8f0;          /* Light warm gray */
+
+	/* Neutral Grays - Warm Tones */
+	--gray-50: #f7fafc;
+	--gray-100: #edf2f7;
+	--gray-200: #e2e8f0;
+	--gray-300: #cbd5e0;
+	--gray-400: #a0aec0;
+	--gray-500: #718096;
+	--gray-600: #4a5568;
+	--gray-700: #2d3748;
+	--gray-800: #1a202c;
+	--gray-900: #171923;
+
+	/* Semantic Colors - Friendlier, Softer */
+	--color-success: #48bb78;           /* Softer green */
+	--color-success-hover: #38a169;      /* Darker green */
+	--color-error: #f56565;              /* Softer red */
+	--color-error-hover: #e53e3e;        /* Darker red */
+	--color-warning: #ed8936;            /* Warm orange */
+	--color-warning-hover: #dd6b20;      /* Darker orange */
+	--color-info: #4299e1;               /* Soft blue */
+	--color-info-hover: #3182ce;         /* Darker blue */
+
+	/* Typography */
 	--base-font-family: 'Roboto', sans-serif;
 	--base-headline-font-family: 'Roboto', sans-serif;
 	--base-mono-font-family: 'Roboto Mono', monospace;
-	--base-accent-fg: #555;
-	--base-accent-bg: #ddd;
-	--button-primary-bg: #543fd7;
-	--button-primary-fg: #fff;
-	--button-primary-border: #fff;
-	--button-primary-hover-bg: #00f;
-	--button-primary-hover-fg: #fff;
-	--button-secondary-bg: #5b5b5b;
-	--button-secondary-fg: #fff;
-	--button-secondary-border: #fff;
-	--button-secondary-hover-bg: #000;
-	--button-secondary-hover-fg: #fff;
-	--button-positive-bg: #00522a;
-	--button-positive-fg: #fff;
-	--button-positive-border: #fff;
-	--button-positive-hover-bg: #0b8200;
-	--button-positive-hover-fg: #fff;
-	--button-danger-bg: #a00;
-	--button-danger-fg: #fff;
-	--button-danger-border: #fff;
-	--button-danger-hover-bg: #c00;
-	--button-danger-hover-fg: #fff;
-	--button-ghost-hover-bg: #000;
-	--button-ghost-hover-fg: #fff;
-	--button-outline-fg: #fff;
-	--button-outline-border: #fff;
-	--button-outline-hover-bg: #000;
-	--button-outline-hover-fg: #fff;
-	--form-input-bg: #fff;
-	--form-input-fg: #000;
-	--form-input-border: #000;
-	--form-input-border-focus: #000;
-	--form-input-border-error: #a00;
-	--form-input-border-error-focus: #c00;
-	--form-input-placeholder: #888;
-	--form-input-checked-bg: #3182ce;
-	--form-input-checked-fg: #fff;
-	--nav-bg: #fff;
-	--nav-fg: #000;
-	--nav-link-fg: black;
-	--nav-link-hover-fg: black;
-	--nav-font-family: 'Roboto', sans-serif;
-	--breadcrumbs-fg: black;
-	--breadcrumbs-link-fg: black;
-	--breadcrumbs-link-hover-fg: #900;
-	--breadcrumbs-font-family: 'Roboto', sans-serif;
-	--sidebar-bg: #fff;
-	--sidebar-fg: #000;
-	--sidebar-link-fg: #543fd7;
-	--sidebar-link-hover-fg: #00f;
-	--sidebar-link-active-fg: #000;
-	--sidebar-link-active-hover-fg: #000;
-	--sidebar-font-family: 'Roboto', sans-serif;
-	--footer-bg: #fff;
-	--footer-fg: #000;
-	--footer-link-fg: #543fd7;
-	--footer-link-hover-fg: #00f;
-	--footer-font-family: 'Roboto', sans-serif;
-	--table-bg: #fff;
-	--table-fg: #000;
-	--table-border: #000;
-	--table-header-bg: #fff;
-	--table-header-fg: #000;
-	--table-header-border: #000;
-	--table-row-even-bg: #fff;
-	--table-row-even-fg: #000;
-	--table-row-even-border: #000;
-	--table-row-odd-bg: #fff;
-	--table-row-odd-fg: #000;
-	--table-row-odd-border: #000;
-	--table-footer-bg: #fff;
-	--table-footer-fg: #000;
-	--table-footer-border: #000;
-	--tooltip-bg: #000;
-	--tooltip-fg: #fff;
-	--modal-bg: #fff;
-	--modal-fg: #000;
-	--modal-header-bg: #fff;
-	--modal-header-fg: #000;
-	--modal-header-border: #000;
-	--modal-body-bg: #fff;
-	--modal-body-fg: #000;
-	--modal-body-border: #000;
-	--modal-footer-bg: #fff;
-	--modal-footer-fg: #000;
-	--modal-footer-border: #000;
-	--card-bg: #fff;
-	--card-fg: #000;
-	--card-link-fg: #543fd7;
-	--card-link-hover-fg: #00f;
-}
 
-*/
+	/* ============================================
+	   COMPONENT-SPECIFIC VARIABLES
+	   ============================================ */
+
+	/* Button Components */
+	--button-primary-bg: var(--color-info);
+	--button-primary-fg: #fff;
+	--button-primary-border: var(--color-info);
+	--button-primary-hover-bg: var(--color-info-hover);
+	--button-primary-hover-fg: #fff;
+
+	--button-secondary-bg: var(--gray-600);
+	--button-secondary-fg: #fff;
+	--button-secondary-border: var(--gray-600);
+	--button-secondary-hover-bg: var(--gray-700);
+	--button-secondary-hover-fg: #fff;
+
+	--button-positive-bg: var(--color-success);
+	--button-positive-fg: #fff;
+	--button-positive-border: var(--color-success);
+	--button-positive-hover-bg: var(--color-success-hover);
+	--button-positive-hover-fg: #fff;
+
+	--button-danger-bg: var(--color-error);
+	--button-danger-fg: #fff;
+	--button-danger-border: var(--color-error);
+	--button-danger-hover-bg: var(--color-error-hover);
+	--button-danger-hover-fg: #fff;
+
+	--button-ghost-hover-bg: var(--gray-200);
+	--button-ghost-hover-fg: var(--base-color-fg);
+
+	--button-outline-fg: var(--base-color-fg);
+	--button-outline-border: var(--gray-400);
+	--button-outline-hover-bg: var(--gray-200);
+	--button-outline-hover-fg: var(--base-color-fg);
+
+	/* Form Input Components */
+	--form-input-bg: #fff;
+	--form-input-fg: var(--base-color-fg);
+	--form-input-border: var(--gray-300);
+	--form-input-border-focus: var(--color-info);
+	--form-input-border-error: var(--color-error);
+	--form-input-border-error-focus: var(--color-error-hover);
+	--form-input-placeholder: var(--gray-500);
+	--form-input-checked-bg: var(--color-info);
+	--form-input-checked-fg: #fff;
+	--form-input-selected-bg: var(--color-info);
+	--form-input-selected-fg: #fff;
+	--form-input-accent-bg: var(--gray-200);
+	--form-input-accent-fg: var(--base-color-fg);
+	--form-input-helper-text-fg: var(--gray-600);
+	--form-input-error-fg: var(--color-error);
+
+	/* Form Switch Components */
+	--form-switch-unchecked-bg: var(--gray-500);
+	--form-switch-unchecked-fg: #fff;
+	--form-switch-checked-bg: var(--color-info);
+	--form-switch-checked-fg: #fff;
+
+	/* Navigation Components */
+	--nav-bg: #fff;
+	--nav-fg: var(--base-color-fg);
+	--nav-link-fg: var(--base-color-fg);
+	--nav-link-hover-fg: var(--base-link-fg);
+	--nav-font-family: var(--base-font-family);
+
+	/* Breadcrumbs */
+	--breadcrumbs-fg: var(--base-color-fg);
+	--breadcrumbs-link-fg: var(--base-link-fg);
+	--breadcrumbs-link-hover-fg: var(--base-link-hover-fg);
+	--breadcrumbs-font-family: var(--base-font-family);
+
+	/* Sidebar */
+	--sidebar-bg: #fff;
+	--sidebar-fg: var(--base-color-fg);
+	--sidebar-link-fg: var(--base-link-fg);
+	--sidebar-link-hover-fg: var(--base-link-hover-fg);
+	--sidebar-link-active-fg: var(--base-color-fg);
+	--sidebar-link-active-hover-fg: var(--base-color-fg);
+	--sidebar-font-family: var(--base-font-family);
+
+	/* Tabs */
+	--tab-traditional-inactive-bg: transparent;
+	--tab-traditional-inactive-fg: var(--gray-500);
+	--tab-traditional-hover-bg: transparent;
+	--tab-traditional-hover-fg: var(--gray-700);
+	--tab-traditional-active-bg: var(--gray-200);
+	--tab-traditional-active-fg: var(--base-color-fg);
+	--tab-traditional-border: var(--gray-300);
+
+	--tab-underline-inactive-bg: transparent;
+	--tab-underline-inactive-fg: var(--gray-500);
+	--tab-underline-hover-bg: transparent;
+	--tab-underline-hover-fg: var(--gray-700);
+	--tab-underline-active-bg: var(--gray-800);
+	--tab-underline-active-fg: var(--color-warning);
+
+	--tab-outline-border: var(--gray-300);
+	--tab-outline-inactive-fg: var(--gray-500);
+
+	--tab-overline-bg: var(--gray-600);
+	--tab-overline-active-bg: var(--gray-800);
+	--tab-overline-active-fg: var(--color-warning);
+	--tab-overline-fg: var(--gray-300);
+
+	/* Table Components */
+	--table-bg: #fff;
+	--table-fg: var(--base-color-fg);
+	--table-border: var(--gray-300);
+	--table-header-bg: var(--gray-100);
+	--table-header-fg: var(--base-color-fg);
+	--table-header-border: var(--gray-300);
+	--table-row-even-bg: #fff;
+	--table-row-even-fg: var(--base-color-fg);
+	--table-row-even-border: var(--gray-200);
+	--table-row-odd-bg: var(--gray-50);
+	--table-row-odd-fg: var(--base-color-fg);
+	--table-row-odd-border: var(--gray-200);
+	--table-footer-bg: var(--gray-100);
+	--table-footer-fg: var(--base-color-fg);
+	--table-footer-border: var(--gray-300);
+
+	/* Modal Components */
+	--modal-bg: #fff;
+	--modal-fg: var(--base-color-fg);
+	--modal-header-bg: #fff;
+	--modal-header-fg: var(--base-color-fg);
+	--modal-header-border: var(--gray-300);
+	--modal-body-bg: #fff;
+	--modal-body-fg: var(--base-color-fg);
+	--modal-body-border: var(--gray-300);
+	--modal-footer-bg: #fff;
+	--modal-footer-fg: var(--base-color-fg);
+	--modal-footer-border: var(--gray-300);
+
+	/* Card Components */
+	--card-bg: #fff;
+	--card-fg: var(--base-color-fg);
+	--card-link-fg: var(--base-link-fg);
+	--card-link-hover-fg: var(--base-link-hover-fg);
+
+	/* Footer */
+	--footer-bg: #fff;
+	--footer-fg: var(--base-color-fg);
+	--footer-link-fg: var(--base-link-fg);
+	--footer-link-hover-fg: var(--base-link-hover-fg);
+	--footer-font-family: var(--base-font-family);
+
+	/* Tooltip */
+	--tooltip-bg: var(--gray-800);
+	--tooltip-fg: #fff;
+
+	/* Popover */
+	--popover-bg: #fff;
+	--popover-border: var(--gray-300);
+
+	/* Badge */
+	--badge-bg: var(--color-error);
+	--badge-fg: #fff;
+	--badge-standard-bg: var(--gray-600);
+	--badge-standard-fg: #fff;
+	--badge-positive-bg: var(--color-success);
+	--badge-positive-fg: #fff;
+	--badge-negative-bg: var(--color-error);
+	--badge-negative-fg: #fff;
+	--badge-warning-bg: var(--color-warning);
+	--badge-warning-fg: #fff;
+
+	/* Spinner */
+	--spinner-border: rgba(0, 0, 0, 0.1);
+	--spinner-primary-color: var(--color-info);
+	--spinner-secondary-color: var(--gray-600);
+
+	/* Body */
+	--body-bg: var(--base-color-bg);
+	--body-fg: var(--base-color-fg);
+}

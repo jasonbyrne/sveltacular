@@ -30,62 +30,62 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 50%;
-		background-color: var(--badge-bg, #e53935);
-		color: var(--badge-fg, #fff);
+		border-radius: var(--radius-full);
+		background-color: var(--badge-bg);
+		color: var(--badge-fg);
 		font-weight: 600;
 		line-height: 1;
 		min-width: 1.25rem;
 		height: 1.25rem;
-		padding: 0 0.375rem;
-		font-size: 0.75rem;
+		padding: 0 var(--spacing-xs);
+		font-size: var(--font-sm);
 
 		&.sm {
-			min-width: 1rem;
-			height: 1rem;
-			padding: 0 0.25rem;
-			font-size: 0.625rem;
+			min-width: var(--spacing-base);
+			height: var(--spacing-base);
+			padding: 0 var(--spacing-xs);
+			font-size: var(--font-xs);
 		}
 
 		&.md {
 			min-width: 1.25rem;
 			height: 1.25rem;
-			padding: 0 0.375rem;
-			font-size: 0.75rem;
+			padding: 0 var(--spacing-xs);
+			font-size: var(--font-sm);
 		}
 
 		&.lg {
-			min-width: 1.5rem;
-			height: 1.5rem;
-			padding: 0 0.5rem;
-			font-size: 0.875rem;
+			min-width: var(--spacing-lg);
+			height: var(--spacing-lg);
+			padding: 0 var(--spacing-sm);
+			font-size: var(--font-base);
 		}
 
 		&.xl {
 			min-width: 1.75rem;
 			height: 1.75rem;
-			padding: 0 0.625rem;
-			font-size: 1rem;
+			padding: 0 var(--spacing-md);
+			font-size: var(--font-md);
 		}
 
 		&.standard {
-			background-color: var(--badge-standard-bg, #666);
-			color: var(--badge-standard-fg, #fff);
+			background-color: var(--badge-standard-bg);
+			color: var(--badge-standard-fg);
 		}
 
 		&.positive {
-			background-color: var(--badge-positive-bg, #43a047);
-			color: var(--badge-positive-fg, #fff);
+			background-color: var(--badge-positive-bg);
+			color: var(--badge-positive-fg);
 		}
 
 		&.negative {
-			background-color: var(--badge-negative-bg, #e53935);
-			color: var(--badge-negative-fg, #fff);
+			background-color: var(--badge-negative-bg);
+			color: var(--badge-negative-fg);
 		}
 
 		&.warning {
-			background-color: var(--badge-warning-bg, #ff9800);
-			color: var(--badge-warning-fg, #fff);
+			background-color: var(--badge-warning-bg);
+			color: var(--badge-warning-fg);
 		}
 	}
 </style>

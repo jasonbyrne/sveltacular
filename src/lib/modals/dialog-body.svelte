@@ -10,8 +10,8 @@
 
 <style lang="scss">
 	div {
-		color: #000;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
+		color: var(--modal-body-fg);
+		margin-top: var(--spacing-base);
+		margin-bottom: var(--spacing-base);
 	}
 </style>

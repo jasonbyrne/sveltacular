@@ -29,15 +29,15 @@
 			top: 0;
 			left: -300px;
 			bottom: 0;
-			background: var(--nav-bg, white);
-			color: var(--nav-fg, black);
+			background: var(--nav-bg);
+			color: var(--nav-fg);
 			z-index: 9999;
-			transition: left 0.3s ease-in-out;
-			border-right: solid 1px #e5e5e5;
-			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+			transition: left var(--transition-slow) var(--ease-in-out);
+			border-right: solid var(--border-thin) var(--gray-300);
+			box-shadow: var(--shadow-md);
 			display: flex;
 			flex-direction: column;
-			font-family: var(--nav-font-family, sans-serif);
+			font-family: var(--nav-font-family);
 		}
 
 		&.open {

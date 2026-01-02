@@ -22,29 +22,29 @@
 <style lang="scss">
 	.code-block {
 		position: relative;
-		margin-bottom: 1rem;
-		background: #1e1e1e;
+		margin-bottom: var(--spacing-base);
+		background: var(--gray-900);
 		color: #fff;
-		padding: 1rem;
-		border-radius: 0.25rem;
+		padding: var(--spacing-base);
+		border-radius: var(--radius-md);
 	}
 
 	.lang-label {
-		font-size: 0.875rem;
+		font-size: var(--font-base);
 		font-weight: 500;
-		color: #888;
+		color: var(--gray-500);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		position: absolute;
 		top: 0;
 		right: 0;
-		padding: 0.5rem;
-		border-radius: 0.25rem 0 0 0.25rem;
+		padding: var(--spacing-sm);
+		border-radius: var(--radius-md) 0 0 var(--radius-md);
 	}
 
 	pre {
-		font-family: var(--base-mono-font-family, monospace);
-		font-size: 0.875rem;
+		font-family: var(--base-mono-font-family);
+		font-size: var(--font-base);
 		line-height: 1.5;
 		overflow-x: auto;
 		width: 100%;

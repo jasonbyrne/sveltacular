@@ -17,7 +17,7 @@
 		multiple = false,
 		mimeTypes = [],
 		capture = undefined as boolean | undefined | 'environment' | 'user',
-		children = undefined
+		label
 	}: {
 		value?: string;
 		placeholder?: string;
@@ -28,13 +28,13 @@
 		multiple?: boolean;
 		mimeTypes?: string[];
 		capture?: boolean | undefined | 'environment' | 'user';
-		children?: Snippet;
+		label?: string;
 	} = $props();
 </script>
 
 <FormField {size}>
-	{#if children}
-		<FormLabel {id} {required}>{@render children?.()}</FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<div>
 		<input
@@ -55,16 +55,20 @@
 <style lang="scss">
 	input {
 		width: 100%;
-		padding: 0.5rem 1rem;
-		border-radius: 0.25rem;
-		border: 1px solid var(--form-input-border, black);
-		background-color: var(--form-input-bg, white);
-		color: var(--form-input-fg, black);
-		font-size: 0.875rem;
+		padding: var(--spacing-sm) var(--spacing-base);
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-base);
 		font-weight: 500;
 		line-height: 1.25rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color 0.2s ease-in-out,
+			border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out,
+			fill 0.2s ease-in-out,
+			stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
 

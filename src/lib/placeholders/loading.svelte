@@ -36,7 +36,7 @@
 		span {
 			display: block;
 			width: 100%;
-			padding: 1rem;
+			padding: var(--spacing-base);
 		}
 
 		&.spinner {
@@ -44,7 +44,7 @@
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			gap: 1rem;
+			gap: var(--spacing-base);
 		}
 
 		.spinner-text {
@@ -54,10 +54,10 @@
 		&.block {
 			width: 100%;
 			height: 100%;
-			background-color: #ccc;
-			color: #888;
-			font-size: 1.5rem;
-			font-family: var(--base-font-family, sans-serif);
+			background-color: var(--gray-300);
+			color: var(--gray-500);
+			font-size: var(--font-2xl);
+			font-family: var(--base-font-family);
 			animation: pulse 2s infinite;
 			display: flex;
 			align-items: center;

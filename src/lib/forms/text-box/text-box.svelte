@@ -107,8 +107,8 @@
 			aria-describedby={helperText ? `${id}-helper` : undefined}
 			aria-required={required}
 			aria-invalid={false}
-			on:keypress={onKeyPress}
-			on:input={handleInput}
+			onkeypress={onKeyPress}
+			oninput={handleInput}
 		/>
 		{#if suffix}
 			<div class="suffix">{suffix}</div>
@@ -127,15 +127,19 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		border-radius: 0.25rem;
-		border: 1px solid var(--form-input-border, black);
-		background-color: var(--form-input-bg, white);
-		color: var(--form-input-fg, black);
-		font-size: 1rem;
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
 		font-weight: 500;
 		line-height: 2rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out),
+			fill var(--transition-base) var(--ease-in-out),
+			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
 
@@ -147,10 +151,10 @@
 			background-color: transparent;
 			border: none;
 			line-height: 2rem;
-			font-size: 1rem;
+			font-size: var(--font-md);
 			width: 100%;
 			flex-grow: 1;
-			padding-left: 1rem;
+			padding-left: var(--spacing-base);
 
 			&:focus {
 				outline: none;
@@ -159,26 +163,26 @@
 
 		.prefix,
 		.suffix {
-			font-size: 1rem;
+			font-size: var(--font-md);
 			line-height: 2rem;
-			padding-left: 1rem;
-			padding-right: 1rem;
-			background-color: var(--base-accent-bg, #ccc);
-			color: var(--base-accent-fg, black);
+			padding-left: var(--spacing-base);
+			padding-right: var(--spacing-base);
+			background-color: var(--form-input-accent-bg);
+			color: var(--form-input-accent-fg);
 		}
 
 		.prefix {
-			border-right: 1px solid var(--form-input-border, black);
+			border-right: var(--border-thin) solid var(--form-input-border);
 		}
 
 		.suffix {
-			border-left: 1px solid var(--form-input-border, black);
+			border-left: var(--border-thin) solid var(--form-input-border);
 		}
 	}
 
 	.helper-text {
-		font-size: 0.75rem;
+		font-size: var(--font-sm);
 		line-height: 1.25rem;
-		padding: 0.25rem;
+		padding: var(--spacing-xs);
 	}
 </style>

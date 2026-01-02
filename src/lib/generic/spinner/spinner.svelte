@@ -17,37 +17,37 @@
 <style lang="scss">
 	.spinner {
 		display: inline-block;
-		border: 2px solid var(--spinner-border, rgba(0, 0, 0, 0.1));
-		border-top-color: var(--spinner-primary-color, #1e88e5);
-		border-radius: 50%;
+		border: var(--border-base) solid var(--spinner-border);
+		border-top-color: var(--spinner-primary-color);
+		border-radius: var(--radius-full);
 		animation: spin 0.6s linear infinite;
 
 		&.sm {
-			width: 1rem;
-			height: 1rem;
+			width: var(--spacing-base);
+			height: var(--spacing-base);
 			border-width: 1.5px;
 		}
 
 		&.md {
-			width: 1.5rem;
-			height: 1.5rem;
-			border-width: 2px;
+			width: var(--spacing-lg);
+			height: var(--spacing-lg);
+			border-width: var(--border-base);
 		}
 
 		&.lg {
-			width: 2rem;
-			height: 2rem;
+			width: var(--spacing-xl);
+			height: var(--spacing-xl);
 			border-width: 2.5px;
 		}
 
 		&.xl {
-			width: 3rem;
-			height: 3rem;
-			border-width: 3px;
+			width: var(--spacing-2xl);
+			height: var(--spacing-2xl);
+			border-width: var(--border-thick);
 		}
 
 		&.secondary {
-			border-top-color: var(--spinner-secondary-color, #555);
+			border-top-color: var(--spinner-secondary-color);
 		}
 
 		.sr-only {
