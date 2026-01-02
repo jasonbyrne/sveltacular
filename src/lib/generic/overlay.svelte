@@ -22,7 +22,7 @@
 	};
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class:show onclick={handleClick} onkeypress={onKeyPress}>
 	{@render children?.()}
 </div>
