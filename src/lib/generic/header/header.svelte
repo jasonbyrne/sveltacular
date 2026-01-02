@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
 	import Headline from '$src/lib/typography/headline.svelte';
@@ -7,10 +8,19 @@
 
 	const section: { title: string; level: SectionLevel } | undefined = getContext('section');
 
-	export let level: SectionLevel = section?.level || 2;
-	export let title: string = section?.title || '';
-	export let subtitle = '';
-	export let underline = false;
+	let {
+		level = (section?.level || 2) as SectionLevel,
+		title = section?.title || '',
+		subtitle = '',
+		underline = false,
+		children = undefined
+	}: {
+		level?: SectionLevel;
+		title?: string;
+		subtitle?: string;
+		underline?: boolean;
+		children?: Snippet;
+	} = $props();
 </script>
 
 <header class:underline data-level={level}>
@@ -22,7 +32,9 @@
 			{/if}
 		</hgroup>
 		<div>
-			<slot />
+			{#if children}
+				{@render children?.()}
+			{/if}
 		</div>
 	</FlexRow>
 </header>

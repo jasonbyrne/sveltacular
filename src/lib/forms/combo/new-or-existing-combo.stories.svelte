@@ -1,11 +1,19 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import NewOrExistingCombo from './new-or-existing-combo.svelte';
 	import { US_States } from '$src/lib/data/united-states.js';
+
+	const { Story } = defineMeta({
+		component: NewOrExistingCombo,
+		title: 'Forms/New or Existing Combo',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/New or Existing Combo" component={NewOrExistingCombo} />
+<Story name="Default" args={{ items: US_States }} />
 
-<Story name="Default">
-	<NewOrExistingCombo items={US_States} />
-</Story>
+

@@ -1,31 +1,20 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Section from './section.svelte';
-	import Header from '../header/header.svelte';
-	import Divider from '../divider/divider.svelte';
+
+	const { Story } = defineMeta({
+		component: Section,
+		title: 'Generic/Section',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Section" component={Section} />
+<Story name="Default">Section content would go here</Story>
 
-<Story name="Default">
-	<Section>
-		<Header title="Section Title" />
-		<p>Some content.</p>
-	</Section>
-	<Divider />
-	<Section>
-		<Header title="Section Title" />
-		<p>Some content.</p>
-	</Section>
+<Story name="WithTitleAttribute" args={{ title: 'Some Title' }}>
+	Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae vel, ducimus itaque veniam nostrum,
+	nemo repellendus optio odit, in quam velit nesciunt? Fugiat eius est, impedit consectetur nisi
+	atque laborum?
 </Story>
 
-<Story name="Wtih Title Attribute">
-	<Section title="Some Title">
-		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae vel, ducimus itaque veniam
-			nostrum, nemo repellendus optio odit, in quam velit nesciunt? Fugiat eius est, impedit
-			consectetur nisi atque laborum?
-		</p>
-	</Section>
-	<Divider />
-</Story>
+

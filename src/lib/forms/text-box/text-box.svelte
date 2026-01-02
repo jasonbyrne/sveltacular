@@ -3,28 +3,52 @@
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
-	import { createEventDispatcher } from 'svelte';
 
 	const id = uniqueId();
-	const dipatch = createEventDispatcher<{ change: string; input: string }>();
 
-	export let value: string | null = '';
-	export let placeholder = '';
-	export let helperText = '';
-	export let size: FormFieldSizeOptions = 'full';
-	export let type: AllowedTextInputTypes = 'text';
-	export let disabled = false;
-	export let required = false;
-	export let readonly = false;
-	export let maxlength: number | undefined = undefined;
-	export let minlength: number | undefined = undefined;
-	export let pattern: string | undefined = undefined;
-	export let prefix: string | undefined = undefined;
-	export let suffix: string | undefined = undefined;
-	export let allowSpaces = true;
-	export let allowNumbers = true;
-	export let allowLetters = true;
-	export let textCase: 'lower' | 'upper' | undefined = undefined;
+	let {
+		value = $bindable('' as string | null),
+		placeholder = '',
+		helperText = '',
+		size = 'full',
+		type = 'text',
+		disabled = false,
+		required = false,
+		readonly = false,
+		maxlength = undefined,
+		minlength = undefined,
+		pattern = undefined,
+		prefix = undefined,
+		suffix = undefined,
+		allowSpaces = true,
+		allowNumbers = true,
+		allowLetters = true,
+		textCase = undefined,
+		onChange = undefined,
+		onInput = undefined,
+		label = undefined
+	}: {
+		value?: string | null;
+		placeholder?: string;
+		helperText?: string;
+		size?: FormFieldSizeOptions;
+		type?: AllowedTextInputTypes;
+		disabled?: boolean;
+		required?: boolean;
+		readonly?: boolean;
+		maxlength?: number | undefined;
+		minlength?: number | undefined;
+		pattern?: string | undefined;
+		prefix?: string | undefined;
+		suffix?: string | undefined;
+		allowSpaces?: boolean;
+		allowNumbers?: boolean;
+		allowLetters?: boolean;
+		textCase?: 'lower' | 'upper' | undefined;
+		onChange?: ((value: string) => void) | undefined;
+		onInput?: ((value: string) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	// Don't allow certain characters to be typed into the input
 	const onKeyPress = (e: KeyboardEvent) => {
@@ -40,7 +64,7 @@
 	};
 
 	// When the value changes, make sure it is in the correct case
-	const onInput = (e: Event) => {
+	const handleInput = (e: Event) => {
 		const cleanValue = String(value);
 		if (textCase === 'lower') {
 			value = cleanValue.toLowerCase();
@@ -56,13 +80,14 @@
 		if (type === 'url') {
 			value = cleanValue.replace(/\s/g, '');
 		}
-		dipatch('input', cleanValue);
+		onInput?.(cleanValue);
+		onChange?.(cleanValue);
 	};
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<div class="input {disabled ? 'disabled' : 'enabled'}">
 		{#if prefix}
@@ -80,7 +105,7 @@
 			{minlength}
 			{pattern}
 			on:keypress={onKeyPress}
-			on:input={onInput}
+			on:input={handleInput}
 		/>
 		{#if suffix}
 			<div class="suffix">{suffix}</div>

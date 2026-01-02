@@ -1,18 +1,8 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import DataGrid from './data-grid.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
-	import type { DataCol, JsonObject, PaginationProperties } from '../index.js';
-
-	interface MyRow extends JsonObject {
-		id: number;
-		name: string;
-		age: number;
-		email: string;
-		isActive: boolean;
-		salary: number;
-		updatedAt: string;
-	}
 
 	const rows = [
 		{
@@ -51,11 +41,17 @@
 			salary: 85733,
 			updatedAt: '2021-01-01T00:00:00Z'
 		}
-	] satisfies MyRow[];
+	];
 
-	const badCol = { key: 'foobar', label: 'Foo' };
+	function formatCurrency(row, key) {
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD',
+			maximumFractionDigits: 0
+		}).format(Number(row[key]));
+	}
 
-	const cols: DataCol[] = [
+	const cols = [
 		{ key: 'name', label: 'Name' },
 		{ key: 'age', label: 'Age' },
 		{
@@ -67,12 +63,7 @@
 		{
 			key: 'salary',
 			label: 'Salary',
-			format: (row, key) =>
-				new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'USD',
-					maximumFractionDigits: 0
-				}).format(row[key] as number)
+			format: formatCurrency
 		},
 		{
 			key: 'updatedAt',
@@ -86,60 +77,61 @@
 		{ key: 'value', label: 'Abbreviation', width: '50px' }
 	];
 
-	const pagination: PaginationProperties = {
+	const pagination = {
 		page: 1,
 		perPage: 25,
 		total: rows.length
 	};
 
+	const countriesTotal = Countries.length;
+	const countriesPagination = {
+		page: 4,
+		perPage: 5,
+		total: countriesTotal
+	};
+
 	const editAction = {
 		type: 'button',
-		items: [{ text: 'Edit', onClick: () => true }]
+		items: [{ text: 'Edit', onClick: fn() }]
 	};
 
 	const multiAction = {
 		type: 'dropdown',
 		items: [
-			{ text: 'Edit', onClick: () => true },
-			{ text: 'Delete', onClick: () => true }
+			{ text: 'Edit', onClick: fn() },
+			{ text: 'Delete', onClick: fn() }
 		]
 	};
+
+	const { Story } = defineMeta({
+		component: DataGrid,
+		title: 'Tables/DataGrid',
+		tags: ['autodocs'],
+		args: {
+			onPageChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Tables/DataGrid" component={DataGrid} />
+<Story name="Standard" args={{ rows, cols }}>Employees</Story>
 
-<Story name="Standard">
-	<DataGrid {rows} {cols}>Employees</DataGrid>
+<Story name="WithEdit" args={{ rows, cols, actions: editAction }}>Employees</Story>
+
+<Story name="WithMultipleActions" args={{ rows, cols, actions: multiAction }}>Employees</Story>
+
+<Story
+	name="WithPagination"
+	args={{
+		rows: Countries,
+		cols: countryCols,
+		pagination: countriesPagination
+	}}
+>
+	Countries
 </Story>
 
-<Story name="With Edit">
-	<DataGrid {rows} {cols} actions={editAction}>Employees</DataGrid>
-</Story>
+<Story name="NoData" args={{ rows: [], cols }}>Employees</Story>
 
-<Story name="With Multiple Ations">
-	<DataGrid {rows} {cols} actions={multiAction}>Employees</DataGrid>
-</Story>
+<Story name="NoColumns" args={{ rows, cols: [] }} />
 
-<Story name="With Pagination">
-	<DataGrid
-		rows={Countries}
-		cols={countryCols}
-		pagination={{
-			page: 4,
-			perPage: 5,
-			total: Countries.length
-		}}>Countries</DataGrid
-	>
-</Story>
 
-<Story name="No Data">
-	<DataGrid rows={[]} {cols}>Employees</DataGrid>
-</Story>
-
-<Story name="Bad Columns">
-	<DataGrid {rows} cols={[...cols, badCol]} {pagination}>Employees</DataGrid>
-</Story>
-
-<Story name="No Columns">
-	<DataGrid {rows} cols={[]} />
-</Story>

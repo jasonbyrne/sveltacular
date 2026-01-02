@@ -1,14 +1,20 @@
 <script lang="ts">
 	import { randomInt } from '../helpers/random.js';
 
-	export let min = 50;
-	export let max = 100;
-    export let animation: 'pulse' | 'none' = 'none';
+	let {
+		minWidth = 50,
+		maxWidth = 100,
+		animation = 'pulse'
+	}: {
+		minWidth?: number;
+		maxWidth?: number;
+		animation?: 'pulse' | 'none';
+	} = $props();
 
-	$: width = randomInt(min, max);
+	let width = $derived(randomInt(minWidth, maxWidth));
 </script>
 
-<div class="{animation}" style="width: {width}%" />
+<div class={animation} style="width: {width}%"></div>
 
 <style lang="scss">
 	div {
@@ -19,18 +25,17 @@
 		margin-bottom: 1rem;
 
 		&.pulse {
-       		animation: pulse 2s infinite;
-    	}
+			animation: pulse 2s infinite;
+		}
 	}
 
-	
-    @keyframes pulse {
+	@keyframes pulse {
 		0%,
 		100% {
-			opacity: 0.5;
+			opacity: 0.2;
 		}
 		50% {
-			opacity: 1;
+			opacity: 0.8;
 		}
 	}
 </style>

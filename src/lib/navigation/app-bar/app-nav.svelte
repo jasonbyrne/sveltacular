@@ -1,17 +1,18 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import HamburgerIcon from '$src/lib/icons/hamburger-icon.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { get, writable } from 'svelte/store';
 
-	export let align: 'left' | 'center' | 'right' | 'start' | 'end' = 'right';
-	export let spacing:
-		| 'none'
-		| 'tight'
-		| 'medium'
-		| 'loose'
-		| 'space-evenly'
-		| 'space-around'
-		| 'space-between' = 'medium';
+	let {
+		align = 'right' as 'left' | 'center' | 'right' | 'start' | 'end',
+		spacing = 'medium' as 'none' | 'tight' | 'medium' | 'loose' | 'space-evenly' | 'space-around' | 'space-between',
+		children
+	}: {
+		align?: 'left' | 'center' | 'right' | 'start' | 'end';
+		spacing?: 'none' | 'tight' | 'medium' | 'loose' | 'space-evenly' | 'space-around' | 'space-between';
+		children: Snippet;
+	} = $props();
 
 	// Set initial opened context
 	const open = writable(false);
@@ -23,12 +24,12 @@
 </script>
 
 <div class="icon {$open ? 'open' : 'closed'} {collapse}">
-	<button type="button" on:click={toggle}>
+	<button type="button" onclick={toggle}>
 		<HamburgerIcon />
 	</button>
 </div>
 <nav class="{align} {spacing} {collapse} {$open ? 'open' : 'closed'}">
-	<slot />
+	{@render children?.()}
 </nav>
 
 <style lang="scss">

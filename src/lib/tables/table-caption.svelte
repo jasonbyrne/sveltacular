@@ -1,10 +1,19 @@
 <script lang="ts">
-	export let side: 'top' | 'bottom' = 'top';
-	export let align: 'left' | 'center' | 'right' = 'center';
+	import type { Snippet } from 'svelte';
+
+	let {
+		side = 'top' as 'top' | 'bottom',
+		align = 'center' as 'left' | 'center' | 'right',
+		children
+	}: {
+		side?: 'top' | 'bottom';
+		align?: 'left' | 'center' | 'right';
+		children: Snippet;
+	} = $props();
 </script>
 
 <caption class="{side} {align}">
-	<slot />
+	{@render children?.()}
 </caption>
 
 <style lang="scss">
@@ -16,7 +25,6 @@
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		font-family: sans-serif;
-		text-shadow: 1px 1px 1px black;
 		text-align: center;
 		caption-side: top;
 

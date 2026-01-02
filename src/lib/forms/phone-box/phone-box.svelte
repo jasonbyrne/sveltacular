@@ -1,18 +1,25 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import { createEventDispatcher } from 'svelte';
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
 
-	export let value: string | null = '';
-	export let size: FormFieldSizeOptions = 'md';
+	let {
+		value = $bindable('' as string | null),
+		size = 'md' as FormFieldSizeOptions,
+		onChange = undefined,
+		label = undefined
+	}: {
+		value?: string | null;
+		size?: FormFieldSizeOptions;
+		onChange?: ((value: string) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: string }>();
 	const fieldOrder = ['areaCode', 'localExt', 'lastFour'];
-	let areaCode = '';
-	let localExt = '';
-	let lastFour = '';
+	let areaCode = $state('');
+	let localExt = $state('');
+	let lastFour = $state('');
 
 	const getValueByField = (field: string) => {
 		if (field === 'areaCode') return areaCode;
@@ -51,7 +58,7 @@
 
 	const publishChange = () => {
 		value = getCombinedValue();
-		dispatch('change', value);
+		onChange?.(value);
 		return value;
 	};
 
@@ -127,12 +134,16 @@
 	// Set the initial value
 	setValue(value ?? '');
 
-	$: areaCode || localExt || lastFour ? publishChange() : null;
+	$effect(() => {
+		if (areaCode || localExt || lastFour) {
+			publishChange();
+		}
+	});
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel id="{id}-areaCode"><slot /></FormLabel>
+	{#if label}
+		<FormLabel id="{id}-areaCode" {label} />
 	{/if}
 	<div class="input">
 		<span class="areaCode segment">
@@ -140,9 +151,9 @@
 			<input
 				id="{id}-areaCode"
 				type="text"
-				on:input={valueChanged}
-				on:keyup={keyUp}
-				on:change={valueChanged}
+				oninput={valueChanged}
+				onkeyup={keyUp}
+				onchange={valueChanged}
 				bind:value={areaCode}
 				name="areaCode"
 				data-maxlength="3"
@@ -153,9 +164,9 @@
 			<input
 				id="{id}-localExt"
 				type="text"
-				on:input={valueChanged}
-				on:change={valueChanged}
-				on:keyup={keyUp}
+				oninput={valueChanged}
+				onchange={valueChanged}
+				onkeyup={keyUp}
 				bind:value={localExt}
 				name="localExt"
 				data-maxlength="3"
@@ -166,9 +177,9 @@
 			<input
 				id="{id}-lastFour"
 				type="text"
-				on:input={valueChanged}
-				on:change={valueChanged}
-				on:keyup={keyUp}
+				oninput={valueChanged}
+				onchange={valueChanged}
+				onkeyup={keyUp}
 				bind:value={lastFour}
 				name="lastFour"
 				data-maxlength="4"

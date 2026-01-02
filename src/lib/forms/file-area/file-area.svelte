@@ -1,18 +1,27 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import UploadIcon from '$src/lib/icons/upload-icon.svelte';
-	import { createEventDispatcher } from 'svelte';
 
 	type SelectFilesTarget = null | { files: FileList | null | undefined };
 	type DroppedFiles = FileList | File[];
 
-	export let selectedFiles: DroppedFiles = [];
-	export let disabled = false;
-	export let fileLimit: number = 1;
-	export let fileMimePattern: string | RegExp | undefined = undefined;
+	let {
+		selectedFiles = $bindable([] as DroppedFiles),
+		disabled = false,
+		fileLimit = 1,
+		fileMimePattern = undefined as string | RegExp | undefined,
+		onFilesSelected = undefined,
+		children = undefined
+	}: {
+		selectedFiles?: DroppedFiles;
+		disabled?: boolean;
+		fileLimit?: number;
+		fileMimePattern?: string | RegExp | undefined;
+		onFilesSelected?: ((files: FileList | File[]) => void) | undefined;
+		children?: Snippet;
+	} = $props();
 
-	let isDragging = false;
-
-	const dispatch = createEventDispatcher<{ filesSelected: FileList | File[] }>();
+	let isDragging = $state(false);
 
 	const filterFiles = (files: DroppedFiles) => {
 		if (!fileMimePattern) return files;
@@ -27,7 +36,7 @@
 	const addFiles = async (files: DroppedFiles) => {
 		if (!files.length) return;
 		selectedFiles = [...files, selectedFiles].flat().slice(0, fileLimit) as DroppedFiles;
-		dispatch('filesSelected', selectedFiles);
+		onFilesSelected?.(selectedFiles);
 	};
 
 	const selectFiles = async (e: Event) => {
@@ -60,12 +69,14 @@
 		isDragging = false;
 	};
 
-	$: filesClass = selectedFiles.length ? 'has-files' : 'no-files';
-	$: enabledClass = disabled ? 'disabled' : '';
-	$: draggingClass = isDragging ? 'isDragging' : '';
-	$: filesSelectedText = selectedFiles.length
-		? `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} selected`
-		: '';
+	let filesClass = $derived(selectedFiles.length ? 'has-files' : 'no-files');
+	let enabledClass = $derived(disabled ? 'disabled' : '');
+	let draggingClass = $derived(isDragging ? 'isDragging' : '');
+	let filesSelectedText = $derived(
+		selectedFiles.length
+			? `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} selected`
+			: ''
+	);
 </script>
 
 <div
@@ -73,19 +84,19 @@
 	data-file-count={selectedFiles.length}
 >
 	<label
-		on:drop={dropFiles}
-		on:dragenter={dragStart}
-		on:dragstart={dragStart}
-		on:dragover={dragStart}
-		on:dragend={dragStop}
-		on:dragleave={dragStop}
-		on:dragexit={dragStop}
+		ondrop={dropFiles}
+		ondragenter={dragStart}
+		ondragstart={dragStart}
+		ondragover={dragStart}
+		ondragend={dragStop}
+		ondragleave={dragStop}
+		ondragexit={dragStop}
 	>
-		<input type="file" id="upload-button" accept="image/*" on:change={selectFiles} {disabled} />
+		<input type="file" id="upload-button" accept="image/*" onchange={selectFiles} {disabled} />
 		<div class="icon"><UploadIcon /></div>
 		<div class="text">
-			{#if $$slots.default}
-				<slot />
+			{#if children}
+				{@render children?.()}
 			{:else}
 				<span>Drop file or click to select</span>
 			{/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EnvelopeIcon from '$src/lib/icons/envelope-icon.svelte';
 
-	export let emailAddress = '';
+	let { emailAddress = '' }: { emailAddress?: string } = $props();
 </script>
 
 <a href="mailto:{emailAddress}" title="Email Address">

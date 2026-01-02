@@ -1,25 +1,22 @@
-import type { StorybookConfig } from '@storybook/sveltekit';
+// This file has been automatically migrated to valid ESM format by Storybook.
+import { fileURLToPath } from 'node:url';
 import { mergeConfig } from 'vite';
-import path from 'path';
+import path, { dirname } from 'path';
 
-const config: StorybookConfig = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const config = {
 	stories: ['../src/lib/**/*.stories.@(js|jsx|ts|tsx|svelte)'],
 	staticDirs: [{ from: '../static', to: '/assets' }],
-	addons: [
-		'@storybook/addon-links',
-		'@storybook/addon-essentials',
-		'@storybook/addon-interactions',
-		'@storybook/preset-scss',
-		'@storybook/addon-svelte-csf',
-		'storybook-dark-mode'
-	],
+
+	addons: ['@storybook/addon-links', '@storybook/addon-docs', '@storybook/addon-svelte-csf'],
+
 	framework: {
 		name: '@storybook/sveltekit',
 		options: {}
 	},
-	docs: {
-		autodocs: 'tag'
-	},
+
 	async viteFinal(config) {
 		return mergeConfig(config, {
 			resolve: {

@@ -1,20 +1,28 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Alert from './alert.svelte';
+
+	const { Story } = defineMeta({
+		component: Alert,
+		title: 'Modals/Alert',
+		tags: ['autodocs'],
+		args: {
+			onClose: fn()
+		}
+	});
 </script>
 
-<Meta title="Modals/Alert" component={Alert} />
-
-<Story name="Default">
-	<Alert title="Error" open>Something went wrong and we need to make sure you see this.</Alert>
+<Story name="Default" args={{ title: 'Error', open: true }}>
+	Something went wrong and we need to make sure you see this.
 </Story>
 
-<Story name="Alert (No Title)">
-	<Alert open>Something went wrong and we need to make sure you see this.</Alert>
+<Story name="AlertNoTitle" args={{ open: true }}>
+	Something went wrong and we need to make sure you see this.
 </Story>
 
-<Story name="Alert (X-Large)">
-	<Alert title="Extra Large" open size="xl"
-		>Something went wrong and we need to make sure you see this.</Alert
-	>
+<Story name="AlertXLarge" args={{ title: 'Extra Large', open: true, size: 'xl' }}>
+	Something went wrong and we need to make sure you see this.
 </Story>
+
+

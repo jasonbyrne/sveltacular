@@ -6,18 +6,30 @@
 
 	const id = uniqueId();
 
-	export let size: FormFieldSizeOptions = 'full';
-	export let value: string | null = '';
-	export let placeholder = '';
-	export let rows = 4;
-	export let disabled = false;
-	export let required = false;
-	export let readonly = false;
+	let {
+		size = 'full' as FormFieldSizeOptions,
+		value = $bindable('' as string | null),
+		placeholder = '',
+		rows = 4,
+		disabled = false,
+		required = false,
+		readonly = false,
+		label = undefined
+	}: {
+		size?: FormFieldSizeOptions;
+		value?: string | null;
+		placeholder?: string;
+		rows?: number;
+		disabled?: boolean;
+		required?: boolean;
+		readonly?: boolean;
+		label?: string;
+	} = $props();
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<textarea wrap="soft" {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
 </FormField>

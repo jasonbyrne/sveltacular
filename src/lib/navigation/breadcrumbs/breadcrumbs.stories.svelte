@@ -1,5 +1,5 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Breadcrumbs from './breadcrumbs.svelte';
 
 	const crumbs = [
@@ -7,22 +7,20 @@
 		{ label: 'Search Term', href: 'https://www.google.com' },
 		'Results'
 	];
+
+	const { Story } = defineMeta({
+		component: Breadcrumbs,
+		title: 'Navigation/Breadcrumbs',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Navigation/Breadcrumbs" component={Breadcrumbs} />
+<Story name="Default" args={{ homeUrl: 'https://www.google.com', crumbs }} />
 
-<Story name="Default">
-	<Breadcrumbs homeUrl="https://www.google.com" {crumbs} />
-</Story>
+<Story name="Small" args={{ homeUrl: 'https://www.google.com', crumbs, size: 'sm' }} />
 
-<Story name="Small">
-	<Breadcrumbs homeUrl="https://www.google.com" {crumbs} size="sm" />
-</Story>
+<Story name="Large" args={{ homeUrl: 'https://www.google.com', crumbs, size: 'lg' }} />
 
-<Story name="Large">
-	<Breadcrumbs homeUrl="https://www.google.com" {crumbs} size="lg" />
-</Story>
+<Story name="NoHomeLink" args={{ crumbs }} />
 
-<Story name="No Home Link">
-	<Breadcrumbs {crumbs} />
-</Story>
+

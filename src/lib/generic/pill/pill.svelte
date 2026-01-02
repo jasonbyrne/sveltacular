@@ -1,15 +1,26 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
-	export let size: FormFieldSizeOptions = 'md';
-	export let style: 'standard' | 'positive' | 'negative' = 'standard';
-	export let shape: 'circular' | 'square' | 'rounded' | 'badge' | 'circle' = 'rounded';
-	export let fill: 'solid' | 'outline' = 'solid';
-	export let compact = false;
+	let {
+		size = 'md' as FormFieldSizeOptions,
+		style = 'standard' as 'standard' | 'positive' | 'negative',
+		shape = 'rounded' as 'circular' | 'square' | 'rounded' | 'badge' | 'circle',
+		fill = 'solid' as 'solid' | 'outline',
+		compact = false,
+		label
+	}: {
+		size?: FormFieldSizeOptions;
+		style?: 'standard' | 'positive' | 'negative';
+		shape?: 'circular' | 'square' | 'rounded' | 'badge' | 'circle';
+		fill?: 'solid' | 'outline';
+		compact?: boolean;
+		label?: string;
+	} = $props();
 </script>
 
 <div class="pill {size} {style} {shape} {fill}" class:compact>
-	<span><slot /></span>
+	<span>{label}</span>
 </div>
 
 <style lang="scss">
@@ -17,10 +28,10 @@
 		display: inline-block;
 		padding: 0.25rem 0.5rem;
 		border-radius: 1.5rem;
-		background-color: #f1f5f9;
+		background-color: var(--base-fg, #000);
 		font-size: 0.75rem;
 		font-weight: 500;
-		color: #4a5568;
+		color: var(--base-bg, #fff);
 		font-family: var(--base-font-family, sans-serif);
 
 		&.compact {
@@ -111,6 +122,5 @@
 				color: #570000;
 			}
 		}
-
 	}
 </style>

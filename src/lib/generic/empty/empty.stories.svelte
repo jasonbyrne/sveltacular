@@ -1,95 +1,26 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Empty from './empty.svelte';
-	import FolderOpenIcon from '$src/lib/icons/folder-open-icon.svelte';
+
+	const { Story } = defineMeta({
+		component: Empty,
+		title: 'Generic/Empty',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Empty" component={Empty} />
+<Story name="Default" args={{}} />
 
-<Story name="Default">
-	<Empty />
-</Story>
+<Story name="WithMessage" args={{ text: 'No results found' }} />
 
-<Story name="With Message">
-	<Empty text="No results found" />
-</Story>
+<Story name="Horizontal" args={{ text: 'No results found', orientation: 'horizontal' }} />
 
-<Story name="With Message and Icon">
-	<Empty text="No results found">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
+<Story name="XLarge" args={{ text: 'No results found', size: 'xl' }} />
 
-<Story name="Horizontal">
-	<Empty text="No results found" orientation="horizontal" />
-</Story>
+<Story name="Large" args={{ text: 'No results found', size: 'lg' }} />
 
-<Story name="Horizontal with Icon">
-	<Empty text="No results found" orientation="horizontal">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
+<Story name="Medium" args={{ text: 'No results found', size: 'md' }} />
 
-<Story name="X-Large">
-	<Empty text="No results found" size="xl" />
-</Story>
+<Story name="Small" args={{ text: 'No results found', size: 'sm' }} />
 
-<Story name="X-Large with Icon">
-	<Empty text="No results found" size="xl">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
 
-<Story name="Large">
-	<Empty text="No results found" size="lg" />
-</Story>
-
-<Story name="Large with Icon">
-	<Empty text="No results found" size="lg">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Medium">
-	<Empty text="No results found" size="md" />
-</Story>
-
-<Story name="Medium with Icon">
-	<Empty text="No results found" size="md">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Small">
-	<Empty text="No results found" size="sm" />
-</Story>
-
-<Story name="Small with Icon">
-	<Empty text="No results found" size="sm">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Horizontal Reverse">
-	<Empty text="No results found" orientation="horizontal" reverse>
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Vertical Reverse">
-	<Empty text="No results found" orientation="vertical" reverse>
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Small with Icon (Horizontal Left)">
-	<Empty text="No results found" size="sm" align="start" orientation="horizontal">
-		<FolderOpenIcon />
-	</Empty>
-</Story>
-
-<Story name="Small with Icon (Horizontal Right)">
-	<Empty text="No results found" size="sm" align="end" orientation="horizontal">
-		<FolderOpenIcon />
-	</Empty>
-</Story>

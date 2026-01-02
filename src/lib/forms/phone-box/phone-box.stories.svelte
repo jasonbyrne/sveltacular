@@ -1,38 +1,24 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import PhoneBox from './phone-box.svelte';
 
-	let changes: string[] = [];
-
-	let value1 = '5551239876';
-	let value2 = '1239876';
-
-	const onChange = (event: CustomEvent<string>) => {
-		changes = [event.detail, ...changes];
-	};
+	const { Story } = defineMeta({
+		component: PhoneBox,
+		title: 'Forms/PhoneBox',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/PhoneBox" component={PhoneBox} />
+<Story name="Default" args={{ value: '5551239876', label: 'Some Label' }} />
 
-<Story name="Default">
-	<PhoneBox bind:value={value1}>Some Label</PhoneBox>
-	<div>{value1}</div>
-</Story>
+<Story name="SevenDigits" args={{ value: '1239876', label: 'Some Label' }} />
 
-<Story name="Seven Digits">
-	<PhoneBox bind:value={value2}>Some Label</PhoneBox>
-	<div>{value2}</div>
-</Story>
+<Story name="NoValue" args={{ label: 'Some Label' }} />
 
-<Story name="No Value">
-	<PhoneBox on:change={onChange}>Some Label</PhoneBox>
-	<ul>
-		{#each changes as change}
-			<li>{change}</li>
-		{/each}
-	</ul></Story
->
+<Story name="Small" args={{ value: '5551239876', size: 'sm', label: 'Some Label' }} />
 
-<Story name="Small">
-	<PhoneBox value="5551239876" size="sm">Some Label</PhoneBox>
-</Story>
+

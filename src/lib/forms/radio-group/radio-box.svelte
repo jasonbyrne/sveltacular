@@ -1,12 +1,21 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 
 	type RadioValue = string | number | boolean | undefined | null;
 
-	export let value: RadioValue = undefined;
-	export let group: string | undefined = undefined;
-	export let disabled = false;
+	let {
+		value = undefined as RadioValue,
+		group = $bindable(undefined as string | undefined),
+		disabled = false,
+		children = undefined
+	}: {
+		value?: RadioValue;
+		group?: string | undefined;
+		disabled?: boolean;
+		children?: Snippet;
+	} = $props();
 
 	const id = uniqueId();
 </script>
@@ -16,9 +25,9 @@
 	<span class="checkbox">
 		<span class="checkmark"><CheckIcon /></span>
 	</span>
-	{#if $$slots.default}
+	{#if children}
 		<div class="text">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 </label>

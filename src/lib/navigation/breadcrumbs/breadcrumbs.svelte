@@ -3,10 +3,17 @@
 
 	type Crumb = { label: string; href?: string } | string;
 
-	export let homeUrl: string | null = null;
-	export let crumbs: Crumb[] = [];
-	export let size: 'sm' | 'md' | 'lg' = 'md';
-	export let separator = '/';
+	let {
+		homeUrl = null,
+		crumbs = [],
+		size = 'md' as 'sm' | 'md' | 'lg',
+		separator = '/'
+	}: {
+		homeUrl?: string | null;
+		crumbs?: Crumb[];
+		size?: 'sm' | 'md' | 'lg';
+		separator?: string;
+	} = $props();
 
 	const getCrumLabel = (crumb: Crumb) => {
 		if (typeof crumb === 'string') return crumb;

@@ -1,11 +1,19 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { createEventDispatcher, setContext } from 'svelte';
+	import { setContext } from 'svelte';
 	import { tabContext, type TabContext, type TabDefinition, type TabStyle } from './tab-context.js';
 	import { getAnchor, navigateToAnchor, subscribable } from '$src/lib/index.js';
 
-	export let style: TabStyle = 'traditional';
-	const dispatch = createEventDispatcher<{ change: string | null }>();
+	let {
+		style = 'traditional' as TabStyle,
+		onChange = undefined,
+		children
+	}: {
+		style?: TabStyle;
+		onChange?: ((id: string | null) => void) | undefined;
+		children: Snippet;
+	} = $props();
 
 	// Keep track of tabs
 	const tabs = writable<TabDefinition[]>([]);
@@ -39,7 +47,7 @@
 	const selectTab = (id: string) => {
 		active.set(id);
 		navigateToAnchor(id);
-		dispatch('change', id);
+		onChange?.(id);
 	};
 
 	// Tab Context
@@ -56,7 +64,7 @@
 		<nav>
 			{#each $tabs as tab}
 				<li class={$active == tab.id ? 'active' : 'inactive'}>
-					<button on:click={() => selectTab(tab.id)}>
+					<button onclick={() => selectTab(tab.id)}>
 						{tab.name}
 					</button>
 				</li>
@@ -64,7 +72,7 @@
 		</nav>
 	</div>
 	<div class="tab-content">
-		<slot />
+		{@render children?.()}
 	</div>
 </section>
 

@@ -1,12 +1,18 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import FileArea from './file-area.svelte';
+
+	const { Story } = defineMeta({
+		component: FileArea,
+		title: 'Forms/FileArea',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/FileArea" component={FileArea} />
+<Story name="Standard" args={{}} />
 
-<Story name="Stanard">
-	<div style="width: 300px; height: 300px;">
-		<FileArea />
-	</div>
-</Story>
+

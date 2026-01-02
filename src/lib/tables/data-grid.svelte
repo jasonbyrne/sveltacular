@@ -34,17 +34,27 @@
 		items: Action[];
 	}
 
-	export let captionSide: 'top' | 'bottom' = 'top';
-	export let captionAlign: 'left' | 'center' | 'right' = 'center';
-	export let rows: JsonObject[] | undefined = undefined;
-	export let cols: DataCol[];
-	export let pagination: PaginationProperties | undefined = undefined;
-	export let actions: Actions | undefined = undefined;
+	import type { Snippet } from 'svelte';
 
-	/**
-	 * Handle page change, which should return the new filtered/fetched rows.
-	 */
-	export let onPageChange: PaginationEvent | null = null;
+	let {
+		captionSide = 'top' as 'top' | 'bottom',
+		captionAlign = 'center' as 'left' | 'center' | 'right',
+		rows = undefined,
+		cols,
+		pagination = undefined,
+		actions = undefined,
+		onPageChange = null,
+		children = undefined
+	}: {
+		captionSide?: 'top' | 'bottom';
+		captionAlign?: 'left' | 'center' | 'right';
+		rows?: JsonObject[];
+		cols: DataCol[];
+		pagination?: PaginationProperties;
+		actions?: Actions;
+		onPageChange?: PaginationEvent | null;
+		children?: Snippet;
+	} = $props();
 
 	const getColType = (col: DataCol) => {
 		if (col.type) return col.type;
@@ -71,8 +81,8 @@
 		return Math.ceil(totalRows / pagination.perPage);
 	};
 
-	const changePage = async (e: CustomEvent<number>) => {
-		pagination = { page: e.detail, perPage: pagination?.perPage || 5 };
+	const changePage = async (page: number) => {
+		pagination = { page, perPage: pagination?.perPage || 5 };
 		if (onPageChange) {
 			rows = await onPageChange(pagination);
 		}
@@ -91,15 +101,17 @@
 		return rows.filter((_row, index) => index >= startIndex && index < endIndex);
 	};
 
-	$: hasActionCol = actions?.items && actions.items.length > 0;
-	$: colCount = Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionCol ? 1 : 0);
-	$: totalPages = pagination && rows ? calculateTotalPages() : 1;
-	$: filteredRows = rows && pagination ? filterRows() : rows;
+	let hasActionCol = $derived(actions?.items && actions.items.length > 0);
+	let colCount = $derived(
+		Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionCol ? 1 : 0)
+	);
+	let totalPages = $derived(pagination && rows ? calculateTotalPages() : 1);
+	let filteredRows = $derived(rows && pagination ? filterRows() : rows);
 </script>
 
 <Table>
-	{#if $$slots.default}
-		<TableCaption side={captionSide} align={captionAlign}><slot /></TableCaption>
+	{#if children}
+		<TableCaption side={captionSide} align={captionAlign}>{@render children?.()}</TableCaption>
 	{/if}
 	<TableHeader>
 		<TableHeaderRow>
@@ -153,7 +165,7 @@
 							{#if actions.type === 'dropdown'}
 								<DropdownButton text={actions.text ?? ''} style="ghost">
 									{#each actions.items as action}
-										<DropdownItem on:click={() => action.onClick(row)}>{action.text}</DropdownItem>
+										<DropdownItem onclick={() => action.onClick(row)}>{action.text}</DropdownItem>
 									{/each}
 								</DropdownButton>
 							{:else}
@@ -163,8 +175,9 @@
 										size="sm"
 										type="button"
 										style={actions.type == 'link' ? 'link' : 'secondary'}
-										on:click={() => action.onClick(row)}>{action.text}</Button
-									>
+										onclick={() => action.onClick(row)}
+										label={action.text}
+									/>
 								{/each}
 							{/if}
 						</TableCell>
@@ -183,7 +196,7 @@
 						style="flat"
 						size="sm"
 						align="center"
-						on:page={changePage}
+						onPage={changePage}
 					/>
 				</TableFooterCell>
 			</TableFooterRow>

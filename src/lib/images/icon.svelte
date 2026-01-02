@@ -1,6 +1,11 @@
 <script lang="ts">
-	export let href: string;
-	export let color = 'rgb(0, 0, 0)';
+	let {
+		href,
+		color = 'rgb(0, 0, 0)'
+	}: {
+		href: string;
+		color?: string;
+	} = $props();
 </script>
 
 <span style={`--icon-path: url("${href}"); --icon-color: ${color};`} />

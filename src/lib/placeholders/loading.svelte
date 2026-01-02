@@ -1,10 +1,18 @@
 <script lang="ts">
-	export let type: 'spinner' | 'block' = 'spinner';
+	import type { Snippet } from 'svelte';
+
+	let {
+		type = 'spinner' as 'spinner' | 'block',
+		children
+	}: {
+		type?: 'spinner' | 'block';
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class={type}>
 	<span>
-		<slot />
+		{@render children?.()}
 	</span>
 </div>
 

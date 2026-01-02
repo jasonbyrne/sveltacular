@@ -1,24 +1,26 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import CheckBoxGroup from './check-box-group.svelte';
 
-	let selected: string[];
+	const { Story } = defineMeta({
+		component: CheckBoxGroup,
+		title: 'Forms/CheckBoxGroup',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/CheckBoxGroup" component={CheckBoxGroup} />
-
-<Story name="Standard">
-	<CheckBoxGroup
-		bind:group={selected}
-		items={[
+<Story
+	name="Standard"
+	args={{
+		label: 'Choose one or more:',
+		items: [
 			{ name: 'Option 1', value: '1' },
 			{ name: 'Option 2', value: '2' },
 			{ name: 'Option 3', value: '3' }
-		]}
-	>
-		Choose one or more:</CheckBoxGroup
-	>
-	<p>
-		List: {selected}
-	</p>
-</Story>
+		]
+	}}
+></Story>

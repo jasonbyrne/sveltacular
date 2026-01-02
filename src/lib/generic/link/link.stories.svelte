@@ -1,22 +1,20 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Link from './link.svelte';
+
+	const { Story } = defineMeta({
+		component: Link,
+		title: 'Generic/Link',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Link" component={Link} />
+<Story name="Standard" args={{ href: 'https://www.google.com' }}>Google</Story>
 
-<Story name="Standard">
-	<Link href="https://www.google.com">Google</Link>
-</Story>
+<Story name="UnderlineOnHover" args={{ href: 'https://www.google.com', underline: 'hover' }}>Google</Story>
 
-<Story name="Underline on hover">
-	<Link href="https://www.google.com" underline="hover">Google</Link>
-</Story>
+<Story name="UnderlineAlways" args={{ href: 'https://www.google.com', underline: 'always' }}>Google</Story>
 
-<Story name="Underline always">
-	<Link href="https://www.google.com" underline="always">Google</Link>
-</Story>
+<Story name="Disabled" args={{ href: 'https://www.google.com', disabled: true }}>Google</Story>
 
-<Story name="Disabled">
-	<Link href="https://www.google.com" disabled={true}>Google</Link>
-</Story>
+

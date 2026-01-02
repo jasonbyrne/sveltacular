@@ -1,13 +1,16 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { getContext } from "svelte";
 	import { listContext, type ListContext } from "./list.js";
+
+	let { children }: { children: Snippet } = $props();
 
     const ctx = getContext<ListContext>(listContext);
 	const listStyle = ctx.style || 'none';
 </script>
 
 <li class="{listStyle}">
-    <slot />
+    {@render children?.()}
 </li>
 
 

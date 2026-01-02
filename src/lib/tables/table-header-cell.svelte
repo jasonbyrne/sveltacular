@@ -1,17 +1,27 @@
 <script lang="ts">
-	export let colspan = 1;
-	export let type: string | undefined = undefined;
-	export let width: number | string | undefined = undefined;
+	import type { Snippet } from 'svelte';
 
-	$: styleProperties = [
+	let {
+		colspan = 1,
+		type = undefined,
+		width = undefined,
+		children
+	}: {
+		colspan?: number;
+		type?: string;
+		width?: number | string;
+		children: Snippet;
+	} = $props();
+
+	let styleProperties = $derived([
 		'text-overflow: ellipsis',
 		'overflow: hidden',
 		`width: ${width ? width : 'auto'}`
-	];
+	]);
 </script>
 
 <th {colspan} class={type} style={styleProperties.join('; ')}>
-	<slot />
+	{@render children?.()}
 </th>
 
 <style lang="scss">

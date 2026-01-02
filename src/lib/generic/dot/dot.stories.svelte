@@ -1,14 +1,16 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Dot from './dot.svelte';
+
+	const { Story } = defineMeta({
+		component: Dot,
+		title: 'Generic/Dot',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Dot" component={Dot} />
+<Story name="Standard" args={{}} />
 
-<Story name="Standard">
-	<Dot />
-</Story>
+<Story name="XLarge" args={{ size: 'xl', color: 'red' }} />
 
-<Story name="X-Large">
-	<Dot size="xl" color="red" />
-</Story>
+

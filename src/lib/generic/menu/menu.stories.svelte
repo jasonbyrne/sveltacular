@@ -1,19 +1,26 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Menu from './menu.svelte';
-	import type { DropdownOption } from '$src/lib/index.js';
 	import { US_StateCodes } from '$src/lib/data/united-states.js';
 
-	// Name Value Pair of United States States and Territories
-	const items: DropdownOption[] = [];
+	const { Story } = defineMeta({
+		component: Menu,
+		title: 'Generic/Menu',
+		tags: ['autodocs'],
+		args: {
+			onSelect: fn()
+		}
+	});
 </script>
 
-<Meta title="Generic/Menu" component={Menu} />
+<Story name="Standard" args={{ items: US_StateCodes, open: true }}>Pick a state</Story>
 
-<Story name="Standard">
-	<Menu items={US_StateCodes} open>Pick a state</Menu>
+<Story
+	name="Filtered"
+	args={{ items: US_StateCodes, open: true, closeAfterSelect: false, searchText: 'New' }}
+>
+	Pick a state
 </Story>
 
-<Story name="Filtered">
-	<Menu items={US_StateCodes} open closeAfterSelect={false} searchText="New">Pick a state</Menu>
-</Story>
+

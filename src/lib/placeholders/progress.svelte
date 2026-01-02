@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let value = 0; // Value between 0 and 100
+	let { value = 0 }: { value?: number } = $props(); // Value between 0 and 100
 </script>
 
 <div class="progress-bar" style="--progress-value: {value}%">

@@ -1,16 +1,29 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Image from '$src/lib/images/image.svelte';
 
-	export let src: string | undefined = undefined;
-	export let alt: string;
-	export let href: string;
+	let {
+		src = undefined,
+		alt,
+		href,
+		children = undefined
+	}: {
+		src?: string;
+		alt: string;
+		href: string;
+		children?: Snippet;
+	} = $props();
 </script>
 
 <div class="logo">
 	{#if src}
 		<Image {src} {alt} {href} align="left" />
 	{:else}
-		<a {href} title={alt}><slot /></a>
+		<a {href} title={alt}>
+		{#if children}
+			{@render children?.()}
+		{/if}
+		</a>
 	{/if}
 </div>
 

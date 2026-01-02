@@ -10,17 +10,31 @@
 	import FlexCol from '$src/lib/layout/flex-col.svelte';
 	import type { SearchFunction } from '../list-box/list-box.js';
 
-	export let mode: 'new' | 'existing' = 'existing';
-	export let newValue: string | null = '';
-	export let existingValue: string | null = '';
-	export let items: DropdownOption[] = [];
-	export let size: FormFieldSizeOptions = 'full';
-	export let disabled = false;
-	export let required = false;
-	export let searchable = false;
-	export let search: SearchFunction | undefined = undefined;
-	export let searchPlaceholder = 'Search';
-	export let newPlaceholder = 'New';
+	let {
+		mode = $bindable('existing' as 'new' | 'existing'),
+		newValue = $bindable('' as string | null),
+		existingValue = $bindable('' as string | null),
+		items = [] as DropdownOption[],
+		size = 'full' as FormFieldSizeOptions,
+		disabled = false,
+		required = false,
+		searchable = false,
+		search = undefined as SearchFunction | undefined,
+		searchPlaceholder = 'Search',
+		newPlaceholder = 'New'
+	}: {
+		mode?: 'new' | 'existing';
+		newValue?: string | null;
+		existingValue?: string | null;
+		items?: DropdownOption[];
+		size?: FormFieldSizeOptions;
+		disabled?: boolean;
+		required?: boolean;
+		searchable?: boolean;
+		search?: SearchFunction | undefined;
+		searchPlaceholder?: string;
+		newPlaceholder?: string;
+	} = $props();
 </script>
 
 <div class="group">

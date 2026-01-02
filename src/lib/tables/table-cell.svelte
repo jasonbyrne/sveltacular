@@ -1,13 +1,23 @@
 <script lang="ts">
-	export let colspan = 1;
-	export let type: string | undefined = undefined;
-	export let width: number | string | undefined = undefined;
+	import type { Snippet } from 'svelte';
 
-	$: styleProperties = [`width: ${width ? width : 'auto'}`];
+	let {
+		colspan = 1,
+		type = undefined,
+		width = undefined,
+		children
+	}: {
+		colspan?: number;
+		type?: string;
+		width?: number | string;
+		children: Snippet;
+	} = $props();
+
+	let styleProperties = $derived([`width: ${width ? width : 'auto'}`]);
 </script>
 
 <td {colspan} class={type} style={styleProperties.join('; ')}>
-	<slot />
+	{@render children?.()}
 </td>
 
 <style lang="scss">

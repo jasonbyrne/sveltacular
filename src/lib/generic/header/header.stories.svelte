@@ -1,64 +1,30 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
-	import Button from '$src/lib/forms/button/button.svelte';
-	import Text from '$src/lib/typography/text.svelte';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Header from './header.svelte';
+
+	const { Story } = defineMeta({
+		component: Header,
+		title: 'Generic/Headline',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Headline" component={Header} />
+<Story name="Default" args={{ title: 'Headline', subtitle: 'Subtitle' }}>Header content would go here</Story>
 
-<Story name="Default">
-	<Header title="Headline" subtitle="Subtitle">
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
+<Story name="Underline" args={{ title: 'Header', subtitle: 'Subtitle', underline: true }}>
+	Header content would go here
 </Story>
 
-<Story name="Underline">
-	<Header title="Header" subtitle="Subtitle" underline>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level1" args={{ title: 'Header', subtitle: 'Subtitle', level: 1 }}>Header content would go here</Story>
 
-<Story name="Level 1">
-	<Header title="Header" subtitle="Subtitle" level={1}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level2" args={{ title: 'Header', subtitle: 'Subtitle', level: 2 }}>Header content would go here</Story>
 
-<Story name="Level 2">
-	<Header title="Header" subtitle="Subtitle" level={2}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level3" args={{ title: 'Header', subtitle: 'Subtitle', level: 3 }}>Header content would go here</Story>
 
-<Story name="Level 3">
-	<Header title="Header" subtitle="Subtitle" level={3}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level4" args={{ title: 'Header', subtitle: 'Subtitle', level: 4 }}>Header content would go here</Story>
 
-<Story name="Level 4">
-	<Header title="Header" subtitle="Subtitle" level={4}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level5" args={{ title: 'Header', subtitle: 'Subtitle', level: 5 }}>Header content would go here</Story>
 
-<Story name="Level 5">
-	<Header title="Header" subtitle="Subtitle" level={5}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+<Story name="Level6" args={{ title: 'Header', subtitle: 'Subtitle', level: 6 }}>Header content would go here</Story>
 
-<Story name="Level 6">
-	<Header title="Header" subtitle="Subtitle" level={6}>
-		<Button>Button</Button>
-	</Header>
-	<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget</Text>
-</Story>
+

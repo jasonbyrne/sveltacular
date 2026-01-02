@@ -1,20 +1,32 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
-	import { createEventDispatcher } from 'svelte';
 
-	export let value: string = '';
-	export let isChecked = false;
-	export let disabled = false;
-	export let name: string | undefined = undefined;
+	let {
+		value = '',
+		isChecked = $bindable(false),
+		disabled = false,
+		name = undefined,
+		onChange = undefined,
+		label
+	}: {
+		value?: string;
+		isChecked?: boolean;
+		disabled?: boolean;
+		name?: string | undefined;
+		onChange?: ((data: { isChecked: boolean; value: string }) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: { isChecked: boolean; value: string } }>();
 
 	const onChecked = (event: Event) => {
 		const target = event.target as HTMLInputElement;
-		isChecked = target.checked;
-		dispatch('change', { isChecked, value });
+		const newChecked = target.checked;
+		// Update isChecked (will work whether bound or not)
+		isChecked = newChecked;
+		// Always notify parent via onChange callback
+		onChange?.({ isChecked: newChecked, value });
 	};
 </script>
 
@@ -24,16 +36,16 @@
 		{id}
 		{disabled}
 		{name}
-		bind:value
+		{value}
 		bind:checked={isChecked}
-		on:change={onChecked}
+		onchange={onChecked}
 	/>
 	<span class="checkbox">
 		<span class="checkmark"><CheckIcon /></span>
 	</span>
-	{#if $$slots.default}
+	{#if label}
 		<div class="text">
-			<slot />
+			{label}
 		</div>
 	{/if}
 </label>
@@ -60,8 +72,12 @@
 			border: 1px solid var(--form-input-border, black);
 			background-color: var(--form-input-bg, white);
 			color: var(--form-input-fg, black);
-			transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-				color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+			transition:
+				background-color 0.2s ease-in-out,
+				border-color 0.2s ease-in-out,
+				color 0.2s ease-in-out,
+				fill 0.2s ease-in-out,
+				stroke 0.2s ease-in-out;
 			user-select: none;
 
 			.checkmark {
@@ -75,7 +91,9 @@
 				color: var(--form-input-selected-fg, white);
 				fill: var(--form-input-selected-bg, #3182ce);
 				stroke: var(--form-input-selected-fg, white);
-				transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+				transition:
+					width 0.2s ease-in-out,
+					height 0.2s ease-in-out;
 			}
 		}
 

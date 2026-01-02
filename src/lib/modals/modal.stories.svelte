@@ -1,66 +1,30 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Modal from './modal.svelte';
-	import DialogHeader from './dialog-header.svelte';
-	import DialogBody from './dialog-body.svelte';
+
+	const { Story } = defineMeta({
+		component: Modal,
+		title: 'Modals/Modal',
+		tags: ['autodocs'],
+		args: {
+			onClose: fn()
+		}
+	});
 </script>
 
-<Meta title="Modals/Modal" component={Modal} />
+<Story name="GenericModal" args={{ open: true }}>Modal content</Story>
 
-<Story name="Generic Modal">
-	<Modal open>
-		<p>Modal content</p>
-	</Modal>
-</Story>
+<Story name="NonDismissable" args={{ open: true, dismissable: false }}>Modal content</Story>
+
+<Story name="ModalSmall" args={{ open: true, size: 'sm' }}>Modal content with header and body</Story>
+
+<Story name="ModalMedium" args={{ open: true, size: 'md' }}>Modal content with header and body</Story>
+
+<Story name="ModalLarge" args={{ open: true, size: 'lg' }}>Modal content with header and body</Story>
+
+<Story name="ModalExtraLarge" args={{ open: true, size: 'xl' }}>Modal content with header and body</Story>
+
+<Story name="ModalFullWidth" args={{ open: true, size: 'full' }}>Modal content with header and body</Story>
 
 
-<Story name="Non-Dismissable">
-	<Modal open dismissable={false}>
-		<p>Modal content</p>
-	</Modal>
-</Story>
-
-<Story name="Modal (Small)">
-	<Modal open size="sm">
-		<DialogHeader>Title</DialogHeader>
-		<DialogBody>
-			<p>Modal content</p>
-		</DialogBody>
-	</Modal>
-</Story>
-
-<Story name="Modal (Medium)">
-	<Modal open size="md">
-		<DialogHeader>Title</DialogHeader>
-		<DialogBody>
-			<p>Modal content</p>
-		</DialogBody>
-	</Modal>
-</Story>
-
-<Story name="Modal (Large)">
-	<Modal open size="lg">
-		<DialogHeader>Title</DialogHeader>
-		<DialogBody>
-			<p>Modal content</p>
-		</DialogBody>
-	</Modal>
-</Story>
-
-<Story name="Modal (Extra Large)">
-	<Modal open size="xl">
-		<DialogHeader>Title</DialogHeader>
-		<DialogBody>
-			<p>Modal content</p>
-		</DialogBody>
-	</Modal>
-</Story>
-
-<Story name="Modal (Full Width)">
-	<Modal open size="full">
-		<DialogHeader>Title</DialogHeader>
-		<DialogBody>
-			<p>Modal content</p>
-		</DialogBody>
-	</Modal>
-</Story>

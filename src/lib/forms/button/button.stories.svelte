@@ -1,38 +1,29 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Button from './button.svelte';
+
+	const { Story } = defineMeta({
+		component: Button,
+		title: 'Forms/Button',
+		tags: ['autodocs'],
+		args: {
+			onClick: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/Button" component={Button} />
+<Story name="Primary" args={{ style: 'primary', label: 'Click Me' }} />
 
-<Story name="Primary">
-	<Button style="primary">Click Me</Button>
-</Story>
+<Story name="Secondary" args={{ style: 'secondary', label: 'Click Me' }} />
 
-<Story name="Secondary">
-	<Button style="secondary">Click Me</Button>
-</Story>
+<Story name="Danger" args={{ style: 'danger', label: 'Click Me' }} />
 
-<Story name="Ghost">
-	<Button style="ghost">Click Me</Button>
-</Story>
+<Story name="Positive" args={{ style: 'positive', label: 'Click Me' }} />
 
-<Story name="Danger">
-	<Button style="danger">Click Me</Button>
-</Story>
+<Story name="Outline" args={{ style: 'outline', label: 'Click Me' }} />
 
-<Story name="Positive">
-	<Button style="positive">Click Me</Button>
-</Story>
-
-<Story name="Outline">
-	<Button style="outline">Click Me</Button>
-</Story>
-
-<Story name="Link">
-	<Button style="link">Click Me</Button>
-</Story>
-
-<Story name="Single Click">
-	<Button style="primary" repeatSubmitDelay="infinite">Single Click</Button>
-</Story>
+<Story
+	name="SingleClick"
+	args={{ style: 'primary', repeatSubmitDelay: 'infinite', label: 'Single Click' }}
+/>

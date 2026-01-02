@@ -1,19 +1,33 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Confirm from './confirm.svelte';
-	import Form from '../forms/form.svelte';
-	import TextBox from '../forms/text-box/text-box.svelte';
+
+	const { Story } = defineMeta({
+		component: Confirm,
+		title: 'Modals/Confirm',
+		tags: ['autodocs'],
+		args: {
+			onYes: fn(),
+			onNo: fn(),
+			onClose: fn()
+		}
+	});
 </script>
 
-<Meta title="Modals/Confirm" component={Confirm} />
+<Story name="Default" args={{ title: 'Something Will Happen', open: true }}>Do you want to do this thing?</Story>
 
-<Story name="Default">
-	<Confirm title="Something Will Happen" open>Do you want to do this thing?</Confirm>
+<Story
+	name="ConfirmCancelOrSave"
+	args={{
+		title: 'Edit User',
+		open: true,
+		yesText: 'Save',
+		noText: 'Cancel',
+		size: 'lg'
+	}}
+>
+	Form content would go here
 </Story>
 
-<Story name="Confirm: Cancel or Save">
-	<Confirm title="Edit User" open yesText="Save" noText="Cancel" size="lg">
-		<TextBox size="full">First Name</TextBox>
-		<TextBox size="full">Last Name</TextBox>
-	</Confirm>
-</Story>
+

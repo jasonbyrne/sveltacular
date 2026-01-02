@@ -7,16 +7,26 @@
 
 	const id = uniqueId();
 
-	export let group: string = '';
-	export let items: DropdownOption[] = [];
-	export let size: FormFieldSizeOptions = 'full';
-	export let disabled = false;
-	export let required = false;
+	let {
+		group = '',
+		items = [],
+		size = 'full' as FormFieldSizeOptions,
+		disabled = false,
+		required = false,
+		label = undefined
+	}: {
+		group?: string;
+		items?: DropdownOption[];
+		size?: FormFieldSizeOptions;
+		disabled?: boolean;
+		required?: boolean;
+		label?: string;
+	} = $props();
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<div>
 		{#each items as item}

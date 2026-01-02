@@ -4,40 +4,68 @@
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import { createEventDispatcher } from 'svelte';
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: { selected: string[] } }>();
 
-	export let group: string[] = [];
-	export let items: Array<DropdownOption & { isChecked?: true }> = [];
-	export let size: FormFieldSizeOptions = 'full';
-	export let disabled = false;
-	export let required = false;
+	let {
+		group = $bindable([] as string[]),
+		items = [],
+		size = 'full' as FormFieldSizeOptions,
+		disabled = false,
+		required = false,
+		onChange,
+		label
+	}: {
+		group?: string[];
+		items?: DropdownOption[];
+		size?: FormFieldSizeOptions;
+		disabled?: boolean;
+		required?: boolean;
+		onChange?: ((selected: string[]) => void) | undefined;
+		label?: string;
+	} = $props();
 
-	const onChecked = () => {
-		const newGroup: string[] = [];
-		items.forEach((item) => {
-			if (item.isChecked) {
-				newGroup.push(item.value);
+	// Create reactive items with checked state, synced with group
+	let itemsWithState = $state<Array<DropdownOption & { isChecked: boolean }>>([]);
+
+	// Sync itemsWithState when items or group changes (one-way: items/group -> itemsWithState)
+	// Reassign the entire array to avoid reading itemsWithState in the effect
+	$effect(() => {
+		// Rebuild itemsWithState from items, using group to determine checked state
+		// Reassign instead of mutate to avoid circular dependency
+		const newItems = items.map((item) => ({
+			...item,
+			isChecked: group.includes(item.value ?? '')
+		}));
+		itemsWithState = newItems;
+	});
+
+	const handleCheckboxChange = (data: { isChecked: boolean; value: string }) => {
+		// Update group based on checkbox change (this will trigger the effect to sync itemsWithState)
+		if (data.isChecked) {
+			if (!group.includes(data.value)) {
+				group = [...group, data.value];
 			}
-		});
-		group = newGroup;
-		dispatch('change', { selected: group });
+		} else {
+			group = group.filter((v) => v !== data.value);
+		}
+		onChange?.(group);
 	};
-
-	onChecked();
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<div>
-		{#each items as item}
-			<CheckBox {disabled} value={item.value} bind:isChecked={item.isChecked} on:change={onChecked}
-				>{item.name}</CheckBox
-			>
+		{#each itemsWithState as item}
+			<CheckBox
+				{disabled}
+				value={item.value ?? undefined}
+				bind:isChecked={item.isChecked}
+				onChange={handleCheckboxChange}
+				label={item.name}
+			/>
 		{/each}
 	</div>
 </FormField>

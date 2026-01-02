@@ -1,9 +1,15 @@
 <script lang="ts">
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 
-	export let color: string = '#b7b7b7';
-	export let shadow = false;
-	export let size: FormFieldSizeOptions = 'md';
+	let {
+		color = '#b7b7b7',
+		shadow = false,
+		size = 'md' as FormFieldSizeOptions
+	}: {
+		color?: string;
+		shadow?: boolean;
+		size?: FormFieldSizeOptions;
+	} = $props();
 </script>
 
 <span style="background: {color}" class="{size} {shadow ? 'shadow' : ''}" />

@@ -1,14 +1,22 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { SectionLevel } from '../types/generic.js';
 	import Headline from '../typography/headline.svelte';
 
-	export let level: SectionLevel = 4;
-	export let underline = true;
+	let {
+		level = 4,
+		underline = true,
+		children
+	}: {
+		level?: SectionLevel;
+		underline?: boolean;
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class:underline>
 	<Headline {level}>
-		<slot />
+		{@render children?.()}
 	</Headline>
 </div>
 

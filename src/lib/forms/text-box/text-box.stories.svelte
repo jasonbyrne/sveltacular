@@ -1,39 +1,41 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import TextBox from './text-box.svelte';
+
+	const { Story } = defineMeta({
+		component: TextBox,
+		title: 'Forms/TextBox',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn(),
+			onInput: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/TextBox" component={TextBox} />
+<Story
+	name="Standard"
+	args={{ type: 'text', placeholder: 'Placeholder text', helperText: 'Here is some additional requirements for the input.' }}
+/>
 
-<Story name="Stanard">
-	<TextBox
-		type="text"
-		placeholder="Placeholder text"
-		helperText="Here is some additional requirements for the input."
-	/>
-</Story>
+<Story name="Units" args={{ type: 'text', suffix: 'cm', value: '10', placeholder: 'Placeholder text' }} />
 
-<Story name="Units">
-	<TextBox type="text" suffix="cm" value="10" placeholder="Placeholder text" />
-</Story>
+<Story
+	name="WithLabel"
+	args={{
+		type: 'text',
+		placeholder: 'Placeholder text',
+		helperText: 'Here is some additional requirements for the input.',
+		label: 'Name'
+	}}
+/>
 
-<Story name="With Label">
-	<TextBox
-		type="text"
-		placeholder="Placeholder text"
-		helperText="Here is some additional requirements for the input.">Name</TextBox
-	>
-</Story>
+<Story
+	name="LinkedIn"
+	args={{ type: 'text', prefix: 'https://www.linkedin.com/in/', placeholder: 'UserName', allowSpaces: false }}
+/>
 
-<Story name="LinkedIn">
-	<TextBox
-		type="text"
-		prefix="https://www.linkedin.com/in/"
-		placeholder="UserName"
-		allowSpaces={false}
-	/>
-</Story>
+<Story name="UserName" args={{ type: 'text', placeholder: 'User Name', allowSpaces: false, textCase: 'lower' }} />
 
-<Story name="User Name">
-	<TextBox type="text" placeholder="User Name" allowSpaces={false} textCase="lower" />
-</Story>
+

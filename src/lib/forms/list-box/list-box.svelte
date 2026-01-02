@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms//form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
@@ -10,29 +9,43 @@
 	import { browser } from '$app/environment';
 	import type { SearchFunction } from './list-box.js';
 
-	export let value: string | null = null;
-	export let items: DropdownOption[] = [];
-	export let size: FormFieldSizeOptions = 'full';
-	export let disabled = false;
-	export let required = false;
-	export let searchable = false;
-	export let search: SearchFunction | undefined = undefined;
-	export let placeholder = '';
+	let {
+		value = $bindable(null as string | null),
+		items = [] as DropdownOption[],
+		size = 'full' as FormFieldSizeOptions,
+		disabled = false,
+		required = false,
+		searchable = false,
+		search = undefined as SearchFunction | undefined,
+		placeholder = '',
+		onChange = undefined,
+		label = undefined
+	}: {
+		value?: string | null;
+		items?: DropdownOption[];
+		size?: FormFieldSizeOptions;
+		disabled?: boolean;
+		required?: boolean;
+		searchable?: boolean;
+		search?: SearchFunction | undefined;
+		placeholder?: string;
+		onChange?: ((value: string | null) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: string | null }>();
 	const getText = () => items.find((item) => item.value == value)?.name || '';
 
-	let text = getText();
-	let isMenuOpen = false;
-	let highlightIndex = -1;
-	let filteredItems: MenuOption[] = [];
-	$: isSeachable = searchable || !!search;
+	let text = $state(getText());
+	let isMenuOpen = $state(false);
+	let highlightIndex = $state(-1);
+	let filteredItems = $state<MenuOption[]>([]);
+	let isSeachable = $derived(searchable || !!search);
 
 	// When an item is selected from the dropdown menu
-	const onSelect = (e: CustomEvent<DropdownOption>) => {
-		value = e.detail.value;
-		dispatch('change', value);
+	const onSelect = (item: MenuOption) => {
+		value = item.value;
+		onChange?.(value);
 		text = getText();
 		applyFilter();
 		isMenuOpen = false;
@@ -62,7 +75,7 @@
 		if (e.key == 'Enter' || e.key == 'Tab') {
 			isMenuOpen = false;
 			if (highlightIndex > -1) {
-				onSelect(new CustomEvent('select', { detail: filteredItems[highlightIndex] }));
+				onSelect(filteredItems[highlightIndex]);
 			}
 			return;
 		}
@@ -123,12 +136,12 @@
 	// Do initial search
 	triggerSearch();
 
-	$: open = isMenuOpen && !disabled;
+	let open = $derived(isMenuOpen && !disabled);
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required} {disabled}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {disabled} {label} />
 	{/if}
 	<div class="{open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}">
 		<input
@@ -139,16 +152,16 @@
 			{disabled}
 			{placeholder}
 			readonly={!isSeachable}
-			on:focus={() => (isMenuOpen = true)}
-			on:keyup={onInputKeyPress}
+			onfocus={() => (isMenuOpen = true)}
+			onkeyup={onInputKeyPress}
 			data-value={value}
 			data-text={text}
 		/>
-		<button type="button" class="icon" on:click={clickArrow} on:keydown={clickArrow} {disabled}>
+		<button type="button" class="icon" onclick={clickArrow} onkeydown={clickArrow} {disabled}>
 			<AngleUpIcon />
 		</button>
 		{#if text && isSeachable}
-			<button type="button" class="clear" on:click={clear} on:keydown={clear} {disabled}>
+			<button type="button" class="clear" onclick={clear} onkeydown={clear} {disabled}>
 				X
 			</button>
 		{/if}
@@ -158,7 +171,7 @@
 				{open}
 				closeAfterSelect={false}
 				searchText={text}
-				on:select={onSelect}
+				onSelect={onSelect}
 				size="full"
 				bind:highlightIndex
 				bind:value

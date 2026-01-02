@@ -1,12 +1,20 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Text from './text.svelte';
 
-	export let transform: 'uppercase' | 'lowercase' | 'capitalize' | 'none' = 'none';
-	export let level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
+	let {
+		transform = 'none' as 'uppercase' | 'lowercase' | 'capitalize' | 'none',
+		level = 1 as 1 | 2 | 3 | 4 | 5 | 6,
+		children
+	}: {
+		transform?: 'uppercase' | 'lowercase' | 'capitalize' | 'none';
+		level?: 1 | 2 | 3 | 4 | 5 | 6;
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class="level{level}">
-	<Text {transform}><slot /></Text>
+	<Text {transform}>{@render children?.()}</Text>
 </div>
 
 <style lang="scss">

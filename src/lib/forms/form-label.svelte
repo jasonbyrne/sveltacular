@@ -1,10 +1,18 @@
 <script lang="ts">
-	export let id: string | undefined = undefined;
-	export let required = false;
-	export let disabled = false;
+	let {
+		id = undefined,
+		required = false,
+		disabled = false,
+		label = ''
+	}: {
+		id?: string | undefined;
+		required?: boolean;
+		disabled?: boolean;
+		label?: string;
+	} = $props();
 </script>
 
-<label for={id} class:required class:disabled><slot /></label>
+<label for={id} class:required class:disabled>{label}</label>
 
 <style lang="scss">
 	label {

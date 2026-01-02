@@ -1,78 +1,22 @@
-<script lang="ts">
-    import FlexRow from './flex-row.svelte';
-    import FlexItem from './flex-item.svelte';
-    import Card from '../generic/card/card.svelte';
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import FlexRow from './flex-row.svelte';
 
-	const sources = [{ url: '/assets/svelte.png' }];
+	const { Story } = defineMeta({
+		component: FlexRow,
+		title: 'Layout/Flex',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Layout/Flex" component={FlexRow} />
+<Story name="Normal">Flex content would go here</Story>
 
-<Story name="Normal">
-	<FlexRow>
-        <Card>
-            <h2>Card Title</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card Title</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card Title</h2>
-            <p>Card Description</p>
-        </Card>
-    </FlexRow>
+<Story name="DifferentSizes">Flex content with different sizes would go here</Story>
+
+<Story name="DifferentSizesAlignMiddle" args={{ alignItems: 'center' }}>
+	Flex content with different sizes aligned middle would go here
 </Story>
 
-<Story name="Different Sizes">
-    <FlexRow>
-        <Card>
-            <h2>Card Title</h2>
-            <p>Card Description</p>
-        </Card>
-        <div>foobar</div>
-        <button>Click Me</button>
-    </FlexRow>
-</Story>
+<Story name="Wrap" args={{ alignItems: 'center', wrap: true }}>Flex content that wraps would go here</Story>
 
-<Story name="Different Sizes (Align Middle)">
-    <FlexRow alignItems="center">
-        <Card>
-            <h2>Card Title</h2>
-            <p>Card Description</p>
-        </Card>
-        <div>foobar</div>
-        <button>Click Me</button>
-    </FlexRow>
-</Story>
 
-<Story name="Wrap">
-    <FlexRow alignItems="center" wrap={true}>
-        <Card>
-            <h2>Card 1</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card 2</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card 3</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card 4</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card 5</h2>
-            <p>Card Description</p>
-        </Card>
-        <Card>
-            <h2>Card 6</h2>
-            <p>Card Description</p>
-        </Card>
-    </FlexRow>
-</Story>

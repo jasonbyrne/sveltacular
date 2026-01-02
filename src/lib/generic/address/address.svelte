@@ -2,15 +2,23 @@
 	import { nobr } from '$src/lib/helpers/nobr.js';
 	import { splitNewLines } from '$src/lib/helpers/split-new-lines.js';
 
-	export let streetAddress: string = '';
-	export let city: string = '';
-	export let region: string = '';
-	export let postalCode: string = '';
-	export let country: string = '';
+	let {
+		streetAddress = '',
+		city = '',
+		region = '',
+		postalCode = '',
+		country = ''
+	}: {
+		streetAddress?: string;
+		city?: string;
+		region?: string;
+		postalCode?: string;
+		country?: string;
+	} = $props();
 
-	$: streetAddressArray = splitNewLines(streetAddress);
-	$: flatAddress = nobr(
-		`${streetAddress}, ${city}, ${region} ${postalCode}, ${country}`.replace(/,\s+/g, ', ')
+	let streetAddressArray = $derived(splitNewLines(streetAddress));
+	let flatAddress = $derived(
+		nobr(`${streetAddress}, ${city}, ${region} ${postalCode}, ${country}`.replace(/,\s+/g, ', '))
 	);
 </script>
 

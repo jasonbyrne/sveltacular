@@ -1,19 +1,21 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	let {
+		show = true,
+		onClick = undefined
+	}: {
+		show?: boolean;
+		onClick?: (() => void) | undefined;
+	} = $props();
 
-	const dispatch = createEventDispatcher<{ click: void }>();
-
-	export let show = true;
-
-	const onClick = (e: Event) => {
+	const handleClick = (e: Event) => {
 		e.preventDefault();
 		e.stopPropagation();
-		dispatch('click');
+		onClick?.();
 	};
 </script>
 
 {#if show}
-	<button type="button" on:click={onClick}>X</button>
+	<button type="button" onclick={handleClick}>X</button>
 {/if}
 
 <style lang="scss">

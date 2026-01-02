@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { getContext } from 'svelte';
 	import type { WizardContext } from './wizard-context.js';
 	import Notice from '$src/lib/generic/notice/notice.svelte';
@@ -6,13 +7,20 @@
 	const wizard = getContext<WizardContext>('wizard');
 	const state = wizard.state;
 
-	export let step: number;
-	export let subtitle: string;
+	let {
+		step,
+		subtitle,
+		children
+	}: {
+		step: number;
+		subtitle: string;
+		children: Snippet;
+	} = $props();
 
 	wizard.register(step, subtitle);
 
-	$: isCurrentStep = $state.currentStep === step;
-	$: errors = $state.errors;
+	let isCurrentStep = $derived($state.currentStep === step);
+	let errors = $derived($state.errors);
 </script>
 
 <div class="step {isCurrentStep ? 'current' : ''}">
@@ -21,7 +29,7 @@
 			<Notice style="error" size="md">{errors.join(' ')}</Notice>
 		</div>
 	{/if}
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

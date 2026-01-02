@@ -1,21 +1,18 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import SideBar from './side-bar.svelte';
 
-	let open = true;
+	const { Story } = defineMeta({
+		component: SideBar,
+		title: 'Navigation/SideBar',
+		tags: ['autodocs'],
+		args: {
+			onToggle: fn()
+		}
+	});
 </script>
 
-<Meta title="Navigation/SideBar" component={SideBar} />
+<Story name="Standard" args={{ open: true }}>Sidebar content would go here</Story>
 
-<Story name="Standard">
-	<SideBar {open}>
-		<ul>
-			<li>Item 1</li>
-			<li>Item 2</li>
-		</ul>
-	</SideBar>
 
-	<div style="text-align: right; position: relative; z-index: 99999">
-		<button type="button" on:click={() => (open = !open)}>Toggle</button>
-	</div>
-</Story>

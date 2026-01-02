@@ -1,11 +1,21 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import { setContext } from 'svelte';
 
-	export let isFixed = true;
-	export let position: 'top' | 'bottom' = 'top';
-	export let size: FormFieldSizeOptions | 'xs' = 'md';
-	export let padding: 'none' | FormFieldSizeOptions = 'md';
+	let {
+		isFixed = true,
+		position = 'top' as 'top' | 'bottom',
+		size = 'md' as FormFieldSizeOptions | 'xs',
+		padding = 'md' as 'none' | FormFieldSizeOptions,
+		children
+	}: {
+		isFixed?: boolean;
+		position?: 'top' | 'bottom';
+		size?: FormFieldSizeOptions | 'xs';
+		padding?: 'none' | FormFieldSizeOptions;
+		children: Snippet;
+	} = $props();
 
 	setContext('app-bar', {
 		isFixed,
@@ -16,7 +26,7 @@
 </script>
 
 <header class="{position} {size} padding-{padding} {isFixed ? 'fixed' : 'absolute'}">
-	<slot />
+	{@render children?.()}
 </header>
 
 <style lang="scss">

@@ -1,13 +1,20 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
 
-	export let open = false;
+	let {
+		open = $bindable(false),
+		children
+	}: {
+		open?: boolean;
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class:open>
 	<Overlay show={open} />
 	<aside>
-		<slot />
+		{@render children?.()}
 	</aside>
 </div>
 

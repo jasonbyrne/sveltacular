@@ -1,38 +1,32 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Pagination from './pagination.svelte';
+
+	const { Story } = defineMeta({
+		component: Pagination,
+		title: 'Navigation/Pagination',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Navigation/Pagination" component={Pagination} />
+<Story name="SinglePage" args={{}} />
 
-<Story name="Single Page">
-	<Pagination />
-</Story>
+<Story name="TwoPages" args={{ currentPage: 2, totalPages: 2 }} />
 
-<Story name="Two Pages">
-	<Pagination currentPage={2} totalPages={2} />
-</Story>
+<Story name="ManyPages" args={{ currentPage: 10, totalPages: 50 }} />
 
-<Story name="Many Pages">
-	<Pagination currentPage={10} totalPages={50} />
-</Story>
+<Story name="AlignStart" args={{ currentPage: 1, totalPages: 7, align: 'start' }} />
 
-<Story name="Align Start">
-	<Pagination currentPage={1} totalPages={7} align="start" />
-</Story>
+<Story name="FlatSmall" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'sm' }} />
 
-<Story name="Flat (Small)">
-	<Pagination currentPage={10} totalPages={50} style="flat" size="sm" />
-</Story>
+<Story name="FlatMedium" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'md' }} />
 
-<Story name="Flat (Medium)">
-	<Pagination currentPage={10} totalPages={50} style="flat" size="md" />
-</Story>
+<Story name="FlatLarge" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'lg' }} />
 
-<Story name="Flat (Large)">
-	<Pagination currentPage={10} totalPages={50} style="flat" size="lg" />
-</Story>
+<Story name="FlatExtraLarge" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'xl' }} />
 
-<Story name="Flat (Extra Large)">
-	<Pagination currentPage={10} totalPages={50} style="flat" size="xl" />
-</Story>
+

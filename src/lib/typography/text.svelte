@@ -1,14 +1,24 @@
 <script lang="ts">
-	export let transform: 'uppercase' | 'lowercase' | 'capitalize' | 'none' = 'none';
-	export let size: 'sm' | 'md' | 'lg' = 'md';
-	export let display: 'block' | 'inline' = 'block';
+	import type { Snippet } from 'svelte';
+
+	let {
+		transform = 'none' as 'uppercase' | 'lowercase' | 'capitalize' | 'none',
+		size = 'md' as 'sm' | 'md' | 'lg',
+		display = 'block' as 'block' | 'inline',
+		children
+	}: {
+		transform?: 'uppercase' | 'lowercase' | 'capitalize' | 'none';
+		size?: 'sm' | 'md' | 'lg';
+		display?: 'block' | 'inline';
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class="{transform} {size} {display}">
 	{#if size === 'sm'}
-		<small><slot /></small>
+		<small>{@render children?.()}</small>
 	{:else}
-		<slot />
+		{@render children?.()}
 	{/if}
 </div>
 

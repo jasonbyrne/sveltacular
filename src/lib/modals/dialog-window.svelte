@@ -1,7 +1,14 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
-	export let size: FormFieldSizeOptions = 'md';
+	let {
+		size = 'md' as FormFieldSizeOptions,
+		children
+	}: {
+		size?: FormFieldSizeOptions;
+		children: Snippet;
+	} = $props();
 
 	const captureClick = (e: Event) => {
 		e.stopPropagation();
@@ -10,8 +17,8 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class={size} on:click={captureClick}>
-	<slot />
+<div class={size} onclick={captureClick}>
+	{@render children?.()}
 </div>
 
 <style lang="scss">

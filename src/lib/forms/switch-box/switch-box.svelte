@@ -1,24 +1,32 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
-	import { createEventDispatcher } from 'svelte';
 
-	export let checked = false;
-	export let size: FormFieldSizeOptions = 'full';
+	let {
+		checked = $bindable(false),
+		size = 'full' as FormFieldSizeOptions,
+		onChange = undefined,
+		children
+	}: {
+		checked?: boolean;
+		size?: FormFieldSizeOptions;
+		onChange?: ((checked: boolean) => void) | undefined;
+		children?: Snippet;
+	} = $props();
 
 	const id = uniqueId();
-	const dispatch = createEventDispatcher<{ change: boolean }>();
 </script>
 
 <label class="switch-box {checked ? 'checked' : ''} {size}">
-	<input type="checkbox" bind:checked on:change={() => dispatch('change', checked)} {id} />
+	<input type="checkbox" bind:checked onchange={() => onChange?.(checked)} {id} />
 	<!-- svelte-ignore a11y-interactive-supports-focus -->
 	<span class="switch">
 		<span class="slider" />
 	</span>
-	{#if $$slots.default}
+	{#if children}
 		<div class="text">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 </label>
@@ -35,7 +43,7 @@
 		}
 
 		.switch {
-			background-color: var(--form-input-bg, white);
+			background-color: var(--form-switch-unchecked-bg, rgb(80, 80, 80));
 			position: relative;
 			cursor: pointer;
 			transition: background-color 0.2s ease-in-out;
@@ -46,15 +54,15 @@
 			border-radius: 50%;
 			position: absolute;
 			transition: left 0.2s ease-in-out;
-			background-color: var(--form-input-fg, black);
+			background-color: var(--form-switch-unchecked-fg, white);
 		}
 
 		&.checked {
 			.switch {
-				background-color: var(--form-input-selected-bg, #3182ce);
+				background-color: var(--form-switch-checked-bg, #3182ce);
 			}
 			.slider {
-				background-color: var(--form-input-selected-fg, white);
+				background-color: var(--form-switch-checked-fg, white);
 			}
 		}
 
@@ -123,7 +131,7 @@
 			}
 
 			&.checked .slider {
-				left: 1.4rem;
+				left: 1.2rem;
 			}
 
 			.text {
@@ -173,7 +181,7 @@
 			}
 
 			&.checked .slider {
-				left: 1.4rem;
+				left: 1.2rem;
 			}
 
 			.text {

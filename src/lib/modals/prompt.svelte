@@ -1,46 +1,64 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import DialogBody from '$src/lib/modals/dialog-body.svelte';
 	import DialogFooter from '$src/lib/modals/dialog-footer.svelte';
 	import DialogHeader from '$src/lib/modals/dialog-header.svelte';
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
-	import { createEventDispatcher } from 'svelte';
 	import Button from '../forms/button/button.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import TextBox from '../forms/text-box/text-box.svelte';
 	import DialogCloseButton from './dialog-close-button.svelte';
 
-	export let open = false;
-	export let title: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'md';
-	export let okText = 'Yes';
-	export let cancelText = 'No';
-	export let okStyle: 'primary' | 'secondary' | 'danger' = 'primary';
-	export let cancelStyle: 'primary' | 'secondary' | 'danger' = 'secondary';
-	export let showCloseButton = true;
-	export let placeholder = '';
-	export let type: AllowedTextInputTypes = 'text';
-	export let required = false;
+	let {
+		open = $bindable(false),
+		title = undefined,
+		size = 'md' as FormFieldSizeOptions,
+		okText = 'Yes',
+		cancelText = 'No',
+		okStyle = 'primary' as 'primary' | 'secondary' | 'danger',
+		cancelStyle = 'secondary' as 'primary' | 'secondary' | 'danger',
+		showCloseButton = true,
+		placeholder = '',
+		type = 'text' as AllowedTextInputTypes,
+		required = false,
+		onOk = undefined,
+		onCancel = undefined,
+		children
+	}: {
+		open?: boolean;
+		title?: string | undefined;
+		size?: FormFieldSizeOptions;
+		okText?: string;
+		cancelText?: string;
+		okStyle?: 'primary' | 'secondary' | 'danger';
+		cancelStyle?: 'primary' | 'secondary' | 'danger';
+		showCloseButton?: boolean;
+		placeholder?: string;
+		type?: AllowedTextInputTypes;
+		required?: boolean;
+		onOk?: ((value: string) => void) | undefined;
+		onCancel?: (() => void) | undefined;
+		children: Snippet;
+	} = $props();
 
-	let value = '';
-
-	const dispatch = createEventDispatcher<{ ok: string; cancel: void }>();
+	let value = $state('');
 
 	const no = () => {
 		open = false;
-		dispatch('cancel');
+		onCancel?.();
 	};
 
 	const yes = () => {
 		if (required && !value) return;
 		open = false;
-		dispatch('ok', value);
+		onOk?.(value);
 	};
 </script>
 
 {#if open}
-	<Overlay on:click={no}>
+	<Overlay onclick={no}>
 		<Dialog {size}>
 			{#if title}
 				<DialogHeader>
@@ -48,20 +66,16 @@
 				</DialogHeader>
 				<Divider />
 			{/if}
-			<DialogCloseButton show={showCloseButton} on:click={no} />
+			<DialogCloseButton show={showCloseButton} onClick={no} />
 			<DialogBody>
 				<TextBox bind:value {placeholder} {type} {required} size="full">
-					<slot />
+					{@render children?.()}
 				</TextBox>
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button on:click={no} style={cancelStyle} size="full">
-					{cancelText}
-				</Button>
-				<Button on:click={yes} style={okStyle} size="full">
-					{okText}
-				</Button>
+				<Button onclick={no} style={cancelStyle} size="full" label={cancelText} />
+				<Button onclick={yes} style={okStyle} size="full" label={okText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

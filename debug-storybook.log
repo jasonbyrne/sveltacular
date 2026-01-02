@@ -1,0 +1,10 @@
+[10:49:21.265] [INFO] storybook v10.1.11
+[10:49:21.531] [DEBUG] Getting package.json info for /Users/jasonbyrne/repos/sveltacular/package.json...
+[10:49:22.033] [DEBUG] Serving static files from [36mstatic[39m at [36m/assets[39m
+[10:49:22.039] [INFO] Starting...
+[10:49:22.127] [DEBUG] Starting preview..
+[10:49:22.332] [ERROR] [38;2;241;97;97mTypeError: projectTags is not iterable[39m
+    at _StoryIndexGenerator.getProjectTags (file://./node_modules/storybook/dist/core-server/index.js:5543:32)
+    at _StoryIndexGenerator.initialize (file://./node_modules/storybook/dist/core-server/index.js:5187:71)
+[10:49:22.333] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.

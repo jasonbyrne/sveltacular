@@ -1,140 +1,82 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Notice from './notice.svelte';
-	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+
+	const noticeMessage =
+		'Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum eos quos, ad provident modi!';
+
+	const { Story } = defineMeta({
+		component: Notice,
+		title: 'Generic/Notice',
+		tags: ['autodocs'],
+		args: {
+			onDismiss: fn()
+		}
+	});
 </script>
 
-<Meta title="Generic/Notice" component={Notice} />
+<Story name="Standard" args={{ title: 'Notice Title' }}>Notice Message</Story>
 
-<Story name="Standard">
-	<Notice title="Notice Title">Notice Message</Notice>
+<Story name="WithoutTitle">Notice Message</Story>
+
+<Story name="Success" args={{ title: 'Notice Title', style: 'success' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="With Icon">
-	<Notice title="Notice Title">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Notice Message
-	</Notice>
+<Story name="Error" args={{ title: 'Notice Title', style: 'error' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Without Title">
-	<Notice>Notice Message</Notice>
+<Story name="Outline" args={{ title: 'Notice Title', style: 'outline' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Success">
-	<Notice title="Notice Title" style="success">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="Attention" args={{ title: 'Notice Title', style: 'attention' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Error">
-	<Notice title="Notice Title" style="error">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="Info" args={{ title: 'Notice Title', style: 'info' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Outline">
-	<Notice title="Notice Title" style="outline">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="ExtraLarge" args={{ title: 'Notice Title', size: 'xl' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Attention">
-	<Notice title="Notice Title" style="attention">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="Large" args={{ title: 'Notice Title', size: 'lg' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Info">
-	<Notice title="Notice Title" style="info">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="Medium" args={{ title: 'Notice Title', size: 'md' }}>
+	{noticeMessage}
 </Story>
 
-<Story name="Extra Large">
-	<Notice title="Notice Title" size="xl">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
+<Story name="Small" args={{ title: 'Notice Title', size: 'sm' }}>Just a small alert message.</Story>
+
+<Story
+	name="Dismissable"
+	args={{
+		title: 'New Post Saved',
+		style: 'success',
+		size: 'md',
+		dismissable: true
+	}}
+>
+	Your change have been saved.
 </Story>
 
-<Story name="Large">
-	<Notice title="Notice Title" size="lg">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
-</Story>
-
-<Story name="Medium">
-	<Notice title="Notice Title" size="md">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quibusdam molestiae sit, nesciunt
-		maxime illo assumenda accusantium aut tempora voluptatibus quisquam odit dolores quia voluptatum
-		eos quos, ad provident modi!
-	</Notice>
-</Story>
-
-<Story name="Small">
-	<Notice title="Notice Title" size="sm">
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Just a small alert message.
-	</Notice>
-</Story>
-
-<Story name="Dissmissable">
-	<Notice title="New Post Saved" style="success" size="md" dismissable>
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Your change have been saved.
-	</Notice>
+<Story
+	name="AutoDismiss"
+	args={{
+		title: 'New Post Saved',
+		style: 'success',
+		size: 'md',
+		dismissable: true,
+		dismissMilliseconds: 2000
+	}}
+>
+	Your change have been saved.
 </Story>
 
 
-<Story name="Auto Dismiss">
-	<Notice title="New Post Saved" style="success" size="md" dismissable dismissMilliseconds={2000}>
-		<div slot="icon">
-			<CheckIcon />
-		</div>
-		Your change have been saved.
-	</Notice>
-</Story>

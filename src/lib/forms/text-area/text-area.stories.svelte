@@ -1,18 +1,23 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import TextArea from './text-area.svelte';
+
+	const { Story } = defineMeta({
+		component: TextArea,
+		title: 'Forms/TextArea',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn(),
+			onInput: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/TextArea" component={TextArea} />
+<Story name="TextAreaSmall" args={{ placeholder: 'Placeholder text', rows: 3, size: 'sm' }} />
 
-<Story name="Text Area (small)">
-	<TextArea placeholder="Placeholder text" rows={3} size="sm" />
-</Story>
+<Story name="TextAreaLarge" args={{ placeholder: 'Placeholder text', rows: 10, size: 'lg' }} />
 
-<Story name="Text Area (large)">
-	<TextArea placeholder="Placeholder text" rows={10} size="lg" />
-</Story>
+<Story name="TextAreaWithLabel" args={{ placeholder: 'Placeholder text', rows: 10, label: 'Comments' }} />
 
-<Story name="Text Area (with label)">
-	<TextArea placeholder="Placeholder text" rows={10}>Comments</TextArea>
-</Story>
+

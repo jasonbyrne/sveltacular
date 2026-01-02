@@ -1,9 +1,17 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { setContext } from "svelte";
 	import { listContext, type ListContext, type ListStyle } from "./list.js";
 
-    export let type: 'unordered' | 'ordered' = 'unordered';
-    export let style: ListStyle = 'none';
+	let {
+		type = 'unordered' as 'unordered' | 'ordered',
+		style = 'none' as ListStyle,
+		children
+	}: {
+		type?: 'unordered' | 'ordered';
+		style?: ListStyle;
+		children: Snippet;
+	} = $props();
 
     const ctx: ListContext = {
 		style,
@@ -13,11 +21,11 @@
 
 {#if type === 'unordered'}
     <ul class="{style}">
-        <slot />
+        {@render children?.()}
     </ul>
 {:else}
     <ol>
-        <slot />
+        {@render children?.()}
     </ol>
 {/if}
 

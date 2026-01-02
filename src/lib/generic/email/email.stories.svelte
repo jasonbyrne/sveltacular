@@ -1,10 +1,14 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Email from './email.svelte';
+
+	const { Story } = defineMeta({
+		component: Email,
+		title: 'Generic/Email',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Email" component={Email} />
+<Story name="Default" args={{ emailAddress: 'someone234@gmail.com' }} />
 
-<Story name="Default">
-	<Email emailAddress="someone234@gmail.com" />
-</Story>
+

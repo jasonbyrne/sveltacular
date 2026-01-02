@@ -1,10 +1,14 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import CodeBlock from './code-block.svelte';
+
+	const { Story } = defineMeta({
+		component: CodeBlock,
+		title: 'Typography/CodeBlock',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Typography/CodeBlock" component={CodeBlock} />
+<Story name="Default">const lang = "JavaScript";</Story>
 
-<Story name="Default">
-	<CodeBlock>const lang = "JavaScript";</CodeBlock>
-</Story>
+

@@ -1,14 +1,16 @@
-<script lang="ts">
-	import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import InfoBox from './info-box.svelte';
+
+	const { Story } = defineMeta({
+		component: InfoBox,
+		title: 'Forms/InfoBox',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Forms/InfoBox" component={InfoBox} />
+<Story name="Default" args={{ value: 'Some text goes here', label: 'Some Label' }} />
 
-<Story name="Default">
-	<InfoBox value="Some text goes here">Some Label</InfoBox>
-</Story>
+<Story name="WithLink" args={{ value: 'Some text goes here', href: 'https://www.google.com', label: 'Some Label' }} />
 
-<Story name="With Link">
-	<InfoBox value="Some text goes here" href="https://www.google.com">Some Label</InfoBox>
-</Story>
+

@@ -1,18 +1,18 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import ListBox from './list-box.svelte';
-	import type { DropdownOption } from '$src/lib/types/form.js';
 	import { Countries } from '$src/lib/data/countries.js';
 	import { US_States } from '$src/lib/data/united-states.js';
 
-	const items: DropdownOption[] = [
+	const items = [
 		{ name: 'SvelteKit', value: 'svelte' },
 		{ name: 'Angular', value: 'angular' },
 		{ name: 'React', value: 'react=' },
 		{ name: 'Vue', value: 'vue' }
 	];
 
-	const itemsWithNull: DropdownOption[] = [
+	const itemsWithNull = [
 		{ name: 'SvelteKit', value: 'svelte' },
 		{ name: 'Angular', value: 'angular' },
 		{ name: 'React', value: 'react=' },
@@ -20,69 +20,31 @@
 		{ name: 'None', value: null }
 	];
 
-	let searchLog: string[] = [];
-	let value = 'svelte';
-	const addToSearchLog = (e: CustomEvent<string>) => {
-		searchLog = [...searchLog, e.detail];
-	};
-
-	const search = async (searchText: string) => {
-		const result = Countries.filter((country) =>
-			country.name.toLowerCase().includes(searchText.toLowerCase().trim())
-		);
-		return result;
-	};
-	let searchedItems: { name: string; value: string }[] = [];
-	let searchValue = 'USA';
+	const { Story } = defineMeta({
+		component: ListBox,
+		title: 'Forms/ListBox',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/ListBox" component={ListBox} />
+<Story name="Simple" args={{ items, label: 'Best JavaScript Framework' }} />
 
-<Story name="Simple">
-	<div>
-		<ListBox {items}>Best JavaScript Framework</ListBox>
-	</div>
-	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
-</Story>
+<Story name="SimpleWithNull" args={{ items: itemsWithNull, label: 'Best JavaScript Framework' }} />
 
-<Story name="Simple with Null">
-	<div>
-		<ListBox items={itemsWithNull}>Best JavaScript Framework</ListBox>
-	</div>
-	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
-</Story>
+<Story name="ValueSelected" args={{ items, value: 'svelte', label: 'Best JavaScript Framework' }} />
 
-<Story name="Value Selected">
-	<div>
-		<ListBox {items} bind:value>Best JavaScript Framework</ListBox>
-	</div>
-	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
-</Story>
+<Story name="Searchable" args={{ items: US_States, searchable: true, label: 'State or Territory' }} />
 
-<Story name="Searchable">
-	<div>
-		<ListBox items={US_States} searchable on:search={addToSearchLog}>State or Territory</ListBox>
-	</div>
-	<div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</div>
-	<ul>
-		{#each searchLog as item}
-			<li>{item}</li>
-		{/each}
-	</ul>
-</Story>
-
-<Story name="Searchable Pre-Selected">
-	<div>
-		<ListBox bind:items={searchedItems} searchable {search} bind:value={searchValue}
-			>Countries</ListBox
-		>
-	</div>
-</Story>
-
-<Story name="Searchable Disabled">
-	<div>
-		<ListBox bind:items={searchedItems} searchable {search} bind:value={searchValue} disabled
-			>Countries</ListBox
-		>
-	</div>
-</Story>
+<Story
+	name="SearchableDisabled"
+	args={{
+		items: Countries,
+		searchable: true,
+		disabled: true,
+		value: 'USA',
+		label: 'Countries'
+	}}
+/>

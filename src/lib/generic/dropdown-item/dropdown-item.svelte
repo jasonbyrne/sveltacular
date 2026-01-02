@@ -1,24 +1,32 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import type { Snippet } from 'svelte';
 
-	export let href: string | undefined = undefined;
-	export let target: string | undefined = undefined;
-	export let tabindex = 0;
+	let {
+		href = undefined,
+		target = undefined,
+		tabindex = 0,
+		onClick = undefined,
+		children
+	}: {
+		href?: string | undefined;
+		target?: string | undefined;
+		tabindex?: number;
+		onClick?: (() => void) | undefined;
+		children: Snippet;
+	} = $props();
 
-	const dispatch = createEventDispatcher<{ click: void }>();
-
-	const onClick = () => {
-		dispatch('click');
+	const handleClick = () => {
+		onClick?.();
 	};
 </script>
 
 {#if !href}
-	<span class="item" on:click={() => onClick()} on:keyup={() => onClick()} role="link" {tabindex}>
-		<slot />
+	<span class="item" onclick={handleClick} onkeyup={handleClick} role="link" {tabindex}>
+		{@render children?.()}
 	</span>
 {:else}
-	<a {href} {target} class="item" on:click={() => onClick()} {tabindex}>
-		<slot />
+	<a {href} {target} class="item" onclick={handleClick} {tabindex}>
+		{@render children?.()}
 	</a>
 {/if}
 

@@ -1,23 +1,38 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
+	import type { Snippet } from 'svelte';
 	type NoticeStyle = 'outline' | 'attention' | 'success' | 'error' | 'info';
 	type NoticeSize = 'sm' | 'md' | 'lg' | 'xl';
 
-	const dispatch = createEventDispatcher<{ dismiss: void; hidden: void, show: void }>();
+	let {
+		title = undefined,
+		style = 'info' as NoticeStyle,
+		size = 'md' as NoticeSize,
+		dismissable = false,
+		dismissMilliseconds = 0,
+		onShow = undefined,
+		onDismiss = undefined,
+		onHidden = undefined,
+		icon,
+		children
+	}: {
+		title?: string | undefined;
+		style?: NoticeStyle;
+		size?: NoticeSize;
+		dismissable?: boolean;
+		dismissMilliseconds?: number;
+		onShow?: (() => void) | undefined;
+		onDismiss?: (() => void) | undefined;
+		onHidden?: (() => void) | undefined;
+		icon?: Snippet;
+		children: Snippet;
+	} = $props();
 
-	export let title: string | undefined = undefined;
-	export let style: NoticeStyle = 'info';
-	export let size: NoticeSize = 'md';
-	export let dismissable = false;
-	export let dismissMilliseconds = 0;
-
-	let visible = true;
-	let going = false;
-	let coming = false;
+	let visible = $state(true);
+	let going = $state(false);
+	let coming = $state(false);
 
 	const hello = () => {
-		dispatch('show');
+		onShow?.();
 		coming = true;
 		setTimeout(() => {
 			coming = false;
@@ -25,11 +40,11 @@
 	};
 
 	const goodbye = () => {
-		dispatch('dismiss');
+		onDismiss?.();
 		going = true;
 		setTimeout(() => {
 			visible = false;
-			dispatch('hidden');
+			onHidden?.();
 		}, 500);
 	};
 
@@ -39,17 +54,19 @@
 		goodbye();
 	};
 
-	$: if (dismissMilliseconds > 0) {
-		setTimeout(goodbye, dismissMilliseconds);
-	}
+	$effect(() => {
+		if (dismissMilliseconds > 0) {
+			setTimeout(goodbye, dismissMilliseconds);
+		}
+	});
 
 	hello();
 </script>
 
 <div class="notice {style} {size} {visible ? 'visible' : 'hidden'} {going ? 'going' : ''} {coming ? 'coming' : ''}">
-	{#if $$slots.icon}
+	{#if icon}
 		<div class="icon">
-			<slot name="icon" />
+			{@render icon?.()}
 		</div>
 	{/if}
 	<div class="content">
@@ -57,13 +74,13 @@
 			<strong>{title}</strong>
 		{/if}
 		<div class="message">
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 
 	{#if dismissable}
 		<div class="dismiss">
-			<button type="button" on:click={onClick}>X</button>
+			<button type="button" onclick={onClick}>X</button>
 		</div>
 	{/if}
 </div>

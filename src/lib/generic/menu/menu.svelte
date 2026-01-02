@@ -3,22 +3,32 @@
 	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/index.js';
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
-	import { createEventDispatcher } from 'svelte';
 
-	export let items: MenuOption[] = [];
-	export let value: string | null = null;
-	export let instructions: string = '';
-	export let open = false;
-	export let size: FormFieldSizeOptions = 'md';
-	export let closeAfterSelect = true;
-	export let searchText = '';
-	export let highlightIndex = 0;
-
-	const dispatch = createEventDispatcher<{ select: MenuOption }>();
+	let {
+		items = [] as MenuOption[],
+		value = $bindable(null as string | null),
+		instructions = '',
+		open = $bindable(false),
+		size = 'md' as FormFieldSizeOptions,
+		closeAfterSelect = true,
+		searchText = '',
+		highlightIndex = $bindable(0),
+		onSelect = undefined
+	}: {
+		items?: MenuOption[];
+		value?: string | null;
+		instructions?: string;
+		open?: boolean;
+		size?: FormFieldSizeOptions;
+		closeAfterSelect?: boolean;
+		searchText?: string;
+		highlightIndex?: number;
+		onSelect?: ((item: MenuOption) => void) | undefined;
+	} = $props();
 
 	const selectItem = (item: MenuOption) => {
 		value = item.value;
-		dispatch('select', item);
+		onSelect?.(item);
 		if (closeAfterSelect) open = false;
 	};
 
@@ -27,7 +37,11 @@
 		if (el) el.scrollIntoView({ block: 'nearest' });
 	};
 
-	$: highlightIndex >= 0 && scrollToItem(highlightIndex);
+	$effect(() => {
+		if (highlightIndex >= 0) {
+			scrollToItem(highlightIndex);
+		}
+	});
 </script>
 
 <ul role="listbox" class="menu {open ? 'open' : 'closed'} {size}">
@@ -36,8 +50,8 @@
 	{/if}
 	{#each items as item, i}
 		<li
-			on:click={() => selectItem(item)}
-			on:keypress={() => selectItem(item)}
+			onclick={() => selectItem(item)}
+			onkeypress={() => selectItem(item)}
 			role="option"
 			aria-selected={item.value === value}
 			data-index={i}

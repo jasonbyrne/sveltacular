@@ -5,23 +5,38 @@
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
-	import { createEventDispatcher } from 'svelte';
 
 	type DateIncrementStep = { label: string; value: number, unit: DateUnit };
 
 	const id = uniqueId();
 
-	export let value: string | undefined | null = undefined;
-	export let defaultValue: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'full';
-	export let placeholder = '';
-	export let nullable = false;
-	export let enabled = true;
-	export let type: 'date' | 'datetime-local' = 'date';
-	export let required = false;
-	export let steps: DateIncrementStep[] = [];
-
-	const dipatch = createEventDispatcher<{ value: string | null, checkChanged: boolean }>();
+	let {
+		value = $bindable(undefined as string | undefined | null),
+		defaultValue = undefined,
+		size = 'full' as FormFieldSizeOptions,
+		placeholder = '',
+		nullable = false,
+		enabled = $bindable(true),
+		type = 'date' as 'date' | 'datetime-local',
+		required = false,
+		steps = [] as DateIncrementStep[],
+		onChange = undefined,
+		onCheckChanged = undefined,
+		label = undefined
+	}: {
+		value?: string | undefined | null;
+		defaultValue?: string | undefined;
+		size?: FormFieldSizeOptions;
+		placeholder?: string;
+		nullable?: boolean;
+		enabled?: boolean;
+		type?: 'date' | 'datetime-local';
+		required?: boolean;
+		steps?: DateIncrementStep[];
+		onChange?: ((value: string | null) => void) | undefined;
+		onCheckChanged?: ((enabled: boolean) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const _defaultValue = defaultValue || value || currentDateTime();
 	const getDefaultValue = () => {
@@ -35,7 +50,7 @@
 		if (nullable) {
 			value = enabled ? getDefaultValue() : '';
 		}
-		dipatch('checkChanged', enabled);
+		onCheckChanged?.(enabled);
 		onInput();
 	};
 
@@ -48,33 +63,33 @@
 	};
 
 	const onInput = () => {
-		dipatch('value', enabled ? value : null);
+		onChange?.(enabled ? value : null);
 	};
 
 	if (!value) {
 		if (nullable) enabled = false;
 		else value = getDefaultValue();
 	}
-	$: disabled = !enabled;
+	let disabled = $derived(!enabled);
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {required} {label} />
 	{/if}
 	<div class:nullable class:disabled>
 		<span class="input">
-			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} on:input={onInput} />
+			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} oninput={onInput} />
 		</span>
 		{#if nullable}
 			<span class="toggle">
-				<input type="checkbox" bind:checked={enabled} on:change={checkChanged} />
+				<input type="checkbox" bind:checked={enabled} onchange={checkChanged} />
 			</span>
 		{/if}
 		{#if steps.length > 0}
 			<span class="steps">
 				{#each steps as step}
-					<Button noMargin={true} collapse={true} on:click={() => incrementValue(step)}>{step.label}</Button>
+					<Button noMargin={true} collapse={true} onclick={() => incrementValue(step)} label={step.label} />
 				{/each}
 			</span>
 		{/if}

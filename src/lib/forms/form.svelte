@@ -1,23 +1,35 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import type { Snippet } from 'svelte';
 	import Section from '../generic/section/section.svelte';
 	import type { FormFieldSizeOptions } from '../index.js';
 
-	export let method: 'get' | 'post' | 'put' | 'delete' = 'get';
-	export let title: string | undefined = undefined;
-	export let action: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'full';
+	let {
+		method = 'get',
+		title = undefined,
+		action = undefined,
+		size = 'full',
+		onSubmit = undefined,
+		children
+	}: {
+		method?: 'get' | 'post' | 'put' | 'delete';
+		title?: string | undefined;
+		action?: string | undefined;
+		size?: FormFieldSizeOptions;
+		onSubmit?: (() => void) | undefined;
+		children: Snippet;
+	} = $props();
 
-	const dispatch = createEventDispatcher<{ submit: void }>();
-
-	const onSubmit = (e: Event) => {
+	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		dispatch('submit');
+		onSubmit?.();
 	};
+
+	// HTML forms only support "get" and "post", so convert "put"/"delete" to "post"
+	const formMethod = $derived(method === 'put' || method === 'delete' ? 'post' : method);
 </script>
 
 <Section {title} {size}>
-	<form {method} {action} on:submit={onSubmit}>
-		<slot />
+	<form method={formMethod} {action} onsubmit={handleSubmit}>
+		{@render children()}
 	</form>
 </Section>

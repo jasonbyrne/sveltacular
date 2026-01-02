@@ -1,21 +1,31 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { AngleUpIcon } from '$src/lib/index.js';
 	import { hasContext } from 'svelte';
 
-	export let open = false;
-	export let text: string | undefined = undefined;
-	export let style: 'standard' | 'ghost' = 'standard';
-	export let icon: 'arrow' | 'none' = 'arrow';
+	let {
+		open = $bindable(false),
+		text = undefined,
+		style = 'standard' as 'standard' | 'ghost',
+		icon = 'arrow' as 'arrow' | 'none',
+		children
+	}: {
+		open?: boolean;
+		text?: string;
+		style?: 'standard' | 'ghost';
+		icon?: 'arrow' | 'none';
+		children: Snippet;
+	} = $props();
 
 	const onClick = () => {
 		open = !open;
 	};
 
-	$: hasText = text && text.length > 0;
+	let hasText = $derived(text && text.length > 0);
 </script>
 
 <div class="dropdown-button {style} icon-{icon}" class:open>
-	<button on:click={onClick} class:hasText>
+	<button onclick={onClick} class:hasText>
 		{#if hasText}
 			<div class="text">
 				{text}
@@ -29,7 +39,7 @@
 	</button>
 	{#if open}
 		<div class="menu">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 </div>

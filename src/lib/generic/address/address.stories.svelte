@@ -1,47 +1,26 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Address from './address.svelte';
+
+	const { Story } = defineMeta({
+		component: Address,
+		title: 'Generic/Address',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Address" component={Address} />
+<Story name="Default" args={{ streetAddress: '123 Main St', city: 'Anytown', region: 'CA', postalCode: '12345', country: 'USA' }} />
 
-<Story name="Default">
-	<Address
-		streetAddress="123 Main St"
-		city="Anytown"
-		region="CA"
-		postalCode="12345"
-		country="USA"
-	/>
-</Story>
+<Story name="MultipleLines" args={{ streetAddress: '123 Main St\nSuite 100', city: 'Anytown', region: 'CA', postalCode: '12345', country: 'USA' }} />
 
-<Story name="Multiple Lines">
-	<Address
-		streetAddress="123 Main St
-Suite 100"
-		city="Anytown"
-		region="CA"
-		postalCode="12345"
-		country="USA"
-	/>
-</Story>
+<Story name="NoCountry" args={{ streetAddress: '123 Main St', city: 'Anytown', region: 'CA', postalCode: '12345' }} />
 
-<Story name="No Country">
-	<Address streetAddress="123 Main St" city="Anytown" region="CA" postalCode="12345" />
-</Story>
+<Story name="NoPostalCode" args={{ streetAddress: '123 Main St', city: 'Anytown', region: 'CA', country: 'USA' }} />
 
-<Story name="No Postal Code">
-	<Address streetAddress="123 Main St" city="Anytown" region="CA" country="USA" />
-</Story>
+<Story name="NoRegion" args={{ streetAddress: '123 Main St', city: 'Anytown', postalCode: '12345', country: 'USA' }} />
 
-<Story name="No Region">
-	<Address streetAddress="123 Main St" city="Anytown" postalCode="12345" country="USA" />
-</Story>
+<Story name="NoStreetAddress" args={{ city: 'Anytown', region: 'CA', postalCode: '12345', country: 'USA' }} />
 
-<Story name="No Street Address">
-	<Address city="Anytown" region="CA" postalCode="12345" country="USA" />
-</Story>
+<Story name="NoCity" args={{ streetAddress: '123 Main St', region: 'CA', postalCode: '12345', country: 'USA' }} />
 
-<Story name="No City">
-	<Address streetAddress="123 Main St" region="CA" postalCode="12345" country="USA" />
-</Story>
+

@@ -4,30 +4,44 @@
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
-	import { createEventDispatcher } from 'svelte';
-
 	const id = uniqueId();
-	const dipatch = createEventDispatcher<{ change: number | null; }>();
 
 	type AllowedInputTypes = 'number' | 'currency';
 
-	export let value: number | null = 0;
-	export let placeholder = '';
-	export let size: FormFieldSizeOptions = 'full';
-	export let type: AllowedInputTypes = 'number';
-	export let min = 0;
-	export let max = 1000000;
-	export let decimals = 0;
-	export let prefix: string | null = null;
-	export let suffix: string | null = null;
-	export let step = 1;
+	let {
+		value = $bindable(0 as number | null),
+		placeholder = '',
+		size = 'full' as FormFieldSizeOptions,
+		type = 'number' as AllowedInputTypes,
+		min = 0,
+		max = 1000000,
+		decimals = 0,
+		prefix = null as string | null,
+		suffix = null as string | null,
+		step = 1,
+		onChange = undefined,
+		label = undefined
+	}: {
+		value?: number | null;
+		placeholder?: string;
+		size?: FormFieldSizeOptions;
+		type?: AllowedInputTypes;
+		min?: number;
+		max?: number;
+		decimals?: number;
+		prefix?: string | null;
+		suffix?: string | null;
+		step?: number;
+		onChange?: ((value: number | null) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const valueChanged = () => {
 		if (value === null || value === undefined) return;
 		if (value < min) value = min;
 		if (value > max) value = max;
 		value = roundToDecimals(value, decimals);
-		dipatch('change', value);
+		onChange?.(value);
 	};
 
 	const onInput = (e: Event) => {
@@ -51,8 +65,8 @@
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {label} />
 	{/if}
 	<div class="input {type}">
 		{#if prefix}
@@ -67,9 +81,9 @@
 			{step}
 			{min}
 			{max}
-			on:change={valueChanged}
-			on:input={onInput}
-			on:keypress={onKeyPress}
+			onchange={valueChanged}
+			oninput={onInput}
+			onkeypress={onKeyPress}
 		/>
 
 		{#if suffix}

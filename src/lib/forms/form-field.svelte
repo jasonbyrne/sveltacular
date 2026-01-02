@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const maxWidthMap = {
@@ -9,14 +10,20 @@
 		full: '100%'
 	};
 
-	export let size: FormFieldSizeOptions = 'full';
+	let {
+		size = 'full',
+		children
+	}: {
+		size?: FormFieldSizeOptions;
+		children: Snippet;
+	} = $props();
 
-	$: displayType = ['xl', 'full'].includes(size) ? 'block' : 'inline-block';
-	$: maxWidth = maxWidthMap[size];
+	let displayType = $derived(['xl', 'full'].includes(size) ? 'block' : 'inline-block');
+	let maxWidth = $derived(maxWidthMap[size]);
 </script>
 
 <div style={`display: ${displayType}; width: 100%; min-width: 10rem; max-width: ${maxWidth}`}>
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

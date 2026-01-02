@@ -1,18 +1,30 @@
 <script lang="ts">
-	export let href: string;
-	export let target: string | undefined = undefined;
-	export let underline: 'none' | 'hover' | 'always' = 'none';
-	export let disabled = false;
-	export let display: 'inline' | 'block' | 'inline-block' = 'inline';
+	import type { Snippet } from 'svelte';
+
+	let {
+		href,
+		target = undefined,
+		underline = 'none' as 'none' | 'hover' | 'always',
+		disabled = false,
+		display = 'inline' as 'inline' | 'block' | 'inline-block',
+		children
+	}: {
+		href: string;
+		target?: string;
+		underline?: 'none' | 'hover' | 'always';
+		disabled?: boolean;
+		display?: 'inline' | 'block' | 'inline-block';
+		children: Snippet;
+	} = $props();
 </script>
 
 {#if disabled}
 	<span class="link disabled underline-{underline} {display}">
-		<slot />
+		{@render children?.()}
 	</span>
 {:else}
 	<a {href} {target} class="link underline-{underline} {display}">
-		<slot />
+		{@render children?.()}
 	</a>
 {/if}
 

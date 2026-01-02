@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher, setContext } from 'svelte';
+	import type { Snippet } from 'svelte';
+	import { setContext } from 'svelte';
 	import type { WizardContext, WizardState } from './wizard-context.js';
 	import { writable } from 'svelte/store';
 	import { subscribable } from '$src/lib/helpers/subscribable.js';
@@ -7,21 +8,33 @@
 	import Button from '$src/lib/forms/button/button.svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
 
-	export let title: string;
-	export let level: SectionLevel = 3;
-	export let disabled = false;
-	export let onNext: (step: number) => Promise<string[] | void> = async () => [];
-	export let onSubmit: () => Promise<string[] | void> = async () => [];
+	let {
+		title,
+		level = 3 as SectionLevel,
+		disabled = $bindable(false),
+		onNext = async () => [] as string[] | void,
+		onSubmit = async () => [] as string[] | void,
+		onDone = undefined,
+		onNextStep = undefined,
+		onPreviousStep = undefined,
+		onErrors = undefined,
+		children
+	}: {
+		title: string;
+		level?: SectionLevel;
+		disabled?: boolean;
+		onNext?: (step: number) => Promise<string[] | void>;
+		onSubmit?: () => Promise<string[] | void>;
+		onDone?: (() => void) | undefined;
+		onNextStep?: ((step: number) => void) | undefined;
+		onPreviousStep?: ((step: number) => void) | undefined;
+		onErrors?: ((errors: string[]) => void) | undefined;
+		children: Snippet;
+	} = $props();
 
-	let currentStep = 0;
-	let errors: string[] = [];
+	let currentStep = $state(0);
+	let errors = $state<string[]>([]);
 
-	const dispatch = createEventDispatcher<{
-		done: void;
-		next: number;
-		previous: number;
-		errors: string[];
-	}>();
 	const steps: { [key: number]: string } = {};
 	const wizardStore = writable<WizardState>({
 		currentStep,
@@ -48,7 +61,7 @@
 		disabled = true;
 		errors = (await callback()) || [];
 		disabled = false;
-		dispatch('errors', errors);
+		onErrors?.(errors);
 		return errors;
 	};
 
@@ -59,7 +72,7 @@
 			if (errors.length) return publish();
 		}
 		currentStep++;
-		dispatch('next', currentStep);
+		onNextStep?.(currentStep);
 		publish();
 	};
 
@@ -67,7 +80,7 @@
 		if (currentStep <= 1 || disabled) return;
 		currentStep--;
 		errors = [];
-		dispatch('previous', currentStep);
+		onPreviousStep?.(currentStep);
 		publish();
 	};
 
@@ -80,7 +93,7 @@
 	const done = async () => {
 		const errors = await validate(onSubmit);
 		if (errors.length) return publish();
-		dispatch('done');
+		onDone?.();
 		reset();
 	};
 
@@ -91,21 +104,21 @@
 
 	setTimeout(next, 100);
 
-	$: isFirstStep = currentStep <= 1;
-	$: isLastStep = currentStep >= Object.values(steps).length;
-	$: subtitle = steps[currentStep];
-	$: total = Object.values(steps).length;
+	let isFirstStep = $derived(currentStep <= 1);
+	let isLastStep = $derived(currentStep >= Object.values(steps).length);
+	let subtitle = $derived(steps[currentStep]);
+	let total = $derived(Object.values(steps).length);
 </script>
 
 <section class:disabled>
 	<Header {title} {subtitle} {level} />
 	<div class="content">
-		<slot />
+		{@render children?.()}
 	</div>
 	<footer>
 		<div>
 			{#if !isFirstStep}
-				<Button type="button" style="secondary" on:click={previous} {disabled}>Previous</Button>
+				<Button type="button" style="secondary" onclick={previous} {disabled} label="Previous" />
 			{/if}
 		</div>
 		<div>
@@ -113,9 +126,9 @@
 		</div>
 		<div>
 			{#if isLastStep}
-				<Button type="submit" style="primary" on:click={done} {disabled}>Done</Button>
+				<Button type="submit" style="primary" onclick={done} {disabled} label="Done" />
 			{:else}
-				<Button type="button" style="primary" on:click={next} {disabled}>Next</Button>
+				<Button type="button" style="primary" onclick={next} {disabled} label="Next" />
 			{/if}
 		</div>
 	</footer>

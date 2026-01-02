@@ -1,11 +1,20 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { navigateTo, uniqueId } from '$src/lib/index.js';
 	import { getContext } from 'svelte';
 	import type { CardContainerContext } from '../card/card-container.js';
 
-	export let value: string | number;
-	export let caption: 'above' | 'below' | 'left' | 'right' = 'below';
-	export let href: string | undefined = undefined;
+	let {
+		value,
+		caption = 'below' as 'above' | 'below' | 'left' | 'right',
+		href = undefined,
+		children
+	}: {
+		value: string | number;
+		caption?: 'above' | 'below' | 'left' | 'right';
+		href?: string;
+		children: Snippet;
+	} = $props();
 
 	const onClick = () => {
 		if (!href) return;
@@ -19,14 +28,14 @@
 	}
 
 	// Reactively format a string output of value, if it's a number, formatted with commas
-	$: formattedValue = typeof value === 'number' ? value.toLocaleString() : value;
-	$: isLink = !!href;
+	let formattedValue = $derived(typeof value === 'number' ? value.toLocaleString() : value);
+	let isLink = $derived(!!href);
 </script>
 
-<button on:click={onClick} class:isLink {id}>
+<button onclick={onClick} class:isLink {id}>
 	<figure class={caption}>
 		<span class="value">{formattedValue}</span>
-		<figcaption><slot /></figcaption>
+		<figcaption>{@render children?.()}</figcaption>
 	</figure>
 </button>
 

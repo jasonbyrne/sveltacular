@@ -2,11 +2,19 @@
 	import toAgo from '$src/lib/helpers/ago.js';
 	import type { DateTimeStyle, DateType, TZStyle } from '$src/lib/types/date.js';
 
-	export let value: string | number | Date = '';
-	export let lang = 'en-us';
-	export let type: DateType = 'datetime';
-	export let style: DateTimeStyle = 'medium';
-	export let dateTimeSeparator: string | undefined = undefined;
+	let {
+		value = '',
+		lang = 'en-us',
+		type = 'datetime' as DateType,
+		style = 'medium' as DateTimeStyle,
+		dateTimeSeparator = undefined
+	}: {
+		value?: string | number | Date;
+		lang?: string;
+		type?: DateType;
+		style?: DateTimeStyle;
+		dateTimeSeparator?: string;
+	} = $props();
 
 	const tzStyleMap: Record<DateTimeStyle, TZStyle> = {
 		full: 'long',
@@ -50,30 +58,32 @@
 		return dateTimeSeparator;
 	};
 
-	$: date = value ? new Date(value) : new Date();
-	$: text = (() => {
-		if (type == 'ago') return toAgo(date, style);
-		if (type == 'ymd') {
-			const [year, month, day] = date.toISOString().split('T')[0].split('-');
-			return `${year}-${month}-${day}`;
-		}
-		if (['ymdhm', 'ymdhms', 'ymdhmt', 'ymdhmts'].includes(type)) {
-			const [year, month, day] = date.toISOString().split('T')[0].split('-');
-			const [hours, minutes, seconds] = date.toISOString().split('T')[1].split(':');
-			const separator = dateTimeSeparator === undefined ? ' ' : dateTimeSeparator;
-			const dateTime =
-				type == 'ymdhms'
-					? `${year}-${month}-${day}${separator}${hours}:${minutes}:${seconds.substring(0, 2)}`
-					: `${year}-${month}-${day}${separator}${hours}:${minutes}`;
-			return type.includes('t') ? `${dateTime} ${getTimezone()}` : dateTime;
-		}
-		return type == 'date'
-			? getDate()
-			: type == 'time'
-			? getTime()
-			: `${getDate()}${getSeparator()}${getTime()}`;
-	})();
-	$: datetime = date.toISOString();
+	let date = $derived(value ? new Date(value) : new Date());
+	let text = $derived(
+		(() => {
+			if (type == 'ago') return toAgo(date, style);
+			if (type == 'ymd') {
+				const [year, month, day] = date.toISOString().split('T')[0].split('-');
+				return `${year}-${month}-${day}`;
+			}
+			if (['ymdhm', 'ymdhms', 'ymdhmt', 'ymdhmts'].includes(type)) {
+				const [year, month, day] = date.toISOString().split('T')[0].split('-');
+				const [hours, minutes, seconds] = date.toISOString().split('T')[1].split(':');
+				const separator = dateTimeSeparator === undefined ? ' ' : dateTimeSeparator;
+				const dateTime =
+					type == 'ymdhms'
+						? `${year}-${month}-${day}${separator}${hours}:${minutes}:${seconds.substring(0, 2)}`
+						: `${year}-${month}-${day}${separator}${hours}:${minutes}`;
+				return type.includes('t') ? `${dateTime} ${getTimezone()}` : dateTime;
+			}
+			return type == 'date'
+				? getDate()
+				: type == 'time'
+					? getTime()
+					: `${getDate()}${getSeparator()}${getTime()}`;
+		})()
+	);
+	let datetime = $derived(date.toISOString());
 </script>
 
 <time {datetime}>{text}</time>

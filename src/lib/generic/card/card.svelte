@@ -1,14 +1,23 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import { getContext } from 'svelte';
 	import type { CardContainerContext } from './card-container.js';
 
-	export let title: string | undefined = undefined;
-	export let href: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'md';
+	let {
+		title,
+		href,
+		size = 'md' as FormFieldSizeOptions,
+		children
+	}: {
+		title?: string;
+		href?: string;
+		size?: FormFieldSizeOptions;
+		children?: Snippet;
+	} = $props();
 
-	$: role = href ? 'link' : 'listitem';
+	let role = $derived(href ? 'link' : 'listitem');
 
 	const id = uniqueId();
 	const onClick = () => {
@@ -22,11 +31,11 @@
 	}
 </script>
 
-<li {role} {id} on:click={onClick} class="{size} {role}">
+<li {role} {id} onclick={onClick} class="{size} {role}">
 	{#if title}
 		<strong>{title}</strong>
 	{/if}
-	<slot />
+	{@render children?.()}
 </li>
 
 <style lang="scss">

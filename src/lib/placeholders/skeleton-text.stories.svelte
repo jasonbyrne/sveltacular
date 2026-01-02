@@ -1,19 +1,16 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import SkeletonText from './skeleton-text.svelte';
+
+	const { Story } = defineMeta({
+		component: SkeletonText,
+		title: 'Placeholders/SkeletonText',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Placeholders/SkeletonText" component={SkeletonText} />
+<Story name="Default" args={{}} />
 
-<Story name="Default">
-	<SkeletonText />
-	<SkeletonText />
-	<SkeletonText />
-</Story>
+<Story name="Pulse" args={{ animation: 'pulse' }} />
 
 
-<Story name="Pulse">
-	<SkeletonText animation="pulse" />
-	<SkeletonText animation="pulse" />
-	<SkeletonText animation="pulse" />
-</Story>

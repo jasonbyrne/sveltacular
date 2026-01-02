@@ -1,20 +1,34 @@
 <script lang="ts">
-	export let marginBottom: string | number = 0;
-	export let marginTop: string | number = 0;
-	export let gap: string | number = '1rem';
-	export let size: 'auto' | 'full' = 'full';
-	export let wrap = false;
+	import type { Snippet } from 'svelte';
 
-	export let justifyContent: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | 'baseline' = 'space-between';
-	export let alignItems: 'start' | 'center' | 'end' | 'stretch' | 'auto' = 'stretch';
-	export let alignContent: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch' = 'stretch';
+	let {
+		marginBottom = 0,
+		marginTop = 0,
+		gap = '1rem',
+		size = 'full' as 'auto' | 'full',
+		wrap = false,
+		justifyContent = 'space-between' as 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | 'baseline',
+		alignItems = 'stretch' as 'start' | 'center' | 'end' | 'stretch' | 'auto',
+		alignContent = 'stretch' as 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch',
+		children
+	}: {
+		marginBottom?: string | number;
+		marginTop?: string | number;
+		gap?: string | number;
+		size?: 'auto' | 'full';
+		wrap?: boolean;
+		justifyContent?: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | 'baseline';
+		alignItems?: 'start' | 'center' | 'end' | 'stretch' | 'auto';
+		alignContent?: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch';
+		children: Snippet;
+	} = $props();
 
-	$: _marginTop = typeof marginTop === 'number' ? `${marginTop}px` : marginTop;
-	$: _marginBottom = typeof marginBottom === 'number' ? `${marginBottom}px` : marginBottom;
-	$: _justifyContent = ['start', 'end'].includes(justifyContent) ? `flex-${justifyContent}` : ['between', 'around', 'evenly'].includes(justifyContent) ? `space-${justifyContent}` : justifyContent;
-	$: _alignContent = ['start', 'end'].includes(alignContent) ? `flex-${alignContent}` : ['between', 'around'].includes(alignContent) ? `space-${alignContent}` : alignContent;
-	$: _alignItems = ['start', 'end'].includes(alignItems) ? `flex-${alignItems}` : alignItems;
-	$: _gap = typeof gap === 'number' ? `${gap}px` : gap;
+	let _marginTop = $derived(typeof marginTop === 'number' ? `${marginTop}px` : marginTop);
+	let _marginBottom = $derived(typeof marginBottom === 'number' ? `${marginBottom}px` : marginBottom);
+	let _justifyContent = $derived(['start', 'end'].includes(justifyContent) ? `flex-${justifyContent}` : ['between', 'around', 'evenly'].includes(justifyContent) ? `space-${justifyContent}` : justifyContent);
+	let _alignContent = $derived(['start', 'end'].includes(alignContent) ? `flex-${alignContent}` : ['between', 'around'].includes(alignContent) ? `space-${alignContent}` : alignContent);
+	let _alignItems = $derived(['start', 'end'].includes(alignItems) ? `flex-${alignItems}` : alignItems);
+	let _gap = $derived(typeof gap === 'number' ? `${gap}px` : gap);
 </script>
 
 <div
@@ -24,7 +38,7 @@
 	`}
 	class="size-{size} {wrap ? 'wrap' : 'nowrap'}"
 >
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

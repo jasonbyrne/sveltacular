@@ -1,35 +1,19 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import DropdownButton from './dropdown-button.svelte';
 	import { DropdownItem } from '$src/lib/index.js';
+
+	const { Story } = defineMeta({
+		component: DropdownButton,
+		title: 'Navigation/Dropdown Button',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Navigation/Dropdown Button" component={DropdownButton} />
+<Story name="Default" args={{ text: 'Click Me' }}>Foo bar</Story>
 
-<Story name="Default">
-	<DropdownButton text="Click Me">Foo bar</DropdownButton>
-</Story>
+<Story name="Ghost" args={{ text: 'Ghost Button', style: 'ghost' }}>Menu items would go here</Story>
 
-<Story name="Long Text and Menu">
-	<DropdownButton text="Lorem ipsum verite lux impala">
-		<DropdownItem>Foo</DropdownItem>
-		<DropdownItem href="#">Bar</DropdownItem>
-		<DropdownItem>Baz</DropdownItem>
-	</DropdownButton>
-</Story>
+<Story name="GhostNoIcon" args={{ text: 'Ghost Button', style: 'ghost', icon: 'none' }}>Menu items would go here</Story>
 
-<Story name="Ghost">
-	<DropdownButton text="Ghost Button" style="ghost">
-		<DropdownItem>Foo</DropdownItem>
-		<DropdownItem href="#">Bar</DropdownItem>
-		<DropdownItem>Baz</DropdownItem>
-	</DropdownButton>
-</Story>
 
-<Story name="Ghost, No Icon">
-	<DropdownButton text="Ghost Button" style="ghost" icon="none">
-		<DropdownItem>Foo</DropdownItem>
-		<DropdownItem href="#">Bar</DropdownItem>
-		<DropdownItem>Baz</DropdownItem>
-	</DropdownButton>
-</Story>

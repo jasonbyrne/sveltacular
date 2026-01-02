@@ -1,14 +1,6 @@
 export type FormFieldSizeOptions = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
-export type ButtonStyle =
-	| 'primary'
-	| 'secondary'
-	| 'positive'
-	| 'negative'
-	| 'danger'
-	| 'ghost'
-	| 'outline'
-	| 'link';
+export type ButtonStyle = 'primary' | 'secondary' | 'positive' | 'danger' | 'outline';
 
 export type DropdownOption = {
 	value: string | null;

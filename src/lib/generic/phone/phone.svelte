@@ -3,8 +3,13 @@
 	import MobilePhoneIcon from '$src/lib/icons/mobile-phone-icon.svelte';
 	import PhoneIcon from '$src/lib/icons/phone-icon.svelte';
 
-	export let value: string;
-	export let type: 'sms' | 'mobile' | 'home' | 'work' | 'fax' | 'other' = 'mobile';
+	let {
+		value,
+		type = 'mobile' as 'sms' | 'mobile' | 'home' | 'work' | 'fax' | 'other'
+	}: {
+		value: string;
+		type?: 'sms' | 'mobile' | 'home' | 'work' | 'fax' | 'other';
+	} = $props();
 
 	const getDigits = (phoneNumber: string) => {
 		return phoneNumber.replace(/[^0-9]/g, '');
@@ -19,10 +24,10 @@
 		return phoneNumber;
 	};
 
-	$: formattedPhoneNumber = formatPhoneNumber(value);
-	$: phoneNumberDigits = getDigits(value);
-	$: protocol = type === 'sms' ? 'sms:' : 'tel:';
-	$: isCellPhone = type == 'mobile' || type == 'sms';
+	let formattedPhoneNumber = $derived(formatPhoneNumber(value));
+	let phoneNumberDigits = $derived(getDigits(value));
+	let protocol = $derived(type === 'sms' ? 'sms:' : 'tel:');
+	let isCellPhone = $derived(type == 'mobile' || type == 'sms');
 </script>
 
 <a href="{protocol}:{phoneNumberDigits}" title={capitalize(type)}>

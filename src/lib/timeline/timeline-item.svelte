@@ -1,18 +1,32 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import DateTime from '../generic/date/date-time.svelte';
 	import type { DateTimeStyle, DateType } from '../index.js';
 
-	export let dateType: DateType = 'datetime';
-	export let dateStyle: DateTimeStyle = 'medium';
-	export let iconSize: 'sm' | 'md' | 'lg' = 'md';
-	export let date: string | number | Date | undefined = undefined;
-	export let title: string | undefined = undefined;
-	export let summary: string | undefined = undefined;
+	let {
+		dateType = 'datetime' as DateType,
+		dateStyle = 'medium' as DateTimeStyle,
+		iconSize = 'md' as 'sm' | 'md' | 'lg',
+		date = undefined,
+		title = undefined,
+		summary = undefined,
+		icon = undefined
+	}: {
+		dateType?: DateType;
+		dateStyle?: DateTimeStyle;
+		iconSize?: 'sm' | 'md' | 'lg';
+		date?: string | number | Date;
+		title?: string;
+		summary?: string;
+		icon?: Snippet;
+	} = $props();
 </script>
 
 <li class="icon-{iconSize}">
 	<div class="timeline-icon">
-		<slot name="icon" />
+		{#if icon}
+			{@render icon?.()}
+		{/if}
 	</div>
 	<div class="content">
 		{#if date}

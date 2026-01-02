@@ -3,14 +3,23 @@
 	import type { HttpProtocol } from '$src/lib/types/generic.js';
 	import TextBox from '../text-box/text-box.svelte';
 
-	export let protocol: HttpProtocol = 'https';
-	export let value: string | null = '';
-	export let size: FormFieldSizeOptions = 'lg';
-	export let placeholder = 'example.com';
+	let {
+		protocol = $bindable('https' as HttpProtocol),
+		value = $bindable('' as string | null),
+		size = 'lg' as FormFieldSizeOptions,
+		placeholder = 'example.com',
+		label = undefined
+	}: {
+		protocol?: HttpProtocol;
+		value?: string | null;
+		size?: FormFieldSizeOptions;
+		placeholder?: string;
+		label?: string;
+	} = $props();
 
 	// On input, parse the value and set the protocol
-	const onInput = () => {
-		const cleanValue = value ?? '';
+	const handleInput = (inputValue: string) => {
+		const cleanValue = inputValue ?? '';
 		const urlParts = cleanValue.split('://');
 		if (['http', 'https'].includes(urlParts[0])) {
 			protocol = urlParts[0] as HttpProtocol;
@@ -25,9 +34,8 @@
 	{placeholder}
 	prefix={protocol + '://'}
 	{size}
-	on:input={onInput}
-	on:change={onInput}
+	onInput={handleInput}
+	onChange={handleInput}
 	allowSpaces={false}
->
-	<slot />
-</TextBox>
+	{label}
+/>

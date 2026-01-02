@@ -4,14 +4,22 @@
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
 
-	export let size: FormFieldSizeOptions = 'md';
-	export let value: string | null;
-	export let href: string | undefined = undefined;
+	let {
+		size = 'md' as FormFieldSizeOptions,
+		value,
+		href = undefined,
+		label = undefined
+	}: {
+		size?: FormFieldSizeOptions;
+		value: string | null;
+		href?: string;
+		label?: string;
+	} = $props();
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel><slot /></FormLabel>
+	{#if label}
+		<FormLabel {label} />
 	{/if}
 	<div class="input">
 		{#if href}

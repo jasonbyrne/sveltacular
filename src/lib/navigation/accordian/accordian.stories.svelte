@@ -1,19 +1,18 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Accordian from './accordian.svelte';
+
+	const { Story } = defineMeta({
+		component: Accordian,
+		title: 'Navigation/Accordian',
+		tags: ['autodocs'],
+		args: {
+			onToggle: fn()
+		}
+	});
 </script>
 
-<Meta title="Navigation/Accordian" component={Accordian} />
+<Story name="Standard" args={{ title: 'Card title' }}>Navigation items would go here</Story>
 
-<Story name="Standard">
-	<Accordian title="Card title">
-		<nav>
-			<li>Item 1</li>
-			<li>Item 2</li>
-			<li>Item 3</li>
-			<li>Item 4</li>
-			<li>Item 5</li>
-			<li>Item 6</li>
-		</nav>
-	</Accordian>
-</Story>
+

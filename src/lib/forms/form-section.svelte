@@ -1,16 +1,24 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { SectionLevel } from '../types/generic.js';
 	import FormHeader from './form-header.svelte';
 
-	export let title: string | undefined = undefined;
-	export let level: SectionLevel = 4;
+	let {
+		title = undefined,
+		level = 4,
+		children
+	}: {
+		title?: string | undefined;
+		level?: SectionLevel;
+		children: Snippet;
+	} = $props();
 </script>
 
 <section>
 	{#if title}
 		<FormHeader {level}>{title}</FormHeader>
 	{/if}
-	<slot />
+	{@render children?.()}
 </section>
 
 <style>

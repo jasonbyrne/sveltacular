@@ -1,23 +1,20 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import MoneyBox from './money-box.svelte';
-	import Button from '../button/button.svelte';
 
-	let valueInCents = 2500;
-	let valueInDollars = 100;
+	const { Story } = defineMeta({
+		component: MoneyBox,
+		title: 'Forms/MoneyBox',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/MoneyBox" component={MoneyBox} />
+<Story name="Default" args={{ value: 100, label: 'Per Dium' }} />
+
+<Story name="Cents" args={{ value: 2500, units: 'cents', allowCents: true, size: 'md', max: 10000, label: 'Membership Dues' }} />
 
 
-<Story name="Default">
-	<MoneyBox bind:value={valueInDollars}>Per Dium</MoneyBox>
-	{valueInDollars}
-</Story>
-
-<Story name="Cents">
-	<MoneyBox bind:value={valueInCents} units="cents" allowCents size="md" max={10000}>Membership Dues</MoneyBox>
-	<Button on:click={() => valueInCents = 0}>Reset</Button>
-	<Button on:click={() => valueInCents = 2500}>Set to $25</Button>
-	{valueInCents}
-</Story>

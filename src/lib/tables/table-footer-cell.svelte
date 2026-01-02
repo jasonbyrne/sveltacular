@@ -1,10 +1,18 @@
 <script lang="ts">
-	export let colspan = 1;
+	import type { Snippet } from 'svelte';
+
+	let {
+		colspan = 1,
+		children
+	}: {
+		colspan?: number;
+		children: Snippet;
+	} = $props();
 </script>
 
 <td {colspan}>
 	<div>
-		<slot />
+		{@render children?.()}
 	</div>
 </td>
 

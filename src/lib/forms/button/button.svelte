@@ -1,20 +1,35 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
 	import type { ButtonStyle, FormFieldSizeOptions } from '$src/lib/types/form.js';
-	import { createEventDispatcher } from 'svelte';
 
-	export let href: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'md';
-	export let style: ButtonStyle = 'secondary';
-	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let block = false;
-	export let flex = false;
-	export let disabled = false;
-	export let noMargin = false;
-	export let collapse = false;
-	export let repeatSubmitDelay: number | 'infinite' = 500;
-
-	const dispatch = createEventDispatcher<{ click: void }>();
+	let {
+		href = undefined,
+		size = 'md',
+		style = 'secondary',
+		type = 'button',
+		block = false,
+		flex = false,
+		disabled = $bindable(false),
+		noMargin = false,
+		collapse = false,
+		repeatSubmitDelay = 500,
+		onClick = undefined,
+		label
+	}: {
+		label?: string;
+		href?: string | undefined;
+		size?: FormFieldSizeOptions;
+		style?: ButtonStyle;
+		type?: 'button' | 'submit' | 'reset';
+		block?: boolean;
+		flex?: boolean;
+		disabled?: boolean;
+		noMargin?: boolean;
+		collapse?: boolean;
+		repeatSubmitDelay?: number | 'infinite';
+		onClick?: (() => void) | undefined;
+	} = $props();
 
 	const click = (e: Event) => {
 		if (disabled) {
@@ -22,7 +37,7 @@
 			e.stopPropagation();
 			return;
 		}
-		dispatch('click');
+		onClick?.();
 		if (repeatSubmitDelay) {
 			disabled = true;
 			if (repeatSubmitDelay !== 'infinite') {
@@ -35,8 +50,18 @@
 	};
 </script>
 
-<button {type} on:click={click} class="{size} {style} {flex ? 'flex' : ''}" class:block class:noMargin class:collapse {disabled}>
-	<slot />
+<button
+	{type}
+	onclick={click}
+	class="{size} {style} {flex ? 'flex' : ''}"
+	class:block
+	class:noMargin
+	class:collapse
+	{disabled}
+>
+	{#if label}
+		<span class="label">{label}</span>
+	{/if}
 </button>
 
 <style lang="scss">
@@ -58,8 +83,12 @@
 		padding: 0.5rem 1rem;
 		text-align: center;
 		text-decoration: none;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color 0.2s ease-in-out,
+			border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out,
+			fill 0.2s ease-in-out,
+			stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
 		font-family: var(--base-font-family, sans-serif);
@@ -140,18 +169,6 @@
 			}
 		}
 
-		&.ghost {
-			background-color: transparent;
-			border-color: transparent;
-			color: var(--base-fg, #ccc);
-			text-decoration: none;
-
-			&:hover {
-				background-color: var(--button-ghost-hover-bg, #e0e0e0);
-				color: var(--button-ghost-hover-fg, #1e88e5);
-			}
-		}
-
 		&.positive {
 			background-color: var(--button-positive-bg, #43a047);
 			border-color: var(--button-positive-border, #43a047);
@@ -175,13 +192,15 @@
 		}
 
 		&.outline {
-			background-color: transparent;
-			border-color: var(--button-outline-border, #e2e2e2);
-			color: var(--button-outline-fg, #e2e2e2);
+			background-color: var(--body-bg, #fff);
+			border-color: var(--body-fg, #000);
+			color: var(--body-fg, #000);
+			text-shadow: none;
+			font-weight: 400;
 
 			&:hover {
-				background-color: var(--button-outline-hover-bg, #e2e2e2);
-				color: var(--button-outline-hover-fg, #000);
+				background-color: var(--body-fg, #000);
+				color: var(--body-bg, #fff);
 			}
 		}
 

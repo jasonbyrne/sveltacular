@@ -1,50 +1,24 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Scorecard from './scorecard.svelte';
-	import CardContainer from '../card/card-container.svelte';
+
+	const { Story } = defineMeta({
+		component: Scorecard,
+		title: 'Generic/Scorecard',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Scorecard" component={Scorecard} />
+<Story name="Default" args={{ value: 12334 }}>Page Views</Story>
 
-<Story name="Default">
-	<Scorecard value={12334}>Page Views</Scorecard>
-	<Scorecard value={932}>Visitors</Scorecard>
-</Story>
+<Story name="Above" args={{ value: 12334, caption: 'above' }}>Page Views</Story>
 
-<Story name="Above">
-	<Scorecard value={12334} caption="above">Page Views</Scorecard>
-</Story>
+<Story name="Below" args={{ value: 12334, caption: 'below' }}>Page Views</Story>
 
-<Story name="Below">
-	<Scorecard value={12334} caption="below">Page Views</Scorecard>
-</Story>
+<Story name="Left" args={{ value: 12334, caption: 'left' }}>Page Views</Story>
 
-<Story name="Left">
-	<Scorecard value={12334} caption="left">Page Views</Scorecard>
-</Story>
+<Story name="Right" args={{ value: 12334, caption: 'right' }}>Page Views</Story>
 
-<Story name="Right">
-	<Scorecard value={12334} caption="right">Page Views</Scorecard>
-</Story>
+<Story name="Link" args={{ value: 12334, caption: 'above', href: 'https://www.google.com' }}>Page Views</Story>
 
-<Story name="Link">
-	<Scorecard value={12334} caption="above" href="https://www.google.com">Page Views</Scorecard>
-</Story>
 
-<Story name="In Container">
-	<CardContainer>
-		<Scorecard value={12334} href="https://www.google.com">Page Views</Scorecard>
-		<Scorecard value={2356}>Visits</Scorecard>
-		<Scorecard value={932}>Visitors</Scorecard>
-		<Scorecard value={3.74}>Pages/Visit</Scorecard>
-	</CardContainer>
-</Story>
-
-<Story name="In Container (Compact)">
-	<CardContainer spacing="compact" align="left">
-		<Scorecard value={12334} href="https://www.google.com">Page Views</Scorecard>
-		<Scorecard value={2356}>Visits</Scorecard>
-		<Scorecard value={932}>Visitors</Scorecard>
-		<Scorecard value={3.74}>Pages/Visit</Scorecard>
-	</CardContainer>
-</Story>

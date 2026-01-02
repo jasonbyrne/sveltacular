@@ -1,24 +1,30 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import type { Snippet } from 'svelte';
 
-	export let show = true;
+	let {
+		show = true,
+		onClick = undefined,
+		children
+	}: {
+		show?: boolean;
+		onClick?: (() => void) | undefined;
+		children: Snippet;
+	} = $props();
 
-	const dispatch = createEventDispatcher<{ click: void }>();
-
-	const onClick = () => {
-		dispatch('click');
+	const handleClick = () => {
+		onClick?.();
 	};
 
 	const onKeyPress = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
-			onClick();
+			handleClick();
 		}
 	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class:show on:click={onClick} on:keypress={onKeyPress}>
-	<slot />
+<div class:show onclick={handleClick} onkeypress={onKeyPress}>
+	{@render children?.()}
 </div>
 
 <style lang="scss">

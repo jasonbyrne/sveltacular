@@ -1,16 +1,29 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	type Source = {
 		url: string;
 		media?: string;
 	};
 
-	export let src: string | Source | Source[] = '';
-	export let alt: string = '';
-	export let href: string | undefined = undefined;
-	export let align: 'left' | 'center' | 'right' = 'center';
+	let {
+		src = '',
+		alt = '',
+		href = undefined,
+		align = 'center' as 'left' | 'center' | 'right',
+		children = undefined
+	}: {
+		src?: string | Source | Source[];
+		alt?: string;
+		href?: string;
+		align?: 'left' | 'center' | 'right';
+		children?: Snippet;
+	} = $props();
 
-	$: sources = Array.isArray(src) ? src : typeof src === 'string' ? [{ url: src }] : [src];
-	$: finalSource = sources[sources.length - 1];
+	let sources = $derived(
+		Array.isArray(src) ? src : typeof src === 'string' ? [{ url: src }] : [src]
+	);
+	let finalSource = $derived(sources[sources.length - 1]);
 </script>
 
 <div class="image {align}">
@@ -31,9 +44,9 @@
 			<img src={finalSource.url} {alt} />
 		</picture>
 	{/if}
-	{#if $$slots.default}
+	{#if children}
 		<div class="caption">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 </div>

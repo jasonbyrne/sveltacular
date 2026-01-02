@@ -1,14 +1,25 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
 	import Header from '../header/header.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 
-	export let title: string | undefined = undefined;
-	export let level: SectionLevel = 2;
-	export let size: FormFieldSizeOptions = 'full';
-	export let hidden = false;
-	export let align: 'left' | 'center' | 'right' = 'left';
+	let {
+		title = undefined,
+		level = 2 as SectionLevel,
+		size = 'full' as FormFieldSizeOptions,
+		hidden = false,
+		align = 'left' as 'left' | 'center' | 'right',
+		children
+	}: {
+		title?: string;
+		level?: SectionLevel;
+		size?: FormFieldSizeOptions;
+		hidden?: boolean;
+		align?: 'left' | 'center' | 'right';
+		children: Snippet;
+	} = $props();
 
 	setContext('section', { level, title });
 </script>
@@ -17,7 +28,7 @@
 	{#if title}
 		<Header {level} />
 	{/if}
-	<slot />
+	{@render children?.()}
 </section>
 
 <style lang="scss">

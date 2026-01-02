@@ -1,21 +1,27 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
-	export let currentPage = 1;
-	export let totalPages = 1;
-	export let align: 'center' | 'start' | 'end' = 'center';
-	export let style: 'default' | 'flat' = 'default';
-	export let size: 'sm' | 'md' | 'lg' | 'xl' = 'md';
-
-	const dispatch = createEventDispatcher<{ page: number }>();
+	let {
+		currentPage = $bindable(1),
+		totalPages = 1,
+		align = 'center' as 'center' | 'start' | 'end',
+		style = 'default' as 'default' | 'flat',
+		size = 'md' as 'sm' | 'md' | 'lg' | 'xl',
+		onPage = undefined
+	}: {
+		currentPage?: number;
+		totalPages?: number;
+		align?: 'center' | 'start' | 'end';
+		style?: 'default' | 'flat';
+		size?: 'sm' | 'md' | 'lg' | 'xl';
+		onPage?: ((page: number) => void) | undefined;
+	} = $props();
 
 	const changePage = (page: number) => {
 		if (page < 1 || page > totalPages) return;
 		currentPage = page;
-		dispatch('page', page);
+		onPage?.(page);
 	};
 
-	$: previousPages =
+	let previousPages = $derived(
 		currentPage > 1
 			? (() => {
 					const pages = [];
@@ -23,9 +29,10 @@
 						pages.push(i);
 					}
 					return pages.reverse();
-			  })()
-			: [];
-	$: nextPages =
+				})()
+			: []
+	);
+	let nextPages = $derived(
 		currentPage < totalPages
 			? (() => {
 					const pages = [];
@@ -33,33 +40,34 @@
 						pages.push(i);
 					}
 					return pages;
-			  })()
-			: [];
-	$: showFirst = currentPage > 4;
-	$: showLast = currentPage < totalPages - 3;
+				})()
+			: []
+	);
+	let showFirst = $derived(currentPage > 4);
+	let showLast = $derived(currentPage < totalPages - 3);
 </script>
 
 <nav class="{align} {style} {size}">
 	{#if currentPage > 1}
-		<button on:click={() => changePage(currentPage - 1)} class="previous page">Previous</button>
+		<button onclick={() => changePage(currentPage - 1)} class="previous page">Previous</button>
 	{/if}
 	{#if showFirst}
-		<button on:click={() => changePage(1)} class="first page">1</button>
+		<button onclick={() => changePage(1)} class="first page">1</button>
 		<div class="ellipsis page">···</div>
 	{/if}
 	{#each previousPages as page}
-		<button on:click={() => changePage(page)} class="pre page">{page}</button>
+		<button onclick={() => changePage(page)} class="pre page">{page}</button>
 	{/each}
 	<div class="current page">{currentPage}</div>
 	{#each nextPages as page}
-		<button on:click={() => changePage(page)} class="pro numbered page">{page}</button>
+		<button onclick={() => changePage(page)} class="pro numbered page">{page}</button>
 	{/each}
 	{#if showLast}
 		<div class="ellipsis page">···</div>
-		<button on:click={() => changePage(totalPages)} class="last page">{totalPages}</button>
+		<button onclick={() => changePage(totalPages)} class="last page">{totalPages}</button>
 	{/if}
 	{#if currentPage < totalPages}
-		<button on:click={() => changePage(currentPage + 1)} class="next page">Next</button>
+		<button onclick={() => changePage(currentPage + 1)} class="next page">Next</button>
 	{/if}
 </nav>
 
@@ -75,8 +83,7 @@
 			border: none;
 			background: none;
 			margin: 0;
-			color: var(--base-fg, #ccc);
-			text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
+			color: var(--base-fg, #000);
 		}
 
 		button {

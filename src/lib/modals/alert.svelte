@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import DialogBody from '$src/lib/modals/dialog-body.svelte';
 	import DialogFooter from '$src/lib/modals/dialog-footer.svelte';
 	import DialogHeader from '$src/lib/modals/dialog-header.svelte';
@@ -8,25 +9,35 @@
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 	import DialogCloseButton from './dialog-close-button.svelte';
-	import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher<{ close: void }>();
-
-	export let open = false;
-	export let title: string | undefined = undefined;
-	export let size: FormFieldSizeOptions = 'md';
-	export let buttonText = 'OK';
-	export let buttonStyle: 'primary' | 'secondary' | 'danger' = 'primary';
-	export let showCloseButton = true;
+	let {
+		open = $bindable(false),
+		title = undefined,
+		size = 'md' as FormFieldSizeOptions,
+		buttonText = 'OK',
+		buttonStyle = 'primary' as 'primary' | 'secondary' | 'danger',
+		showCloseButton = true,
+		onClose = undefined,
+		children
+	}: {
+		open?: boolean;
+		title?: string | undefined;
+		size?: FormFieldSizeOptions;
+		buttonText?: string;
+		buttonStyle?: 'primary' | 'secondary' | 'danger';
+		showCloseButton?: boolean;
+		onClose?: (() => void) | undefined;
+		children: Snippet;
+	} = $props();
 
 	const close = () => {
-		dispatch('close');
 		open = false;
+		onClose?.();
 	};
 </script>
 
 {#if open}
-	<Overlay on:click={close}>
+	<Overlay onclick={close}>
 		<Dialog {size}>
 			{#if title}
 				<DialogHeader>
@@ -34,15 +45,13 @@
 				</DialogHeader>
 				<Divider />
 			{/if}
-			<DialogCloseButton show={showCloseButton} on:click={close} />
+			<DialogCloseButton show={showCloseButton} onClick={close} />
 			<DialogBody>
-				<slot />
+				{@render children?.()}
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button on:click={close} size="full" style={buttonStyle}>
-					{buttonText}
-				</Button>
+				<Button onclick={close} size="full" style={buttonStyle} label={buttonText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

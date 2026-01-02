@@ -1,15 +1,27 @@
 <script lang="ts">
-	export let text = 'No data to display';
-	export let size: 'sm' | 'md' | 'lg' | 'xl' = 'md';
-	export let orientation: 'horizontal' | 'vertical' = 'vertical';
-	export let reverse = false;
-	export let align: 'center' | 'start' | 'end' = 'center';
+	import type { Snippet } from 'svelte';
+
+	let {
+		text = 'No data to display',
+		size = 'md' as 'sm' | 'md' | 'lg' | 'xl',
+		orientation = 'vertical' as 'horizontal' | 'vertical',
+		reverse = false,
+		align = 'center' as 'center' | 'start' | 'end',
+		children = undefined
+	}: {
+		text?: string;
+		size?: 'sm' | 'md' | 'lg' | 'xl';
+		orientation?: 'horizontal' | 'vertical';
+		reverse?: boolean;
+		align?: 'center' | 'start' | 'end';
+		children?: Snippet;
+	} = $props();
 </script>
 
 <div class="empty {size} {orientation} {reverse ? 'reverse' : ''} {align}">
-	{#if $$slots.default}
+	{#if children}
 		<div class="icon">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 	<div class="text">

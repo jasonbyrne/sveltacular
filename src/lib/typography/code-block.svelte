@@ -1,9 +1,17 @@
 <script lang="ts">
-	export let lang = 'js';
+	import type { Snippet } from 'svelte';
+
+	let {
+		lang = 'js',
+		children
+	}: {
+		lang?: string;
+		children: Snippet;
+	} = $props();
 </script>
 
 <pre class={lang}>
-<slot />
+{@render children?.()}
 </pre>
 
 <style lang="scss">

@@ -1,10 +1,14 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Divider from './divider.svelte';
+
+	const { Story } = defineMeta({
+		component: Divider,
+		title: 'Generic/Divider',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Generic/Divider" component={Divider} />
+<Story name="Standard" args={{}} />
 
-<Story name="Standard">
-	<Divider />
-</Story>
+

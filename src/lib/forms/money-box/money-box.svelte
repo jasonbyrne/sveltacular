@@ -1,22 +1,37 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import { createEventDispatcher } from 'svelte';
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
 	
 	const id = uniqueId();
-	const dipatch = createEventDispatcher<{ change: number | null; }>();
 
-	export let value: number | null;
-	export let prefix = '$';
-	export let suffix = '';
-	export let currency = 'USD';
-	export let allowCents = true;
-	export let placeholder = '';
-	export let size: FormFieldSizeOptions = 'full';
-	export let units: 'ones' | 'cents' = 'ones';
-	export let min: number = 0;
-	export let max: number | null = null;
+	let {
+		value = $bindable(null as number | null),
+		prefix = '$',
+		suffix = '',
+		currency = 'USD',
+		allowCents = true,
+		placeholder = '',
+		size = 'full' as FormFieldSizeOptions,
+		units = 'ones' as 'ones' | 'cents',
+		min = 0,
+		max = null as number | null,
+		onChange = undefined,
+		label = undefined
+	}: {
+		value?: number | null;
+		prefix?: string;
+		suffix?: string;
+		currency?: string;
+		allowCents?: boolean;
+		placeholder?: string;
+		size?: FormFieldSizeOptions;
+		units?: 'ones' | 'cents';
+		min?: number;
+		max?: number | null;
+		onChange?: ((value: number | null) => void) | undefined;
+		label?: string;
+	} = $props();
 
 	const getDollarsFromValue = () => {
 		if (!value) return '0';
@@ -33,16 +48,18 @@
 
 	let isValueInCents = units === 'cents';
 	const fieldOrder = ['dollars', 'cents'];
-	let dollars: string = getDollarsFromValue();
-	let cents: string = getCentsFromValue();
-	let lastState = [
+	let dollars = $state(getDollarsFromValue());
+	let cents = $state(getCentsFromValue());
+	let lastState = $state([
 		{ value: String(dollars), selectionStart: 0, selectionEnd: 0 },
 		{ value: String(cents), selectionStart: 0, selectionEnd: 0 }
-	];
-	$: if (value !== null && value >= 0) {
-		dollars = getDollarsFromValue();
-		cents = getCentsFromValue();
-	}
+	]);
+	$effect(() => {
+		if (value !== null && value >= 0) {
+			dollars = getDollarsFromValue();
+			cents = getCentsFromValue();
+		}
+	});
 
 	const getTargetProperties = (e: KeyboardEvent | Event) => {
 		const target = e.target as HTMLInputElement;
@@ -172,7 +189,7 @@
 		updateLastState(e);
 	};
 
-	const onChange = () => {
+	const handleChange = () => {
 		let centValue = Math.abs(isNumericString(cents) ? Number(cents) : 0);
 		let dollarValue = Math.abs(isNumericString(dollars) ? Number(dollars) : 0);
 		// Update value
@@ -183,13 +200,14 @@
 		if (max && value > max) value = max;
 		// Cents should be padded to 2 digits, so that "5" becomes "05"
 		cents = String(centValue).padStart(2, '0');
+		onChange?.(value);
 	};
 
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id}><slot /></FormLabel>
+	{#if label}
+		<FormLabel {id} {label} />
 	{/if}
 	<div class="input {currency}" class:allowCents {id}>
 		{#if prefix}
@@ -201,13 +219,13 @@
 			{placeholder}
 			bind:value={dollars}
 			type="text"
-			on:keypress={onKeyPress}
-			on:keyup={onKeyUp}
-			on:input={onInput}
-			on:change={onChange}
-			on:mouseup={onSaveStateEvent}
-			on:focus={onSaveStateEvent}
-			on:blur={onSaveStateEvent}
+			onkeypress={onKeyPress}
+			onkeyup={onKeyUp}
+			oninput={onInput}
+			onchange={handleChange}
+			onmouseup={onSaveStateEvent}
+			onfocus={onSaveStateEvent}
+			onblur={onSaveStateEvent}
 			name="dollars"
 			id="{id}-dollars"
 			inputmode="numeric"
@@ -219,13 +237,13 @@
 				bind:value={cents}
 				type="text"
 				class="cents"
-				on:keypress={onKeyPress}
-				on:keyup={onKeyUp}
-				on:input={onInput}
-				on:change={onChange}
-				on:mouseup={onSaveStateEvent}
-				on:focus={onSaveStateEvent}
-				on:blur={onSaveStateEvent}
+				onkeypress={onKeyPress}
+				onkeyup={onKeyUp}
+				oninput={onInput}
+				onchange={handleChange}
+				onmouseup={onSaveStateEvent}
+				onfocus={onSaveStateEvent}
+				onblur={onSaveStateEvent}
 				name="cents"
 				id="{id}-cents"
 				inputmode="numeric"

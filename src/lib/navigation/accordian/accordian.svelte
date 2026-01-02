@@ -1,12 +1,20 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
 
-	export let title: string;
-	export let expanded = false;
+	let {
+		title,
+		expanded = $bindable(false),
+		children
+	}: {
+		title: string;
+		expanded?: boolean;
+		children: Snippet;
+	} = $props();
 </script>
 
 <div class:expanded class="accordian">
-	<button type="button" on:click={() => (expanded = !expanded)}>
+	<button type="button" onclick={() => (expanded = !expanded)}>
 		<span class="title">
 			{title}
 		</span>
@@ -15,7 +23,7 @@
 		</span>
 	</button>
 	<div class="menu">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

@@ -1,91 +1,28 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import AppBar from './app-bar.svelte';
-	import AppLogo from './app-logo.svelte';
-	import AppNav from './app-nav.svelte';
-	import AppNavItem from './app-nav-item.svelte';
-	import Icon from '$src/lib/images/icon.svelte';
-	import AppBranding from './app-branding.svelte';
-	import Breadcrumbs from '../breadcrumbs/breadcrumbs.svelte';
 
-	const crumbs = [
-		{ label: 'Search', href: 'https://www.google.com' },
-		{ label: 'Search Term', href: 'https://www.google.com' },
-		'Results'
-	];
+	const { Story } = defineMeta({
+		component: AppBar,
+		title: 'Navigation/AppBar',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Navigation/AppBar" component={AppBar} />
+<Story name="TopExtraSmall" args={{ size: 'xs', position: 'top' }}>Site Header</Story>
 
-<Story name="Top (Extra Small)">
-	<AppBar size="xs" position="top">
-		<strong>Site Header</strong>
-	</AppBar>
+<Story name="TopSmall" args={{ size: 'sm', position: 'top' }}>App bar content would go here</Story>
+
+<Story name="TopMedium" args={{ size: 'md', position: 'top' }}>App bar with navigation would go here</Story>
+
+<Story name="TopLarge" args={{ size: 'lg', position: 'top' }}>App bar with branding and navigation would go here</Story>
+
+<Story name="TopXLarge" args={{ size: 'xl', position: 'top' }}>
+	App bar with branding, breadcrumbs and navigation would go here
 </Story>
 
-<Story name="Top (Small)">
-	<AppBar size="sm" position="top">
-		<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-		<div>sdfasd</div>
-	</AppBar>
-</Story>
+<Story name="BottomExtraSmall" args={{ size: 'xs', position: 'bottom', isFixed: true }}>This is the footer</Story>
 
-<Story name="Top (Medium)">
-	<AppBar size="md" position="top">
-		<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-		<AppNav>
-			<AppNavItem href="/about" title="About" />
-			<AppNavItem href="/contact" title="Contact" />
-		</AppNav>
-	</AppBar>
-</Story>
+<Story name="BottomLarge" args={{ size: 'lg', position: 'bottom', isFixed: true }}>Footer navigation would go here</Story>
 
-<Story name="Top (Large)">
-	<AppBar size="lg" position="top">
-		<AppBranding>
-			<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-		</AppBranding>
-		<AppNav>
-			<AppNavItem href="/about" title="About">
-				<Icon href="/assets/icons/question.svg" />
-			</AppNavItem>
-			<AppNavItem href="/contact" title="Contact">
-				<Icon href="/assets/icons/envelope.svg" />
-			</AppNavItem>
-		</AppNav>
-	</AppBar>
-</Story>
 
-<Story name="Top (X-Large)">
-	<AppBar size="xl" position="top">
-		<AppBranding>
-			<AppLogo src="/assets/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-			<Breadcrumbs homeUrl="https://www.google.com" {crumbs} size="md" />
-		</AppBranding>
-		<AppNav spacing="loose">
-			<AppNavItem href="/about" title="About">
-				<Icon href="/assets/icons/question.svg" />
-			</AppNavItem>
-			<AppNavItem href="/contact" title="Contact">
-				<Icon href="/assets/icons/envelope.svg" />
-			</AppNavItem>
-		</AppNav>
-	</AppBar>
-</Story>
-
-<Story name="Bottom (Extra Small)">
-	<AppBar size="xs" position="bottom" isFixed={true}>This is the footer</AppBar>
-</Story>
-
-<Story name="Bottom (Large)">
-	<AppBar size="lg" position="bottom" isFixed={true}>
-		<AppNav align="center" spacing="space-evenly">
-			<AppNavItem href="/about" title="About">
-				<Icon href="/assets/icons/question.svg" />
-			</AppNavItem>
-			<AppNavItem href="/contact" title="Contact">
-				<Icon href="/assets/icons/envelope.svg" />
-			</AppNavItem>
-		</AppNav>
-	</AppBar>
-</Story>

@@ -1,29 +1,35 @@
-<script lang="ts" context="module">
-	import { Story, Meta } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import DateBox from './date-box.svelte';
+
+	const { Story } = defineMeta({
+		component: DateBox,
+		title: 'Forms/Date Box',
+		tags: ['autodocs'],
+		args: {
+			onChange: fn()
+		}
+	});
 </script>
 
-<Meta title="Forms/Date Box" component={DateBox} />
+<Story name="Date" args={{ type: 'date', label: 'Birthdate' }} />
 
-<Story name="Date">
-	<DateBox type="date">Birthdate</DateBox>
-</Story>
+<Story name="DateTime" args={{ type: 'datetime-local', label: 'Deadline' }} />
 
-<Story name="Date + Time">
-	<DateBox type="datetime-local">Deadline</DateBox>
-</Story>
+<Story name="DateNullable" args={{ type: 'date', nullable: true, label: 'End Date' }} />
 
-<Story name="Date (Nullable)">
-	<DateBox type="date" nullable={true}>End Date</DateBox>
-</Story>
-
-<Story name="Date (Steps)">
-	<DateBox
-		type="date"
-		steps={[
+<Story
+	name="DateSteps"
+	args={{
+		type: 'date',
+		label: 'End Date',
+		steps: [
 			{ label: '1 Day', value: 1, unit: 'day' },
 			{ label: '1 Month', value: 1, unit: 'month' },
 			{ label: '1 Year', value: 1, unit: 'year' }
-		]}>End Date</DateBox
-	>
-</Story>
+		]
+	}}
+/>
+
+

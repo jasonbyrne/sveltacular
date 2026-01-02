@@ -1,19 +1,18 @@
-<script lang="ts">
-	import { Meta, Story } from '@storybook/addon-svelte-csf';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Paragraph from './paragraph.svelte';
+
+	const { Story } = defineMeta({
+		component: Paragraph,
+		title: 'Typography/Paragraph',
+		tags: ['autodocs']
+	});
 </script>
 
-<Meta title="Typography/Paragraph" component={Paragraph} />
-
 <Story name="Default">
-	<Paragraph>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies
-		aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl. Sed euismod, nisl eget
-		ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl.
-	</Paragraph>
-	<Paragraph>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies
-		aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl. Sed euismod, nisl eget
-		ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl.
-	</Paragraph>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies
+	aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl. Sed euismod, nisl eget
+	ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl.
 </Story>
+
+

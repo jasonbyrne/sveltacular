@@ -1,23 +1,32 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/index.js';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
-	export let href: string | undefined = undefined;
-	export let title: string;
+	let {
+		href = undefined,
+		title,
+		onClick = undefined,
+		children = undefined
+	}: {
+		href?: string | undefined;
+		title: string;
+		onClick?: (() => void) | undefined;
+		children?: Snippet;
+	} = $props();
 
-	const dispatch = createEventDispatcher<{ click: void }>();
 	const open: Writable<boolean> = getContext('app-nav-state');
 	const click = () => {
 		if (href) navigateTo(href);
-		dispatch('click');
+		onClick?.();
 	};
 </script>
 
-<button type="button" class={$open ? 'open' : 'closed'} on:click={click}>
-	{#if $$slots.default}
+<button type="button" class={$open ? 'open' : 'closed'} onclick={click}>
+	{#if children}
 		<div class="icon">
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 	<div class="title">

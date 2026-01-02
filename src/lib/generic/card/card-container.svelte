@@ -1,18 +1,33 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
 	import type { CardContainerContext } from './card-container.js';
 
-	export let align: 'left' | 'center' | 'right' | 'start' | 'end' = 'left';
-	export let spacing:
-		| 'none'
-		| 'tight'
-		| 'compact'
-		| 'loose'
-		| 'space-evenly'
-		| 'space-around'
-		| 'space-between' = 'space-around';
+	let {
+		align = 'left' as 'left' | 'center' | 'right' | 'start' | 'end',
+		spacing = 'space-around' as
+			| 'none'
+			| 'tight'
+			| 'compact'
+			| 'loose'
+			| 'space-evenly'
+			| 'space-around'
+			| 'space-between',
+		children
+	}: {
+		align?: 'left' | 'center' | 'right' | 'start' | 'end';
+		spacing?:
+			| 'none'
+			| 'tight'
+			| 'compact'
+			| 'loose'
+			| 'space-evenly'
+			| 'space-around'
+			| 'space-between';
+		children: Snippet;
+	} = $props();
 
-	let cards: string[] = [];
+	let cards = $state<string[]>([]);
 
 	const register = (id: string) => {
 		cards = [...cards, id];
@@ -22,11 +37,11 @@
 		register
 	});
 
-	$: count = cards.length;
+	let count = $derived(cards.length);
 </script>
 
 <ul data-count={count} class="{spacing} {align}">
-	<slot />
+	{@render children?.()}
 </ul>
 
 <style lang="scss">

@@ -1,25 +1,40 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
-	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
-	export let value = '';
-	export let placeholder = '';
-	export let size: FormFieldSizeOptions = 'full';
-	export let disabled = false;
-	export let required = false;
-	export let readonly = false;
-	export let multiple = false;
-	export let mimeTypes: string[] = [];
-	export let capture: boolean | undefined | 'environment' | 'user' = undefined;
+	let {
+		value = $bindable(''),
+		placeholder = '',
+		size = 'full' as FormFieldSizeOptions,
+		disabled = false,
+		required = false,
+		readonly = false,
+		multiple = false,
+		mimeTypes = [],
+		capture = undefined as boolean | undefined | 'environment' | 'user',
+		children = undefined
+	}: {
+		value?: string;
+		placeholder?: string;
+		size?: FormFieldSizeOptions;
+		disabled?: boolean;
+		required?: boolean;
+		readonly?: boolean;
+		multiple?: boolean;
+		mimeTypes?: string[];
+		capture?: boolean | undefined | 'environment' | 'user';
+		children?: Snippet;
+	} = $props();
 </script>
 
 <FormField {size}>
-	{#if $$slots.default}
-		<FormLabel {id} {required}><slot /></FormLabel>
+	{#if children}
+		<FormLabel {id} {required}>{@render children?.()}</FormLabel>
 	{/if}
 	<div>
 		<input
