@@ -152,7 +152,7 @@
 									<a href={`mailto:${row[col.key]}`}>{format(row, col.key)}</a>
 								{:else if col.type == 'check'}
 									{#if row[col.key]}
-										<Pill shape="circle" style="positive" compact>✔</Pill>
+										<Pill shape="circle" variant="positive" compact>✔</Pill>
 									{/if}
 								{:else}
 									{format(row, col.key)}
@@ -163,7 +163,7 @@
 					{#if hasActionCol && actions}
 						<TableCell type="actions">
 							{#if actions.type === 'dropdown'}
-								<DropdownButton text={actions.text ?? ''} style="ghost">
+								<DropdownButton text={actions.text ?? ''} variant="ghost">
 									{#each actions.items as action}
 										<DropdownItem onclick={() => action.onClick(row)}>{action.text}</DropdownItem>
 									{/each}
@@ -174,7 +174,7 @@
 										collapse={true}
 										size="sm"
 										type="button"
-										style={actions.type == 'link' ? 'link' : 'secondary'}
+										variant={actions.type == 'link' ? 'link' : 'secondary'}
 										onclick={() => action.onClick(row)}
 										label={action.text}
 									/>
@@ -193,7 +193,7 @@
 					<Pagination
 						currentPage={pagination.page}
 						{totalPages}
-						style="flat"
+						variant="flat"
 						size="sm"
 						align="center"
 						onPage={changePage}

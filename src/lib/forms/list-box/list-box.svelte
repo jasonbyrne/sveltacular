@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
-	import FormField from '$src/lib/forms//form-field.svelte';
+	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';

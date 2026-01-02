@@ -1,11 +1,14 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
+
+	let { children }: { children?: Snippet } = $props();
 
 	setContext('app-branding', true);
 </script>
 
 <div class="branding">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

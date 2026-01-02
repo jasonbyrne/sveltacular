@@ -2,6 +2,10 @@ import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 
+/**
+ * Navigate to a URL using SvelteKit's navigation, with fallback to window.location
+ * @param url - The URL to navigate to
+ */
 export const navigateTo = (url: string) => {
 	if (browser) {
 		setTimeout(() => {

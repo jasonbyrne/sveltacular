@@ -15,7 +15,7 @@
 		title = undefined,
 		size = 'md' as FormFieldSizeOptions,
 		buttonText = 'OK',
-		buttonStyle = 'primary' as 'primary' | 'secondary' | 'danger',
+		buttonVariant = 'primary' as 'primary' | 'secondary' | 'danger',
 		showCloseButton = true,
 		onClose = undefined,
 		children
@@ -24,7 +24,7 @@
 		title?: string | undefined;
 		size?: FormFieldSizeOptions;
 		buttonText?: string;
-		buttonStyle?: 'primary' | 'secondary' | 'danger';
+		buttonVariant?: 'primary' | 'secondary' | 'danger';
 		showCloseButton?: boolean;
 		onClose?: (() => void) | undefined;
 		children: Snippet;
@@ -38,9 +38,9 @@
 
 {#if open}
 	<Overlay onclick={close}>
-		<Dialog {size}>
+		<Dialog {size} role="alertdialog" aria-labelledby={title ? 'alert-title' : undefined}>
 			{#if title}
-				<DialogHeader>
+				<DialogHeader id="alert-title">
 					{title}
 				</DialogHeader>
 				<Divider />
@@ -51,7 +51,7 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button onclick={close} size="full" style={buttonStyle} label={buttonText} />
+				<Button onclick={close} size="full" variant={buttonVariant} label={buttonText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

@@ -1,5 +1,17 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	let {
+		id = undefined,
+		children
+	}: {
+		id?: string | undefined;
+		children?: Snippet;
+	} = $props();
+</script>
+
 <header>
-	<h1><slot /></h1>
+	<h1 {id}>{@render children?.()}</h1>
 </header>
 
 <style lang="scss">

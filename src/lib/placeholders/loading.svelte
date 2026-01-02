@@ -1,19 +1,32 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ComponentSize } from '$src/lib/types/size.js';
+	import Spinner from '$src/lib/generic/spinner/spinner.svelte';
 
 	let {
 		type = 'spinner' as 'spinner' | 'block',
+		spinnerSize = 'md' as ComponentSize,
+		spinnerVariant = 'primary' as 'primary' | 'secondary',
 		children
 	}: {
 		type?: 'spinner' | 'block';
+		spinnerSize?: ComponentSize;
+		spinnerVariant?: 'primary' | 'secondary';
 		children: Snippet;
 	} = $props();
 </script>
 
 <div class={type}>
-	<span>
-		{@render children?.()}
-	</span>
+	{#if type === 'spinner'}
+		<Spinner size={spinnerSize} variant={spinnerVariant} />
+		<span class="spinner-text">
+			{@render children?.()}
+		</span>
+	{:else}
+		<span>
+			{@render children?.()}
+		</span>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -27,12 +40,15 @@
 		}
 
 		&.spinner {
-			border: 4px solid rgba(0, 0, 0, 0.1);
-			border-top: 4px solid #3498db;
-			border-radius: 50%;
-			width: 40px;
-			height: 40px;
-			animation: spin 1s linear infinite;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+		}
+
+		.spinner-text {
+			padding: 0;
 		}
 
 		&.block {
@@ -46,15 +62,6 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-		}
-	}
-
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
 		}
 	}
 

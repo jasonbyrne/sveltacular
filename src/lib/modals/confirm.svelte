@@ -16,8 +16,8 @@
 		size = 'md' as FormFieldSizeOptions,
 		yesText = 'Yes',
 		noText = 'No',
-		yesStyle = 'primary' as 'primary' | 'secondary' | 'danger',
-		noStyle = 'secondary' as 'primary' | 'secondary' | 'danger',
+		yesVariant = 'primary' as 'primary' | 'secondary' | 'danger',
+		noVariant = 'secondary' as 'primary' | 'secondary' | 'danger',
 		showCloseButton = true,
 		onYes = undefined,
 		onNo = undefined,
@@ -28,8 +28,8 @@
 		size?: FormFieldSizeOptions;
 		yesText?: string;
 		noText?: string;
-		yesStyle?: 'primary' | 'secondary' | 'danger';
-		noStyle?: 'primary' | 'secondary' | 'danger';
+		yesVariant?: 'primary' | 'secondary' | 'danger';
+		noVariant?: 'primary' | 'secondary' | 'danger';
 		showCloseButton?: boolean;
 		onYes?: (() => void) | undefined;
 		onNo?: (() => void) | undefined;
@@ -62,8 +62,8 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button onclick={no} style={noStyle} size="full" label={noText} />
-				<Button onclick={yes} style={yesStyle} size="full" label={yesText} />
+				<Button onclick={no} variant={noVariant} size="full" label={noText} />
+				<Button onclick={yes} variant={yesVariant} size="full" label={yesText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

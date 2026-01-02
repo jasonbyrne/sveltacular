@@ -13,8 +13,8 @@
 
 <Story name="Ordered" args={{ type: 'ordered' }}>List items would be rendered here</Story>
 
-<Story name="Squares" args={{ type: 'unordered', style: 'square' }}>List items would be rendered here</Story>
+<Story name="Squares" args={{ type: 'unordered', variant: 'square' }}>List items would be rendered here</Story>
 
-<Story name="Striped" args={{ type: 'unordered', style: 'striped' }}>List items would be rendered here</Story>
+<Story name="Striped" args={{ type: 'unordered', variant: 'striped' }}>List items would be rendered here</Story>
 
 

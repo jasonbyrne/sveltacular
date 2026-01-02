@@ -1,4 +1,4 @@
-export type ListStyle =
+export type ListVariant =
 	| 'none'
 	| 'disc'
 	| 'circle'
@@ -8,6 +8,6 @@ export type ListStyle =
 	| 'striped';
 
 export interface ListContext {
-	style: ListStyle;
+	variant: ListVariant;
 }
 export const listContext = 'listContext';

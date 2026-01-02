@@ -26,7 +26,7 @@
 <div class="step {isCurrentStep ? 'current' : ''}">
 	{#if errors.length}
 		<div class="errors">
-			<Notice style="error" size="md">{errors.join(' ')}</Notice>
+			<Notice variant="error" size="md">{errors.join(' ')}</Notice>
 		</div>
 	{/if}
 	{@render children?.()}

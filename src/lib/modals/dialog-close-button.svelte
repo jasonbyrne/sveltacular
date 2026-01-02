@@ -15,7 +15,7 @@
 </script>
 
 {#if show}
-	<button type="button" onclick={handleClick}>X</button>
+	<button type="button" onclick={handleClick} aria-label="Close dialog">X</button>
 {/if}
 
 <style lang="scss">

@@ -17,8 +17,8 @@
 		size = 'md' as FormFieldSizeOptions,
 		okText = 'Yes',
 		cancelText = 'No',
-		okStyle = 'primary' as 'primary' | 'secondary' | 'danger',
-		cancelStyle = 'secondary' as 'primary' | 'secondary' | 'danger',
+		okVariant = 'primary' as 'primary' | 'secondary' | 'danger',
+		cancelVariant = 'secondary' as 'primary' | 'secondary' | 'danger',
 		showCloseButton = true,
 		placeholder = '',
 		type = 'text' as AllowedTextInputTypes,
@@ -32,8 +32,8 @@
 		size?: FormFieldSizeOptions;
 		okText?: string;
 		cancelText?: string;
-		okStyle?: 'primary' | 'secondary' | 'danger';
-		cancelStyle?: 'primary' | 'secondary' | 'danger';
+		okVariant?: 'primary' | 'secondary' | 'danger';
+		cancelVariant?: 'primary' | 'secondary' | 'danger';
 		showCloseButton?: boolean;
 		placeholder?: string;
 		type?: AllowedTextInputTypes;
@@ -74,8 +74,8 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button onclick={no} style={cancelStyle} size="full" label={cancelText} />
-				<Button onclick={yes} style={okStyle} size="full" label={okText} />
+				<Button onclick={no} variant={cancelVariant} size="full" label={cancelText} />
+				<Button onclick={yes} variant={okVariant} size="full" label={okText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

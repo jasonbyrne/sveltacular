@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import DateTime from '../generic/date/date-time.svelte';
-	import type { DateTimeStyle, DateType } from '../index.js';
+	import type { DateTimeVariant, DateType } from '../types/date.js';
 
 	let {
 		dateType = 'datetime' as DateType,
-		dateStyle = 'medium' as DateTimeStyle,
+		dateStyle = 'medium' as DateTimeVariant,
 		iconSize = 'md' as 'sm' | 'md' | 'lg',
 		date = undefined,
 		title = undefined,
@@ -13,7 +13,7 @@
 		icon = undefined
 	}: {
 		dateType?: DateType;
-		dateStyle?: DateTimeStyle;
+		dateStyle?: DateTimeVariant;
 		iconSize?: 'sm' | 'md' | 'lg';
 		date?: string | number | Date;
 		title?: string;
@@ -31,7 +31,7 @@
 	<div class="content">
 		{#if date}
 			<div class="date">
-				<DateTime value={date} type={dateType} style={dateStyle} />
+				<DateTime value={date} type={dateType} variant={dateStyle} />
 			</div>
 		{/if}
 		{#if title}

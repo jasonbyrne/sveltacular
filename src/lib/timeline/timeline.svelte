@@ -1,11 +1,17 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children: Snippet } = $props();
+</script>
+
 <ul>
-	<slot />
+	{@render children()}
 </ul>
 
 <style lang="scss">
 	ul {
 		list-style: none;
-		padding-left: 0;
+		padding-left: 1rem;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
 		margin: 0;

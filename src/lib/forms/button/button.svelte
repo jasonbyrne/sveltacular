@@ -1,26 +1,42 @@
 <script lang="ts">
+	/**
+	 * Button component with multiple variants and sizes
+	 * @component
+	 */
 	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
-	import type { ButtonStyle, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	let {
+		/** Button label text */
+		label,
+		/** Optional href for navigation */
 		href = undefined,
+		/** Button size */
 		size = 'md',
-		style = 'secondary',
+		/** Button variant/style */
+		variant = 'secondary',
+		/** HTML button type */
 		type = 'button',
+		/** Display as block (full width) */
 		block = false,
+		/** Allow flex growth */
 		flex = false,
+		/** Disabled state */
 		disabled = $bindable(false),
+		/** Remove margins */
 		noMargin = false,
+		/** Collapse padding */
 		collapse = false,
+		/** Delay before re-enabling after click (prevents double-clicks) */
 		repeatSubmitDelay = 500,
-		onClick = undefined,
-		label
+		/** Click handler */
+		onClick = undefined
 	}: {
 		label?: string;
 		href?: string | undefined;
 		size?: FormFieldSizeOptions;
-		style?: ButtonStyle;
+		variant?: ButtonVariant;
 		type?: 'button' | 'submit' | 'reset';
 		block?: boolean;
 		flex?: boolean;
@@ -53,7 +69,7 @@
 <button
 	{type}
 	onclick={click}
-	class="{size} {style} {flex ? 'flex' : ''}"
+	class="{size} {variant} {flex ? 'flex' : ''}"
 	class:block
 	class:noMargin
 	class:collapse

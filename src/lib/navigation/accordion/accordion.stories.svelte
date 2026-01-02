@@ -1,11 +1,11 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
-	import Accordian from './accordian.svelte';
+	import Accordion from './accordion.svelte';
 
 	const { Story } = defineMeta({
-		component: Accordian,
-		title: 'Navigation/Accordian',
+		component: Accordion,
+		title: 'Navigation/Accordion',
 		tags: ['autodocs'],
 		args: {
 			onToggle: fn()

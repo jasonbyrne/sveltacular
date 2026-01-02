@@ -1,4 +1,4 @@
-export type DateTimeStyle = 'full' | 'long' | 'short' | 'medium';
+export type DateTimeVariant = 'full' | 'long' | 'short' | 'medium';
 export type TZStyle =
 	| 'long'
 	| 'short'

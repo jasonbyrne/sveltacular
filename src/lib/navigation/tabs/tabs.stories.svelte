@@ -15,10 +15,10 @@
 
 <Story name="Traditional">Tab content would be rendered here</Story>
 
-<Story name="Underline" args={{ style: 'underline' }}>Tab content would be rendered here</Story>
+<Story name="Underline" args={{ variant: 'underline' }}>Tab content would be rendered here</Story>
 
-<Story name="Outline" args={{ style: 'outline' }}>Tab content would be rendered here</Story>
+<Story name="Outline" args={{ variant: 'outline' }}>Tab content would be rendered here</Story>
 
-<Story name="Overline" args={{ style: 'overline' }}>Tab content would be rendered here</Story>
+<Story name="Overline" args={{ variant: 'overline' }}>Tab content would be rendered here</Story>
 
 

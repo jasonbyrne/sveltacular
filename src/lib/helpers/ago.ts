@@ -2,6 +2,12 @@ const DAY_SECONDS = 86400;
 const WEEK_SECONDS = 604800;
 const YEAR_SECONDS = WEEK_SECONDS * 52;
 
+/**
+ * Converts a date to a human-readable "ago" string (e.g., "2 hours ago", "3 days ago")
+ * @param date - The date to convert
+ * @param style - The style of output ('full', 'long', 'short', 'medium')
+ * @returns A human-readable time difference string
+ */
 const ago = (date: Date, style: 'full' | 'long' | 'short' | 'medium' = 'medium') => {
 	const epoch = Math.round(date.getTime() / 1000);
 	const now = Math.round(Date.now() / 1000);

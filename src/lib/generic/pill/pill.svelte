@@ -4,14 +4,14 @@
 
 	let {
 		size = 'md' as FormFieldSizeOptions,
-		style = 'standard' as 'standard' | 'positive' | 'negative',
+		variant = 'standard' as 'standard' | 'positive' | 'negative',
 		shape = 'rounded' as 'circular' | 'square' | 'rounded' | 'badge' | 'circle',
 		fill = 'solid' as 'solid' | 'outline',
 		compact = false,
 		label
 	}: {
 		size?: FormFieldSizeOptions;
-		style?: 'standard' | 'positive' | 'negative';
+		variant?: 'standard' | 'positive' | 'negative';
 		shape?: 'circular' | 'square' | 'rounded' | 'badge' | 'circle';
 		fill?: 'solid' | 'outline';
 		compact?: boolean;
@@ -19,7 +19,7 @@
 	} = $props();
 </script>
 
-<div class="pill {size} {style} {shape} {fill}" class:compact>
+<div class="pill {size} {variant} {shape} {fill}" class:compact>
 	<span>{label}</span>
 </div>
 

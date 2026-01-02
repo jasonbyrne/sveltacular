@@ -1,22 +1,22 @@
 <script lang="ts">
 	import toAgo from '$src/lib/helpers/ago.js';
-	import type { DateTimeStyle, DateType, TZStyle } from '$src/lib/types/date.js';
+	import type { DateTimeVariant, DateType, TZStyle } from '$src/lib/types/date.js';
 
 	let {
 		value = '',
 		lang = 'en-us',
 		type = 'datetime' as DateType,
-		style = 'medium' as DateTimeStyle,
+		variant = 'medium' as DateTimeVariant,
 		dateTimeSeparator = undefined
 	}: {
 		value?: string | number | Date;
 		lang?: string;
 		type?: DateType;
-		style?: DateTimeStyle;
+		variant?: DateTimeVariant;
 		dateTimeSeparator?: string;
 	} = $props();
 
-	const tzStyleMap: Record<DateTimeStyle, TZStyle> = {
+	const tzStyleMap: Record<DateTimeVariant, TZStyle> = {
 		full: 'long',
 		long: 'longGeneric',
 		medium: 'short',
@@ -25,7 +25,7 @@
 
 	const getTimezone = () => {
 		return Intl.DateTimeFormat(lang, {
-			timeZoneName: tzStyleMap[style]
+			timeZoneName: tzStyleMap[variant]
 		})
 			.format(date)
 			.split(', ')[1];
@@ -34,16 +34,16 @@
 	const getDate = () => {
 		if (!['datetime', 'date'].includes(type)) return '';
 		return Intl.DateTimeFormat(lang, {
-			dateStyle: style
+			dateStyle: variant
 		}).format(date);
 	};
 
 	const getTime = () => {
 		if (!['datetime', 'time'].includes(type)) return '';
 		const time = Intl.DateTimeFormat(lang, {
-			timeStyle: style
+			timeStyle: variant
 		}).format(date);
-		if (style == 'medium') {
+		if (variant == 'medium') {
 			const [hms, ampm] = time.split(' ');
 			const [hours, minutes] = hms.split(':');
 			return `${hours}:${minutes} ${ampm}`;
@@ -61,7 +61,7 @@
 	let date = $derived(value ? new Date(value) : new Date());
 	let text = $derived(
 		(() => {
-			if (type == 'ago') return toAgo(date, style);
+			if (type == 'ago') return toAgo(date, variant);
 			if (type == 'ymd') {
 				const [year, month, day] = date.toISOString().split('T')[0].split('-');
 				return `${year}-${month}-${day}`;

@@ -3,14 +3,14 @@
 		currentPage = $bindable(1),
 		totalPages = 1,
 		align = 'center' as 'center' | 'start' | 'end',
-		style = 'default' as 'default' | 'flat',
+		variant = 'default' as 'default' | 'flat',
 		size = 'md' as 'sm' | 'md' | 'lg' | 'xl',
 		onPage = undefined
 	}: {
 		currentPage?: number;
 		totalPages?: number;
 		align?: 'center' | 'start' | 'end';
-		style?: 'default' | 'flat';
+		variant?: 'default' | 'flat';
 		size?: 'sm' | 'md' | 'lg' | 'xl';
 		onPage?: ((page: number) => void) | undefined;
 	} = $props();
@@ -47,7 +47,7 @@
 	let showLast = $derived(currentPage < totalPages - 3);
 </script>
 
-<nav class="{align} {style} {size}">
+<nav class="{align} {variant} {size}">
 	{#if currentPage > 1}
 		<button onclick={() => changePage(currentPage - 1)} class="previous page">Previous</button>
 	{/if}

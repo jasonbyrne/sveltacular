@@ -13,7 +13,7 @@
 	} = $props();
 </script>
 
-<div class:expanded class="accordian">
+<div class:expanded class="accordion">
 	<button type="button" onclick={() => (expanded = !expanded)}>
 		<span class="title">
 			{title}
@@ -28,7 +28,7 @@
 </div>
 
 <style lang="scss">
-	.accordian {
+	.accordion {
 		background: #eee;
 		color: #000;
 		max-height: 3rem;

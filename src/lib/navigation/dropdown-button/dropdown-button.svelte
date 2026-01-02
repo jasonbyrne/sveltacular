@@ -6,13 +6,13 @@
 	let {
 		open = $bindable(false),
 		text = undefined,
-		style = 'standard' as 'standard' | 'ghost',
+		variant = 'standard' as 'standard' | 'ghost',
 		icon = 'arrow' as 'arrow' | 'none',
 		children
 	}: {
 		open?: boolean;
 		text?: string;
-		style?: 'standard' | 'ghost';
+		variant?: 'standard' | 'ghost';
 		icon?: 'arrow' | 'none';
 		children: Snippet;
 	} = $props();
@@ -24,7 +24,7 @@
 	let hasText = $derived(text && text.length > 0);
 </script>
 
-<div class="dropdown-button {style} icon-{icon}" class:open>
+<div class="dropdown-button {variant} icon-{icon}" class:open>
 	<button onclick={onClick} class:hasText>
 		{#if hasText}
 			<div class="text">

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	type NoticeStyle = 'outline' | 'attention' | 'success' | 'error' | 'info';
+	type NoticeVariant = 'outline' | 'attention' | 'success' | 'error' | 'info';
 	type NoticeSize = 'sm' | 'md' | 'lg' | 'xl';
 
 	let {
 		title = undefined,
-		style = 'info' as NoticeStyle,
+		variant = 'info' as NoticeVariant,
 		size = 'md' as NoticeSize,
 		dismissable = false,
 		dismissMilliseconds = 0,
@@ -16,7 +16,7 @@
 		children
 	}: {
 		title?: string | undefined;
-		style?: NoticeStyle;
+		variant?: NoticeVariant;
 		size?: NoticeSize;
 		dismissable?: boolean;
 		dismissMilliseconds?: number;
@@ -24,7 +24,7 @@
 		onDismiss?: (() => void) | undefined;
 		onHidden?: (() => void) | undefined;
 		icon?: Snippet;
-		children: Snippet;
+		children?: Snippet;
 	} = $props();
 
 	let visible = $state(true);
@@ -55,15 +55,25 @@
 	};
 
 	$effect(() => {
-		if (dismissMilliseconds > 0) {
-			setTimeout(goodbye, dismissMilliseconds);
-		}
+		hello();
+		return () => {
+			// Cleanup if needed
+		};
 	});
 
-	hello();
+	$effect(() => {
+		if (dismissMilliseconds > 0) {
+			const timeout = setTimeout(goodbye, dismissMilliseconds);
+			return () => clearTimeout(timeout);
+		}
+	});
 </script>
 
-<div class="notice {style} {size} {visible ? 'visible' : 'hidden'} {going ? 'going' : ''} {coming ? 'coming' : ''}">
+<div
+	class="notice {variant} {size} {visible ? 'visible' : 'hidden'} {going ? 'going' : ''} {coming
+		? 'coming'
+		: ''}"
+>
 	{#if icon}
 		<div class="icon">
 			{@render icon?.()}
@@ -102,7 +112,9 @@
 		color: var(--base-bg, black);
 		position: relative;
 		opacity: 1;
-		transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+		transition:
+			opacity 0.3s ease-in-out,
+			transform 0.5s ease-in-out;
 
 		&.hidden {
 			display: none;

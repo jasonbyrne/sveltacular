@@ -12,8 +12,8 @@
 
 <Story name="Default" args={{ text: 'Click Me' }}>Foo bar</Story>
 
-<Story name="Ghost" args={{ text: 'Ghost Button', style: 'ghost' }}>Menu items would go here</Story>
+<Story name="Ghost" args={{ text: 'Ghost Button', variant: 'ghost' }}>Menu items would go here</Story>
 
-<Story name="GhostNoIcon" args={{ text: 'Ghost Button', style: 'ghost', icon: 'none' }}>Menu items would go here</Story>
+<Story name="GhostNoIcon" args={{ text: 'Ghost Button', variant: 'ghost', icon: 'none' }}>Menu items would go here</Story>
 
 

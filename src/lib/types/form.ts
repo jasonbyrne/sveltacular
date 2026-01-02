@@ -1,14 +1,30 @@
-export type FormFieldSizeOptions = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+// Re-export ComponentSize for backward compatibility
+export type { ComponentSize as FormFieldSizeOptions } from './size.js';
 
-export type ButtonStyle = 'primary' | 'secondary' | 'positive' | 'danger' | 'outline';
+/**
+ * Button variant options
+ */
+export type ButtonVariant = 'primary' | 'secondary' | 'positive' | 'danger' | 'outline';
 
+/**
+ * Dropdown option structure
+ */
 export type DropdownOption = {
 	value: string | null;
 	name: string;
 };
 
+/**
+ * Menu option with optional index
+ */
 export type MenuOption = DropdownOption & { index?: number };
 
+/**
+ * Allowed text input types
+ */
 export type AllowedTextInputTypes = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
 
+/**
+ * Radio button value type
+ */
 export type RadioButtonValue = string | number | boolean | undefined;

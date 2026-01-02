@@ -9,6 +9,4 @@
 	});
 </script>
 
-<Story name="Default" args={{ emailAddress: 'someone234@gmail.com' }} />
-
-
+<Story name="Default" args={{ value: 'someone234@gmail.com' }} />

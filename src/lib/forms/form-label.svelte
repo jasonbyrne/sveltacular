@@ -12,7 +12,7 @@
 	} = $props();
 </script>
 
-<label for={id} class:required class:disabled>{label}</label>
+<label for={id} class:required class:disabled aria-required={required}>{label}</label>
 
 <style lang="scss">
 	label {

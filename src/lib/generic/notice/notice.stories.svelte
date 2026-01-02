@@ -20,23 +20,23 @@
 
 <Story name="WithoutTitle">Notice Message</Story>
 
-<Story name="Success" args={{ title: 'Notice Title', style: 'success' }}>
+<Story name="Success" args={{ title: 'Notice Title', variant: 'success' }}>
 	{noticeMessage}
 </Story>
 
-<Story name="Error" args={{ title: 'Notice Title', style: 'error' }}>
+<Story name="Error" args={{ title: 'Notice Title', variant: 'error' }}>
 	{noticeMessage}
 </Story>
 
-<Story name="Outline" args={{ title: 'Notice Title', style: 'outline' }}>
+<Story name="Outline" args={{ title: 'Notice Title', variant: 'outline' }}>
 	{noticeMessage}
 </Story>
 
-<Story name="Attention" args={{ title: 'Notice Title', style: 'attention' }}>
+<Story name="Attention" args={{ title: 'Notice Title', variant: 'attention' }}>
 	{noticeMessage}
 </Story>
 
-<Story name="Info" args={{ title: 'Notice Title', style: 'info' }}>
+<Story name="Info" args={{ title: 'Notice Title', variant: 'info' }}>
 	{noticeMessage}
 </Story>
 
@@ -58,7 +58,7 @@
 	name="Dismissable"
 	args={{
 		title: 'New Post Saved',
-		style: 'success',
+		variant: 'success',
 		size: 'md',
 		dismissable: true
 	}}
@@ -70,7 +70,7 @@
 	name="AutoDismiss"
 	args={{
 		title: 'New Post Saved',
-		style: 'success',
+		variant: 'success',
 		size: 'md',
 		dismissable: true,
 		dismissMilliseconds: 2000
@@ -78,5 +78,3 @@
 >
 	Your change have been saved.
 </Story>
-
-

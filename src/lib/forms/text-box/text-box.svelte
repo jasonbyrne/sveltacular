@@ -104,6 +104,9 @@
 			{maxlength}
 			{minlength}
 			{pattern}
+			aria-describedby={helperText ? `${id}-helper` : undefined}
+			aria-required={required}
+			aria-invalid={false}
 			on:keypress={onKeyPress}
 			on:input={handleInput}
 		/>
@@ -112,7 +115,7 @@
 		{/if}
 	</div>
 	{#if helperText}
-		<div class="helper-text">{helperText}</div>
+		<div class="helper-text" id="{id}-helper" aria-live="polite">{helperText}</div>
 	{/if}
 </FormField>
 

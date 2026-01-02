@@ -2,15 +2,15 @@
 	import type { Snippet } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import { tabContext, type TabContext, type TabDefinition, type TabStyle } from './tab-context.js';
+	import { tabContext, type TabContext, type TabDefinition, type TabVariant } from './tab-context.js';
 	import { getAnchor, navigateToAnchor, subscribable } from '$src/lib/index.js';
 
 	let {
-		style = 'traditional' as TabStyle,
+		variant = 'traditional' as TabVariant,
 		onChange = undefined,
 		children
 	}: {
-		style?: TabStyle;
+		variant?: TabVariant;
 		onChange?: ((id: string | null) => void) | undefined;
 		children: Snippet;
 	} = $props();
@@ -53,13 +53,13 @@
 	// Tab Context
 	const ctx: TabContext = {
 		active: subscribable(active),
-		style,
+		variant,
 		register
 	};
 	setContext(tabContext, ctx);
 </script>
 
-<section class="tab-group {style}">
+<section class="tab-group {variant}">
 	<div class="tab-head">
 		<nav>
 			{#each $tabs as tab}

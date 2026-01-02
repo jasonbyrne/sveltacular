@@ -4,10 +4,12 @@
 
 	let {
 		size = 'md' as FormFieldSizeOptions,
-		children
+		children,
+		...restProps
 	}: {
 		size?: FormFieldSizeOptions;
 		children: Snippet;
+		[key: string]: any;
 	} = $props();
 
 	const captureClick = (e: Event) => {
@@ -17,7 +19,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class={size} onclick={captureClick}>
+	<div class={size} onclick={captureClick} {...restProps}>
 	{@render children?.()}
 </div>
 

@@ -1,15 +1,15 @@
 <script lang="ts">
 	import EnvelopeIcon from '$src/lib/icons/envelope-icon.svelte';
 
-	let { emailAddress = '' }: { emailAddress?: string } = $props();
+	let { value }: { value: string } = $props();
 </script>
 
-<a href="mailto:{emailAddress}" title="Email Address">
+<a href="mailto:{value}" title="Email Address">
 	<span class="icon">
 		<EnvelopeIcon />
 	</span>
 	<span class="address">
-		{emailAddress}
+		{value}
 	</span>
 </a>
 
