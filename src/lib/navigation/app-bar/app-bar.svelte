@@ -18,10 +18,10 @@
 	} = $props();
 
 	setContext('app-bar', {
-		isFixed,
-		position,
-		size,
-		padding
+		get isFixed() { return isFixed; },
+		get position() { return position; },
+		get size() { return size; },
+		get padding() { return padding; }
 	});
 </script>
 

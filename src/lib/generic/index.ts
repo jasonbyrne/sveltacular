@@ -21,6 +21,7 @@ export { default as Toaster } from './toaster/toaster.svelte';
 // Generic components with barrel files
 export * from './card/index.js';
 export * from './list/index.js';
+export * from './theme-provider/index.js';
 
 // New generic components
 export { default as Tooltip } from './tooltip/tooltip.svelte';

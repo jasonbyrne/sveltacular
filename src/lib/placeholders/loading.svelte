@@ -12,7 +12,7 @@
 		type?: 'spinner' | 'block';
 		spinnerSize?: ComponentSize;
 		spinnerVariant?: 'primary' | 'secondary';
-		children: Snippet;
+		children?: Snippet;
 	} = $props();
 </script>
 

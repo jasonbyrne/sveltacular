@@ -48,11 +48,12 @@
 		margin-bottom: var(--spacing-base);
 		padding: var(--spacing-base);
 		border-radius: var(--radius-lg);
-		border: solid var(--border-thin) var(--gray-400);
+		border: solid var(--border-thin) var(--gray-300);
 		box-shadow: var(--shadow-md);
 		background-color: var(--card-bg);
 		color: var(--card-fg);
-		transition: transform var(--transition-base) var(--ease-in-out);
+		transition: transform var(--transition-base) var(--ease-out),
+			box-shadow var(--transition-base) var(--ease-out);
 
 		strong {
 			display: block;
@@ -63,6 +64,12 @@
 
 			&:hover {
 				transform: translateY(-0.25rem);
+				box-shadow: var(--shadow-xl);
+			}
+
+			&:active {
+				transform: translateY(-0.125rem);
+				box-shadow: var(--shadow-lg);
 			}
 		}
 

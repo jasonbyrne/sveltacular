@@ -3,6 +3,8 @@
 	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/index.js';
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
+	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
+	import { onMount } from 'svelte';
 
 	let {
 		items = [] as MenuOption[],
@@ -13,7 +15,10 @@
 		closeAfterSelect = true,
 		searchText = '',
 		highlightIndex = $bindable(0),
-		onSelect = undefined
+		onSelect = undefined,
+		virtualScroll = false,
+		itemHeight = 40,
+		listboxId = undefined
 	}: {
 		items?: MenuOption[];
 		value?: string | null;
@@ -24,6 +29,9 @@
 		searchText?: string;
 		highlightIndex?: number;
 		onSelect?: ((item: MenuOption) => void) | undefined;
+		virtualScroll?: boolean;
+		itemHeight?: number;
+		listboxId?: string | undefined;
 	} = $props();
 
 	const selectItem = (item: MenuOption) => {
@@ -33,9 +41,41 @@
 	};
 
 	const scrollToItem = (index: number) => {
-		const el = document.querySelector(`[data-index="${index}"]`);
-		if (el) el.scrollIntoView({ block: 'nearest' });
+		if (virtualScroll && virtual) {
+			virtual.scrollToIndex(index, 'smooth');
+		} else {
+			const el = document.querySelector(`[data-index="${index}"]`);
+			if (el) el.scrollIntoView({ block: 'nearest' });
+		}
 	};
+
+	// Virtual scrolling setup
+	let containerRef: HTMLElement | null = null;
+	let virtual = $state<ReturnType<typeof useVirtualList<MenuOption>> | null>(null);
+
+	// Initialize virtual list
+	$effect(() => {
+		if (virtualScroll) {
+			if (!virtual) {
+				virtual = useVirtualList(items, { itemHeight });
+				if (containerRef) {
+					virtual.setContainer(containerRef);
+				}
+			} else {
+				virtual.setItems(items);
+			}
+		} else if (virtual) {
+			virtual.destroy();
+			virtual = null;
+		}
+	});
+
+	// Set container when ref is available
+	$effect(() => {
+		if (virtual && containerRef) {
+			virtual.setContainer(containerRef);
+		}
+	});
 
 	$effect(() => {
 		if (highlightIndex >= 0) {
@@ -44,39 +84,87 @@
 	});
 </script>
 
-<ul role="listbox" class="menu {open ? 'open' : 'closed'} {size}">
+<ul 
+	role="listbox"
+	id={listboxId}
+	class="menu {open ? 'open' : 'closed'} {size}"
+	bind:this={containerRef}
+	aria-label="Options"
+>
 	{#if instructions}
-		<li class="instructions">{instructions}</li>
+		<li class="instructions" role="presentation">{instructions}</li>
 	{/if}
-	{#each items as item, i}
-		<li
-			onclick={() => selectItem(item)}
-			onkeypress={() => selectItem(item)}
-			role="option"
-			aria-selected={item.value === value}
-			data-index={i}
-		>
-			<div class:selected={i == highlightIndex}>
-				<FlexRow>
-					<FlexItem grow>
-						{#if searchText}
-							{@html item.name.replace(
-								new RegExp(searchText, 'gi'),
-								(match) => `<strong>${match}</strong>`
-							)}
-						{:else}
-							{item.name}
-						{/if}
-					</FlexItem>
-					<FlexItem>
-						{#if item.value === value}
-							<span class="check"><CheckIcon /></span>
-						{/if}
-					</FlexItem>
-				</FlexRow>
-			</div>
-		</li>
-	{/each}
+	
+	{#if virtualScroll && virtual}
+		<!-- Virtual scrolling mode -->
+		<div style="height: {virtual.totalHeight}px; position: relative;">
+			{#each virtual.visibleItems as vItem (vItem.index)}
+				{@const item = vItem.data}
+				{@const i = vItem.index}
+				<li
+					id={listboxId ? `${listboxId}-option-${i}` : undefined}
+					onclick={() => selectItem(item)}
+					onkeypress={() => selectItem(item)}
+					role="option"
+					aria-selected={item.value === value}
+					data-index={i}
+					style="position: absolute; top: {vItem.offsetTop}px; height: {vItem.height}px; width: 100%; box-sizing: border-box;"
+				>
+					<div class:selected={i == highlightIndex}>
+						<FlexRow>
+							<FlexItem grow>
+								{#if searchText}
+									{@html item.name.replace(
+										new RegExp(searchText, 'gi'),
+										(match) => `<strong>${match}</strong>`
+									)}
+								{:else}
+									{item.name}
+								{/if}
+							</FlexItem>
+							<FlexItem>
+								{#if item.value === value}
+									<span class="check" aria-hidden="true"><CheckIcon /></span>
+								{/if}
+							</FlexItem>
+						</FlexRow>
+					</div>
+				</li>
+			{/each}
+		</div>
+	{:else}
+		<!-- Regular rendering mode -->
+		{#each items as item, i}
+			<li
+				id={listboxId ? `${listboxId}-option-${i}` : undefined}
+				onclick={() => selectItem(item)}
+				onkeypress={() => selectItem(item)}
+				role="option"
+				aria-selected={item.value === value}
+				data-index={i}
+			>
+				<div class:selected={i == highlightIndex}>
+					<FlexRow>
+						<FlexItem grow>
+							{#if searchText}
+								{@html item.name.replace(
+									new RegExp(searchText, 'gi'),
+									(match) => `<strong>${match}</strong>`
+								)}
+							{:else}
+								{item.name}
+							{/if}
+						</FlexItem>
+						<FlexItem>
+							{#if item.value === value}
+								<span class="check" aria-hidden="true"><CheckIcon /></span>
+							{/if}
+						</FlexItem>
+					</FlexRow>
+				</div>
+			</li>
+		{/each}
+	{/if}
 </ul>
 
 <style lang="scss">

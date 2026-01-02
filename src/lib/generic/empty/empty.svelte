@@ -36,8 +36,9 @@
 		align-items: center;
 		justify-content: center;
 		text-align: center;
-		color: var(--color-text-secondary, rgba(150, 150, 150, 0.5));
+		color: var(--gray-500);
 		font-weight: 500;
+		padding: var(--spacing-2xl);
 	}
 
 	.start {
@@ -50,7 +51,7 @@
 
 	.horizontal {
 		flex-direction: row;
-		gap: 1rem;
+		gap: var(--spacing-lg);
 
 		&.reverse {
 			flex-direction: row-reverse;
@@ -61,19 +62,24 @@
 		flex-direction: column-reverse;
 	}
 
-	.sm {
-		font-size: 1rem;
-		line-height: 1.5rem;
-
-		.icon {
-			height: 1.5rem;
-			width: 1.5rem;
-		}
+	.icon {
+		margin-bottom: var(--spacing-base);
+		color: var(--gray-400);
+		opacity: 0.8;
 	}
 
-	.md {
-		font-size: 1.25rem;
-		line-height: 1.75rem;
+	.text {
+		color: var(--gray-600);
+		font-size: var(--font-md);
+		line-height: 1.6;
+	}
+
+	.sm {
+		padding: var(--spacing-lg);
+
+		.text {
+			font-size: var(--font-base);
+		}
 
 		.icon {
 			height: 2rem;
@@ -81,9 +87,10 @@
 		}
 	}
 
-	.lg {
-		font-size: 1.5rem;
-		line-height: 2rem;
+	.md {
+		.text {
+			font-size: var(--font-md);
+		}
 
 		.icon {
 			height: 3rem;
@@ -91,13 +98,29 @@
 		}
 	}
 
-	.xl {
-		font-size: 2rem;
-		line-height: 2.5rem;
+	.lg {
+		padding: var(--spacing-2xl) var(--spacing-xl);
+
+		.text {
+			font-size: var(--font-lg);
+		}
 
 		.icon {
 			height: 4rem;
 			width: 4rem;
+		}
+	}
+
+	.xl {
+		padding: 4rem var(--spacing-2xl);
+
+		.text {
+			font-size: var(--font-xl);
+		}
+
+		.icon {
+			height: 5rem;
+			width: 5rem;
 		}
 	}
 </style>

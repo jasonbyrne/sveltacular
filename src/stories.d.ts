@@ -9,4 +9,3 @@ declare const snippet: <T = any>(
 declare module '@storybook/addon-svelte-csf' {
 	export function defineMeta(config: any): { Story: any };
 }
-

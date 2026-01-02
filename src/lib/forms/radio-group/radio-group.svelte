@@ -30,7 +30,7 @@
 	{/if}
 	<div>
 		{#each items as item}
-			<RadioBox bind:group={group} {disabled} value={item.value}>{item.name}</RadioBox>
+			<RadioBox bind:group {disabled} value={item.value}>{item.name}</RadioBox>
 		{/each}
 	</div>
 </FormField>

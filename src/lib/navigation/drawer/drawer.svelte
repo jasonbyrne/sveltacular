@@ -42,13 +42,19 @@
 </script>
 
 {#if open}
-	<Overlay onclick={close}>
+	<Overlay onClick={close}>
 		<div
 			bind:this={drawerElement}
 			class="drawer {position}"
 			role="dialog"
 			aria-modal="true"
+			tabindex="-1"
 			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => {
+				if (e.key === 'Escape' && dismissable) {
+					close();
+				}
+			}}
 		>
 			{@render children()}
 		</div>

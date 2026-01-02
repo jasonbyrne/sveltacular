@@ -14,7 +14,9 @@
 	} = $props();
 
 	const ctx: ListContext = {
-		variant
+		get variant() {
+			return variant;
+		}
 	};
 	setContext(listContext, ctx);
 </script>

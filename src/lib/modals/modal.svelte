@@ -6,6 +6,7 @@
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import DialogCloseButton from './dialog-close-button.svelte';
 	import { trapFocus, storeFocus, restoreFocus } from '$src/lib/helpers/focus.js';
+	import { animateFadeIn, animateScaleIn } from '$src/lib/helpers/animations.js';
 	import { browser } from '$app/environment';
 
 	let {
@@ -13,6 +14,8 @@
 		size = 'md' as FormFieldSizeOptions,
 		showCloseButton = true,
 		dismissable = true,
+		blur = false,
+		glass = false,
 		title = undefined,
 		onClose = undefined,
 		children
@@ -21,6 +24,8 @@
 		size?: FormFieldSizeOptions;
 		showCloseButton?: boolean;
 		dismissable?: boolean;
+		blur?: boolean;
+		glass?: boolean;
 		title?: string | undefined;
 		onClose?: (() => void) | undefined;
 		children: Snippet;
@@ -43,19 +48,40 @@
 	let titleId = $derived(title ? `${modalId}-title` : undefined);
 
 	$effect(() => {
-		if (open && browser && dialogElement) {
-			previousFocus = storeFocus();
-			const untrap = trapFocus(dialogElement);
+		if (open && browser) {
+			// Store cleanup function
+			let untrap: (() => void) | null = null;
+			
+			// Wait for next tick to ensure dialogElement is bound
+			setTimeout(() => {
+				if (dialogElement) {
+					previousFocus = storeFocus();
+					untrap = trapFocus(dialogElement);
+				}
+			}, 0);
+			
+			// Return cleanup function
 			return () => {
-				untrap();
+				if (untrap) {
+					untrap();
+				}
 			};
+		}
+	});
+
+	// Trigger enter animation when modal opens
+	$effect(() => {
+		if (open && browser) {
+			setTimeout(() => {
+				if (dialogElement) animateScaleIn(dialogElement);
+			}, 10);
 		}
 	});
 </script>
 
 {#if open}
-	<Overlay onclick={close}>
-		<Dialog {size} bind:this={dialogElement} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+	<Overlay {blur} onClick={close}>
+		<Dialog {size} {glass} bind:this={dialogElement} role="dialog" aria-modal="true" aria-labelledby={titleId}>
 			<DialogCloseButton show={_showCloseButton} onClick={close} />
 			<DialogBody>
 				{@render children?.()}

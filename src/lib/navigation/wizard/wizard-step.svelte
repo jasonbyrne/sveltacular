@@ -1,11 +1,18 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { getContext } from 'svelte';
-	import type { WizardContext } from './wizard-context.js';
+	import { getContext, onMount } from 'svelte';
 	import Notice from '$src/lib/generic/notice/notice.svelte';
 
+	interface WizardContext {
+		state: {
+			currentStep: number | null;
+			errors: string[];
+			steps: Array<{ step: number; subtitle: string }>;
+		};
+		register: (step: number, subtitle: string) => void;
+	}
+
 	const wizard = getContext<WizardContext>('wizard');
-	const state = wizard.state;
 
 	let {
 		step,
@@ -17,14 +24,18 @@
 		children: Snippet;
 	} = $props();
 
-	wizard.register(step, subtitle);
+	// Register on mount
+	onMount(() => {
+		wizard.register(step, subtitle);
+	});
 
-	let isCurrentStep = $derived($state.currentStep === step);
-	let errors = $derived($state.errors);
+	// Access the $state object's properties directly - THIS creates reactive dependencies!
+	const isCurrentStep = $derived(wizard.state.currentStep === step);
+	const errors = $derived(wizard.state.errors);
 </script>
 
-<div class="step {isCurrentStep ? 'current' : ''}">
-	{#if errors.length}
+<div class="step" class:current={isCurrentStep}>
+	{#if isCurrentStep && errors.length > 0}
 		<div class="errors">
 			<Notice variant="error" size="md">{errors.join(' ')}</Notice>
 		</div>

@@ -6,11 +6,25 @@
 
 	let {
 		align = 'right' as 'left' | 'center' | 'right' | 'start' | 'end',
-		spacing = 'medium' as 'none' | 'tight' | 'medium' | 'loose' | 'space-evenly' | 'space-around' | 'space-between',
+		spacing = 'medium' as
+			| 'none'
+			| 'tight'
+			| 'medium'
+			| 'loose'
+			| 'space-evenly'
+			| 'space-around'
+			| 'space-between',
 		children
 	}: {
 		align?: 'left' | 'center' | 'right' | 'start' | 'end';
-		spacing?: 'none' | 'tight' | 'medium' | 'loose' | 'space-evenly' | 'space-around' | 'space-between';
+		spacing?:
+			| 'none'
+			| 'tight'
+			| 'medium'
+			| 'loose'
+			| 'space-evenly'
+			| 'space-around'
+			| 'space-between';
 		children: Snippet;
 	} = $props();
 

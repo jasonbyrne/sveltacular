@@ -21,7 +21,10 @@
 		children: Snippet;
 	} = $props();
 
-	setContext('section', { level, title });
+	setContext('section', { 
+		get level() { return level; },
+		get title() { return title; }
+	});
 </script>
 
 <section class="level-{level} {size} {align}" class:hidden>

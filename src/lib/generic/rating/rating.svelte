@@ -32,7 +32,7 @@
 			class="star {i < value ? 'filled' : 'empty'}"
 			onclick={() => setValue(i + 1)}
 			aria-label="Rate {i + 1} out of {max}"
-			aria-checked={i < value}
+			aria-pressed={i < value}
 			{readonly}
 		>
 			★

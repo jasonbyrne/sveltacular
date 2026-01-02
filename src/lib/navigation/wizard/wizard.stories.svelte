@@ -2,6 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import Wizard from './wizard.svelte';
+	import WizardStep from './wizard-step.svelte';
 
 	const { Story } = defineMeta({
 		component: Wizard,
@@ -15,7 +16,11 @@
 	});
 </script>
 
-<Story name="Default" args={{ title: 'Create New Customer' }}>Wizard steps would be rendered here</Story>
+<Story name="Default" args={{ title: 'Create New Customer' }}>
+	<WizardStep step={1} subtitle="Step 1">Step 1</WizardStep>
+	<WizardStep step={2} subtitle="Step 2">Step 2</WizardStep>
+	<WizardStep step={3} subtitle="Step 3">Step 3</WizardStep>
+</Story>
 
 <Story
 	name="Errors"
@@ -24,7 +29,7 @@
 		onNext: async () => ['Some field was not completed.', 'Another field was the wrong format.']
 	}}
 >
-	Wizard steps would be rendered here
+	<WizardStep step={1} subtitle="Step 1">Step 1</WizardStep>
+	<WizardStep step={2} subtitle="Step 2">Step 2</WizardStep>
+	<WizardStep step={3} subtitle="Step 3">Step 3</WizardStep>
 </Story>
-
-

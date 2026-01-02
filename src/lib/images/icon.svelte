@@ -8,7 +8,7 @@
 	} = $props();
 </script>
 
-<span style={`--icon-path: url("${href}"); --icon-color: ${color};`} />
+<span style={`--icon-path: url("${href}"); --icon-color: ${color};`}></span>
 
 <style lang="scss">
 	span {

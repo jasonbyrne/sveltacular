@@ -1,10 +1,21 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import DataGrid from './data-grid.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
+	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
 
-	const rows = [
+	interface Employee extends JsonObject {
+		id: number;
+		name: string;
+		age: number;
+		email: string;
+		isActive: boolean;
+		salary: number;
+		updatedAt: string;
+	}
+
+	const rows: Employee[] = [
 		{
 			id: 1,
 			name: 'John Doe',
@@ -40,41 +51,49 @@
 			isActive: false,
 			salary: 85733,
 			updatedAt: '2021-01-01T00:00:00Z'
+		},
+		{
+			id: 5,
+			name: 'Bob Johnson',
+			age: 45,
+			email: 'bjohnson@company.com',
+			isActive: true,
+			salary: 120000,
+			updatedAt: '2024-06-15T14:30:00Z'
+		},
+		{
+			id: 6,
+			name: 'Alice Williams',
+			age: 28,
+			email: 'alice.w@tech.io',
+			isActive: true,
+			salary: 95000,
+			updatedAt: '2024-12-01T09:00:00Z'
 		}
 	];
 
-	function formatCurrency(row, key) {
-		return new Intl.NumberFormat('en-US', {
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0
-		}).format(Number(row[key]));
-	}
+	// Using new type-safe column definitions
+	const cols: ColumnDef<Employee>[] = [
+		{ key: 'name', label: 'Name', type: 'text', sortable: true },
+		{ key: 'age', label: 'Age', type: 'number', sortable: true },
+		{ key: 'email', label: 'Email', type: 'email', sortable: true },
+		{ key: 'isActive', label: 'Active?', type: 'check', sortable: true },
+		{ key: 'salary', label: 'Salary', type: 'currency', sortable: true },
+		{ key: 'updatedAt', label: 'Updated', type: 'date', sortable: true }
+	];
 
-	const cols = [
-		{ key: 'name', label: 'Name' },
-		{ key: 'age', label: 'Age' },
-		{
-			key: 'email',
-			label: 'Email',
-			type: 'email'
-		},
+	const colsNoSort: ColumnDef<Employee>[] = [
+		{ key: 'name', label: 'Name', type: 'text' },
+		{ key: 'age', label: 'Age', type: 'number' },
+		{ key: 'email', label: 'Email', type: 'email' },
 		{ key: 'isActive', label: 'Active?', type: 'check' },
-		{
-			key: 'salary',
-			label: 'Salary',
-			format: formatCurrency
-		},
-		{
-			key: 'updatedAt',
-			label: 'Updated',
-			type: 'date'
-		}
+		{ key: 'salary', label: 'Salary', type: 'currency' },
+		{ key: 'updatedAt', label: 'Updated', type: 'date' }
 	];
 
-	const countryCols = [
-		{ key: 'name', label: 'Name' },
-		{ key: 'value', label: 'Abbreviation', width: '50px' }
+	const countryCols: ColumnDef[] = [
+		{ key: 'name', label: 'Name', type: 'text', sortable: true },
+		{ key: 'value', label: 'Abbreviation', type: 'text', width: '100px', sortable: true }
 	];
 
 	const pagination = {
@@ -85,8 +104,8 @@
 
 	const countriesTotal = Countries.length;
 	const countriesPagination = {
-		page: 4,
-		perPage: 5,
+		page: 1,
+		perPage: 10,
 		total: countriesTotal
 	};
 
@@ -108,30 +127,75 @@
 		title: 'Tables/DataGrid',
 		tags: ['autodocs'],
 		args: {
-			onPageChange: fn()
+			onPageChange: fn(),
+			onSort: fn(),
+			onSelectionChange: fn()
 		}
 	});
 </script>
 
-<Story name="Standard" args={{ rows, cols }}>Employees</Story>
+<Story name="Standard" args={{ rows, cols: colsNoSort }}>Employees</Story>
 
-<Story name="WithEdit" args={{ rows, cols, actions: editAction }}>Employees</Story>
+<Story name="WithSorting" args={{ rows, cols, enableSorting: true }}>
+	Sortable Employees (click column headers)
+</Story>
 
-<Story name="WithMultipleActions" args={{ rows, cols, actions: multiAction }}>Employees</Story>
+<Story name="WithSelection" args={{ rows, cols, enableSelection: true, selectionMode: 'multi' }}>
+	Employees with Multi-Select (click rows, use Shift for range)
+</Story>
+
+<Story
+	name="WithSingleSelection"
+	args={{ rows, cols, enableSelection: true, selectionMode: 'single' }}
+>
+	Employees with Single Selection
+</Story>
+
+<Story
+	name="WithSortingAndSelection"
+	args={{ rows, cols, enableSorting: true, enableSelection: true }}
+>
+	Fully Interactive Table
+</Story>
+
+<Story name="WithStickyHeader" args={{ rows, cols, stickyHeader: true }}>
+	Employees with Sticky Header (scroll down)
+</Story>
+
+<Story name="WithEdit" args={{ rows, cols: colsNoSort, actions: editAction }}>Employees</Story>
+
+<Story name="WithMultipleActions" args={{ rows, cols: colsNoSort, actions: multiAction }}>
+	Employees
+</Story>
 
 <Story
 	name="WithPagination"
 	args={{
 		rows: Countries,
 		cols: countryCols,
-		pagination: countriesPagination
+		pagination: countriesPagination,
+		enableSorting: true
 	}}
 >
-	Countries
+	Countries with Pagination
 </Story>
 
-<Story name="NoData" args={{ rows: [], cols }}>Employees</Story>
+<Story
+	name="FullFeatured"
+	args={{
+		rows,
+		cols,
+		enableSorting: true,
+		enableSelection: true,
+		stickyHeader: true,
+		actions: multiAction
+	}}
+>
+	All Features Combined
+</Story>
 
-<Story name="NoColumns" args={{ rows, cols: [] }} />
+<Story name="NoData" args={{ rows: [], cols }}>Employees (No Data)</Story>
 
+<Story name="Loading" args={{ rows: undefined, cols }}>Employees (Loading...)</Story>
 
+<Story name="NoColumns" args={{ rows, cols: [] }}>No Columns Defined</Story>

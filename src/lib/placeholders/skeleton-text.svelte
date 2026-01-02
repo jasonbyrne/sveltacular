@@ -4,38 +4,68 @@
 	let {
 		minWidth = 50,
 		maxWidth = 100,
-		animation = 'pulse'
+		animation = 'shimmer'
 	}: {
 		minWidth?: number;
 		maxWidth?: number;
-		animation?: 'pulse' | 'none';
+		animation?: 'pulse' | 'shimmer' | 'none';
 	} = $props();
 
 	let width = $derived(randomInt(minWidth, maxWidth));
 </script>
 
-<div class={animation} style="width: {width}%"></div>
+<div class="skeleton {animation}" style="width: {width}%"></div>
 
 <style lang="scss">
-	div {
+	.skeleton {
 		height: 1rem;
-		background-color: var(--base-color-fg, #ccc);
-		opacity: 0.5;
-		border-radius: 1rem;
-		margin-bottom: 1rem;
+		background-color: var(--gray-200);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--spacing-base);
+		position: relative;
+		overflow: hidden;
 
 		&.pulse {
-			animation: pulse 2s infinite;
+			animation: pulse 2s ease-in-out infinite;
+		}
+
+		&.shimmer {
+			background: linear-gradient(
+				90deg,
+				var(--gray-200) 0%,
+				var(--gray-300) 40%,
+				var(--gray-200) 80%
+			);
+			background-size: 200% 100%;
+			animation: shimmer 2s ease-in-out infinite;
 		}
 	}
 
 	@keyframes pulse {
 		0%,
 		100% {
-			opacity: 0.2;
+			opacity: 1;
 		}
 		50% {
-			opacity: 0.8;
+			opacity: 0.5;
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
+	}
+
+	/* Respect prefers-reduced-motion */
+	@media (prefers-reduced-motion: reduce) {
+		.skeleton.pulse,
+		.skeleton.shimmer {
+			animation: none;
+			opacity: 0.7;
 		}
 	}
 </style>

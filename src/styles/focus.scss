@@ -1,0 +1,52 @@
+/**
+ * Focus Ring Utilities
+ * 
+ * Modern focus styles with offset rings similar to GitHub, Linear, etc.
+ * Automatically respects prefers-reduced-motion
+ */
+
+/* Base focus-visible styles - apply to any interactive element */
+.focus-ring {
+	outline: none;
+	transition: box-shadow var(--transition-fast) var(--ease-out);
+
+	&:focus-visible {
+		box-shadow: var(--focus-ring);
+	}
+}
+
+/* Focus ring variants */
+.focus-ring-sm {
+	--focus-ring-offset: 1px;
+	@extend .focus-ring;
+}
+
+.focus-ring-lg {
+	--focus-ring-offset: 3px;
+	@extend .focus-ring;
+}
+
+/* Apply to all interactive elements by default */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+	transition: box-shadow var(--transition-fast) var(--ease-out);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	button:focus-visible,
+	a:focus-visible,
+	input:focus-visible,
+	textarea:focus-visible,
+	select:focus-visible,
+	[tabindex]:not([tabindex="-1"]):focus-visible {
+		transition: none;
+	}
+}
+

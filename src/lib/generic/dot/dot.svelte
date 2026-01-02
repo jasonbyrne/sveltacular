@@ -12,7 +12,7 @@
 	} = $props();
 </script>
 
-<span style="background: {color}" class="{size} {shadow ? 'shadow' : ''}" />
+<span style="background: {color}" class="{size} {shadow ? 'shadow' : ''}"></span>
 
 <style lang="scss">
 	span {

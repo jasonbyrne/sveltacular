@@ -5,50 +5,181 @@
 		colspan = 1,
 		type = undefined,
 		width = undefined,
+		sortable = false,
+		sortKey = undefined,
+		align = undefined,
+		isSorted = false,
+		sortDirection = undefined,
+		onSort = undefined,
 		children
 	}: {
 		colspan?: number;
 		type?: string;
 		width?: number | string;
+		sortable?: boolean;
+		sortKey?: string;
+		align?: 'left' | 'center' | 'right';
+		isSorted?: boolean;
+		sortDirection?: 'asc' | 'desc';
+		onSort?: (column: string, direction: 'asc' | 'desc') => void;
 		children: Snippet;
 	} = $props();
+
+	let canSort = $derived(sortable && sortKey && onSort);
 
 	let styleProperties = $derived([
 		'text-overflow: ellipsis',
 		'overflow: hidden',
 		`width: ${width ? width : 'auto'}`
 	]);
+
+	// Determine alignment
+	let textAlign = $derived(
+		align ||
+			(type === 'currency' || type === 'number'
+				? 'right'
+				: type === 'check' || type === 'boolean'
+					? 'center'
+					: 'left')
+	);
+
+	// Determine aria-sort value
+	let ariaSort = $derived(
+		isSorted ? (sortDirection === 'asc' ? 'ascending' : 'descending') : undefined
+	);
+
+	function handleClick() {
+		if (canSort && sortKey && onSort) {
+			// Cycle through: null -> asc -> desc -> null
+			let newDirection: 'asc' | 'desc';
+			if (!isSorted) {
+				newDirection = 'asc';
+			} else if (sortDirection === 'asc') {
+				newDirection = 'desc';
+			} else {
+				// Clear sort by passing empty string
+				onSort('', 'asc');
+				return;
+			}
+			onSort(sortKey, newDirection);
+		}
+	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (canSort && (event.key === 'Enter' || event.key === ' ')) {
+			event.preventDefault();
+			if (sortKey) {
+				context?.toggleSort(sortKey);
+			}
+		}
+	}
 </script>
 
-<th {colspan} class={type} style={styleProperties.join('; ')}>
-	{@render children?.()}
+<th
+	{colspan}
+	class="{type} {textAlign}"
+	class:sortable={canSort}
+	class:sorted={isSorted}
+	style={styleProperties.join('; ')}
+	aria-sort={ariaSort}
+	role={canSort ? 'columnheader button' : 'columnheader'}
+	tabindex={canSort ? 0 : undefined}
+	onclick={handleClick}
+	onkeydown={handleKeyDown}
+>
+	<div class="header-content">
+		<span class="header-text">
+			{@render children?.()}
+		</span>
+		{#if canSort}
+			<span class="sort-indicator" aria-hidden="true">
+				{#if isSorted}
+					{#if sortDirection === 'asc'}
+						<span class="sort-arrow">▲</span>
+					{:else}
+						<span class="sort-arrow">▼</span>
+					{/if}
+				{:else}
+					<span class="sort-arrow unsorted">⇅</span>
+				{/if}
+			</span>
+		{/if}
+	</div>
 </th>
 
 <style lang="scss">
 	th {
-		padding-left: 0.5rem;
+		padding: 0.5rem;
 		font-size: 0.8rem;
 		font-weight: 500;
 		font-family: sans-serif;
 		line-height: 1.5rem;
-		text-align: left;
 		letter-spacing: 0.015em;
 		text-transform: uppercase;
-		text-shadow: 1px 1px 1px black;
-		text-align: left;
+		text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+		position: relative;
 
-		&.currency,
-		&.number {
-			text-align: right;
+		&.left {
+			text-align: left;
 		}
 
-		&.check,
-		&.boolean {
+		&.center {
 			text-align: center;
 		}
 
-		&:last-child {
-			padding-right: 0.5rem;
+		&.right {
+			text-align: right;
 		}
+
+		&.sortable {
+			cursor: pointer;
+			user-select: none;
+
+			&:hover {
+				background: var(--table-header-hover-bg, rgba(0, 0, 0, 0.05));
+			}
+
+			&:focus {
+				outline: 2px solid var(--focus-color, #0066cc);
+				outline-offset: -2px;
+			}
+		}
+
+		&.sorted {
+			background: var(--table-header-sorted-bg, rgba(0, 0, 0, 0.08));
+		}
+	}
+
+	.header-content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+
+	.header-text {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.sort-indicator {
+		flex-shrink: 0;
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.75rem;
+		opacity: 0.7;
+	}
+
+	.sort-arrow {
+		display: inline-block;
+		transition: opacity 0.2s;
+
+		&.unsorted {
+			opacity: 0.3;
+		}
+	}
+
+	th.sortable:hover .sort-arrow.unsorted {
+		opacity: 0.6;
 	}
 </style>

@@ -1,9 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import { tabContext, type TabContext, type TabDefinition, type TabVariant } from './tab-context.js';
-	import { getAnchor, navigateToAnchor, subscribable } from '$src/lib/index.js';
+	import {
+		tabContext,
+		type TabContext,
+		type TabDefinition,
+		type TabVariant
+	} from './tab-context.js';
+	import { getAnchor, navigateToAnchor, uniqueId } from '$src/lib/index.js';
 
 	let {
 		variant = 'traditional' as TabVariant,
@@ -15,61 +19,168 @@
 		children: Snippet;
 	} = $props();
 
-	// Keep track of tabs
-	const tabs = writable<TabDefinition[]>([]);
-	const register = (id: string, name: string, isActive: boolean) => {
-		tabs.update((value) => [...value, { id, name, defaultActive: isActive }]);
-		checkActive();
+	// Generate unique group ID to scope tab IDs and prevent conflicts between multiple tab groups
+	const groupId = uniqueId();
+
+	// Use a SINGLE $state object - this is key for reactivity!
+	const tabState = $state({
+		tabs: [] as TabDefinition[],
+		active: null as string | null
+	});
+
+	let registrationIndex = 0;
+	let isInitialized = $state(false);
+
+	const register = (id: string, label: string, isActive: boolean, href?: string) => {
+		const index = registrationIndex++;
+		tabState.tabs.push({ id, label, defaultActive: isActive, index, href });
 	};
 
-	// Check if tab exists
-	const tabExists = (id: string) => {
-		const value = $tabs;
-		return value.some((tab) => tab.id === id);
-	};
+	// Initialize active tab - only run once when tabs are available
+	$effect(() => {
+		// Skip if already initialized or no tabs yet
+		if (isInitialized || tabState.tabs.length === 0) return;
 
-	// Debounce check for active tag
-	let timeout: NodeJS.Timeout | null = null;
-	const checkActive = () => {
-		if (timeout) clearTimeout(timeout);
-		timeout = setTimeout(() => {
+		// Use microtask to ensure all synchronous tab registrations in this cycle complete
+		queueMicrotask(() => {
+			// Double-check we haven't initialized in the meantime
+			if (isInitialized) return;
+
+			// Get current tabs state at initialization time
+			const currentTabs = tabState.tabs;
+			if (currentTabs.length === 0) return;
+
+			// Check for anchor in URL first (but only if it matches a tab in THIS group)
 			const anchor = getAnchor();
-			if (anchor && tabExists(anchor)) active.set(anchor);
-			else {
-				const defaultActiveTab = $tabs.find((tab) => tab.defaultActive);
-				if (defaultActiveTab) active.set(defaultActiveTab.id);
+			if (anchor) {
+				// Check if anchor starts with our group ID prefix
+				const groupPrefix = `${groupId}-`;
+				if (anchor.startsWith(groupPrefix)) {
+					const tabId = anchor.slice(groupPrefix.length);
+					const tabExists = currentTabs.some((tab) => tab.id === tabId);
+					if (tabExists) {
+						tabState.active = tabId;
+						isInitialized = true;
+						return;
+					}
+				}
+				// Also check for direct tab ID match (for backward compatibility)
+				const tabExists = currentTabs.some((tab) => tab.id === anchor);
+				if (tabExists) {
+					tabState.active = anchor;
+					isInitialized = true;
+					return;
+				}
 			}
-		}, 10);
-	};
 
-	// Active tab
-	const active = writable<string | null>(null);
+			// Check for defaultActive tab
+			const defaultActiveTab = currentTabs.find((tab) => tab.defaultActive);
+			if (defaultActiveTab) {
+				tabState.active = defaultActiveTab.id;
+				isInitialized = true;
+				return;
+			}
+
+			// Default to first tab (by registration index, which should be the first in DOM order)
+			// Sort by index to get the first registered tab (lowest index = first)
+			const sortedTabs = [...currentTabs].sort((a, b) => a.index - b.index);
+			const firstTab = sortedTabs[0];
+			if (firstTab) {
+				tabState.active = firstTab.id;
+				isInitialized = true;
+			}
+		});
+	});
 	const selectTab = (id: string) => {
-		active.set(id);
-		navigateToAnchor(id);
+		const tab = tabState.tabs.find((t) => t.id === id);
+		if (tab?.disabled) return;
+
+		tabState.active = id;
+
+		// Only use anchor navigation if tab doesn't have href (href navigation is handled by Tab component)
+		// Scope anchor to this group to avoid conflicts with multiple tab groups
+		if (!tab?.href) {
+			navigateToAnchor(`${groupId}-${id}`);
+		}
+
 		onChange?.(id);
+
+		// Focus the selected tab (scoped to this group)
+		const button = document.getElementById(`tab-${groupId}-${id}`);
+		if (button) {
+			button.focus();
+		}
 	};
 
-	// Tab Context
-	const ctx: TabContext = {
-		active: subscribable(active),
-		variant,
-		register
+	// Keyboard navigation handler
+	const handleKeydown = (e: KeyboardEvent, currentId: string) => {
+		const tabList = tabState.tabs.filter((tab) => !tab.disabled);
+		const currentIndex = tabList.findIndex((tab) => tab.id === currentId);
+		if (currentIndex === -1) return;
+
+		let targetIndex = currentIndex;
+
+		switch (e.key) {
+			case 'ArrowLeft':
+				e.preventDefault();
+				targetIndex = currentIndex > 0 ? currentIndex - 1 : tabList.length - 1;
+				break;
+			case 'ArrowRight':
+				e.preventDefault();
+				targetIndex = currentIndex < tabList.length - 1 ? currentIndex + 1 : 0;
+				break;
+			case 'Home':
+				e.preventDefault();
+				targetIndex = 0;
+				break;
+			case 'End':
+				e.preventDefault();
+				targetIndex = tabList.length - 1;
+				break;
+			case 'Enter':
+			case ' ':
+				e.preventDefault();
+				selectTab(currentId);
+				return;
+			default:
+				return;
+		}
+
+		if (targetIndex !== currentIndex && tabList[targetIndex]) {
+			selectTab(tabList[targetIndex].id);
+		}
 	};
-	setContext(tabContext, ctx);
+
+	// Set context - pass the reactive state object directly!
+	setContext(tabContext, {
+		state: tabState,
+		get variant() {
+			return variant;
+		},
+		groupId,
+		register
+	});
 </script>
 
 <section class="tab-group {variant}">
 	<div class="tab-head">
-		<nav>
-			{#each $tabs as tab}
-				<li class={$active == tab.id ? 'active' : 'inactive'}>
-					<button onclick={() => selectTab(tab.id)}>
-						{tab.name}
+		<div role="tablist">
+			{#each tabState.tabs as tab}
+				<li class={tabState.active == tab.id ? 'active' : 'inactive'}>
+					<button
+						id="tab-{groupId}-{tab.id}"
+						role="tab"
+						aria-selected={tabState.active === tab.id}
+						aria-controls="tabpanel-{groupId}-{tab.id}"
+						tabindex={tabState.active === tab.id ? 0 : -1}
+						onclick={() => selectTab(tab.id)}
+						onkeydown={(e) => handleKeydown(e, tab.id)}
+					>
+						{tab.label}
 					</button>
 				</li>
 			{/each}
-		</nav>
+		</div>
 	</div>
 	<div class="tab-content">
 		{@render children?.()}
@@ -78,17 +189,17 @@
 
 <style lang="scss">
 	.tab-head {
-		height: 2rem;
+		min-height: 2rem;
 		position: relative;
 
-		nav {
+		div[role='tablist'] {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: nowrap;
 			justify-content: flex-start;
 			align-items: center;
 			box-sizing: border-box;
-			height: 2rem;
+			min-height: 2rem;
 			overflow: hidden;
 			width: 100%;
 		}
@@ -109,7 +220,7 @@
 			border: none 0;
 			background: transparent;
 			line-height: 1.8rem;
-			height: 2rem;
+			min-height: 2rem;
 			padding-left: 1rem;
 			padding-right: 1rem;
 			cursor: pointer;
@@ -118,6 +229,17 @@
 
 			&:focus {
 				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--tab-focus-outline, rgb(0, 123, 255));
+				outline-offset: 2px;
+				border-radius: 0.25rem;
+			}
+
+			&:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
 			}
 		}
 	}
@@ -195,9 +317,11 @@
 			border-style: solid;
 			border-width: 0.1rem 0.1rem 0.1rem 0.1rem;
 			border-color: var(--tab-outline-border, rgb(220, 220, 220));
-			color: var(--base-fg, rgb(220, 220, 220));
+			color: var(--tab-outline-active-fg, rgb(50, 50, 50));
 			border-bottom-color: var(--base-bg, rgb(50, 50, 50));
+			background: var(--tab-outline-active-bg, transparent);
 			line-height: 1.7rem;
+			min-height: 1.7rem;
 		}
 	}
 
@@ -219,6 +343,105 @@
 		.inactive button {
 			border-style: none;
 			color: var(--tab-overline-fg, rgb(180, 180, 180));
+		}
+	}
+
+	.pills {
+		.tab-head {
+			border-bottom: none;
+		}
+
+		div[role='tablist'] {
+			gap: 0.5rem;
+		}
+
+		button {
+			border-radius: 1.5rem;
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+			transition: all 0.2s ease;
+		}
+
+		.inactive button {
+			background: var(--tab-pills-inactive-bg, rgb(240, 240, 240));
+			color: var(--tab-pills-inactive-fg, rgb(100, 100, 100));
+		}
+
+		.inactive button:hover {
+			background: var(--tab-pills-hover-bg, rgb(230, 230, 230));
+			color: var(--tab-pills-hover-fg, rgb(50, 50, 50));
+		}
+
+		.active button {
+			background: var(--tab-pills-active-bg, rgb(0, 123, 255));
+			color: var(--tab-pills-active-fg, rgb(255, 255, 255));
+			box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+		}
+	}
+
+	.segmented {
+		.tab-head {
+			border-bottom: none;
+			background: var(--tab-segmented-bg, rgb(240, 240, 240));
+			border-radius: 0.5rem;
+			padding: 0.25rem;
+		}
+
+		div[role='tablist'] {
+			gap: 0.25rem;
+		}
+
+		button {
+			border-radius: 0.375rem;
+			flex: 1;
+			min-width: 0;
+			transition: all 0.2s ease;
+		}
+
+		.inactive button {
+			background: transparent;
+			color: var(--tab-segmented-inactive-fg, rgb(100, 100, 100));
+		}
+
+		.inactive button:hover {
+			background: var(--tab-segmented-hover-bg, rgba(255, 255, 255, 0.5));
+			color: var(--tab-segmented-hover-fg, rgb(50, 50, 50));
+		}
+
+		.active button {
+			background: var(--tab-segmented-active-bg, rgb(255, 255, 255));
+			color: var(--tab-segmented-active-fg, rgb(50, 50, 50));
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			font-weight: 500;
+		}
+	}
+
+	.minimal {
+		.tab-head {
+			border-bottom: solid 0.1rem var(--tab-minimal-border, rgb(230, 230, 230));
+		}
+
+		button {
+			border-radius: 0;
+			transition: color 0.2s ease;
+		}
+
+		.inactive button {
+			background: transparent;
+			color: var(--tab-minimal-inactive-fg, rgb(150, 150, 150));
+		}
+
+		.inactive button:hover {
+			background: transparent;
+			color: var(--tab-minimal-hover-fg, rgb(50, 50, 50));
+		}
+
+		.active button {
+			background: transparent;
+			color: var(--tab-minimal-active-fg, rgb(0, 123, 255));
+			border-bottom: solid 0.2rem var(--tab-minimal-active-fg, rgb(0, 123, 255));
+			margin-bottom: -0.1rem;
+			font-weight: 500;
 		}
 	}
 </style>

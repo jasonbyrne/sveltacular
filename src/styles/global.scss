@@ -4,6 +4,8 @@
  * Base styles using design tokens for consistency
  */
 
+@use './focus.scss';
+
 * {
 	box-sizing: border-box;
 }

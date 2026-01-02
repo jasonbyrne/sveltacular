@@ -1,9 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
-	import type { WizardContext, WizardState } from './wizard-context.js';
-	import { writable } from 'svelte/store';
-	import { subscribable } from '$src/lib/helpers/subscribable.js';
 	import Header from '$src/lib/generic/header/header.svelte';
 	import Button from '$src/lib/forms/button/button.svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
@@ -12,7 +9,7 @@
 		title,
 		level = 3 as SectionLevel,
 		disabled = $bindable(false),
-		onNext = async () => [] as string[] | void,
+		onNext = async () => [],
 		onSubmit = async () => [] as string[] | void,
 		onDone = undefined,
 		onNextStep = undefined,
@@ -32,82 +29,93 @@
 		children: Snippet;
 	} = $props();
 
-	let currentStep = $state(0);
-	let errors = $state<string[]>([]);
-
-	const steps: { [key: number]: string } = {};
-	const wizardStore = writable<WizardState>({
-		currentStep,
-		totalSteps: 0,
-		disabled,
-		errors
+	// Use a SINGLE $state object - this is key for reactivity!
+	const wizardState = $state({
+		steps: [] as Array<{ step: number; subtitle: string }>,
+		currentStep: null as number | null,
+		errors: [] as string[]
 	});
 
-	const publish = () => {
-		wizardStore.set({
-			currentStep,
-			totalSteps: Object.values(steps).length,
-			disabled,
-			errors
-		});
-	};
+	// Register a step
+	function register(stepNumber: number, subtitle: string) {
+		// Avoid duplicates
+		if (wizardState.steps.find((s) => s.step === stepNumber)) return;
 
-	const register = (stepNumber: number, subtitle: string) => {
-		steps[stepNumber] = subtitle;
-		publish();
-	};
+		wizardState.steps.push({ step: stepNumber, subtitle });
 
-	const validate = async (callback: () => Promise<string[] | void>): Promise<string[]> => {
-		disabled = true;
-		errors = (await callback()) || [];
-		disabled = false;
-		onErrors?.(errors);
-		return errors;
-	};
-
-	const next = async () => {
-		if (currentStep >= Object.values(steps).length || disabled) return;
-		if (currentStep) {
-			const errors = await validate(() => onNext(currentStep));
-			if (errors.length) return publish();
+		// Initialize to first step if not set
+		if (wizardState.currentStep === null) {
+			const sorted = [...wizardState.steps].sort((a, b) => a.step - b.step);
+			wizardState.currentStep = sorted[0]?.step ?? null;
 		}
-		currentStep++;
-		onNextStep?.(currentStep);
-		publish();
-	};
+	}
 
-	const previous = () => {
-		if (currentStep <= 1 || disabled) return;
-		currentStep--;
-		errors = [];
-		onPreviousStep?.(currentStep);
-		publish();
-	};
-
-	const reset = () => {
-		disabled = false;
-		currentStep = 1;
-		publish();
-	};
-
-	const done = async () => {
-		const errors = await validate(onSubmit);
-		if (errors.length) return publish();
-		onDone?.();
-		reset();
-	};
-
-	setContext<WizardContext>('wizard', {
-		state: subscribable(wizardStore),
+	// Set context - pass the reactive state object directly!
+	setContext('wizard', {
+		state: wizardState,
 		register
 	});
 
-	setTimeout(next, 100);
+	// Derived values
+	const sortedSteps = $derived([...wizardState.steps].sort((a, b) => a.step - b.step));
+	const currentIndex = $derived(sortedSteps.findIndex((s) => s.step === wizardState.currentStep));
+	const isFirstStep = $derived(currentIndex === 0);
+	const isLastStep = $derived(currentIndex === sortedSteps.length - 1);
+	const subtitle = $derived(sortedSteps[currentIndex]?.subtitle ?? '');
+	const total = $derived(sortedSteps.length);
 
-	let isFirstStep = $derived(currentStep <= 1);
-	let isLastStep = $derived(currentStep >= Object.values(steps).length);
-	let subtitle = $derived(steps[currentStep]);
-	let total = $derived(Object.values(steps).length);
+	// Navigation
+	async function validate(callback: () => Promise<string[] | void>): Promise<string[]> {
+		disabled = true;
+		try {
+			const result = await callback();
+			wizardState.errors = Array.isArray(result) ? result : [];
+		} catch (error) {
+			wizardState.errors = [];
+		} finally {
+			disabled = false;
+			onErrors?.(wizardState.errors);
+		}
+		return wizardState.errors;
+	}
+
+	async function next() {
+		if (disabled || wizardState.currentStep === null) return;
+
+		const validationErrors = await validate(() => onNext(wizardState.currentStep!));
+		if (validationErrors.length > 0) return;
+
+		// Move to next step
+		const nextIndex = currentIndex + 1;
+		if (nextIndex < sortedSteps.length) {
+			wizardState.currentStep = sortedSteps[nextIndex].step;
+			wizardState.errors = [];
+			onNextStep?.(wizardState.currentStep);
+		}
+	}
+
+	function previous() {
+		if (disabled || wizardState.currentStep === null) return;
+
+		const prevIndex = currentIndex - 1;
+		if (prevIndex >= 0) {
+			wizardState.currentStep = sortedSteps[prevIndex].step;
+			wizardState.errors = [];
+			onPreviousStep?.(wizardState.currentStep);
+		}
+	}
+
+	async function done() {
+		const submitErrors = await validate(onSubmit);
+		if (submitErrors.length) return;
+
+		onDone?.();
+
+		// Reset
+		disabled = false;
+		wizardState.errors = [];
+		wizardState.currentStep = sortedSteps[0]?.step ?? null;
+	}
 </script>
 
 <section class:disabled>
@@ -118,17 +126,17 @@
 	<footer>
 		<div>
 			{#if !isFirstStep}
-				<Button type="button" variant="secondary" onclick={previous} {disabled} label="Previous" />
+				<Button type="button" variant="secondary" onClick={previous} {disabled} label="Previous" />
 			{/if}
 		</div>
 		<div>
-			<div>Step {currentStep} of {total}</div>
+			<div>Step {wizardState.currentStep ?? 0} of {total}</div>
 		</div>
 		<div>
 			{#if isLastStep}
-				<Button type="submit" variant="primary" onclick={done} {disabled} label="Done" />
+				<Button type="submit" variant="primary" onClick={done} {disabled} label="Done" />
 			{:else}
-				<Button type="button" variant="primary" onclick={next} {disabled} label="Next" />
+				<Button type="button" variant="primary" onClick={next} {disabled} label="Next" />
 			{/if}
 		</div>
 	</footer>

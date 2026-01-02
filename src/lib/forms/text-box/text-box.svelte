@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
+	import { animateShake } from '$src/lib/helpers/animations.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
 	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
@@ -10,6 +11,7 @@
 		value = $bindable('' as string | null),
 		placeholder = '',
 		helperText = '',
+		errorText = '',
 		size = 'full',
 		type = 'text',
 		disabled = false,
@@ -31,6 +33,7 @@
 		value?: string | null;
 		placeholder?: string;
 		helperText?: string;
+		errorText?: string;
 		size?: FormFieldSizeOptions;
 		type?: AllowedTextInputTypes;
 		disabled?: boolean;
@@ -49,6 +52,23 @@
 		onInput?: ((value: string) => void) | undefined;
 		label?: string;
 	} = $props();
+
+	let hasError = $derived(!!errorText);
+	let describedByIds = $state<string[]>([]);
+	let inputElement: HTMLDivElement | null = $state(null);
+	
+	$effect(() => {
+		describedByIds = [];
+		if (helperText) describedByIds.push(`${id}-helper`);
+		if (errorText) describedByIds.push(`${id}-error`);
+	});
+
+	// Trigger shake animation when error appears
+	$effect(() => {
+		if (hasError && inputElement) {
+			animateShake(inputElement);
+		}
+	});
 
 	// Don't allow certain characters to be typed into the input
 	const onKeyPress = (e: KeyboardEvent) => {
@@ -89,7 +109,7 @@
 	{#if label}
 		<FormLabel {id} {required} {label} />
 	{/if}
-	<div class="input {disabled ? 'disabled' : 'enabled'}">
+	<div class="input {disabled ? 'disabled' : 'enabled'}" class:error={hasError} bind:this={inputElement}>
 		{#if prefix}
 			<div class="prefix">{prefix}</div>
 		{/if}
@@ -104,9 +124,9 @@
 			{maxlength}
 			{minlength}
 			{pattern}
-			aria-describedby={helperText ? `${id}-helper` : undefined}
+			aria-describedby={describedByIds.length > 0 ? describedByIds.join(' ') : undefined}
 			aria-required={required}
-			aria-invalid={false}
+			aria-invalid={hasError}
 			onkeypress={onKeyPress}
 			oninput={handleInput}
 		/>
@@ -115,7 +135,12 @@
 		{/if}
 	</div>
 	{#if helperText}
-		<div class="helper-text" id="{id}-helper" aria-live="polite">{helperText}</div>
+		<div class="helper-text" id="{id}-helper">{helperText}</div>
+	{/if}
+	{#if errorText}
+		<div class="error-text" id="{id}-error" role="alert" aria-live="assertive">
+			{errorText}
+		</div>
 	{/if}
 </FormField>
 
@@ -147,6 +172,10 @@
 			opacity: 0.5;
 		}
 
+		&.error {
+			border-color: var(--danger, #dc3545);
+		}
+
 		input {
 			background-color: transparent;
 			border: none;
@@ -158,6 +187,11 @@
 
 			&:focus {
 				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
 			}
 		}
 
@@ -184,5 +218,14 @@
 		font-size: var(--font-sm);
 		line-height: 1.25rem;
 		padding: var(--spacing-xs);
+		color: var(--body-fg);
+	}
+
+	.error-text {
+		font-size: var(--font-sm);
+		line-height: 1.25rem;
+		padding: var(--spacing-xs);
+		color: var(--danger, #dc3545);
+		font-weight: 500;
 	}
 </style>

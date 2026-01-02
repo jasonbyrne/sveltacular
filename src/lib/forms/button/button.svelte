@@ -24,6 +24,10 @@
 		flex = false,
 		/** Disabled state */
 		disabled = $bindable(false),
+		/** Loading state */
+		loading = false,
+		/** ARIA label override */
+		ariaLabel = undefined,
 		/** Remove margins */
 		noMargin = false,
 		/** Collapse padding */
@@ -41,14 +45,18 @@
 		block?: boolean;
 		flex?: boolean;
 		disabled?: boolean;
+		loading?: boolean;
+		ariaLabel?: string | undefined;
 		noMargin?: boolean;
 		collapse?: boolean;
 		repeatSubmitDelay?: number | 'infinite';
 		onClick?: (() => void) | undefined;
 	} = $props();
 
+	let isDisabled = $derived(disabled || loading);
+
 	const click = (e: Event) => {
-		if (disabled) {
+		if (isDisabled) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;
@@ -73,8 +81,15 @@
 	class:block
 	class:noMargin
 	class:collapse
-	{disabled}
+	class:loading
+	disabled={isDisabled}
+	aria-label={ariaLabel || label}
+	aria-busy={loading}
+	aria-disabled={isDisabled}
 >
+	{#if loading}
+		<span class="loading-indicator" aria-hidden="true">⏳</span>
+	{/if}
 	{#if label}
 		<span class="label">{label}</span>
 	{/if}
@@ -159,6 +174,20 @@
 
 		&:hover {
 			background-color: var(--gray-600);
+		}
+
+		&:active:not([disabled]) {
+			transform: scale(0.98);
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition:
+				background-color var(--transition-base) var(--ease-in-out),
+				border-color var(--transition-base) var(--ease-in-out),
+				color var(--transition-base) var(--ease-in-out),
+				fill var(--transition-base) var(--ease-in-out),
+				stroke var(--transition-base) var(--ease-in-out),
+				transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 		}
 
 		&.primary {

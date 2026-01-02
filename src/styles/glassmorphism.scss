@@ -1,0 +1,45 @@
+/**
+ * Glassmorphism Effects
+ * 
+ * Frosted glass effects with backdrop-filter for modern UI components
+ * Provides both light and dark mode support
+ */
+
+/* Base glass effect */
+.glass {
+	background: var(--glass-bg);
+	backdrop-filter: blur(var(--glass-blur));
+	-webkit-backdrop-filter: blur(var(--glass-blur)); /* Safari support */
+	border: var(--border-thin) solid var(--glass-border);
+}
+
+/* Glass variants */
+.glass-light {
+	composes: glass;
+	--glass-bg: rgba(255, 255, 255, 0.7);
+	--glass-border: rgba(255, 255, 255, 0.2);
+}
+
+.glass-heavy {
+	composes: glass;
+	--glass-bg: rgba(255, 255, 255, 0.9);
+	--glass-blur: 16px;
+}
+
+.glass-subtle {
+	composes: glass;
+	--glass-bg: rgba(255, 255, 255, 0.6);
+	--glass-blur: 8px;
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(12px)) {
+	.glass,
+	.glass-light,
+	.glass-heavy,
+	.glass-subtle {
+		background: var(--base-color-bg);
+		border: var(--border-thin) solid var(--gray-300);
+	}
+}
+

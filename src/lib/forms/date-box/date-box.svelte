@@ -38,8 +38,8 @@
 		label?: string;
 	} = $props();
 
-	const _defaultValue = defaultValue || value || currentDateTime();
 	const getDefaultValue = () => {
+		const _defaultValue = defaultValue || value || currentDateTime();
 		if (type === 'date') {
 			return isDateString(_defaultValue) ? _defaultValue : currentDateTime().substring(0, 10);
 		}
@@ -66,10 +66,12 @@
 		onChange?.(enabled ? value : null);
 	};
 
-	if (!value) {
-		if (nullable) enabled = false;
-		else value = getDefaultValue();
-	}
+	$effect(() => {
+		if (!value) {
+			if (nullable) enabled = false;
+			else value = getDefaultValue();
+		}
+	});
 	let disabled = $derived(!enabled);
 </script>
 
@@ -89,7 +91,7 @@
 		{#if steps.length > 0}
 			<span class="steps">
 				{#each steps as step}
-					<Button noMargin={true} collapse={true} onclick={() => incrementValue(step)} label={step.label} />
+					<Button noMargin={true} collapse={true} onClick={() => incrementValue(step)} label={step.label} />
 				{/each}
 			</span>
 		{/if}

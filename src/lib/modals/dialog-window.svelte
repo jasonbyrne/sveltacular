@@ -4,10 +4,12 @@
 
 	let {
 		size = 'md' as FormFieldSizeOptions,
+		glass = false,
 		children,
 		...restProps
 	}: {
 		size?: FormFieldSizeOptions;
+		glass?: boolean;
 		children: Snippet;
 		[key: string]: any;
 	} = $props();
@@ -19,7 +21,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class={size} onclick={captureClick} {...restProps}>
+<div class="{size} {glass ? 'glass' : ''}" onclick={captureClick} {...restProps}>
 	{@render children?.()}
 </div>
 
@@ -30,9 +32,22 @@
 		padding: var(--spacing-base);
 		background-color: var(--modal-bg);
 		border-radius: var(--radius-xl);
-		box-shadow: var(--shadow-xl);
+		box-shadow: var(--shadow-2xl);
 		z-index: 9999;
 		font-family: var(--base-font-family);
+
+		&.glass {
+			background: var(--glass-bg);
+			backdrop-filter: blur(var(--glass-blur));
+			-webkit-backdrop-filter: blur(var(--glass-blur));
+			border: var(--border-thin) solid var(--glass-border);
+
+			/* Fallback for browsers without backdrop-filter support */
+			@supports not (backdrop-filter: blur(12px)) {
+				background: var(--modal-bg);
+				border: var(--border-thin) solid var(--gray-300);
+			}
+		}
 
 		&.sm {
 			width: 25rem;

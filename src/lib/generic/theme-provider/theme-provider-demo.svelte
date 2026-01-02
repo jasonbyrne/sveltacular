@@ -1,0 +1,175 @@
+<script lang="ts">
+	/**
+	 * Theme Provider Demo Component
+	 * 
+	 * Demonstrates theme switching functionality with example components.
+	 */
+	import ThemeProvider from './theme-provider.svelte';
+	import { useTheme } from '$lib/helpers/theme.svelte';
+	import Button from '$lib/forms/button/button.svelte';
+	import Card from '$lib/generic/card/card.svelte';
+	import Badge from '$lib/generic/badge/badge.svelte';
+	import Notice from '$lib/generic/notice/notice.svelte';
+	import TextBox from '$lib/forms/text-box/text-box.svelte';
+	import TextArea from '$lib/forms/text-area/text-area.svelte';
+	import CheckBox from '$lib/forms/check-box/check-box.svelte';
+	import SwitchBox from '$lib/forms/switch-box/switch-box.svelte';
+
+	const theme = useTheme();
+
+	let textValue = $state('');
+	let textAreaValue = $state('This is a sample text area content...');
+	let checked = $state(false);
+	let switchOn = $state(true);
+</script>
+
+<ThemeProvider>
+	<div style="padding: 2rem; min-height: 600px;">
+		<!-- Theme Control Panel -->
+		<Card style="margin-bottom: 2rem;">
+			<div style="padding: 1.5rem;">
+				<h2 style="margin-top: 0; margin-bottom: 1rem;">Theme Controls</h2>
+				
+				<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+					<Button 
+						kind={theme.current === 'light' ? 'primary' : 'outline'}
+						onclick={() => theme.set('light')}
+					>
+						☀️ Light
+					</Button>
+					<Button 
+						kind={theme.current === 'dark' ? 'primary' : 'outline'}
+						onclick={() => theme.set('dark')}
+					>
+						🌙 Dark
+					</Button>
+					<Button 
+						kind={theme.current === 'system' ? 'primary' : 'outline'}
+						onclick={() => theme.set('system')}
+					>
+						💻 System
+					</Button>
+					<Button 
+						kind="secondary"
+						onclick={() => theme.toggle()}
+					>
+						🔄 Toggle
+					</Button>
+				</div>
+
+				<div style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--base-accent-fg);">
+					<div>
+						<strong>Current:</strong> {theme.current}
+					</div>
+					<div>
+						<strong>Resolved:</strong> {theme.resolved}
+					</div>
+					<div>
+						<strong>Is Dark:</strong> {theme.isDark}
+					</div>
+				</div>
+			</div>
+		</Card>
+
+		<!-- Component Showcase -->
+		<h3 style="margin-bottom: 1rem;">Component Examples in Current Theme</h3>
+
+		<div style="display: grid; gap: 1.5rem;">
+			<!-- Buttons -->
+			<Card>
+				<div style="padding: 1.5rem;">
+					<h4 style="margin-top: 0; margin-bottom: 1rem;">Buttons</h4>
+					<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+						<Button kind="primary">Primary</Button>
+						<Button kind="secondary">Secondary</Button>
+						<Button kind="positive">Positive</Button>
+						<Button kind="danger">Danger</Button>
+						<Button kind="outline">Outline</Button>
+						<Button kind="ghost">Ghost</Button>
+					</div>
+				</div>
+			</Card>
+
+			<!-- Badges -->
+			<Card>
+				<div style="padding: 1.5rem;">
+					<h4 style="margin-top: 0; margin-bottom: 1rem;">Badges</h4>
+					<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+						<Badge variant="standard" count={5} />
+						<Badge variant="positive" count={3} />
+						<Badge variant="negative" count={12} />
+						<Badge variant="warning" count={7} />
+					</div>
+				</div>
+			</Card>
+
+			<!-- Notices -->
+			<Card>
+				<div style="padding: 1.5rem;">
+					<h4 style="margin-top: 0; margin-bottom: 1rem;">Notices</h4>
+					<div style="display: grid; gap: 0.75rem;">
+						<Notice variant="info">
+							This is an informational message.
+						</Notice>
+						<Notice variant="success">
+							Operation completed successfully!
+						</Notice>
+						<Notice variant="warning">
+							Please review your changes carefully.
+						</Notice>
+						<Notice variant="error">
+							An error occurred while processing your request.
+						</Notice>
+					</div>
+				</div>
+			</Card>
+
+			<!-- Form Inputs -->
+			<Card>
+				<div style="padding: 1.5rem;">
+					<h4 style="margin-top: 0; margin-bottom: 1rem;">Form Inputs</h4>
+					<div style="display: grid; gap: 1rem; max-width: 500px;">
+						<TextBox 
+							bind:value={textValue}
+							label="Text Input"
+							placeholder="Enter some text..."
+						/>
+						
+						<TextArea 
+							bind:value={textAreaValue}
+							label="Text Area"
+							rows={4}
+						/>
+						
+						<CheckBox 
+							bind:checked={checked}
+							label="Check Box Option"
+						/>
+						
+						<SwitchBox 
+							bind:checked={switchOn}
+							label="Switch Option"
+						/>
+					</div>
+				</div>
+			</Card>
+
+			<!-- Typography -->
+			<Card>
+				<div style="padding: 1.5rem;">
+					<h4 style="margin-top: 0; margin-bottom: 1rem;">Typography</h4>
+					<p style="margin-bottom: 0.5rem;">
+						This is regular text using the base foreground color.
+					</p>
+					<p style="margin-bottom: 0.5rem;">
+						<a href="#" style="color: var(--base-link-fg);">This is a link</a> with proper link styling.
+					</p>
+					<p style="margin-bottom: 0; color: var(--base-accent-fg); font-size: 0.875rem;">
+						This is accent text using a muted color.
+					</p>
+				</div>
+			</Card>
+		</div>
+	</div>
+</ThemeProvider>
+

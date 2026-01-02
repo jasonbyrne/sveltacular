@@ -5,11 +5,11 @@
 	let {
 		minLines = 3,
 		maxLines = 5,
-		animation = 'pulse'
+		animation = 'shimmer'
 	}: {
 		minLines?: number;
 		maxLines?: number;
-		animation?: 'pulse' | 'none';
+		animation?: 'pulse' | 'shimmer' | 'none';
 	} = $props();
 
 	let lines = $derived(randomInt(minLines, maxLines));

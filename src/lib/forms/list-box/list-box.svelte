@@ -19,7 +19,9 @@
 		search = undefined as SearchFunction | undefined,
 		placeholder = '',
 		onChange = undefined,
-		label = undefined
+		label = undefined,
+		virtualScroll = false,
+		itemHeight = 40
 	}: {
 		value?: string | null;
 		items?: DropdownOption[];
@@ -31,9 +33,12 @@
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
 		label?: string;
+		virtualScroll?: boolean;
+		itemHeight?: number;
 	} = $props();
 
 	const id = uniqueId();
+	const listboxId = `${id}-listbox`;
 	const getText = () => items.find((item) => item.value == value)?.name || '';
 
 	let text = $state(getText());
@@ -41,6 +46,13 @@
 	let highlightIndex = $state(-1);
 	let filteredItems = $state<MenuOption[]>([]);
 	let isSeachable = $derived(searchable || !!search);
+	
+	// Get the ID of the highlighted option for ARIA
+	let activeDescendant = $derived(
+		highlightIndex >= 0 && filteredItems[highlightIndex]
+			? `${listboxId}-option-${highlightIndex}`
+			: undefined
+	);
 
 	// When an item is selected from the dropdown menu
 	const onSelect = (item: MenuOption) => {
@@ -152,16 +164,38 @@
 			{disabled}
 			{placeholder}
 			readonly={!isSeachable}
+			role="combobox"
+			aria-expanded={open}
+			aria-controls={listboxId}
+			aria-autocomplete={isSeachable ? 'list' : 'none'}
+			aria-activedescendant={activeDescendant}
+			aria-haspopup="listbox"
 			onfocus={() => (isMenuOpen = true)}
 			onkeyup={onInputKeyPress}
 			data-value={value}
 			data-text={text}
 		/>
-		<button type="button" class="icon" onclick={clickArrow} onkeydown={clickArrow} {disabled}>
+		<button
+			type="button"
+			class="icon"
+			onclick={clickArrow}
+			onkeydown={clickArrow}
+			{disabled}
+			aria-label={open ? 'Close options' : 'Open options'}
+			tabindex="-1"
+		>
 			<AngleUpIcon />
 		</button>
 		{#if text && isSeachable}
-			<button type="button" class="clear" onclick={clear} onkeydown={clear} {disabled}>
+			<button
+				type="button"
+				class="clear"
+				onclick={clear}
+				onkeydown={clear}
+				{disabled}
+				aria-label="Clear selection"
+				tabindex="-1"
+			>
 				X
 			</button>
 		{/if}
@@ -175,6 +209,9 @@
 				size="full"
 				bind:highlightIndex
 				bind:value
+				{listboxId}
+				{virtualScroll}
+				{itemHeight}
 			/>
 		</div>
 	</div>

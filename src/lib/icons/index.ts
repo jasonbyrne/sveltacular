@@ -1,6 +1,7 @@
 export { default as AngleRightIcon } from './angle-right-icon.svelte';
 export { default as AngleUpIcon } from './angle-up-icon.svelte';
 export { default as CheckIcon } from './check-icon.svelte';
+export { default as CopyIcon } from './copy-icon.svelte';
 export { default as EnvelopeIcon } from './envelope-icon.svelte';
 export { default as FolderOpenIcon } from './folder-open-icon.svelte';
 export { default as HamburgerIcon } from './hamburger-icon.svelte';

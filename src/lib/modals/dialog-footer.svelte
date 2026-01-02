@@ -6,7 +6,7 @@
 </script>
 
 <footer>
-	<FlexRow layout="stretch">
+	<FlexRow justifyContent="stretch">
 		{@render children?.()}
 	</FlexRow>
 </footer>

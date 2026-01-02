@@ -37,8 +37,8 @@
 </script>
 
 {#if open}
-	<Overlay onclick={close}>
-		<Dialog {size} role="alertdialog" aria-labelledby={title ? 'alert-title' : undefined}>
+	<Overlay onClick={close}>
+		<Dialog {size} role="alertdialog" aria-modal="true" aria-labelledby={title ? 'alert-title' : undefined}>
 			{#if title}
 				<DialogHeader id="alert-title">
 					{title}
@@ -51,7 +51,7 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button onclick={close} size="full" variant={buttonVariant} label={buttonText} />
+				<Button onClick={close} size="full" variant={buttonVariant} label={buttonText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

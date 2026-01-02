@@ -1,66 +1,75 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { getContext, onDestroy } from 'svelte';
+	import { getContext, onMount, untrack } from 'svelte';
 	import { tabContext, type TabContext } from './tab-context.js';
 	import { navigateTo, uniqueId } from '$src/lib/index.js';
 	import Loading from '$src/lib/placeholders/loading.svelte';
 
 	let {
-		title,
-		href = undefined,
-		active = $bindable(false),
+		label,
+		href,
+		defaultActive = false,
 		id = undefined,
-		onSelected = undefined,
+		onActivate = undefined,
 		children = undefined
 	}: {
-		title: string;
+		label: string;
 		href?: string | undefined;
-		active?: boolean;
+		defaultActive?: boolean;
 		id?: string | undefined;
-		onSelected?: ((id: string) => void) | undefined;
+		onActivate?: ((id: string) => void) | undefined;
 		children?: Snippet;
 	} = $props();
 
-	const getId = () => id || title.trim().toLocaleLowerCase().replaceAll(' ', '_') || uniqueId();
-
 	const ctx = getContext<TabContext>(tabContext);
-	const tabStyle = ctx.style || 'traditional';
-	const _id = getId();
+	const tabStyle = ctx.variant || 'traditional';
 
-	// Register this tab
-	ctx.register(_id, title, active);
+	// Generate ID once - explicitly capture initial prop values for stable tab identity
+	// Using untrack() to indicate we intentionally want non-reactive initial values
+	const _id = untrack(
+		() => id || label.trim().toLocaleLowerCase().replaceAll(' ', '_') || uniqueId()
+	);
 
-	// Subscribe to future tab changes
-	const unsubscribe = ctx.active.subscribe((selectedId) => {
-		active = selectedId === _id;
-		if (active) {
-			onSelected?.(_id);
+	// Register this tab once on mount (like wizard does)
+	onMount(() => {
+		ctx.register(_id, label, defaultActive, href);
+	});
+
+	// Access the $state object's properties directly - THIS creates reactive dependencies!
+	const isActive = $derived(ctx.state.active === _id);
+
+	// Handle activation side effects
+	$effect(() => {
+		if (isActive) {
+			onActivate?.(_id);
 			if (href) {
-				console.log('Navigating to', href);
 				navigateTo(href);
 			}
 		}
 	});
-
-	// Tear down
-	onDestroy(() => unsubscribe());
 </script>
 
-<article class:active class={tabStyle}>
-	{#if active}
-		{#if children}
-			{@render children?.()}
-		{:else}
-			<Loading />
-		{/if}
+<div
+	role="tabpanel"
+	id="tabpanel-{ctx.groupId}-{_id}"
+	aria-labelledby="tab-{ctx.groupId}-{_id}"
+	class:active={isActive}
+	class={tabStyle}
+	hidden={!isActive}
+>
+	{#if children}
+		{@render children?.()}
+	{:else}
+		<Loading />
 	{/if}
-</article>
+</div>
 
 <style lang="scss">
-	article {
+	div[role='tabpanel'] {
 		display: none;
 
-		&.active {
+		&.active,
+		&:not([hidden]) {
 			display: block;
 		}
 	}

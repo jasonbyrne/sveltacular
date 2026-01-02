@@ -48,10 +48,10 @@
 </script>
 
 {#if open}
-	<Overlay onclick={no}>
-		<Dialog {size}>
+	<Overlay onClick={no}>
+		<Dialog {size} role="alertdialog" aria-modal="true" aria-labelledby={title ? 'confirm-title' : undefined}>
 			{#if title}
-				<DialogHeader>
+				<DialogHeader id="confirm-title">
 					{title}
 				</DialogHeader>
 				<Divider />
@@ -62,8 +62,8 @@
 			</DialogBody>
 			<Divider />
 			<DialogFooter>
-				<Button onclick={no} variant={noVariant} size="full" label={noText} />
-				<Button onclick={yes} variant={yesVariant} size="full" label={yesText} />
+				<Button onClick={no} variant={noVariant} size="full" label={noText} />
+				<Button onClick={yes} variant={yesVariant} size="full" label={yesText} />
 			</DialogFooter>
 		</Dialog>
 	</Overlay>

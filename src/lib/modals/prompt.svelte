@@ -58,10 +58,10 @@
 </script>
 
 {#if open}
-	<Overlay onclick={no}>
-		<Dialog {size}>
+	<Overlay onClick={no}>
+		<Dialog {size} role="dialog" aria-modal="true" aria-labelledby={title ? 'prompt-title' : undefined}>
 			{#if title}
-				<DialogHeader>
+				<DialogHeader id="prompt-title">
 					{title}
 				</DialogHeader>
 				<Divider />
@@ -73,10 +73,10 @@
 				</TextBox>
 			</DialogBody>
 			<Divider />
-			<DialogFooter>
-				<Button onclick={no} variant={cancelVariant} size="full" label={cancelText} />
-				<Button onclick={yes} variant={okVariant} size="full" label={okText} />
-			</DialogFooter>
+		<DialogFooter>
+			<Button onClick={no} variant={cancelVariant} size="full" label={cancelText} />
+			<Button onClick={yes} variant={okVariant} size="full" label={okText} />
+		</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}

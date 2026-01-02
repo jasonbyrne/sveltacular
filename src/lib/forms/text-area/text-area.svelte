@@ -31,7 +31,7 @@
 	{#if label}
 		<FormLabel {id} {required} {label} />
 	{/if}
-	<textarea wrap="soft" {id} {placeholder} {rows} bind:value {required} {disabled} {readonly} />
+	<textarea wrap="soft" {id} {placeholder} {rows} bind:value {required} {disabled} {readonly}></textarea>
 </FormField>
 
 <style lang="scss">

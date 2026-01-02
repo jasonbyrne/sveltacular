@@ -21,42 +21,55 @@
 	};
 </script>
 
-<nav class={size}>
-	{#if homeUrl}
-		<li class="home">
-			<a href={homeUrl}><HomeIcon /></a>
-		</li>
-	{/if}
-	{#each crumbs as crumb, i}
-		{#if typeof crumb === 'string' || !crumb.href}
-			<li>{getCrumLabel(crumb)}</li>
-		{:else}
-			<li>
-				<a href={crumb.href}>
-					{crumb.label}
+<nav class={size} aria-label="Breadcrumb">
+	<ol>
+		{#if homeUrl}
+			<li class="home">
+				<a href={homeUrl} aria-label="Home">
+					<HomeIcon />
 				</a>
 			</li>
 		{/if}
-		{#if i < crumbs.length - 1}
-			<li class="separator">{separator}</li>
-		{/if}
-	{/each}
+		{#each crumbs as crumb, i}
+			{#if typeof crumb === 'string' || !crumb.href}
+				<li aria-current={i === crumbs.length - 1 ? 'page' : undefined}>
+					{getCrumLabel(crumb)}
+				</li>
+			{:else}
+				<li>
+					<a href={crumb.href}>
+						{crumb.label}
+					</a>
+				</li>
+			{/if}
+			{#if i < crumbs.length - 1}
+				<li class="separator" aria-hidden="true">{separator}</li>
+			{/if}
+		{/each}
+	</ol>
 </nav>
 
 <style lang="scss">
 	nav {
-		display: flex;
-		align-items: center;
-		list-style: none;
-		gap: 0.5rem;
-		padding: 0;
-		margin: 0;
-		line-height: 1.5rem;
+		ol {
+			display: flex;
+			align-items: center;
+			list-style: none;
+			gap: 0.5rem;
+			padding: 0;
+			margin: 0;
+			line-height: 1.5rem;
+		}
 
 		li {
 			color: var(--breadcrumbs-fg, #555);
 			padding: 0;
 			margin: 0;
+
+			&[aria-current='page'] {
+				font-weight: 600;
+				color: var(--breadcrumbs-current, #333);
+			}
 
 			a {
 				color: var(--breadcrumbs-fg, #555);
@@ -67,36 +80,36 @@
 					color: var(--breadcrumbs-hover, #955);
 					text-decoration: underline;
 				}
-			}
-		}
 
-		&.sm {
-			li {
-				font-size: 0.75rem;
-
-				&.home {
-					width: 12px;
+				&:focus-visible {
+					outline: 2px solid var(--focus-ring, #007bff);
+					outline-offset: 2px;
+					border-radius: 0.25rem;
 				}
 			}
 		}
 
-		&.md {
-			li {
-				font-size: 0.875rem;
+		&.sm li {
+			font-size: 0.75rem;
 
-				&.home {
-					width: 14px;
-				}
+			&.home {
+				width: 12px;
 			}
 		}
 
-		&.lg {
-			li {
-				font-size: 1rem;
+		&.md li {
+			font-size: 0.875rem;
 
-				&.home {
-					width: 16px;
-				}
+			&.home {
+				width: 14px;
+			}
+		}
+
+		&.lg li {
+			font-size: 1rem;
+
+			&.home {
+				width: 16px;
 			}
 		}
 	}

@@ -1,27 +1,32 @@
 <script lang="ts">
-	import TableBody from '$src/lib/tables/table-body.svelte';
 	import TableCell from '$src/lib/tables/table-cell.svelte';
-	import TableFooterCell from '$src/lib/tables/table-footer-cell.svelte';
-	import TableFooterRow from '$src/lib/tables/table-footer-row.svelte';
-	import TableFooter from '$src/lib/tables/table-footer.svelte';
 	import TableHeaderCell from '$src/lib/tables/table-header-cell.svelte';
-	import TableHeaderRow from '$src/lib/tables/table-header-row.svelte';
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
-	import type { DataCol, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
+	import type { ColumnDef, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
 	import Button from '../forms/button/button.svelte';
 	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
 	import Empty from '../generic/empty/empty.svelte';
 	import Pill from '../generic/pill/pill.svelte';
 	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
-	import { formatDateTime } from '../index.js';
 	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
+	import {
+		formatCell,
+		getCellLink,
+		getCellAlignment,
+		getCellTypeClass,
+		sortRows
+	} from './cell-renderers.js';
+	import { getTableContext } from './table-context.svelte.js';
+	import type { Snippet } from 'svelte';
+	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
+	import { onMount } from 'svelte';
 
-	type PaginationEvent = (pagination: PaginationProperties) => Promise<JsonObject[]>;
+	type PaginationEvent = (pagination: PaginationProperties) => void;
 
 	interface Action {
 		text: string;
@@ -34,8 +39,6 @@
 		items: Action[];
 	}
 
-	import type { Snippet } from 'svelte';
-
 	let {
 		captionSide = 'top' as 'top' | 'bottom',
 		captionAlign = 'center' as 'left' | 'center' | 'right',
@@ -43,93 +46,185 @@
 		cols,
 		pagination = undefined,
 		actions = undefined,
+		stickyHeader = false,
+		enableSorting = true,
+		enableSelection = false,
+		selectionMode = 'multi',
+		rowIdKey = 'id',
 		onPageChange = null,
-		children = undefined
+		onSort = undefined,
+		onSelectionChange = undefined,
+		children = undefined,
+		virtualScroll = false,
+		rowHeight = 48,
+		maxHeight = '600px'
 	}: {
 		captionSide?: 'top' | 'bottom';
 		captionAlign?: 'left' | 'center' | 'right';
 		rows?: JsonObject[];
-		cols: DataCol[];
+		cols: ColumnDef[];
 		pagination?: PaginationProperties;
 		actions?: Actions;
+		stickyHeader?: boolean;
+		enableSorting?: boolean;
+		enableSelection?: boolean;
+		selectionMode?: 'single' | 'multi';
+		rowIdKey?: string;
 		onPageChange?: PaginationEvent | null;
+		onSort?: (column: string, direction: 'asc' | 'desc') => void;
+		onSelectionChange?: (selectedIds: Set<string | number>) => void;
 		children?: Snippet;
+		virtualScroll?: boolean;
+		rowHeight?: number;
+		maxHeight?: string;
 	} = $props();
 
-	const getColType = (col: DataCol) => {
-		if (col.type) return col.type;
-		if (!rows?.length) return 'string';
-		const firstRow = rows[0];
-		if (!firstRow) return 'undefined';
-		if (col.key in firstRow) return typeof firstRow[col.key];
-	};
+	// Track current page internally
+	let currentPage = $state(1);
 
-	const format = <T extends JsonObject>(row: T, key: string): string => {
-		const col = cols.find((col) => col.key === key);
-		if (!col) return key in row ? String(row[key]) : '';
-		if ((row[key] === null || row[key] === undefined) && col.nullText) return col.nullText;
-		if (String(row[key]).trim() === '' && col.emptyText) return col.emptyText;
-		if (col.format) return col.format(row, key);
-		if (col.type === 'date') return formatDateTime(String(row[key])).substring(0, 10);
-		if (col.type === 'date-time') return formatDateTime(String(row[key]));
-		return String(row[key]);
-	};
+	// Update currentPage when pagination prop changes
+	$effect(() => {
+		const page = pagination?.page;
+		if (page) {
+			currentPage = page;
+		}
+	});
 
-	const calculateTotalPages = () => {
+	let totalPages = $derived.by(() => {
 		if (!pagination || !rows) return 1;
 		const totalRows = Math.max(pagination.total || rows.length);
 		return Math.ceil(totalRows / pagination.perPage);
-	};
+	});
 
-	const changePage = async (page: number) => {
-		pagination = { page, perPage: pagination?.perPage || 5 };
+	const changePage = (page: number) => {
+		if (!pagination) return;
+		currentPage = page;
+		// Notify parent if callback provided
 		if (onPageChange) {
-			rows = await onPageChange(pagination);
+			const newPagination = { ...pagination, page };
+			onPageChange(newPagination);
 		}
 	};
 
-	const filterRows = () => {
-		// If we don't have rows or pagination, we don't need to filter the rows.
-		if (!rows?.length || !pagination) return rows;
-		// If we have an onPageChange handler, we don't need to filter the rows because that will be handled by the handler.
-		if (onPageChange) return rows;
-		// Filter the rows based on the current page and perPage.
-		const currentPage = pagination.page || 1;
+	// Computed values
+	let hasActionCol = $derived(actions?.items && actions.items.length > 0);
+	let visibleCols = $derived(cols.filter((col) => !col.hidden));
+	let colCount = $derived(Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0));
+
+	// Manage sort state directly in DataGrid (not via context)
+	let currentSortColumn = $state<string | null>(null);
+	let currentSortDirection = $state<'asc' | 'desc'>('asc');
+
+	// Handle sort changes
+	function handleSortChange(column: string, direction: 'asc' | 'desc') {
+		// Empty column means clear sort
+		if (column === '') {
+			currentSortColumn = null;
+		} else {
+			currentSortColumn = column;
+			currentSortDirection = direction;
+			onSort?.(column, direction);
+		}
+	}
+
+	// Apply sorting
+	let sortedRows = $derived.by(() => {
+		if (!rows?.length || !enableSorting) return rows;
+		if (!currentSortColumn) return rows;
+
+		const sortColumn = cols.find((col) => col.key === currentSortColumn);
+		if (!sortColumn) return rows;
+
+		return sortRows(rows, sortColumn, currentSortDirection);
+	});
+
+	// Apply pagination
+	let filteredRows = $derived.by(() => {
+		const dataRows = sortedRows;
+		if (!dataRows?.length || !pagination) return dataRows;
+
+		// Always do client-side pagination
+		// onPageChange callback is just for notification
 		const perPage = pagination.perPage || 5;
 		const startIndex = currentPage * perPage - perPage;
 		const endIndex = startIndex + perPage;
-		return rows.filter((_row, index) => index >= startIndex && index < endIndex);
-	};
+		return dataRows.filter((_row, index) => index >= startIndex && index < endIndex);
+	});
 
-	let hasActionCol = $derived(actions?.items && actions.items.length > 0);
-	let colCount = $derived(
-		Math.max(1, cols.filter((col) => !col.hide).length) + (hasActionCol ? 1 : 0)
-	);
-	let totalPages = $derived(pagination && rows ? calculateTotalPages() : 1);
-	let filteredRows = $derived(rows && pagination ? filterRows() : rows);
+	// Virtual scrolling setup (only when pagination is disabled)
+	let tbodyRef: HTMLElement | null = null;
+	let virtual = $state<ReturnType<typeof useVirtualList<JsonObject>> | null>(null);
+
+	// Initialize virtual list
+	$effect(() => {
+		if (virtualScroll && !pagination) {
+			if (!virtual) {
+				virtual = useVirtualList(filteredRows || [], { itemHeight: rowHeight });
+				if (tbodyRef) {
+					virtual.setContainer(tbodyRef);
+				}
+			} else {
+				virtual.setItems(filteredRows || []);
+			}
+		} else if (virtual) {
+			virtual.destroy();
+			virtual = null;
+		}
+	});
+
+	// Set container when tbody ref is available
+	$effect(() => {
+		if (virtual && tbodyRef) {
+			virtual.setContainer(tbodyRef);
+		}
+	});
 </script>
 
-<Table>
+<Table
+	{stickyHeader}
+	enableSorting={false}
+	{enableSelection}
+	{selectionMode}
+	{rowIdKey}
+	onSort={handleSortChange}
+	{onSelectionChange}
+>
 	{#if children}
 		<TableCaption side={captionSide} align={captionAlign}>{@render children?.()}</TableCaption>
 	{/if}
-	<TableHeader>
-		<TableHeaderRow>
-			{#each cols as col}
-				{#if !col.hide}
-					<TableHeaderCell type={getColType(col)} width={col.width}>{col.label}</TableHeaderCell>
-				{/if}
+
+	<TableHeader sticky={stickyHeader}>
+		<tr>
+			{#each visibleCols as col}
+				<TableHeaderCell
+					type={col.type}
+					width={col.width}
+					sortable={col.sortable ?? enableSorting}
+					sortKey={col.key}
+					align={getCellAlignment(col)}
+					isSorted={currentSortColumn === col.key}
+					sortDirection={currentSortColumn === col.key ? currentSortDirection : undefined}
+					onSort={handleSortChange}
+				>
+					{col.label}
+				</TableHeaderCell>
 			{/each}
 			{#if hasActionCol}
-				<TableHeaderCell type="string" />
+				<TableHeaderCell type="actions">Actions</TableHeaderCell>
 			{/if}
-		</TableHeaderRow>
+		</tr>
 	</TableHeader>
-	<TableBody>
+
+	<tbody
+		bind:this={tbodyRef}
+		style={virtualScroll && !pagination
+			? `display: block; max-height: ${maxHeight}; overflow-y: auto;`
+			: ''}
+	>
 		{#if !filteredRows?.length}
 			<TableRow>
 				<TableCell colspan={colCount}>
-					<div class="empty">
+					<div class="empty" role="status" aria-live="polite">
 						{#if rows === undefined}
 							<Loading />
 						{:else}
@@ -140,32 +235,88 @@
 					</div>
 				</TableCell>
 			</TableRow>
-		{:else}
-			{#each filteredRows as row}
-				<TableRow>
-					{#each cols as col}
-						{#if !col.hide}
-							<TableCell type={col.type || typeof row[col.key]} width={col.width}>
-								{#if col.link}
-									<a href={col.link(row, col.key)}>{format(row, col.key)}</a>
-								{:else if col.type == 'email' && row[col.key]}
-									<a href={`mailto:${row[col.key]}`}>{format(row, col.key)}</a>
-								{:else if col.type == 'check'}
-									{#if row[col.key]}
-										<Pill shape="circle" variant="positive" compact>✔</Pill>
-									{/if}
-								{:else}
-									{format(row, col.key)}
+		{:else if virtualScroll && !pagination && virtual}
+			<!-- Virtual scrolling mode -->
+			<tr style="height: {virtual.totalHeight}px; position: relative;">
+				<td colspan={colCount} style="padding: 0; border: 0;">
+					{#each virtual.visibleItems as vItem (vItem.index)}
+						{@const row = vItem.data}
+						{@const index = vItem.index}
+						<div
+							style="position: absolute; top: {vItem.offsetTop}px; height: {vItem.height}px; width: 100%; display: table; table-layout: fixed;"
+						>
+							<TableRow {row} rowIndex={index} selectable={enableSelection}>
+								{#each visibleCols as col}
+									{@const cellValue = formatCell(row, col)}
+									{@const cellLink = getCellLink(row, col)}
+									{@const cellAlign = getCellAlignment(col)}
+									<TableCell type={getCellTypeClass(col)} width={col.width} align={cellAlign}>
+										{#if cellLink}
+											<a href={cellLink}>{cellValue}</a>
+										{:else if col.type === 'check' || col.type === 'boolean'}
+											{#if row[col.key]}
+												<Pill shape="circle" variant="positive" compact label="✔" />
+											{/if}
+										{:else}
+											{cellValue}
+										{/if}
+									</TableCell>
+								{/each}
+								{#if hasActionCol && actions}
+									<TableCell type="actions">
+										{#if actions.type === 'dropdown'}
+											<DropdownButton text={actions.text ?? ''} variant="ghost">
+												{#each actions.items as action}
+													<DropdownItem onClick={() => action.onClick(row)}
+														>{action.text}</DropdownItem
+													>
+												{/each}
+											</DropdownButton>
+										{:else}
+											{#each actions.items as action}
+												<Button
+													collapse={true}
+													size="sm"
+													type="button"
+													variant={actions.type === 'outline' ? 'outline' : 'secondary'}
+													onClick={() => action.onClick(row)}
+													label={action.text}
+												/>
+											{/each}
+										{/if}
+									</TableCell>
 								{/if}
-							</TableCell>
-						{/if}
+							</TableRow>
+						</div>
+					{/each}
+				</td>
+			</tr>
+		{:else}
+			<!-- Regular rendering mode -->
+			{#each filteredRows as row, index}
+				<TableRow {row} rowIndex={index} selectable={enableSelection}>
+					{#each visibleCols as col}
+						{@const cellValue = formatCell(row, col)}
+						{@const cellLink = getCellLink(row, col)}
+						{@const cellAlign = getCellAlignment(col)}
+						<TableCell type={getCellTypeClass(col)} width={col.width} align={cellAlign}>
+							{#if cellLink}
+								<a href={cellLink}>{cellValue}</a>
+							{:else if col.type === 'check' || col.type === 'boolean'}
+								{#if row[col.key]}
+									<Pill shape="circle" variant="positive" compact label="✔" />
+								{/if}
+							{:else}
+								{cellValue}
+							{/if}
+						</TableCell>
 					{/each}
 					{#if hasActionCol && actions}
 						<TableCell type="actions">
 							{#if actions.type === 'dropdown'}
 								<DropdownButton text={actions.text ?? ''} variant="ghost">
 									{#each actions.items as action}
-										<DropdownItem onclick={() => action.onClick(row)}>{action.text}</DropdownItem>
+										<DropdownItem onClick={() => action.onClick(row)}>{action.text}</DropdownItem>
 									{/each}
 								</DropdownButton>
 							{:else}
@@ -174,8 +325,8 @@
 										collapse={true}
 										size="sm"
 										type="button"
-										variant={actions.type == 'link' ? 'link' : 'secondary'}
-										onclick={() => action.onClick(row)}
+										variant={actions.type === 'outline' ? 'outline' : 'secondary'}
+										onClick={() => action.onClick(row)}
 										label={action.text}
 									/>
 								{/each}
@@ -185,22 +336,25 @@
 				</TableRow>
 			{/each}
 		{/if}
-	</TableBody>
+	</tbody>
+
 	{#if pagination}
-		<TableFooter>
-			<TableFooterRow>
-				<TableFooterCell colspan={colCount}>
-					<Pagination
-						currentPage={pagination.page}
-						{totalPages}
-						variant="flat"
-						size="sm"
-						align="center"
-						onPage={changePage}
-					/>
-				</TableFooterCell>
-			</TableFooterRow>
-		</TableFooter>
+		<tfoot>
+			<tr>
+				<td colspan={colCount} class="footer-cell">
+					<nav aria-label="Table pagination">
+						<Pagination
+							bind:currentPage
+							{totalPages}
+							variant="flat"
+							size="sm"
+							align="center"
+							onPage={changePage}
+						/>
+					</nav>
+				</td>
+			</tr>
+		</tfoot>
 	{/if}
 </Table>
 
@@ -218,5 +372,23 @@
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+
+	tfoot {
+		background: var(--table-footer-bg);
+		color: var(--table-footer-fg);
+		border-top: solid var(--border-thin) var(--table-footer-border);
+		border-bottom: solid var(--border-thin) var(--table-footer-border);
+		font-size: var(--font-sm);
+	}
+
+	.footer-cell {
+		padding: 0.5rem;
+	}
+
+	td.footer-cell :global(.pagination) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

@@ -1,47 +1,92 @@
 <script lang="ts">
 	import FlexItem from '../layout/flex-item.svelte';
 
-	let { animation = 'pulse' }: { animation?: 'pulse' | 'none' } = $props();
+	let { animation = 'shimmer' }: { animation?: 'pulse' | 'shimmer' | 'none' } = $props();
 </script>
 
 <FlexItem>
-	<div class="box {animation}">
-		<div class="label"></div>
-		<div class="input"></div>
+	<div class="box">
+		<div class="label {animation}"></div>
+		<div class="input {animation}"></div>
 	</div>
 </FlexItem>
 
-<style>
-	div.pulse {
-		animation: pulse 2s infinite;
-	}
-
+<style lang="scss">
 	div.label {
 		height: 1rem;
-		background-color: var(--base-color-fg, #ccc);
-		opacity: 0.5;
-		border-radius: 1rem;
-		margin-bottom: 1rem;
+		background-color: var(--gray-200);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--spacing-base);
 		width: 35%;
+		position: relative;
+		overflow: hidden;
+
+		&.shimmer {
+			background: linear-gradient(
+				90deg,
+				var(--gray-200) 0%,
+				var(--gray-300) 40%,
+				var(--gray-200) 80%
+			);
+			background-size: 200% 100%;
+			animation: shimmer 2s ease-in-out infinite;
+		}
+
+		&.pulse {
+			animation: pulse 2s ease-in-out infinite;
+		}
 	}
+
 	div.input {
-		height: 2rem;
+		height: 2.5rem;
 		width: 100%;
-		border: 1px solid var(--form-input-border, black);
-		background-color: var(--form-input-bg, white);
-		opacity: 0.7;
-		border-radius: 0.25rem;
+		border: var(--border-thin) solid var(--gray-300);
+		background-color: var(--gray-100);
+		border-radius: var(--radius-md);
+		position: relative;
+		overflow: hidden;
+
+		&.shimmer {
+			background: linear-gradient(
+				90deg,
+				var(--gray-100) 0%,
+				var(--gray-200) 40%,
+				var(--gray-100) 80%
+			);
+			background-size: 200% 100%;
+			animation: shimmer 2s ease-in-out infinite;
+		}
+
+		&.pulse {
+			animation: pulse 2s ease-in-out infinite;
+		}
 	}
 
 	@keyframes pulse {
 		0%,
 		100% {
-			opacity: 0.5;
-			scale: 0.99;
+			opacity: 1;
 		}
 		50% {
-			opacity: 1;
-			scale: 1;
+			opacity: 0.5;
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
+	}
+
+	/* Respect prefers-reduced-motion */
+	@media (prefers-reduced-motion: reduce) {
+		div.pulse,
+		div.shimmer {
+			animation: none;
+			opacity: 0.7;
 		}
 	}
 </style>

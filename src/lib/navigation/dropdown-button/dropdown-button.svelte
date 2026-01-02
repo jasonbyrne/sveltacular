@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { AngleUpIcon } from '$src/lib/index.js';
 	import { hasContext } from 'svelte';
+	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 
 	let {
 		open = $bindable(false),
@@ -17,28 +18,52 @@
 		children: Snippet;
 	} = $props();
 
+	const id = uniqueId();
+	const buttonId = `dropdown-button-${id}`;
+	const menuId = `dropdown-menu-${id}`;
+
 	const onClick = () => {
 		open = !open;
+	};
+
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key === 'Escape' && open) {
+			e.preventDefault();
+			open = false;
+			// Return focus to button
+			document.getElementById(buttonId)?.focus();
+		}
 	};
 
 	let hasText = $derived(text && text.length > 0);
 </script>
 
-<div class="dropdown-button {variant} icon-{icon}" class:open>
-	<button onclick={onClick} class:hasText>
+<div class="dropdown-button {variant} icon-{icon}" class:open onkeydown={handleKeyDown}>
+	<button
+		id={buttonId}
+		type="button"
+		onclick={onClick}
+		class:hasText
+		aria-expanded={open}
+		aria-controls={menuId}
+		aria-haspopup="true"
+		aria-label={text || 'Open menu'}
+	>
 		{#if hasText}
 			<div class="text">
 				{text}
 			</div>
 		{/if}
-		<div class="icon">
-			<span>
-				<AngleUpIcon />
-			</span>
-		</div>
+		{#if icon === 'arrow'}
+			<div class="icon" aria-hidden="true">
+				<span>
+					<AngleUpIcon />
+				</span>
+			</div>
+		{/if}
 	</button>
 	{#if open}
-		<div class="menu">
+		<div id={menuId} class="menu" role="menu">
 			{@render children?.()}
 		</div>
 	{/if}

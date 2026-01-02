@@ -20,9 +20,9 @@
 		<Image {src} {alt} {href} align="left" />
 	{:else}
 		<a {href} title={alt}>
-		{#if children}
-			{@render children?.()}
-		{/if}
+			{#if children}
+				{@render children?.()}
+			{/if}
 		</a>
 	{/if}
 </div>

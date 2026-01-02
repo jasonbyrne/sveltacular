@@ -2,6 +2,7 @@
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField from '../form-field.svelte';
 	import FormLabel from '../form-label.svelte';
+	import { untrack } from 'svelte';
 	
 	const id = uniqueId();
 
@@ -33,6 +34,9 @@
 		label?: string;
 	} = $props();
 
+	let isValueInCents = $derived(units === 'cents');
+	const fieldOrder = ['dollars', 'cents'];
+	
 	const getDollarsFromValue = () => {
 		if (!value) return '0';
 		if (isValueInCents) return String(Math.abs(Math.floor(value / 100)));
@@ -45,14 +49,12 @@
 		return String(Math.abs(Math.round((value % 1) * 100))).padStart(2, '0');
 	}
 
-
-	let isValueInCents = units === 'cents';
-	const fieldOrder = ['dollars', 'cents'];
 	let dollars = $state(getDollarsFromValue());
 	let cents = $state(getCentsFromValue());
+	// Using untrack() to indicate we intentionally want non-reactive initial values
 	let lastState = $state([
-		{ value: String(dollars), selectionStart: 0, selectionEnd: 0 },
-		{ value: String(cents), selectionStart: 0, selectionEnd: 0 }
+		{ value: untrack(() => String(dollars)), selectionStart: 0, selectionEnd: 0 },
+		{ value: untrack(() => String(cents)), selectionStart: 0, selectionEnd: 0 }
 	]);
 	$effect(() => {
 		if (value !== null && value >= 0) {
