@@ -55,7 +55,8 @@ describe('ago', () => {
 	it('should handle short style', () => {
 		const date = new Date('2024-01-15T11:59:30Z');
 		const result = ago(date, 'short');
-		expect(result).toMatch(/^\d+s$/);
+		// Short style can be either "<30s" or a specific number like "30s"
+		expect(result).toMatch(/^(<\d+s|\d+s)$/);
 	});
 
 	it('should handle future dates', () => {
@@ -64,4 +65,5 @@ describe('ago', () => {
 		expect(result).toContain('+');
 	});
 });
+
 

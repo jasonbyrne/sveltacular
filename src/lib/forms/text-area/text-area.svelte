@@ -14,6 +14,9 @@
 		disabled = false,
 		required = false,
 		readonly = false,
+		autoResize = false,
+		minRows = 2,
+		maxRows = undefined,
 		label = undefined
 	}: {
 		size?: FormFieldSizeOptions;
@@ -23,15 +26,64 @@
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;
+		autoResize?: boolean;
+		minRows?: number;
+		maxRows?: number | undefined;
 		label?: string;
 	} = $props();
+
+	let textareaElement: HTMLTextAreaElement | null = $state(null);
+
+	// Auto-resize functionality
+	const handleAutoResize = () => {
+		if (!autoResize || !textareaElement) return;
+
+		// Reset height to auto to get the correct scrollHeight
+		textareaElement.style.height = 'auto';
+
+		// Calculate new height based on content
+		const lineHeight = parseInt(getComputedStyle(textareaElement).lineHeight);
+		const paddingTop = parseInt(getComputedStyle(textareaElement).paddingTop);
+		const paddingBottom = parseInt(getComputedStyle(textareaElement).paddingBottom);
+		const minHeight = lineHeight * minRows + paddingTop + paddingBottom;
+		const maxHeight = maxRows ? lineHeight * maxRows + paddingTop + paddingBottom : Infinity;
+
+		const newHeight = Math.min(Math.max(textareaElement.scrollHeight, minHeight), maxHeight);
+		textareaElement.style.height = `${newHeight}px`;
+	};
+
+	// Run auto-resize when value changes
+	$effect(() => {
+		if (value !== null && value !== undefined) {
+			handleAutoResize();
+		}
+	});
+
+	// Run auto-resize on mount
+	$effect(() => {
+		if (textareaElement && autoResize) {
+			handleAutoResize();
+		}
+	});
 </script>
 
 <FormField {size}>
 	{#if label}
 		<FormLabel {id} {required} {label} />
 	{/if}
-	<textarea wrap="soft" {id} {placeholder} {rows} bind:value {required} {disabled} {readonly}></textarea>
+	<textarea 
+		wrap="soft" 
+		{id} 
+		{placeholder} 
+		rows={autoResize ? minRows : rows} 
+		bind:value 
+		bind:this={textareaElement}
+		{required} 
+		{disabled} 
+		{readonly}
+		data-auto-resize={autoResize}
+		oninput={handleAutoResize}
+	></textarea>
 </FormField>
 
 <style lang="scss">
@@ -49,12 +101,19 @@
 		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
 			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out,
 			box-shadow 0.2s ease-in-out;
-		user-select: none;
+		user-select: text;
 		resize: vertical;
 		white-space: normal;
+		overflow-y: auto;
+		box-sizing: border-box;
 
 		&::placeholder {
 			color: var(--form-input-placeholder, #a0aec0);
+		}
+
+		&[data-auto-resize='true'] {
+			resize: none;
+			overflow-y: hidden;
 		}
 	}
 </style>

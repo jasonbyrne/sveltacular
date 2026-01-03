@@ -14,6 +14,7 @@ export { default as UrlBox } from './url-box/url-box.svelte';
 
 // Form components with barrel files
 export * from './check-box/index.js';
+export * from './combo-box/index.js';
 export * from './list-box/index.js';
 export * from './phone-box/index.js';
 export * from './radio-group/index.js';

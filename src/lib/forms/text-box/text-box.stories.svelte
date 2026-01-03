@@ -92,6 +92,43 @@
 				table: {
 					type: { summary: '(value: string) => void' }
 				}
+			},
+			successText: {
+				control: 'text',
+				description: 'Success message displayed below the input',
+				table: {
+					type: { summary: 'string' }
+				}
+			},
+			errorText: {
+				control: 'text',
+				description: 'Error message displayed below the input',
+				table: {
+					type: { summary: 'string' }
+				}
+			},
+			isLoading: {
+				control: 'boolean',
+				description: 'Whether the input is in loading state (async validation)',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			showCharacterCount: {
+				control: 'boolean',
+				description: 'Whether to show character counter',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			maxlength: {
+				control: 'number',
+				description: 'Maximum number of characters allowed',
+				table: {
+					type: { summary: 'number' }
+				}
 			}
 		},
 		args: {
@@ -126,5 +163,51 @@
 />
 
 <Story name="UserName" args={{ type: 'text', placeholder: 'User Name', allowSpaces: false, textCase: 'lower' }} />
+
+<Story 
+	name="SuccessState" 
+	args={{ 
+		type: 'email', 
+		placeholder: 'Enter your email',
+		label: 'Email Address',
+		successText: 'Email is available!',
+		helperText: 'We\'ll never share your email'
+	}} 
+/>
+
+<Story 
+	name="LoadingState" 
+	args={{ 
+		type: 'text', 
+		placeholder: 'Enter username',
+		label: 'Username',
+		isLoading: true,
+		helperText: 'Checking availability...'
+	}} 
+/>
+
+<Story 
+	name="CharacterCounter" 
+	args={{ 
+		type: 'text', 
+		placeholder: 'Tell us about yourself',
+		label: 'Bio',
+		showCharacterCount: true,
+		maxlength: 100,
+		helperText: 'Keep it short and sweet',
+		value: 'I am a software developer'
+	}} 
+/>
+
+<Story 
+	name="ErrorState" 
+	args={{ 
+		type: 'email', 
+		placeholder: 'Enter your email',
+		label: 'Email Address',
+		errorText: 'This email is already taken',
+		helperText: 'We\'ll never share your email'
+	}} 
+/>
 
 

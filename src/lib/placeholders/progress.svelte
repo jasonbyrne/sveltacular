@@ -11,13 +11,13 @@
 <style lang="scss">
 	.progress-bar {
 		height: 2rem;
-		background-color: var(--base-color-fg, #ccc);
+		background-color: var(--gray-200);
 		border-radius: 1rem;
 		margin-bottom: 1rem;
 
 		.progress {
 			height: 100%;
-			background-color: var(--primary-color, #00a);
+			background-color: var(--color-info);
 			color: white;
 			border-radius: 1rem;
 			transition: width 0.5s ease-in-out;
@@ -29,13 +29,13 @@
 		}
 
 		.progress-value {
-			color: var(--base-color-bg, #fff);
+			color: #ffffff;
 			font-size: 1rem;
 			font-family: var(--base-font-family, sans-serif);
-			font-weight: 500;
+			font-weight: 600;
 			line-height: 1.5rem;
 			padding: 0 0.5rem;
-			text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 		}
 	}
 </style>

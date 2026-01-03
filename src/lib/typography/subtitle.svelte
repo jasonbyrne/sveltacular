@@ -24,6 +24,11 @@
 		line-height: 2rem;
 		letter-spacing: 0.1rem;
 		font-family: var(--base-headline-font-family, sans-serif);
+		color: #2d3748;
+
+		:global([data-theme="dark"]) & {
+			color: #e6edf3;
+		}
 
 		&.level1 {
 			font-size: 1.5rem;

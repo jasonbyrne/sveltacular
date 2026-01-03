@@ -13,6 +13,9 @@
 		step = 1,
 		disabled = false,
 		size = 'full' as ComponentSize,
+		showTooltip = true,
+		showValue = true,
+		formatValue = undefined,
 		onChange = undefined,
 		label = undefined
 	}: {
@@ -22,9 +25,15 @@
 		step?: number;
 		disabled?: boolean;
 		size?: ComponentSize;
+		showTooltip?: boolean;
+		showValue?: boolean;
+		formatValue?: ((value: number) => string) | undefined;
 		onChange?: ((value: number) => void) | undefined;
 		label?: string;
 	} = $props();
+
+	let isDragging = $state(false);
+	let sliderRef: HTMLInputElement | null = $state(null);
 
 	const handleInput = (e: Event) => {
 		const target = e.target as HTMLInputElement;
@@ -32,7 +41,16 @@
 		onChange?.(value);
 	};
 
+	const handleMouseDown = () => {
+		isDragging = true;
+	};
+
+	const handleMouseUp = () => {
+		isDragging = false;
+	};
+
 	let percentage = $derived(((value - min) / (max - min)) * 100);
+	let displayValue = $derived(formatValue ? formatValue(value) : String(value));
 </script>
 
 <FormField {size}>
@@ -40,21 +58,41 @@
 		<FormLabel {id} {label} />
 	{/if}
 	<div class="slider-wrapper">
-		<input
-			{id}
-			type="range"
-			{min}
-			{max}
-			{step}
-			{disabled}
-			bind:value
-			oninput={handleInput}
-			aria-label={label || 'Slider'}
-			aria-valuemin={min}
-			aria-valuemax={max}
-			aria-valuenow={value}
-		/>
-		<div class="value-display">{value}</div>
+		<div class="slider-track-container">
+			<input
+				bind:this={sliderRef}
+				{id}
+				type="range"
+				{min}
+				{max}
+				{step}
+				{disabled}
+				bind:value
+				oninput={handleInput}
+				onmousedown={handleMouseDown}
+				onmouseup={handleMouseUp}
+				ontouchstart={handleMouseDown}
+				ontouchend={handleMouseUp}
+				aria-label={label || 'Slider'}
+				aria-valuemin={min}
+				aria-valuemax={max}
+				aria-valuenow={value}
+				aria-valuetext={displayValue}
+			/>
+			{#if showTooltip && (isDragging || sliderRef === document.activeElement)}
+				<div 
+					class="slider-tooltip" 
+					style="left: {percentage}%;"
+					role="tooltip"
+					aria-live="polite"
+				>
+					{displayValue}
+				</div>
+			{/if}
+		</div>
+		{#if showValue}
+			<div class="value-display">{displayValue}</div>
+		{/if}
 	</div>
 </FormField>
 
@@ -64,6 +102,11 @@
 		width: 100%;
 		padding: 0.5rem 0;
 
+		.slider-track-container {
+			position: relative;
+			padding-top: 2rem;
+		}
+
 		input[type='range'] {
 			width: 100%;
 			height: 0.5rem;
@@ -72,6 +115,8 @@
 			outline: none;
 			-webkit-appearance: none;
 			appearance: none;
+			position: relative;
+			z-index: 1;
 
 			&::-webkit-slider-thumb {
 				-webkit-appearance: none;
@@ -81,6 +126,17 @@
 				border-radius: 50%;
 				background: var(--form-input-selected-bg, #3182ce);
 				cursor: pointer;
+				transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+				&:hover {
+					transform: scale(1.1);
+					box-shadow: 0 2px 8px rgba(49, 130, 206, 0.4);
+				}
+
+				&:active {
+					transform: scale(1.15);
+					box-shadow: 0 2px 12px rgba(49, 130, 206, 0.5);
+				}
 			}
 
 			&::-moz-range-thumb {
@@ -90,11 +146,72 @@
 				background: var(--form-input-selected-bg, #3182ce);
 				cursor: pointer;
 				border: none;
+				transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+				&:hover {
+					transform: scale(1.1);
+					box-shadow: 0 2px 8px rgba(49, 130, 206, 0.4);
+				}
+
+				&:active {
+					transform: scale(1.15);
+					box-shadow: 0 2px 12px rgba(49, 130, 206, 0.5);
+				}
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring-color, #3b82f6);
+				outline-offset: 2px;
 			}
 
 			&:disabled {
 				opacity: 0.5;
 				cursor: not-allowed;
+
+				&::-webkit-slider-thumb,
+				&::-moz-range-thumb {
+					cursor: not-allowed;
+				}
+			}
+		}
+
+		.slider-tooltip {
+			position: absolute;
+			top: 0;
+			transform: translateX(-50%);
+			padding: 0.375rem 0.625rem;
+			background-color: var(--tooltip-bg, #000);
+			color: var(--tooltip-fg, #fff);
+			border-radius: var(--radius-md, 0.25rem);
+			font-size: var(--font-sm, 0.875rem);
+			white-space: nowrap;
+			pointer-events: none;
+			box-shadow: var(--shadow-lg, 0 2px 8px rgba(0, 0, 0, 0.15));
+			animation: tooltip-fade-in 0.15s ease-out;
+			z-index: 10;
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 5px 5px 0 5px;
+				border-color: var(--tooltip-bg, #000) transparent transparent transparent;
+			}
+		}
+
+		@keyframes tooltip-fade-in {
+			from {
+				opacity: 0;
+				transform: translateX(-50%) translateY(-4px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(-50%) translateY(0);
 			}
 		}
 
@@ -103,7 +220,9 @@
 			margin-top: 0.5rem;
 			font-size: 0.875rem;
 			color: var(--form-input-fg, #000);
+			font-weight: 500;
 		}
 	}
 </style>
+
 

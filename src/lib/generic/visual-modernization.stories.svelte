@@ -216,7 +216,13 @@
 			<Button>Focus Me</Button>
 			<Button variant="secondary">Tab Here</Button>
 			<Button variant="positive">And Here</Button>
-			<a href="#" style="color: var(--base-link-fg);">Or This Link</a>
+			<button
+				type="button"
+				style="background: none; border: none; padding: 0; color: var(--base-link-fg); text-decoration: underline; cursor: pointer; font: inherit;"
+				onclick={() => {}}
+			>
+				Or This Link
+			</button>
 			<input
 				type="text"
 				placeholder="Or this input"

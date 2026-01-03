@@ -123,6 +123,12 @@
 		color: var(--form-input-fg, black);
 		border-radius: 0.25rem;
 		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+
+		&:hover:not(.disabled) {
+			border-color: var(--primary-500, #3b82f6);
+			background-color: var(--primary-50, rgba(59, 130, 246, 0.05));
+		}
 
 		&.disabled {
 			opacity: 0.5;
@@ -132,6 +138,21 @@
 		&.isDragging {
 			background-color: var(--form-input-selected-bg, #3182ce);
 			color: var(--form-input-selected-fg, white);
+			border-color: var(--form-input-selected-bg, #3182ce);
+			border-style: solid;
+			transform: scale(1.02);
+			box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+			transition: all 0.2s ease-in-out;
+
+			.icon {
+				opacity: 1;
+				transform: scale(1.1);
+				transition: all 0.2s ease-in-out;
+			}
+
+			.text {
+				opacity: 1;
+			}
 		}
 
 		label {
@@ -147,6 +168,7 @@
 			.icon {
 				width: 50%;
 				opacity: 0.5;
+				transition: all 0.2s ease-in-out;
 			}
 
 			.text {
@@ -155,6 +177,7 @@
 				margin-top: 1rem;
 				opacity: 0.5;
 				text-align: center;
+				transition: all 0.2s ease-in-out;
 			}
 
 			.file-count {

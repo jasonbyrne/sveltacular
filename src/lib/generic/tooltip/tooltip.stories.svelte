@@ -2,35 +2,498 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Tooltip from './tooltip.svelte';
 	import Button from '$src/lib/forms/button/button.svelte';
+	import Badge from '$src/lib/generic/badge/badge.svelte';
+	import Link from '$src/lib/generic/link/link.svelte';
 
 	const { Story } = defineMeta({
 		component: Tooltip,
 		title: 'Generic/Tooltip',
-		tags: ['autodocs']
+		tags: ['autodocs'],
+		argTypes: {
+			placement: {
+				control: 'select',
+				options: [
+					'top',
+					'top-start',
+					'top-end',
+					'bottom',
+					'bottom-start',
+					'bottom-end',
+					'left',
+					'left-start',
+					'left-end',
+					'right',
+					'right-start',
+					'right-end'
+				],
+				description: 'Position of the tooltip relative to trigger'
+			},
+			trigger: {
+				control: 'select',
+				options: ['hover', 'focus', 'click', 'manual'],
+				description: 'How the tooltip is triggered'
+			},
+			arrow: {
+				control: 'boolean',
+				description: 'Show arrow pointing to trigger'
+			},
+			openDelay: {
+				control: 'number',
+				description: 'Delay in ms before showing tooltip'
+			},
+			closeDelay: {
+				control: 'number',
+				description: 'Delay in ms before hiding tooltip'
+			}
+		}
 	});
 </script>
 
-<Story name="Top" args={{ text: 'This is a tooltip', position: 'top' }}>
-	<Tooltip text="This is a tooltip" position="top">
-		<Button label="Hover me" />
-	</Tooltip>
+<!-- Basic Examples -->
+<Story name="Default (Hover Top)">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="This is a tooltip on top">
+			<Button label="Hover me" />
+		</Tooltip>
+	</div>
 </Story>
 
-<Story name="Bottom" args={{ text: 'This is a tooltip', position: 'bottom' }}>
-	<Tooltip text="This is a tooltip" position="bottom">
-		<Button label="Hover me" />
-	</Tooltip>
+<Story name="All Placements">
+	<div style="padding: 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+		<div>
+			<h4 style="margin-bottom: 1rem;">Top</h4>
+			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+				<Tooltip text="Top start" placement="top-start">
+					<Button label="Top Start" size="sm" />
+				</Tooltip>
+				<Tooltip text="Top center" placement="top">
+					<Button label="Top Center" size="sm" />
+				</Tooltip>
+				<Tooltip text="Top end" placement="top-end">
+					<Button label="Top End" size="sm" />
+				</Tooltip>
+			</div>
+		</div>
+
+		<div>
+			<h4 style="margin-bottom: 1rem;">Bottom</h4>
+			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+				<Tooltip text="Bottom start" placement="bottom-start">
+					<Button label="Bottom Start" size="sm" />
+				</Tooltip>
+				<Tooltip text="Bottom center" placement="bottom">
+					<Button label="Bottom Center" size="sm" />
+				</Tooltip>
+				<Tooltip text="Bottom end" placement="bottom-end">
+					<Button label="Bottom End" size="sm" />
+				</Tooltip>
+			</div>
+		</div>
+
+		<div>
+			<h4 style="margin-bottom: 1rem;">Left</h4>
+			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+				<Tooltip text="Left start" placement="left-start">
+					<Button label="Left Start" size="sm" />
+				</Tooltip>
+				<Tooltip text="Left center" placement="left">
+					<Button label="Left Center" size="sm" />
+				</Tooltip>
+				<Tooltip text="Left end" placement="left-end">
+					<Button label="Left End" size="sm" />
+				</Tooltip>
+			</div>
+		</div>
+
+		<div>
+			<h4 style="margin-bottom: 1rem;">Right</h4>
+			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+				<Tooltip text="Right start" placement="right-start">
+					<Button label="Right Start" size="sm" />
+				</Tooltip>
+				<Tooltip text="Right center" placement="right">
+					<Button label="Right Center" size="sm" />
+				</Tooltip>
+				<Tooltip text="Right end" placement="right-end">
+					<Button label="Right End" size="sm" />
+				</Tooltip>
+			</div>
+		</div>
+	</div>
 </Story>
 
-<Story name="Left" args={{ text: 'This is a tooltip', position: 'left' }}>
-	<Tooltip text="This is a tooltip" position="left">
-		<Button label="Hover me" />
-	</Tooltip>
+<!-- Trigger Modes -->
+<Story name="Trigger: Hover">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Appears on hover" trigger="hover">
+			<Button label="Hover me" />
+		</Tooltip>
+	</div>
 </Story>
 
-<Story name="Right" args={{ text: 'This is a tooltip', position: 'right' }}>
-	<Tooltip text="This is a tooltip" position="right">
-		<Button label="Hover me" />
-	</Tooltip>
+<Story name="Trigger: Focus">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Appears on focus (Tab to me)" trigger="focus">
+			<Button label="Focus me" />
+		</Tooltip>
+	</div>
 </Story>
 
+<Story name="Trigger: Click">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Click to toggle tooltip" trigger="click">
+			<Button label="Click me" />
+		</Tooltip>
+		<p style="margin-left: 2rem; color: #666;">
+			Click the button to toggle. Click outside or press Escape to close.
+		</p>
+	</div>
+</Story>
+
+<Story name="Trigger: Manual (Controlled)">
+	<div style="padding: 60px; text-align: center;">
+		<p style="margin-bottom: 1rem; color: #666;">
+			Manual mode allows you to control the tooltip programmatically via the <code
+				style="background: #f0f0f0; padding: 0.125rem 0.25rem; border-radius: 0.25rem;">open</code
+			> prop.
+		</p>
+		<p style="color: #666;">
+			Use <code
+				style="background: #f0f0f0; padding: 0.125rem 0.25rem; border-radius: 0.25rem;"
+				>bind:open</code
+			> to control the state from a parent component.
+		</p>
+		<div style="margin-top: 2rem;">
+			<Tooltip text="This tooltip is in manual mode" trigger="manual">
+				<Badge text="Manual Mode" color="purple" />
+			</Tooltip>
+		</div>
+	</div>
+</Story>
+
+<!-- Delays -->
+<Story name="With Open Delay">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Appears after 500ms" openDelay={500}>
+			<Button label="Hover me (delayed)" />
+		</Tooltip>
+		<p style="margin-left: 2rem; color: #666;">Tooltip appears after 500ms delay</p>
+	</div>
+</Story>
+
+<Story name="With Close Delay">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Closes after 500ms" closeDelay={500}>
+			<Button label="Hover me" />
+		</Tooltip>
+		<p style="margin-left: 2rem; color: #666;">Tooltip closes after 500ms delay</p>
+	</div>
+</Story>
+
+<Story name="With Both Delays">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="Opens and closes with delay" openDelay={300} closeDelay={300}>
+			<Button label="Hover me" />
+		</Tooltip>
+		<p style="margin-left: 2rem; color: #666;">300ms delay for both open and close</p>
+	</div>
+</Story>
+
+<!-- Arrow Variations -->
+<Story name="Without Arrow">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="No arrow tooltip" arrow={false}>
+			<Button label="Hover me" />
+		</Tooltip>
+	</div>
+</Story>
+
+<Story name="With Arrow (All Sides)">
+	<div
+		style="padding: 100px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem; place-items: center;"
+	>
+		<Tooltip text="Tooltip with arrow on top" placement="top" arrow={true}>
+			<Button label="Top Arrow" />
+		</Tooltip>
+		<Tooltip text="Tooltip with arrow on bottom" placement="bottom" arrow={true}>
+			<Button label="Bottom Arrow" />
+		</Tooltip>
+		<Tooltip text="Tooltip with arrow on left" placement="left" arrow={true}>
+			<Button label="Left Arrow" />
+		</Tooltip>
+		<Tooltip text="Tooltip with arrow on right" placement="right" arrow={true}>
+			<Button label="Right Arrow" />
+		</Tooltip>
+	</div>
+</Story>
+
+<!-- Content Variations -->
+<Story name="With Title">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+		<Tooltip title="Pro Tip" text="Keyboard shortcuts can speed up your workflow">
+			<Button label="Title + Text" />
+		</Tooltip>
+		<Tooltip title="Important!" text="Save your work regularly to avoid data loss" placement="bottom">
+			<Button label="Title + Text (Bottom)" />
+		</Tooltip>
+		<Tooltip title="Quick Info" placement="right">
+			<Button label="Title Only" />
+		</Tooltip>
+	</div>
+</Story>
+
+<Story name="Long Text Content">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip
+			text="This is a much longer tooltip text that demonstrates how the tooltip handles wrapping and maximum width constraints. It should wrap nicely and remain readable."
+		>
+			<Button label="Long content" />
+		</Tooltip>
+	</div>
+</Story>
+
+<Story name="Long Content with Title">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip
+			title="Detailed Information"
+			text="This is a much longer tooltip text with a title that demonstrates how the tooltip handles wrapping and maximum width constraints when both title and body text are present."
+		>
+			<Button label="Long title + text" />
+		</Tooltip>
+	</div>
+</Story>
+
+<Story name="Rich Content (Snippet)">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip placement="bottom">
+			{#snippet content()}
+				<div style="text-align: left;">
+					<strong style="display: block; margin-bottom: 0.25rem;">Pro Tip!</strong>
+					<span>Use <code style="background: rgba(255,255,255,0.2); padding: 0 0.25rem; border-radius: 2px;">Ctrl+K</code> to open command palette</span>
+				</div>
+			{/snippet}
+			<Button label="Rich content" />
+		</Tooltip>
+	</div>
+</Story>
+
+<Story name="Rich Content with List">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip placement="right">
+			{#snippet content()}
+				<div style="text-align: left;">
+					<strong style="display: block; margin-bottom: 0.5rem;">Features:</strong>
+					<ul style="margin: 0; padding-left: 1.25rem; line-height: 1.6;">
+						<li>Smart positioning</li>
+						<li>Multiple triggers</li>
+						<li>Rich content</li>
+						<li>Accessible</li>
+					</ul>
+				</div>
+			{/snippet}
+			<Button label="Feature list" />
+		</Tooltip>
+	</div>
+</Story>
+
+<!-- Disabled State -->
+<Story name="Disabled">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
+		<Tooltip text="This tooltip won't show" disabled>
+			<Button label="Disabled tooltip" />
+		</Tooltip>
+		<p style="margin-left: 2rem; color: #666;">Tooltip is disabled and won't appear</p>
+	</div>
+</Story>
+
+<!-- Different Trigger Elements -->
+<Story name="On Different Elements">
+	<div
+		style="padding: 60px; display: flex; gap: 2rem; justify-content: center; align-items: center;"
+	>
+		<Tooltip text="Button tooltip">
+			<Button label="Button" />
+		</Tooltip>
+
+		<Tooltip text="Badge tooltip" placement="bottom">
+			<Badge text="Badge" color="green" />
+		</Tooltip>
+
+		<Tooltip text="Link tooltip" placement="right">
+			<Link href="#" text="Link" />
+		</Tooltip>
+
+		<Tooltip text="Text tooltip" placement="bottom">
+			<span style="text-decoration: underline dotted; cursor: help;">Hover me</span>
+		</Tooltip>
+	</div>
+</Story>
+
+<!-- Edge Cases -->
+<Story name="Near Viewport Edge (Auto Flip)">
+	<div style="position: relative; height: 400px;">
+		<div style="position: absolute; top: 10px; left: 10px;">
+			<Tooltip text="Flips to stay visible" placement="top">
+				<Button label="Top Left" size="sm" />
+			</Tooltip>
+		</div>
+		<div style="position: absolute; top: 10px; right: 10px;">
+			<Tooltip text="Flips to stay visible" placement="top">
+				<Button label="Top Right" size="sm" />
+			</Tooltip>
+		</div>
+		<div style="position: absolute; bottom: 10px; left: 10px;">
+			<Tooltip text="Flips to stay visible" placement="bottom">
+				<Button label="Bottom Left" size="sm" />
+			</Tooltip>
+		</div>
+		<div style="position: absolute; bottom: 10px; right: 10px;">
+			<Tooltip text="Flips to stay visible" placement="bottom">
+				<Button label="Bottom Right" size="sm" />
+			</Tooltip>
+		</div>
+	</div>
+</Story>
+
+<!-- Multiple Tooltips -->
+<Story name="Multiple Tooltips">
+	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+		<Tooltip text="First tooltip">
+			<Button label="Button 1" size="sm" />
+		</Tooltip>
+		<Tooltip text="Second tooltip">
+			<Button label="Button 2" size="sm" />
+		</Tooltip>
+		<Tooltip text="Third tooltip">
+			<Button label="Button 3" size="sm" />
+		</Tooltip>
+		<Tooltip text="Fourth tooltip">
+			<Button label="Button 4" size="sm" />
+		</Tooltip>
+		<Tooltip text="Fifth tooltip">
+			<Button label="Button 5" size="sm" />
+		</Tooltip>
+	</div>
+</Story>
+
+<!-- Keyboard Navigation Demo -->
+<Story name="Keyboard Navigation">
+	<div style="padding: 60px;">
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<p style="color: #666; margin-bottom: 0.5rem;">
+				Use <kbd
+					style="background: #f0f0f0; padding: 0.125rem 0.375rem; border-radius: 0.25rem; border: 1px solid #ccc;"
+					>Tab</kbd
+				> to navigate, <kbd
+					style="background: #f0f0f0; padding: 0.125rem 0.375rem; border-radius: 0.25rem; border: 1px solid #ccc;"
+					>Escape</kbd
+				> to close
+			</p>
+		</div>
+		<div style="display: flex; gap: 1rem; justify-content: center;">
+			<Tooltip text="Focus me with Tab" trigger="focus">
+				<Button label="Button 1" />
+			</Tooltip>
+			<Tooltip text="Click me or use Enter/Space" trigger="click">
+				<Button label="Button 2 (Click)" />
+			</Tooltip>
+			<Tooltip text="Focus me too" trigger="focus">
+				<Button label="Button 3" />
+			</Tooltip>
+		</div>
+	</div>
+</Story>
+
+<!-- Empty Content (Should Not Show) -->
+<Story name="Empty Content (Should Not Show)">
+	<div style="padding: 60px;">
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<p style="color: #666;">
+				These tooltips have no content and should NOT appear when triggered:
+			</p>
+		</div>
+		<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+			<Tooltip text="">
+				<Button label="Empty String" />
+			</Tooltip>
+			<Tooltip text="   ">
+				<Button label="Whitespace Only" />
+			</Tooltip>
+			<Tooltip text={undefined}>
+				<Button label="Undefined" />
+			</Tooltip>
+		</div>
+	</div>
+</Story>
+
+<!-- Real World Example -->
+<Story name="Real World: Help Icons">
+	<div style="padding: 60px; max-width: 400px; margin: 0 auto;">
+		<form style="display: flex; flex-direction: column; gap: 1.5rem;">
+			<div>
+				<label
+					style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 500;"
+				>
+					Email Address
+					<Tooltip text="We'll never share your email with anyone else" placement="right">
+						<span
+							style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #6b7280; color: white; font-size: 12px; cursor: help;"
+							>?</span
+						>
+					</Tooltip>
+				</label>
+				<input
+					type="email"
+					style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem;"
+					placeholder="you@example.com"
+				/>
+			</div>
+
+			<div>
+				<label
+					style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 500;"
+				>
+					Password
+					<Tooltip
+						title="Password Requirements"
+						text="At least 8 characters with one uppercase letter, one number, and one special character."
+						placement="right"
+					>
+						<span
+							style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #6b7280; color: white; font-size: 12px; cursor: help;"
+							>?</span
+						>
+					</Tooltip>
+				</label>
+				<input
+					type="password"
+					style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem;"
+					placeholder="••••••••"
+				/>
+			</div>
+
+			<div>
+				<label
+					style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 500;"
+				>
+					Phone Number
+					<Tooltip
+						title="Format"
+						text="Enter your phone number with country code, e.g., +1 (555) 123-4567"
+						placement="right"
+					>
+						<span
+							style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #6b7280; color: white; font-size: 12px; cursor: help;"
+							>?</span
+						>
+					</Tooltip>
+				</label>
+				<input
+					type="tel"
+					style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem;"
+					placeholder="+1 (555) 123-4567"
+				/>
+			</div>
+		</form>
+	</div>
+</Story>

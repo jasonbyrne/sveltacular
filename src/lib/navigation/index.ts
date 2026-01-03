@@ -9,6 +9,8 @@ export { default as SideBar } from './side-bar/side-bar.svelte';
 export * from './app-bar/index.js';
 export * from './tabs/index.js';
 export * from './wizard/index.js';
+export * from './context-menu/index.js';
+export * from './command-palette/index.js';
 
 // New navigation components
 export { default as Drawer } from './drawer/drawer.svelte';

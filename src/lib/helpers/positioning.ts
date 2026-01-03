@@ -312,30 +312,40 @@ export function calculateArrowPosition(
 	const reference = getRect(referenceElement);
 	const floating = getRect(floatingElement);
 
-	const arrowPosition: ArrowPosition = { side };
+	// Arrow should be on the opposite side of where the tooltip is positioned
+	// If tooltip is on top, arrow is on bottom pointing down toward the element
+	const arrowPosition: ArrowPosition = { side: getOppositeSide(side) };
 
 	// Calculate arrow position to point at center of reference element
+	// Arrow CSS creates a triangle using borders, which is arrowSize*2 wide/tall
+	// The point of the arrow is at the center of that dimension
 	if (side === 'top' || side === 'bottom') {
 		// Arrow is horizontally positioned
 		const referenceCenterX = reference.left + reference.width / 2;
 		const floatingLeft = floating.left;
-		arrowPosition.left = referenceCenterX - floatingLeft - arrowSize / 2;
+		// Center the arrow (which is arrowSize*2 wide) on the reference center
+		arrowPosition.left = referenceCenterX - floatingLeft - arrowSize;
 		
-		// Clamp arrow within floating element bounds
+		// Clamp arrow within floating element bounds, with padding to avoid rounded corners
+		// Typical border-radius is 4-6px, so keep arrow at least 8px from edges
+		const cornerPadding = arrowSize; // Keep arrow away from border-radius areas
 		arrowPosition.left = Math.max(
-			arrowSize,
-			Math.min(arrowPosition.left, floating.width - arrowSize * 2)
+			cornerPadding,
+			Math.min(arrowPosition.left, floating.width - cornerPadding - arrowSize * 2)
 		);
 	} else {
 		// Arrow is vertically positioned
 		const referenceCenterY = reference.top + reference.height / 2;
 		const floatingTop = floating.top;
-		arrowPosition.top = referenceCenterY - floatingTop - arrowSize / 2;
+		// Center the arrow (which is arrowSize*2 tall) on the reference center
+		arrowPosition.top = referenceCenterY - floatingTop - arrowSize;
 		
-		// Clamp arrow within floating element bounds
+		// Clamp arrow within floating element bounds, with padding to avoid rounded corners
+		// Typical border-radius is 4-6px, so keep arrow at least 8px from edges
+		const cornerPadding = arrowSize; // Keep arrow away from border-radius areas
 		arrowPosition.top = Math.max(
-			arrowSize,
-			Math.min(arrowPosition.top, floating.height - arrowSize * 2)
+			cornerPadding,
+			Math.min(arrowPosition.top, floating.height - cornerPadding - arrowSize * 2)
 		);
 	}
 

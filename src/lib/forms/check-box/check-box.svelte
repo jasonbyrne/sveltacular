@@ -87,6 +87,7 @@
 				left: 0;
 				width: 0;
 				height: 0;
+				line-height: 100%;
 				background-color: var(--form-input-selected-bg);
 				color: var(--form-input-selected-fg);
 				fill: var(--form-input-selected-bg);

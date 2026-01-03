@@ -39,6 +39,11 @@
 	h6 {
 		margin: 0;
 		font-family: var(--base-headline-font-family, sans-serif);
+		color: #2d3748;
+
+		:global([data-theme="dark"]) & {
+			color: #e6edf3;
+		}
 	}
 
 	h1 {

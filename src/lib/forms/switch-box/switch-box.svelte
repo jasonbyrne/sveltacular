@@ -22,7 +22,7 @@
 	<input type="checkbox" bind:checked onchange={() => onChange?.(checked)} {id} />
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<span class="switch">
-		<span class="slider" />
+		<span class="slider"></span>
 	</span>
 	{#if children}
 		<div class="text">

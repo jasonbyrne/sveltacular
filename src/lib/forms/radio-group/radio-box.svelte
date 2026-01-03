@@ -52,8 +52,12 @@
 			font-size: 0.875rem;
 			font-weight: 500;
 			line-height: 1.25rem;
-			transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-				color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+			transition:
+				background-color 0.2s ease-in-out,
+				border-color 0.2s ease-in-out,
+				color 0.2s ease-in-out,
+				fill 0.2s ease-in-out,
+				stroke 0.2s ease-in-out;
 			user-select: none;
 			display: flex;
 			align-items: center;
@@ -64,10 +68,13 @@
 				display: block;
 				width: 0;
 				height: 0;
+				line-height: 100%;
 				color: var(--form-input-selected-fg, white);
 				fill: var(--form-input-selected-bg, #3182ce);
 				stroke: var(--form-input-selected-fg, white);
-				transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+				transition:
+					width 0.2s ease-in-out,
+					height 0.2s ease-in-out;
 			}
 		}
 

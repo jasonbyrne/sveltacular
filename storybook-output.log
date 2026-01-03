@@ -1,0 +1,45 @@
+npm warn Unknown project config "resolution-mode". This will stop working in the next major version of npm.
+
+> sveltacular@0.0.77 storybook
+> storybook dev -p 6006
+
+
+┌  storybook v10.1.11
+node:internal/errors:542
+      throw error;
+      ^
+
+SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_interface_addresses returned Unknown system error 1 (Unknown system error 1)
+    at Object.networkInterfaces (node:os:217:16)
+    at address.interface (file:///Users/jasonbyrne/repos/sveltacular/node_modules/storybook/dist/core-server/index.js:4080:28)
+    at address.ip (file:///Users/jasonbyrne/repos/sveltacular/node_modules/storybook/dist/core-server/index.js:4100:26)
+    at file:///Users/jasonbyrne/repos/sveltacular/node_modules/storybook/dist/core-server/index.js:4196:34
+    at Server.<anonymous> (file:///Users/jasonbyrne/repos/sveltacular/node_modules/storybook/dist/core-server/index.js:4207:368)
+    at Object.onceWrapper (node:events:622:28)
+    at Server.emit (node:events:508:28)
+    at emitListeningNT (node:net:1983:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'ERR_SYSTEM_ERROR',
+  info: {
+    errno: 1,
+    code: 'Unknown system error 1',
+    message: 'Unknown system error 1',
+    syscall: 'uv_interface_addresses'
+  },
+  errno: [Getter/Setter],
+  syscall: [Getter/Setter]
+}
+
+Node.js v24.9.0
+npm warn Unknown project config "resolution-mode". This will stop working in the next major version of npm.
+
+> sveltacular@0.0.77 storybook
+> storybook dev -p 6006
+
+
+┌  storybook v10.1.11
+[?25l│
+◆  Port 6006 is not available.
+│  Would you like to run Storybook on port 6007 instead?
+│  ● Yes / ○ No
+└

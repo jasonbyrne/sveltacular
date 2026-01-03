@@ -211,18 +211,19 @@ export class PositionManager {
 		}
 
 		// Position arrow on the correct side
+		// Overlap by 1px to bridge gap created by border-radius
 		switch (this.arrowSide) {
 			case 'top':
-				styles.push('bottom: 100%;');
+				styles.push('bottom: calc(100% - 1px);');
 				break;
 			case 'bottom':
-				styles.push('top: 100%;');
+				styles.push('top: calc(100% - 1px);');
 				break;
 			case 'left':
-				styles.push('right: 100%;');
+				styles.push('right: calc(100% - 1px);');
 				break;
 			case 'right':
-				styles.push('left: 100%;');
+				styles.push('left: calc(100% - 1px);');
 				break;
 		}
 

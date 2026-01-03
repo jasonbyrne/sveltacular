@@ -8,6 +8,7 @@ export * from './copy-to-clipboard.svelte.js';
 export * from './date.js';
 export * from './debounce.js';
 export * from './focus.js';
+export * from './fuzzy-search.js';
 export * from './navigate-to.js';
 export * from './nobr.js';
 export * from './random.js';

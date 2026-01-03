@@ -36,8 +36,8 @@
 	.code-block {
 		position: relative;
 		margin-bottom: var(--spacing-base);
-		background: var(--gray-900);
-		color: #fff;
+		background: #1e1e1e;
+		color: #d4d4d4;
 		padding: var(--spacing-base);
 		border-radius: var(--radius-md);
 
@@ -49,7 +49,7 @@
 	.lang-label {
 		font-size: var(--font-base);
 		font-weight: 500;
-		color: var(--gray-500);
+		color: #858585;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		position: absolute;
@@ -63,9 +63,9 @@
 		position: absolute;
 		top: var(--spacing-sm);
 		right: var(--spacing-sm);
-		background: var(--gray-700);
-		border: 1px solid var(--gray-600);
-		color: var(--gray-300);
+		background: #2d2d2d;
+		border: 1px solid #3e3e3e;
+		color: #d4d4d4;
 		border-radius: var(--radius-sm);
 		padding: var(--spacing-xs);
 		cursor: pointer;
@@ -78,8 +78,8 @@
 		height: 32px;
 
 		&:hover {
-			background: var(--gray-600);
-			color: var(--gray-100);
+			background: #3e3e3e;
+			color: #ffffff;
 		}
 
 		&:active {
@@ -99,5 +99,6 @@
 		overflow-x: auto;
 		width: 100%;
 		display: block;
+		color: inherit;
 	}
 </style>

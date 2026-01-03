@@ -158,15 +158,21 @@
 			<Card>
 				<div style="padding: 1.5rem;">
 					<h4 style="margin-top: 0; margin-bottom: 1rem;">Typography</h4>
-					<p style="margin-bottom: 0.5rem;">
-						This is regular text using the base foreground color.
-					</p>
-					<p style="margin-bottom: 0.5rem;">
-						<a href="#" style="color: var(--base-link-fg);">This is a link</a> with proper link styling.
-					</p>
-					<p style="margin-bottom: 0; color: var(--base-accent-fg); font-size: 0.875rem;">
-						This is accent text using a muted color.
-					</p>
+				<p style="margin-bottom: 0.5rem;">
+					This is regular text using the base foreground color.
+				</p>
+				<p style="margin-bottom: 0.5rem;">
+					<button
+						type="button"
+						style="background: none; border: none; padding: 0; color: var(--base-link-fg); text-decoration: underline; cursor: pointer; font: inherit;"
+						onclick={() => {}}
+					>
+						This is a link
+					</button> with proper link styling.
+				</p>
+				<p style="margin-bottom: 0; color: var(--base-accent-fg); font-size: 0.875rem;">
+					This is accent text using a muted color.
+				</p>
 				</div>
 			</Card>
 		</div>
