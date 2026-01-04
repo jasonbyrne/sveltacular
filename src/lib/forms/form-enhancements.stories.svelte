@@ -1,12 +1,10 @@
-<script lang="ts" module>
-	import type { Meta } from '@storybook/svelte';
-	import FormEnhancementsDemo from './form-enhancements.stories.svelte';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 
-	export const meta: Meta = {
+	const { Story } = defineMeta({
 		title: 'Forms/Enhancements',
-		component: FormEnhancementsDemo,
 		tags: ['autodocs']
-	};
+	});
 </script>
 
 <script lang="ts">
@@ -263,4 +261,3 @@
 		border: 1px solid var(--border-color, #e5e7eb);
 	}
 </style>
-

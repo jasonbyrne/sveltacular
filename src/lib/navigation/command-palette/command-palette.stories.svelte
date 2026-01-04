@@ -1,10 +1,10 @@
-<script lang="ts" module>
-	import type { Meta } from '@storybook/svelte';
+<script module>
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import CommandPalette from './command-palette.svelte';
 
-	export const meta = {
+	const { Story } = defineMeta({
 		title: 'Navigation/CommandPalette',
-		component: CommandPalette as any,
+		component: CommandPalette,
 		tags: ['autodocs'],
 		argTypes: {
 			open: { control: 'boolean' },
@@ -20,7 +20,7 @@
 			emptyMessage: { control: 'text' },
 			blur: { control: 'boolean' }
 		}
-	} satisfies Meta;
+	});
 </script>
 
 <script lang="ts">
@@ -251,7 +251,8 @@
 		<h2>Usage</h2>
 
 		<h3>Define Commands</h3>
-		<pre><code>&lt;script&gt;
+		<pre><code
+				>&lt;script&gt;
   import &#123; CommandPalette &#125; from 'sveltacular';
   
   const commands = [
@@ -294,19 +295,23 @@
 </code></pre>
 
 		<h3>With Custom Shortcut</h3>
-		<pre><code>{`<CommandPalette 
+		<pre><code
+				>{`<CommandPalette 
   bind:open 
   {commands}
   shortcut="p"
   shortcutModifier="ctrl"
-/>`}</code></pre>
+/>`}</code
+			></pre>
 
 		<h3>Without Recent Commands</h3>
-		<pre><code>{`<CommandPalette 
+		<pre><code
+				>{`<CommandPalette 
   bind:open 
   {commands}
   showRecent={false}
-/>`}</code></pre>
+/>`}</code
+			></pre>
 	</section>
 
 	<section>
@@ -462,7 +467,8 @@
 
 	<section>
 		<h2>Command Interface</h2>
-		<pre><code>{`interface Command {
+		<pre><code
+				>{`interface Command {
   id: string;                    // Unique identifier
   label: string;                 // Display label
   description?: string;          // Optional description
@@ -472,7 +478,8 @@
   data?: any;                    // Custom data
   disabled?: boolean;            // Disable command
   action?: () => void | Promise<void>; // Action to perform
-}`}</code></pre>
+}`}</code
+			></pre>
 	</section>
 
 	<section>
@@ -644,4 +651,3 @@
 		}
 	}
 </style>
-
