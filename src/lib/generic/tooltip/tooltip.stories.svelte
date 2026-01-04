@@ -165,7 +165,7 @@
 		</p>
 		<div style="margin-top: 2rem;">
 			<Tooltip text="This tooltip is in manual mode" trigger="manual">
-				<Badge text="Manual Mode" color="purple" />
+				<Badge count={1} variant="warning" />
 			</Tooltip>
 		</div>
 	</div>
@@ -316,11 +316,11 @@
 		</Tooltip>
 
 		<Tooltip text="Badge tooltip" placement="bottom">
-			<Badge text="Badge" color="green" />
+			<Badge count={5} variant="positive" />
 		</Tooltip>
 
 		<Tooltip text="Link tooltip" placement="right">
-			<Link href="#" text="Link" />
+			<Link href="#">Link</Link>
 		</Tooltip>
 
 		<Tooltip text="Text tooltip" placement="bottom">

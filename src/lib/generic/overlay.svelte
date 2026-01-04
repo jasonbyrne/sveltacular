@@ -10,7 +10,7 @@
 		show?: boolean;
 		onClick?: (() => void) | undefined;
 		blur?: boolean;
-		children: Snippet;
+		children?: Snippet;
 	} = $props();
 
 	const handleClick = () => {

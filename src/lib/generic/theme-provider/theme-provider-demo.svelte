@@ -26,32 +26,32 @@
 <ThemeProvider>
 	<div style="padding: 2rem; min-height: 600px;">
 		<!-- Theme Control Panel -->
-		<Card style="margin-bottom: 2rem;">
-			<div style="padding: 1.5rem;">
+		<Card>
+			<div style="padding: 1.5rem; margin-bottom: 2rem;">
 				<h2 style="margin-top: 0; margin-bottom: 1rem;">Theme Controls</h2>
 				
 				<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
 					<Button 
-						kind={theme.current === 'light' ? 'primary' : 'outline'}
-						onclick={() => theme.set('light')}
+						variant={theme.current === 'light' ? 'primary' : 'outline'}
+						onClick={() => theme.set('light')}
 					>
 						☀️ Light
 					</Button>
 					<Button 
-						kind={theme.current === 'dark' ? 'primary' : 'outline'}
-						onclick={() => theme.set('dark')}
+						variant={theme.current === 'dark' ? 'primary' : 'outline'}
+						onClick={() => theme.set('dark')}
 					>
 						🌙 Dark
 					</Button>
 					<Button 
-						kind={theme.current === 'system' ? 'primary' : 'outline'}
-						onclick={() => theme.set('system')}
+						variant={theme.current === 'system' ? 'primary' : 'outline'}
+						onClick={() => theme.set('system')}
 					>
 						💻 System
 					</Button>
 					<Button 
-						kind="secondary"
-						onclick={() => theme.toggle()}
+						variant="secondary"
+						onClick={() => theme.toggle()}
 					>
 						🔄 Toggle
 					</Button>
@@ -80,12 +80,12 @@
 				<div style="padding: 1.5rem;">
 					<h4 style="margin-top: 0; margin-bottom: 1rem;">Buttons</h4>
 					<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-						<Button kind="primary">Primary</Button>
-						<Button kind="secondary">Secondary</Button>
-						<Button kind="positive">Positive</Button>
-						<Button kind="danger">Danger</Button>
-						<Button kind="outline">Outline</Button>
-						<Button kind="ghost">Ghost</Button>
+						<Button variant="primary">Primary</Button>
+						<Button variant="secondary">Secondary</Button>
+						<Button variant="positive">Positive</Button>
+						<Button variant="danger">Danger</Button>
+						<Button variant="outline">Outline</Button>
+						<Button variant="link">Link</Button>
 					</div>
 				</div>
 			</Card>
@@ -111,15 +111,15 @@
 						<Notice variant="info">
 							This is an informational message.
 						</Notice>
-						<Notice variant="success">
-							Operation completed successfully!
-						</Notice>
-						<Notice variant="warning">
-							Please review your changes carefully.
-						</Notice>
-						<Notice variant="error">
-							An error occurred while processing your request.
-						</Notice>
+					<Notice variant="success">
+						Operation completed successfully!
+					</Notice>
+					<Notice variant="attention">
+						Please review your changes carefully.
+					</Notice>
+					<Notice variant="error">
+						An error occurred while processing your request.
+					</Notice>
 					</div>
 				</div>
 			</Card>
@@ -141,15 +141,16 @@
 							rows={4}
 						/>
 						
-						<CheckBox 
-							bind:checked={checked}
-							label="Check Box Option"
-						/>
-						
-						<SwitchBox 
-							bind:checked={switchOn}
-							label="Switch Option"
-						/>
+					<CheckBox 
+						bind:isChecked={checked}
+						label="Check Box Option"
+					/>
+					
+					<SwitchBox 
+						bind:checked={switchOn}
+					>
+						Switch Option
+					</SwitchBox>
 					</div>
 				</div>
 			</Card>

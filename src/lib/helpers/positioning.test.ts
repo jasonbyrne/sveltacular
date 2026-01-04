@@ -2,7 +2,7 @@
  * Tests for positioning utilities
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
 	getRect,
 	parsePlacement,

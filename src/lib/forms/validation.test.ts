@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createValidationRules, validate, validateForm } from './validation.js';
+import { createValidationRules, validate, validateForm, type ValidationRule } from './validation.js';
 
 describe('createValidationRules', () => {
 	describe('required', () => {
@@ -165,9 +165,9 @@ describe('validateForm', () => {
 			age: 25
 		};
 		const rules = {
-			name: [createValidationRules.required(), createValidationRules.minLength(3)],
-			email: [createValidationRules.required(), createValidationRules.email()],
-			age: [createValidationRules.min(18)]
+			name: [createValidationRules.required(), createValidationRules.minLength(3)] as ValidationRule<unknown>[],
+			email: [createValidationRules.required(), createValidationRules.email()] as ValidationRule<unknown>[],
+			age: [createValidationRules.min(18)] as ValidationRule<unknown>[]
 		};
 		const results = validateForm(values, rules);
 		expect(results.name?.isValid).toBe(true);
@@ -182,9 +182,9 @@ describe('validateForm', () => {
 			age: 15
 		};
 		const rules = {
-			name: [createValidationRules.required()],
-			email: [createValidationRules.email()],
-			age: [createValidationRules.min(18)]
+			name: [createValidationRules.required()] as ValidationRule<unknown>[],
+			email: [createValidationRules.email()] as ValidationRule<unknown>[],
+			age: [createValidationRules.min(18)] as ValidationRule<unknown>[]
 		};
 		const results = validateForm(values, rules);
 		expect(results.name?.isValid).toBe(false);

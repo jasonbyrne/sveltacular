@@ -4,7 +4,7 @@ export type { ComponentSize as FormFieldSizeOptions } from './size.js';
 /**
  * Button variant options
  */
-export type ButtonVariant = 'primary' | 'secondary' | 'positive' | 'danger' | 'outline';
+export type ButtonVariant = 'primary' | 'secondary' | 'positive' | 'danger' | 'outline' | 'link';
 
 /**
  * Dropdown option structure
@@ -12,6 +12,9 @@ export type ButtonVariant = 'primary' | 'secondary' | 'positive' | 'danger' | 'o
 export type DropdownOption = {
 	value: string | null;
 	name: string;
+	id?: string;
+	label?: string;
+	disabled?: boolean;
 };
 
 /**

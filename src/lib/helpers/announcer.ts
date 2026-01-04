@@ -24,7 +24,7 @@ interface AnnouncerOptions {
 class Announcer {
 	private politeRegion: HTMLElement | null = null;
 	private assertiveRegion: HTMLElement | null = null;
-	private timeouts: Map<string, number> = new Map();
+	private timeouts: Map<string, ReturnType<typeof setTimeout>> = new Map();
 
 	constructor() {
 		// Initialize on first use
@@ -116,10 +116,10 @@ class Announcer {
 
 			// Clear after specified time
 			if (clearAfter > 0) {
-				const clearTimeout = setTimeout(() => {
+				const clearTimeoutId = setTimeout(() => {
 					region.textContent = '';
 				}, clearAfter);
-				this.timeouts.set(timeoutKey, clearTimeout);
+				this.timeouts.set(timeoutKey, clearTimeoutId);
 			}
 		}, delay);
 

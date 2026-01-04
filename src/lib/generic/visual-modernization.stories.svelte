@@ -91,11 +91,11 @@
 		</p>
 
 		<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-			<Button onclick={() => (standardModalOpen = true)}>Open Standard Modal</Button>
-			<Button onclick={() => (glassModalOpen = true)} variant="secondary"
+			<Button onClick={() => (standardModalOpen = true)}>Open Standard Modal</Button>
+			<Button onClick={() => (glassModalOpen = true)} variant="secondary"
 				>Open Glass Modal</Button
 			>
-			<Button onclick={() => (blurModalOpen = true)} variant="positive"
+			<Button onClick={() => (blurModalOpen = true)} variant="positive"
 				>Open Modal with Blur</Button
 			>
 		</div>

@@ -40,7 +40,7 @@
 		required?: boolean;
 		onOk?: ((value: string) => void) | undefined;
 		onCancel?: (() => void) | undefined;
-		children: Snippet;
+		children?: Snippet;
 	} = $props();
 
 	let value = $state('');
@@ -67,11 +67,12 @@
 				<Divider />
 			{/if}
 			<DialogCloseButton show={showCloseButton} onClick={no} />
-			<DialogBody>
-				<TextBox bind:value {placeholder} {type} {required} size="full">
-					{@render children?.()}
-				</TextBox>
-			</DialogBody>
+		<DialogBody>
+			<TextBox bind:value {placeholder} {type} {required} size="full" />
+			{#if children}
+				{@render children()}
+			{/if}
+		</DialogBody>
 			<Divider />
 		<DialogFooter>
 			<Button onClick={no} variant={cancelVariant} size="full" label={cancelText} />

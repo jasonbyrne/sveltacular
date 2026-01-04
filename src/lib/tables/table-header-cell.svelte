@@ -44,7 +44,7 @@
 	);
 
 	// Determine aria-sort value
-	let ariaSort = $derived(
+	let ariaSort = $derived<'ascending' | 'descending' | 'none' | 'other' | undefined>(
 		isSorted ? (sortDirection === 'asc' ? 'ascending' : 'descending') : undefined
 	);
 
@@ -68,8 +68,8 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		if (canSort && (event.key === 'Enter' || event.key === ' ')) {
 			event.preventDefault();
-			if (sortKey) {
-				context?.toggleSort(sortKey);
+			if (sortKey && onSort && sortDirection) {
+				onSort(sortKey, sortDirection === 'asc' ? 'desc' : 'asc');
 			}
 		}
 	}

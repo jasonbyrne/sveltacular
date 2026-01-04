@@ -158,17 +158,17 @@
 				// Deselect
 				newValues = selectedValues.filter((v) => v !== itemValue);
 			} else {
-				// Select (check max selections)
-				if (maxSelectionsReached) {
-					announce(`Maximum ${maxSelections} selections allowed`, 'polite');
-					return;
-				}
+			// Select (check max selections)
+			if (maxSelectionsReached) {
+				announce(`Maximum ${maxSelections} selections allowed`, { priority: 'polite' });
+				return;
+			}
 				newValues = [...selectedValues, itemValue];
 			}
 
-			value = newValues;
-			onChange?.(newValues);
-			announce(`${item.name} ${selectedValues.includes(itemValue) ? 'selected' : 'deselected'}`, 'polite');
+		value = newValues;
+		onChange?.(newValues);
+		announce(`${item.name} ${selectedValues.includes(itemValue) ? 'selected' : 'deselected'}`, { priority: 'polite' });
 		} else {
 			// Single select
 			value = item.value;
@@ -176,11 +176,11 @@
 			searchQuery = '';
 			applyFilter();
 			
-			if (closeOnSelect) {
-				isMenuOpen = false;
-			}
-			
-			announce(`${item.name} selected`, 'polite');
+		if (closeOnSelect) {
+			isMenuOpen = false;
+		}
+		
+		announce(`${item.name} selected`, { priority: 'polite' });
 		}
 	};
 
@@ -194,10 +194,10 @@
 		value = newValues;
 		onChange?.(newValues);
 
-		const item = items.find((i) => i.value === itemValue);
-		if (item) {
-			announce(`${item.name} removed`, 'polite');
-		}
+	const item = items.find((i) => i.value === itemValue);
+	if (item) {
+		announce(`${item.name} removed`, { priority: 'polite' });
+	}
 
 		focusOnInput();
 	};
@@ -230,16 +230,16 @@
 	const clear = () => {
 		if (disabled) return;
 
-		if (multiSelect) {
-			value = [];
-			onChange?.([]);
-			announce('All selections cleared', 'polite');
-		} else {
-			value = null;
-			onChange?.(null);
-			searchQuery = '';
-			announce('Selection cleared', 'polite');
-		}
+	if (multiSelect) {
+		value = [];
+		onChange?.([]);
+		announce('All selections cleared', { priority: 'polite' });
+	} else {
+		value = null;
+		onChange?.(null);
+		searchQuery = '';
+		announce('Selection cleared', { priority: 'polite' });
+	}
 
 		applyFilter();
 		focusOnInput();
@@ -473,19 +473,19 @@
 
 		<!-- Dropdown menu -->
 		<div class="dropdown">
-			<Menu
-				items={filteredItems.map((item, index) => ({ ...item, index }))}
-				{open}
-				closeAfterSelect={false}
-				searchText={searchQuery}
-				onSelect={onSelect}
-				size="full"
-				bind:highlightIndex
-				value={multiSelect ? undefined : value}
-				{listboxId}
-				{virtualScroll}
-				{itemHeight}
-			/>
+		<Menu
+			items={filteredItems.map((item, index) => ({ ...item, index }))}
+			{open}
+			closeAfterSelect={false}
+			searchText={searchQuery}
+			onSelect={onSelect}
+			size="full"
+			bind:highlightIndex
+			value={multiSelect ? null : (typeof value === 'string' ? value : null)}
+			{listboxId}
+			{virtualScroll}
+			{itemHeight}
+		/>
 		</div>
 	</div>
 

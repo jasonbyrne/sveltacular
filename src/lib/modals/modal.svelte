@@ -31,8 +31,8 @@
 		children: Snippet;
 	} = $props();
 
-	let dialogElement: HTMLDivElement | null = $state(null);
-	let previousFocus: HTMLElement | null = $state(null);
+	let dialogElement = $state<HTMLDivElement | null>(null);
+	let previousFocus = $state<HTMLElement | null>(null);
 
 	const close = () => {
 		if (!dismissable) return;
@@ -81,11 +81,13 @@
 
 {#if open}
 	<Overlay {blur} onClick={close}>
-		<Dialog {size} {glass} bind:this={dialogElement} role="dialog" aria-modal="true" aria-labelledby={titleId}>
-			<DialogCloseButton show={_showCloseButton} onClick={close} />
-			<DialogBody>
-				{@render children?.()}
-			</DialogBody>
-		</Dialog>
+		<div bind:this={dialogElement}>
+			<Dialog {size} {glass} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+				<DialogCloseButton show={_showCloseButton} onClick={close} />
+				<DialogBody>
+					{@render children?.()}
+				</DialogBody>
+			</Dialog>
+		</div>
 	</Overlay>
 {/if}

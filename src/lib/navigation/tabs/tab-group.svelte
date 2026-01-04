@@ -1,12 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
-	import {
-		tabContext,
-		type TabContext,
-		type TabDefinition,
-		type TabVariant
-	} from './tab-context.js';
+	import { tabContext, type TabDefinition, type TabVariant } from './tab-context.js';
 	import { getAnchor, navigateToAnchor, uniqueId } from '$src/lib/index.js';
 
 	let {

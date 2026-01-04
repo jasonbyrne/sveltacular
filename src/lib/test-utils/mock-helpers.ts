@@ -2,7 +2,7 @@
  * Mock helpers for testing
  */
 
-import { vi } from 'vitest';
+import { vi, beforeEach, afterEach } from 'vitest';
 
 /**
  * Mock a function with optional implementation

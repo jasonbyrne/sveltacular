@@ -91,7 +91,7 @@
 	// State
 	let query = $state('');
 	let selectedIndex = $state(0);
-	let inputElement: HTMLInputElement;
+	let inputElement = $state<HTMLInputElement>();
 	let recentCommands = $state<string[]>([]);
 
 	// Load recent commands from localStorage
@@ -212,18 +212,18 @@
 		query = '';
 		selectedIndex = 0;
 		onOpen?.();
-		// Focus input after opening
-		setTimeout(() => inputElement?.focus(), 10);
-		announce('Command palette opened', 'polite');
+	// Focus input after opening
+	setTimeout(() => inputElement?.focus(), 10);
+	announce('Command palette opened', { priority: 'polite' });
 	}
 
 	// Close palette
 	function closePalette() {
-		open = false;
-		query = '';
-		selectedIndex = 0;
-		onClose?.();
-		announce('Command palette closed', 'polite');
+	open = false;
+	query = '';
+	selectedIndex = 0;
+	onClose?.();
+	announce('Command palette closed', { priority: 'polite' });
 	}
 
 	// Execute command
@@ -243,33 +243,33 @@
 		command.action?.();
 		onSelect?.(command);
 
-		// Close palette
-		closePalette();
+	// Close palette
+	closePalette();
 
-		announce(`Executed: ${command.label}`, 'assertive');
+	announce(`Executed: ${command.label}`, { priority: 'assertive' });
 	}
 
 	// Keyboard navigation
 	function handleKeydown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'ArrowDown':
-				event.preventDefault();
-				selectedIndex = Math.min(selectedIndex + 1, flatCommands.length - 1);
-				scrollToSelected();
-				announce(
-					`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
-					'polite'
-				);
+			event.preventDefault();
+			selectedIndex = Math.min(selectedIndex + 1, flatCommands.length - 1);
+			scrollToSelected();
+			announce(
+				`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
+				{ priority: 'polite' }
+			);
 				break;
 
 			case 'ArrowUp':
-				event.preventDefault();
-				selectedIndex = Math.max(selectedIndex - 1, 0);
-				scrollToSelected();
-				announce(
-					`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
-					'polite'
-				);
+			event.preventDefault();
+			selectedIndex = Math.max(selectedIndex - 1, 0);
+			scrollToSelected();
+			announce(
+				`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
+				{ priority: 'polite' }
+			);
 				break;
 
 			case 'Home':
@@ -343,7 +343,7 @@
 	<div class="command-palette" role="dialog" aria-modal="true" aria-label="Command palette">
 		<Overlay onClick={handleOverlayClick} {blur} />
 
-		<div class="command-palette__container" use:fadeIn use:slideIn={{ direction: 'top' }}>
+		<div class="command-palette__container" use:fadeIn use:slideIn={'top'}>
 			<div class="command-palette__header">
 				<div class="command-palette__search">
 					<svg

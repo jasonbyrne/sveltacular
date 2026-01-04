@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import type { Meta } from '@storybook/svelte';
 	import FormEnhancementsDemo from './form-enhancements.stories.svelte';
 
@@ -126,7 +126,7 @@
 			<Button
 				variant="secondary"
 				size="sm"
-				onclick={() => {
+				onClick={() => {
 					textareaValue =
 						'This is a long text that will demonstrate the auto-resize feature.\n\nNotice how the textarea grows to fit the content.\n\nYou can keep typing and it will continue to expand up to the maximum number of rows.\n\nAfter that, it will show a scrollbar.';
 				}}
@@ -136,7 +136,7 @@
 			<Button
 				variant="secondary"
 				size="sm"
-				onclick={() => {
+				onClick={() => {
 					textareaValue = '';
 				}}
 			>

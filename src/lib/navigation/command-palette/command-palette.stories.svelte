@@ -1,10 +1,10 @@
-<script context="module" lang="ts">
+<script lang="ts" module>
 	import type { Meta } from '@storybook/svelte';
 	import CommandPalette from './command-palette.svelte';
 
 	export const meta = {
 		title: 'Navigation/CommandPalette',
-		component: CommandPalette,
+		component: CommandPalette as any,
 		tags: ['autodocs'],
 		argTypes: {
 			open: { control: 'boolean' },
@@ -20,11 +20,11 @@
 			emptyMessage: { control: 'text' },
 			blur: { control: 'boolean' }
 		}
-	} satisfies Meta<CommandPalette>;
+	} satisfies Meta;
 </script>
 
 <script lang="ts">
-	import { Button } from '$lib/forms/button/index.js';
+	import Button from '$lib/forms/button/button.svelte';
 	import type { Command, CommandGroup } from './command-palette.svelte';
 
 	let open = $state(false);
@@ -229,7 +229,7 @@
 		<p>Try pressing <kbd>⌘K</kbd> (Mac) or <kbd>Ctrl+K</kbd> (Windows/Linux) to open!</p>
 
 		<div class="example">
-			<Button onclick={() => (open = true)}>Open Command Palette</Button>
+			<Button onClick={() => (open = true)}>Open Command Palette</Button>
 
 			{#if lastExecuted}
 				<div class="status">
@@ -251,46 +251,47 @@
 		<h2>Usage</h2>
 
 		<h3>Define Commands</h3>
-		<pre><code>{`<script>
-  import { CommandPalette } from 'sveltacular';
+		<pre><code>&lt;script&gt;
+  import &#123; CommandPalette &#125; from 'sveltacular';
   
   const commands = [
-    {
+    &#123;
       id: 'nav-home',
       label: 'Go to Home',
       description: 'Navigate to the home page',
       group: 'navigation',
       keywords: ['home', 'dashboard'],
-      action: () => {
+      action: () =&gt; &#123;
         // Navigate to home
-      }
-    },
-    {
+      &#125;
+    &#125;,
+    &#123;
       id: 'theme-dark',
       label: 'Switch to Dark Theme',
       description: 'Change appearance to dark mode',
       group: 'appearance',
       keywords: ['theme', 'dark'],
-      action: () => {
+      action: () =&gt; &#123;
         document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    }
+      &#125;
+    &#125;
   ];
   
   const groups = [
-    { id: 'navigation', label: 'Navigation', priority: 1 },
-    { id: 'appearance', label: 'Appearance', priority: 2 }
+    &#123; id: 'navigation', label: 'Navigation', priority: 1 &#125;,
+    &#123; id: 'appearance', label: 'Appearance', priority: 2 &#125;
   ];
   
   let open = $state(false);
-</script>
+&lt;/script&gt;
 
-<CommandPalette 
+&lt;CommandPalette 
   bind:open 
-  {commands} 
-  {groups}
-  onSelect={(cmd) => console.log('Executed:', cmd)}
-/>`}</code></pre>
+  &#123;commands&#125; 
+  &#123;groups&#125;
+  onSelect=&#123;(cmd) =&gt; console.log('Executed:', cmd)&#125;
+/&gt;
+</code></pre>
 
 		<h3>With Custom Shortcut</h3>
 		<pre><code>{`<CommandPalette 

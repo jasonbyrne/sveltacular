@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 
@@ -8,7 +9,8 @@
 		disabled = false,
 		name = undefined,
 		onChange = undefined,
-		label
+		label,
+		children
 	}: {
 		value?: string;
 		isChecked?: boolean;
@@ -16,6 +18,7 @@
 		name?: string | undefined;
 		onChange?: ((data: { isChecked: boolean; value: string }) => void) | undefined;
 		label?: string;
+		children?: Snippet;
 	} = $props();
 
 	const id = uniqueId();
@@ -43,7 +46,11 @@
 	<span class="checkbox">
 		<span class="checkmark"><CheckIcon /></span>
 	</span>
-	{#if label}
+	{#if children}
+		<div class="text">
+			{@render children()}
+		</div>
+	{:else if label}
 		<div class="text">
 			{label}
 		</div>

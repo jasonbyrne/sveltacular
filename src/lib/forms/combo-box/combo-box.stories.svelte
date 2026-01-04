@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import type { Meta } from '@storybook/svelte';
 	import ComboBoxStories from './combo-box.stories.svelte';
 

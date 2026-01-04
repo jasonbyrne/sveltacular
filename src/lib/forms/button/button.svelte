@@ -35,7 +35,9 @@
 		/** Delay before re-enabling after click (prevents double-clicks) */
 		repeatSubmitDelay = 500,
 		/** Click handler */
-		onClick = undefined
+		onClick = undefined,
+		/** Optional children snippet */
+		children
 	}: {
 		label?: string;
 		href?: string | undefined;
@@ -50,7 +52,8 @@
 		noMargin?: boolean;
 		collapse?: boolean;
 		repeatSubmitDelay?: number | 'infinite';
-		onClick?: (() => void) | undefined;
+		onClick?: ((e?: Event) => void) | undefined;
+		children?: Snippet;
 	} = $props();
 
 	let isDisabled = $derived(disabled || loading);
@@ -61,7 +64,7 @@
 			e.stopPropagation();
 			return;
 		}
-		onClick?.();
+		onClick?.(e);
 		if (repeatSubmitDelay) {
 			disabled = true;
 			if (repeatSubmitDelay !== 'infinite') {
@@ -90,7 +93,9 @@
 	{#if loading}
 		<span class="loading-indicator" aria-hidden="true">⏳</span>
 	{/if}
-	{#if label}
+	{#if children}
+		{@render children()}
+	{:else if label}
 		<span class="label">{label}</span>
 	{/if}
 </button>

@@ -15,13 +15,13 @@
 <main>
 	<article>
 		<h2>Button</h2>
-		<code>&lt;Button style="*" label="[button text]" /&gt;</code>
+		<code>&lt;Button variant="*" label="[button text]" /&gt;</code>
 		<div>
-			<Button style="primary" label="primary" />
-			<Button style="secondary" label="secondary" />
-			<Button style="positive" label="positive" />
-			<Button style="danger" label="danger" />
-			<Button style="outline" label="outline" />
+			<Button variant="primary" label="primary" />
+			<Button variant="secondary" label="secondary" />
+			<Button variant="positive" label="positive" />
+			<Button variant="danger" label="danger" />
+			<Button variant="outline" label="outline" />
 		</div>
 	</article>
 	<article>

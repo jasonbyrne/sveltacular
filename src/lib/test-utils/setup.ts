@@ -97,6 +97,7 @@ Object.defineProperty(window, 'sessionStorage', {
 });
 
 // Reset mocks after each test
+import { afterEach } from 'vitest';
 afterEach(() => {
 	vi.clearAllMocks();
 	localStorageMock.clear();

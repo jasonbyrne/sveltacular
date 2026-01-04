@@ -33,7 +33,8 @@
 			onclick={() => setValue(i + 1)}
 			aria-label="Rate {i + 1} out of {max}"
 			aria-pressed={i < value}
-			{readonly}
+			disabled={readonly}
+			aria-disabled={readonly}
 		>
 			★
 		</button>

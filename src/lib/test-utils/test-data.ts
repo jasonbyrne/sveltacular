@@ -2,17 +2,19 @@
  * Test data fixtures for component testing
  */
 
-import type { MenuItem } from '$lib/generic/menu/menu-item.svelte';
-import type { ListItem } from '$lib/types/list-item';
+import type { MenuOption } from '$lib/types/form.js';
+
+type MenuItem = MenuOption;
+type ListItem = { id: string; label: string; value: string };
 
 /**
  * Sample menu items for testing
  */
 export const mockMenuItems: MenuItem[] = [
-	{ id: '1', label: 'Option 1', value: 'option1' },
-	{ id: '2', label: 'Option 2', value: 'option2' },
-	{ id: '3', label: 'Option 3', value: 'option3', disabled: true },
-	{ id: '4', label: 'Option 4', value: 'option4' }
+	{ id: '1', label: 'Option 1', name: 'Option 1', value: 'option1' },
+	{ id: '2', label: 'Option 2', name: 'Option 2', value: 'option2' },
+	{ id: '3', label: 'Option 3', name: 'Option 3', value: 'option3', disabled: true },
+	{ id: '4', label: 'Option 4', name: 'Option 4', value: 'option4' }
 ];
 
 /**

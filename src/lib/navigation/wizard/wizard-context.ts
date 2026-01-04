@@ -3,11 +3,13 @@ export type WizardStepDefinition = {
 	subtitle: string;
 };
 
+export interface WizardState {
+	currentStep: number | null;
+	errors: string[];
+	steps: Array<{ step: number; subtitle: string }>;
+}
+
 export interface WizardContext {
-	state: {
-		currentStep: number | null;
-		errors: string[];
-		steps: Array<{ step: number; subtitle: string }>;
-	};
+	state: WizardState;
 	register: (step: number, subtitle: string) => void;
 }

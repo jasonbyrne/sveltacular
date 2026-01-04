@@ -14,6 +14,7 @@ export function render<T extends Component>(
 	options?: ComponentProps<T> & { props?: ComponentProps<T> }
 ): RenderResult<T> {
 	const { props, ...rest } = options || {};
+	// @ts-expect-error - Testing library types are complex
 	return testingLibraryRender(component, { props: props || rest } as any);
 }
 
