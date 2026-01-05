@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -55,31 +55,34 @@
 	// Run auto-resize when value changes
 	$effect(() => {
 		if (value !== null && value !== undefined) {
-			handleAutoResize();
+			// Use untrack to prevent DOM manipulations from triggering effects
+			untrack(() => {
+				handleAutoResize();
+			});
 		}
 	});
 
 	// Run auto-resize on mount
 	$effect(() => {
 		if (textareaElement && autoResize) {
-			handleAutoResize();
+			// Use untrack to prevent DOM manipulations from triggering effects
+			untrack(() => {
+				handleAutoResize();
+			});
 		}
 	});
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
-	<textarea 
-		wrap="soft" 
-		{id} 
-		{placeholder} 
-		rows={autoResize ? minRows : rows} 
-		bind:value 
+<FormField {size} {label} {id} {required} {disabled}>
+	<textarea
+		wrap="soft"
+		{id}
+		{placeholder}
+		rows={autoResize ? minRows : rows}
+		bind:value
 		bind:this={textareaElement}
-		{required} 
-		{disabled} 
+		{required}
+		{disabled}
 		{readonly}
 		data-auto-resize={autoResize}
 		oninput={handleAutoResize}
@@ -98,8 +101,12 @@
 		font-size: 0.875rem;
 		font-weight: 500;
 		line-height: 1.25rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out,
+		transition:
+			background-color 0.2s ease-in-out,
+			border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out,
+			fill 0.2s ease-in-out,
+			stroke 0.2s ease-in-out,
 			box-shadow 0.2s ease-in-out;
 		user-select: text;
 		resize: vertical;

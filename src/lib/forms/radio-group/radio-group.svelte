@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import RadioBox from './radio-box.svelte';
 
@@ -24,10 +23,7 @@
 	} = $props();
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
+<FormField {size} {label} {id} {required} {disabled}>
 	<div>
 		{#each items as item}
 			<RadioBox bind:group {disabled} value={item.value}>{item.name}</RadioBox>

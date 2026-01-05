@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
 
 	const id = uniqueId();
@@ -29,10 +28,7 @@
 	};
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
+<FormField {size} {label} {id} {required} {disabled}>
 	<input
 		{id}
 		type="time"

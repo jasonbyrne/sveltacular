@@ -33,3 +33,11 @@
 		{@render children()}
 	</form>
 </Section>
+
+<style lang="scss">
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-base);
+	}
+</style>

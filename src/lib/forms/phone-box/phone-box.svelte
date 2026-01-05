@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField from '../form-field.svelte';
-	import FormLabel from '../form-label.svelte';
 
 	let {
 		value = $bindable('' as string | null),
@@ -135,16 +135,18 @@
 	setValue(value ?? '');
 
 	$effect(() => {
-		if (areaCode || localExt || lastFour) {
-			publishChange();
+		// Only trigger when the phone number parts change
+		const hasValue = areaCode || localExt || lastFour;
+		if (hasValue) {
+			// Use untrack to prevent value changes from triggering this effect again
+			untrack(() => {
+				publishChange();
+			});
 		}
 	});
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel id="{id}-areaCode" {label} />
-	{/if}
+<FormField {size} {label} id="{id}-areaCode">
 	<div class="input">
 		<span class="areaCode segment">
 			<span>(</span>

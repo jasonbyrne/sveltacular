@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { addUnits, currentDateTime, isDateString, isDateOrDateTimeString, isDateTimeString } from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
 
@@ -68,17 +68,17 @@
 
 	$effect(() => {
 		if (!value) {
-			if (nullable) enabled = false;
-			else value = getDefaultValue();
+			// Use untrack to prevent writes to enabled/value from triggering this effect again
+			untrack(() => {
+				if (nullable) enabled = false;
+				else value = getDefaultValue();
+			});
 		}
 	});
 	let disabled = $derived(!enabled);
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
+<FormField {size} {label} {id} {required} {disabled}>
 	<div class:nullable class:disabled>
 		<span class="input">
 			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} oninput={onInput} />

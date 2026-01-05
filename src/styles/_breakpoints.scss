@@ -1,0 +1,66 @@
+/* ============================================
+   BREAKPOINTS - Responsive Design
+   ============================================ */
+
+@use 'sass:map';
+
+// Breakpoints map for responsive design
+$breakpoints: (
+	// Smallest phones start at 320px, but most are 375px or higher
+	'mobile': 320px,
+	// Large phones (iPhone 14 Pro Max: 430px)
+	'phablet': 480px,
+	// Tablets (iPad: 768px portrait)
+	'tablet': 641px,
+	// Medium laptops/desktops
+	'desktop': 1000px,
+	// Large laptops/desktops
+	'large': 1280px
+);
+
+// -----------------------------------------------------------------------------
+// Breakpoint Mixins
+// -----------------------------------------------------------------------------
+// These mixins allow us to easily create media queries using the names
+// defined in the $breakpoints map.
+
+// Mobile-first approach (min-width)
+// Example: @include breakpoint-up('phablet') { ... }
+// Compiles to: @media (min-width: 480px) { ... }
+@mixin breakpoint-up($name) {
+	@if map.has-key($breakpoints, $name) {
+		@media (min-width: map.get($breakpoints, $name)) {
+			@content;
+		}
+	} @else {
+		@warn "Breakpoint `#{$name}` not found in $breakpoints map.";
+	}
+}
+
+// Desktop-first approach (max-width)
+// Example: @include breakpoint-down('phablet') { ... }
+// Compiles to: @media (max-width: 479.98px) { ... }
+@mixin breakpoint-down($name) {
+	@if map.has-key($breakpoints, $name) {
+		// Subtract a small amount to prevent overlap with min-width queries
+		@media (max-width: #{map.get($breakpoints, $name) - 0.02px}) {
+			@content;
+		}
+	} @else {
+		@warn "Breakpoint `#{$name}` not found in $breakpoints map.";
+	}
+}
+
+// Between two breakpoints
+// Example: @include breakpoint-between('phablet', 'desktop') { ... }
+// Compiles to: @media (min-width: 480px) and (max-width: 999.98px) { ... }
+@mixin breakpoint-between($lower, $upper) {
+	@if map.has-key($breakpoints, $lower) and map.has-key($breakpoints, $upper) {
+		@media (min-width: map.get($breakpoints, $lower)) and (max-width: #{map.get($breakpoints, $upper) - 0.02px}) {
+			@content;
+		}
+	} @else {
+		@warn "One or both breakpoints not found in $breakpoints map: `#{$lower}`, `#{$upper}`.";
+	}
+}
+

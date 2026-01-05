@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 
@@ -31,13 +31,20 @@
 	// Sync itemsWithState when items or group changes (one-way: items/group -> itemsWithState)
 	// Reassign the entire array to avoid reading itemsWithState in the effect
 	$effect(() => {
-		// Rebuild itemsWithState from items, using group to determine checked state
-		// Reassign instead of mutate to avoid circular dependency
-		const newItems = items.map((item) => ({
-			...item,
-			isChecked: group.includes(item.value ?? '')
-		}));
-		itemsWithState = newItems;
+		// Track items and group as dependencies
+		const currentItems = items;
+		const currentGroup = group;
+		
+		// Use untrack to prevent writing to itemsWithState from triggering this effect again
+		untrack(() => {
+			// Rebuild itemsWithState from items, using group to determine checked state
+			// Reassign instead of mutate to avoid circular dependency
+			const newItems = currentItems.map((item) => ({
+				...item,
+				isChecked: currentGroup.includes(item.value ?? '')
+			}));
+			itemsWithState = newItems;
+		});
 	});
 
 	const handleCheckboxChange = (data: { isChecked: boolean; value: string }) => {
@@ -53,10 +60,7 @@
 	};
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
+<FormField {size} {label} {id} {required} {disabled}>
 	<div>
 		{#each itemsWithState as item}
 			<CheckBox

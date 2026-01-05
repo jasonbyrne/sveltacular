@@ -2,7 +2,6 @@
 	import LinkIcon from '$src/lib/icons/link-icon.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField from '../form-field.svelte';
-	import FormLabel from '../form-label.svelte';
 
 	let {
 		size = 'md' as FormFieldSizeOptions,
@@ -17,10 +16,7 @@
 	} = $props();
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {label} />
-	{/if}
+<FormField {size} {label}>
 	<div class="input">
 		{#if href}
 			<span class="icon">

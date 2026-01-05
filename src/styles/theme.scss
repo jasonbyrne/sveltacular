@@ -11,31 +11,31 @@
 	   ============================================ */
 
 	/* Spacing Scale */
-	--spacing-xs: 0.25rem;    /* 4px */
-	--spacing-sm: 0.5rem;     /* 8px */
-	--spacing-md: 0.75rem;     /* 12px */
-	--spacing-base: 1rem;      /* 16px */
-	--spacing-lg: 1.5rem;      /* 24px */
-	--spacing-xl: 2rem;        /* 32px */
-	--spacing-2xl: 3rem;       /* 48px */
+	--spacing-xs: 0.25rem; /* 4px */
+	--spacing-sm: 0.5rem; /* 8px */
+	--spacing-md: 0.75rem; /* 12px */
+	--spacing-base: 1rem; /* 16px */
+	--spacing-lg: 1.5rem; /* 24px */
+	--spacing-xl: 2rem; /* 32px */
+	--spacing-2xl: 3rem; /* 48px */
 
 	/* Border Radius Scale */
-	--radius-xs: 0.125rem;     /* 2px */
-	--radius-sm: 0.25rem;      /* 4px */
-	--radius-md: 0.5rem;       /* 8px */
-	--radius-lg: 0.75rem;      /* 12px */
-	--radius-xl: 1rem;         /* 16px */
-	--radius-full: 50%;        /* Circular elements */
-	--radius-pill: 1.5rem;     /* 24px - Pill-shaped elements */
+	--radius-xs: 0.125rem; /* 2px */
+	--radius-sm: 0.25rem; /* 4px */
+	--radius-md: 0.5rem; /* 8px */
+	--radius-lg: 0.75rem; /* 12px */
+	--radius-xl: 1rem; /* 16px */
+	--radius-full: 50%; /* Circular elements */
+	--radius-pill: 1.5rem; /* 24px - Pill-shaped elements */
 
 	/* Font Size Scale */
-	--font-xs: 0.625rem;       /* 10px */
-	--font-sm: 0.75rem;        /* 12px */
-	--font-base: 0.875rem;     /* 14px */
-	--font-md: 1rem;           /* 16px */
-	--font-lg: 1.125rem;       /* 18px */
-	--font-xl: 1.25rem;        /* 20px */
-	--font-2xl: 1.5rem;        /* 24px */
+	--font-xs: 0.625rem; /* 10px */
+	--font-sm: 0.75rem; /* 12px */
+	--font-base: 0.875rem; /* 14px */
+	--font-md: 1rem; /* 16px */
+	--font-lg: 1.125rem; /* 18px */
+	--font-xl: 1.25rem; /* 20px */
+	--font-2xl: 1.5rem; /* 24px */
 
 	/* Border Width Scale */
 	--border-thin: 1px;
@@ -53,7 +53,9 @@
 	--focus-ring-color: var(--color-info);
 	--focus-ring-width: 2px;
 	--focus-ring-offset: 2px;
-	--focus-ring: 0 0 0 var(--focus-ring-offset) transparent, 0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--focus-ring-color);
+	--focus-ring:
+		0 0 0 var(--focus-ring-offset) transparent,
+		0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--focus-ring-color);
 
 	/* Glassmorphism Effects */
 	--glass-bg: rgba(255, 255, 255, 0.8);
@@ -76,12 +78,12 @@
 	   ============================================ */
 
 	/* Base Colors - Warmer, Softer Tones */
-	--base-color-bg: #fafafa;           /* Soft off-white instead of stark white */
-	--base-color-fg: #2d3748;           /* Warm dark gray instead of harsh black */
-	--base-link-fg: #4a90e2;            /* Warm blue instead of #543fd7 */
-	--base-link-hover-fg: #3182ce;      /* Darker warm blue */
-	--base-accent-fg: #4a5568;          /* Medium warm gray */
-	--base-accent-bg: #e2e8f0;          /* Light warm gray */
+	--base-color-bg: #fafafa; /* Soft off-white instead of stark white */
+	--base-color-fg: #2d3748; /* Warm dark gray instead of harsh black */
+	--base-link-fg: #4a90e2; /* Warm blue instead of #543fd7 */
+	--base-link-hover-fg: #3182ce; /* Darker warm blue */
+	--base-accent-fg: #4a5568; /* Medium warm gray */
+	--base-accent-bg: #e2e8f0; /* Light warm gray */
 
 	/* Neutral Grays - Warm Tones */
 	--gray-50: #f7fafc;
@@ -96,14 +98,14 @@
 	--gray-900: #171923;
 
 	/* Semantic Colors - Friendlier, Softer */
-	--color-success: #48bb78;           /* Softer green */
-	--color-success-hover: #38a169;      /* Darker green */
-	--color-error: #f56565;              /* Softer red */
-	--color-error-hover: #e53e3e;        /* Darker red */
-	--color-warning: #ed8936;            /* Warm orange */
-	--color-warning-hover: #dd6b20;      /* Darker orange */
-	--color-info: #4299e1;               /* Soft blue */
-	--color-info-hover: #3182ce;         /* Darker blue */
+	--color-success: #48bb78; /* Softer green */
+	--color-success-hover: #38a169; /* Darker green */
+	--color-error: #f56565; /* Softer red */
+	--color-error-hover: #e53e3e; /* Darker red */
+	--color-warning: #ed8936; /* Warm orange */
+	--color-warning-hover: #dd6b20; /* Darker orange */
+	--color-info: #4299e1; /* Soft blue */
+	--color-info-hover: #3182ce; /* Darker blue */
 
 	/* Typography */
 	--base-font-family: 'Roboto', sans-serif;
@@ -293,14 +295,14 @@
    DARK MODE THEME
    ============================================ */
 
-[data-theme="dark"] {
+[data-theme='dark'] {
 	/* Base Colors - Dark Mode */
-	--base-color-bg: #0f1419;           /* Deep dark background */
-	--base-color-fg: #e6edf3;           /* Light gray text */
-	--base-link-fg: #58a6ff;            /* Bright blue for links */
-	--base-link-hover-fg: #79c0ff;      /* Lighter blue on hover */
-	--base-accent-fg: #8b949e;          /* Muted gray for accents */
-	--base-accent-bg: #21262d;          /* Dark gray background accent */
+	--base-color-bg: #0f1419; /* Deep dark background */
+	--base-color-fg: #e6edf3; /* Light gray text */
+	--base-link-fg: #58a6ff; /* Bright blue for links */
+	--base-link-hover-fg: #79c0ff; /* Lighter blue on hover */
+	--base-accent-fg: #8b949e; /* Muted gray for accents */
+	--base-accent-bg: #21262d; /* Dark gray background accent */
 
 	/* Neutral Grays - Dark Mode (inverted) */
 	--gray-50: #0d1117;
@@ -315,14 +317,14 @@
 	--gray-900: #e6edf3;
 
 	/* Semantic Colors - Dark Mode (brighter for visibility) */
-	--color-success: #3fb950;           /* Brighter green */
-	--color-success-hover: #56d364;     /* Even brighter on hover */
-	--color-error: #f85149;             /* Bright red */
-	--color-error-hover: #ff7b72;       /* Lighter red on hover */
-	--color-warning: #d29922;           /* Warm amber */
-	--color-warning-hover: #e3b341;     /* Lighter amber on hover */
-	--color-info: #58a6ff;              /* Bright blue */
-	--color-info-hover: #79c0ff;        /* Lighter blue on hover */
+	--color-success: #3fb950; /* Brighter green */
+	--color-success-hover: #56d364; /* Even brighter on hover */
+	--color-error: #f85149; /* Bright red */
+	--color-error-hover: #ff7b72; /* Lighter red on hover */
+	--color-warning: #d29922; /* Warm amber */
+	--color-warning-hover: #e3b341; /* Lighter amber on hover */
+	--color-info: #58a6ff; /* Bright blue */
+	--color-info-hover: #79c0ff; /* Lighter blue on hover */
 
 	/* Shadows - Dark Mode (layered, stronger for visibility on dark bg) */
 	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -333,7 +335,9 @@
 
 	/* Focus Ring - Dark Mode */
 	--focus-ring-color: var(--color-info);
-	--focus-ring: 0 0 0 var(--focus-ring-offset) transparent, 0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--focus-ring-color);
+	--focus-ring:
+		0 0 0 var(--focus-ring-offset) transparent,
+		0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--focus-ring-color);
 
 	/* Glassmorphism Effects - Dark Mode */
 	--glass-bg: rgba(22, 27, 34, 0.8);

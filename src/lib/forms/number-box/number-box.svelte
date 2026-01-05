@@ -2,7 +2,6 @@
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	const id = uniqueId();
 
@@ -64,10 +63,7 @@
 	};
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {label} />
-	{/if}
+<FormField {size} {label} {id}>
 	<div class="input {type}">
 		{#if prefix}
 			<span class="prefix">{prefix}</span>

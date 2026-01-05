@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -32,10 +31,7 @@
 	} = $props();
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
+<FormField {size} {label} {id} {required} {disabled}>
 	<div>
 		<input
 			{id}

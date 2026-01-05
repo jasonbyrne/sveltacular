@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
@@ -73,26 +73,45 @@
 				: 'near-limit'
 			: ''
 	);
-	
+
+	// Update describedByIds array when helper/error/success text changes
 	$effect(() => {
-		describedByIds = [];
-		if (helperText) describedByIds.push(`${id}-helper`);
-		if (errorText) describedByIds.push(`${id}-error`);
-		if (successText) describedByIds.push(`${id}-success`);
+		// Track the dependencies we care about
+		const hasHelper = !!helperText;
+		const hasErrorMsg = !!errorText;
+		const hasSuccessMsg = !!successText;
+
+		// Use untrack to write to describedByIds without triggering this effect again
+		untrack(() => {
+			describedByIds = [];
+			if (hasHelper) describedByIds.push(`${id}-helper`);
+			if (hasErrorMsg) describedByIds.push(`${id}-error`);
+			if (hasSuccessMsg) describedByIds.push(`${id}-success`);
+		});
 	});
 
-	// Trigger shake animation when error appears
+	// Trigger shake animation when error appears (track previous error state)
+	let prevHasError = $state(false);
 	$effect(() => {
-		if (hasError && inputElement) {
-			animateShake(inputElement);
+		if (hasError && !prevHasError && inputElement) {
+			// Use untrack to prevent animation from triggering effect again
+			untrack(() => {
+				animateShake(inputElement!); // Already checked above
+			});
 		}
+		prevHasError = hasError;
 	});
 
-	// Trigger scale-in animation when success appears
+	// Trigger scale-in animation when success appears (track previous success state)
+	let prevHasSuccess = $state(false);
 	$effect(() => {
-		if (hasSuccess && successIconElement) {
-			animateScaleIn(successIconElement);
+		if (hasSuccess && !prevHasSuccess && successIconElement) {
+			// Use untrack to prevent animation from triggering effect again
+			untrack(() => {
+				animateScaleIn(successIconElement!); // Already checked above
+			});
 		}
+		prevHasSuccess = hasSuccess;
 	});
 
 	// Don't allow certain characters to be typed into the input
@@ -130,11 +149,13 @@
 	};
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {label} />
-	{/if}
-	<div class="input {disabled ? 'disabled' : 'enabled'}" class:error={hasError} class:success={hasSuccess} bind:this={inputElement}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {errorText} {successText}>
+	<div
+		class="input {disabled ? 'disabled' : 'enabled'}"
+		class:error={hasError}
+		class:success={hasSuccess}
+		bind:this={inputElement}
+	>
 		{#if prefix}
 			<div class="prefix">{prefix}</div>
 		{/if}
@@ -172,19 +193,6 @@
 	{#if showCharacterCount && maxlength}
 		<div class="character-count {characterLimitClass}">
 			{characterCount} / {maxlength}
-		</div>
-	{/if}
-	{#if helperText}
-		<div class="helper-text" id="{id}-helper">{helperText}</div>
-	{/if}
-	{#if successText}
-		<div class="success-text" id="{id}-success" role="status" aria-live="polite">
-			{successText}
-		</div>
-	{/if}
-	{#if errorText}
-		<div class="error-text" id="{id}-error" role="alert" aria-live="assertive">
-			{errorText}
 		</div>
 	{/if}
 </FormField>
@@ -305,6 +313,8 @@
 		padding: var(--spacing-xs);
 		text-align: right;
 		color: var(--body-fg);
+		position: absolute;
+		right: 0;
 
 		&.near-limit {
 			color: var(--warning, #ffc107);
@@ -315,28 +325,5 @@
 			color: var(--danger, #dc3545);
 			font-weight: 600;
 		}
-	}
-
-	.helper-text {
-		font-size: var(--font-sm);
-		line-height: 1.25rem;
-		padding: var(--spacing-xs);
-		color: var(--body-fg);
-	}
-
-	.success-text {
-		font-size: var(--font-sm);
-		line-height: 1.25rem;
-		padding: var(--spacing-xs);
-		color: var(--success, #28a745);
-		font-weight: 500;
-	}
-
-	.error-text {
-		font-size: var(--font-sm);
-		line-height: 1.25rem;
-		padding: var(--spacing-xs);
-		color: var(--danger, #dc3545);
-		font-weight: 500;
 	}
 </style>

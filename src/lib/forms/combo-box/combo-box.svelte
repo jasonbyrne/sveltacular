@@ -19,9 +19,9 @@
 	 * />
 	 * ```
 	 */
+	import { untrack } from 'svelte';
 	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field.svelte';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
@@ -40,7 +40,7 @@
 		multiSelect = false,
 		placeholder = '',
 		label = undefined,
-		helpText = undefined,
+		helperText = undefined,
 		errorText = undefined,
 		successText = undefined,
 		maxSelections = undefined as number | undefined,
@@ -68,8 +68,8 @@
 		placeholder?: string;
 		/** Label text for the combobox */
 		label?: string;
-		/** Help text displayed below the input */
-		helpText?: string;
+		/** Helper text displayed below the input */
+		helperText?: string;
 		/** Error message to display */
 		errorText?: string;
 		/** Success message to display */
@@ -368,9 +368,28 @@
 		}
 	};
 
-	// Initial filter
+	// Filter items when items or searchQuery changes
+	// Use untrack to prevent reading filteredItems/highlightIndex from triggering the effect
 	$effect(() => {
-		applyFilter();
+		// Track only the dependencies we care about
+		const query = searchQuery.trim().toLowerCase();
+		const currentItems = items;
+		
+		// Use untrack to write to state without triggering this effect again
+		untrack(() => {
+			if (query && searchable) {
+				filteredItems = currentItems.filter((item) =>
+					item.name.toLowerCase().includes(query)
+				);
+			} else {
+				filteredItems = [...currentItems];
+			}
+
+			// Reset highlight if out of bounds
+			if (highlightIndex >= filteredItems.length) {
+				highlightIndex = Math.max(0, filteredItems.length - 1);
+			}
+		});
 	});
 
 	// Derived state for open/closed
@@ -379,16 +398,15 @@
 	// Clear search query when menu closes in single-select mode
 	$effect(() => {
 		if (!isMenuOpen && !multiSelect) {
-			searchQuery = '';
+			// Use untrack to prevent triggering other effects
+			untrack(() => {
+				searchQuery = '';
+			});
 		}
 	});
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {required} {disabled} {label} />
-	{/if}
-
+<FormField {size} {label} {id} {required} {disabled} {helperText} {errorText} {successText}>
 	<div class="combobox-wrapper {open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}">
 		<!-- Multi-select chip display -->
 		{#if multiSelect && selectedItems.length > 0}
@@ -423,7 +441,7 @@
 				aria-activedescendant={activeDescendant}
 				aria-haspopup="listbox"
 				aria-label={label}
-				aria-describedby={helpText || errorText || successText ? `${id}-description` : undefined}
+				aria-describedby={helperText || errorText || successText ? `${id}-helper ${id}-error ${id}-success` : undefined}
 				aria-invalid={errorText ? 'true' : undefined}
 				onfocus={() => {
 					if (!disabled) {
@@ -488,19 +506,6 @@
 		/>
 		</div>
 	</div>
-
-	<!-- Help/Error/Success text -->
-	{#if helpText || errorText || successText}
-		<div id="{id}-description" class="description">
-			{#if errorText}
-				<span class="error-text" role="alert">{errorText}</span>
-			{:else if successText}
-				<span class="success-text" role="status">{successText}</span>
-			{:else if helpText}
-				<span class="help-text">{helpText}</span>
-			{/if}
-		</div>
-	{/if}
 
 	<!-- Max selections indicator -->
 	{#if multiSelect && maxSelections !== undefined}
@@ -639,26 +644,6 @@
 		width: 100%;
 		z-index: 1000;
 		margin-top: 0.25rem;
-	}
-
-	.description {
-		margin-top: 0.5rem;
-		font-size: var(--font-sm);
-		line-height: 1.4;
-
-		.help-text {
-			color: var(--gray-600);
-		}
-
-		.error-text {
-			color: var(--danger);
-			font-weight: 500;
-		}
-
-		.success-text {
-			color: var(--success);
-			font-weight: 500;
-		}
 	}
 
 	.max-selections-indicator {

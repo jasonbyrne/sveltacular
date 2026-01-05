@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField from '../form-field.svelte';
-	import FormLabel from '../form-label.svelte';
 	import { untrack } from 'svelte';
 	
 	const id = uniqueId();
@@ -58,8 +57,11 @@
 	]);
 	$effect(() => {
 		if (value !== null && value >= 0) {
-			dollars = getDollarsFromValue();
-			cents = getCentsFromValue();
+			// Use untrack to prevent writes to dollars/cents from triggering this effect again
+			untrack(() => {
+				dollars = getDollarsFromValue();
+				cents = getCentsFromValue();
+			});
 		}
 	});
 
@@ -207,10 +209,7 @@
 
 </script>
 
-<FormField {size}>
-	{#if label}
-		<FormLabel {id} {label} />
-	{/if}
+<FormField {size} {label} {id}>
 	<div class="input {currency}" class:allowCents {id}>
 		{#if prefix}
 			<span class="prefix">{prefix}</span>

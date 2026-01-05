@@ -5,14 +5,14 @@
 
 	/**
 	 * TextBox component for text input with validation and formatting options.
-	 * 
+	 *
 	 * **Accessibility**: Includes proper ARIA attributes, labels, and helper text support.
 	 * Use `aria-describedby` to link helper text and error messages.
-	 * 
-	 * **Usage**: 
+	 *
+	 * **Usage**:
 	 * ```svelte
-	 * <TextBox 
-	 *   label="Name" 
+	 * <TextBox
+	 *   label="Name"
 	 *   placeholder="Enter your name"
 	 *   helperText="Required field"
 	 *   bind:value={name}
@@ -142,10 +142,18 @@
 
 <Story
 	name="Standard"
-	args={{ type: 'text', placeholder: 'Placeholder text', helperText: 'Here is some additional requirements for the input.' }}
+	args={{
+		type: 'text',
+		label: 'Name',
+		placeholder: 'Enter your name',
+		helperText: 'Required field'
+	}}
 />
 
-<Story name="Units" args={{ type: 'text', suffix: 'cm', value: '10', placeholder: 'Placeholder text' }} />
+<Story
+	name="Units"
+	args={{ type: 'text', suffix: 'cm', value: '10', placeholder: 'Placeholder text' }}
+/>
 
 <Story
 	name="WithLabel"
@@ -159,55 +167,61 @@
 
 <Story
 	name="LinkedIn"
-	args={{ type: 'text', prefix: 'https://www.linkedin.com/in/', placeholder: 'UserName', allowSpaces: false }}
+	args={{
+		type: 'text',
+		prefix: 'https://www.linkedin.com/in/',
+		placeholder: 'UserName',
+		allowSpaces: false
+	}}
 />
 
-<Story name="UserName" args={{ type: 'text', placeholder: 'User Name', allowSpaces: false, textCase: 'lower' }} />
+<Story
+	name="UserName"
+	args={{ type: 'text', placeholder: 'User Name', allowSpaces: false, textCase: 'lower' }}
+/>
 
-<Story 
-	name="SuccessState" 
-	args={{ 
-		type: 'email', 
+<Story
+	name="SuccessState"
+	args={{
+		type: 'email',
 		placeholder: 'Enter your email',
 		label: 'Email Address',
 		successText: 'Email is available!',
-		helperText: 'We\'ll never share your email'
-	}} 
+		helperText: "We'll never share your email"
+	}}
 />
 
-<Story 
-	name="LoadingState" 
-	args={{ 
-		type: 'text', 
+<Story
+	name="LoadingState"
+	args={{
+		type: 'text',
 		placeholder: 'Enter username',
 		label: 'Username',
 		isLoading: true,
 		helperText: 'Checking availability...'
-	}} 
+	}}
 />
 
-<Story 
-	name="CharacterCounter" 
-	args={{ 
-		type: 'text', 
+<Story
+	name="CharacterCounter"
+	args={{
+		type: 'text',
 		placeholder: 'Tell us about yourself',
 		label: 'Bio',
 		showCharacterCount: true,
 		maxlength: 100,
 		helperText: 'Keep it short and sweet',
 		value: 'I am a software developer'
-	}} 
+	}}
 />
 
-<Story 
-	name="ErrorState" 
-	args={{ 
-		type: 'email', 
+<Story
+	name="ErrorState"
+	args={{
+		type: 'email',
 		placeholder: 'Enter your email',
 		label: 'Email Address',
 		errorText: 'This email is already taken',
-		helperText: 'We\'ll never share your email'
-	}} 
+		helperText: "We'll never share your email"
+	}}
 />
-
-
