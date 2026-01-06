@@ -12,18 +12,37 @@ npm i sveltacular
 
 ## Quick Start
 
-First, import the default styles to get all CSS variables and base styles:
+### 1. Import the default stylesheet (once, in your app root)
+
+**For SvelteKit**, add this to `src/routes/+layout.svelte`:
 
 ```svelte
 <script lang="ts">
 	import 'sveltacular/styles.css';
+</script>
+
+<slot />
+```
+
+**For regular Svelte**, add it to your main `App.svelte` or root component:
+
+```svelte
+<script lang="ts">
+	import 'sveltacular/styles.css';
+</script>
+```
+
+### 2. Use components anywhere
+
+```svelte
+<script lang="ts">
 	import { Button } from 'sveltacular';
 </script>
 
 <Button variant="primary" label="Hello World" />
 ```
 
-**Note**: The styles import is required for components to render with default styling. If you prefer to provide your own theme, you can skip this import and define your own CSS variables (see [Theming](#theming) below).
+**Note**: The stylesheet import is required for components to render with default styling. Import it once at the app level (not in individual components). If you prefer to provide your own theme, you can skip this import and define your own CSS variables (see [Theming](#theming) below).
 
 ## Component Catalog
 
