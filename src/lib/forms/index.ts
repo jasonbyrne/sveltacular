@@ -12,7 +12,7 @@ export { default as NumberRangeBox } from './number-range-box/number-range-box.s
 export { default as PhoneBox } from './phone-box/phone-box.svelte';
 export { default as Slider } from './slider/slider.svelte';
 export { default as SwitchBox } from './switch-box/switch-box.svelte';
-export { default as TagInputBox } from './tag-input-box/tag-input-box.svelte';
+export { default as TagBox } from './tag-box/tag-box.svelte';
 export { default as TextArea } from './text-area/text-area.svelte';
 export { default as TextBox } from './text-box/text-box.svelte';
 export { default as TimeBox } from './time-box/time-box.svelte';

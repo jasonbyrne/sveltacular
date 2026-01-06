@@ -75,7 +75,7 @@ npm i sveltacular
 - **SwitchBox** - Toggle switch component
 - **BoolBox** - Boolean input component
 - **MoneyBox** - Currency input with formatting
-- **TagInputBox** - Tag input with chip display
+- **TagBox** - Tag input with chip display
 - **UrlBox** - URL input with validation
 - **InfoBox** - Information display box
 - **NewOrExistingCombo** - Combo component for new/existing selection

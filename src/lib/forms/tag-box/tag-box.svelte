@@ -18,6 +18,7 @@
 		label = undefined as string | undefined,
 		helperText = undefined as string | undefined,
 		feedback = undefined as FormFieldFeedback | undefined,
+		showAddButton = false,
 		onChange = undefined as ((value: string[]) => void) | undefined
 	}: {
 		value?: string[];
@@ -30,6 +31,7 @@
 		label?: string;
 		helperText?: string;
 		feedback?: FormFieldFeedback;
+		showAddButton?: boolean;
 		onChange?: ((value: string[]) => void) | undefined;
 	} = $props();
 
@@ -83,9 +85,9 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div class="tag-input">
+	<div class="tag-box">
 		<div class="input-container">
-			<div class="input-wrapper">
+			<div class="input {disabled ? 'disabled' : 'enabled'}">
 				<input
 					{id}
 					type="text"
@@ -97,7 +99,6 @@
 					{required}
 					list={autocomplete.length > 0 ? datalistId : undefined}
 					aria-label="Tag input"
-					class="tag-input-field"
 				/>
 				{#if autocomplete.length > 0}
 					<datalist id={datalistId}>
@@ -107,15 +108,17 @@
 					</datalist>
 				{/if}
 			</div>
-			<button
-				type="button"
-				class="add-button"
-				onclick={() => addTag()}
-				disabled={disabled || !newTag.trim()}
-				aria-label="Add tag"
-			>
-				Add
-			</button>
+			{#if showAddButton}
+				<button
+					type="button"
+					class="add-button"
+					onclick={() => addTag()}
+					disabled={disabled || !newTag.trim()}
+					aria-label="Add tag"
+				>
+					Add
+				</button>
+			{/if}
 		</div>
 
 		{#if value.length > 0}
@@ -129,7 +132,7 @@
 </FormField>
 
 <style lang="scss">
-	.tag-input {
+	.tag-box {
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-sm);
@@ -138,20 +141,17 @@
 		.input-container {
 			display: flex;
 			gap: var(--spacing-sm);
-			align-items: flex-end;
+			align-items: stretch;
 
-			.input-wrapper {
-				flex: 1;
+			.input {
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
 				position: relative;
-			}
-
-			.tag-input-field {
 				width: 100%;
 				height: 100%;
-				padding-left: var(--spacing-base);
-				padding-right: var(--spacing-base);
-				border: var(--border-thin) solid var(--form-input-border);
 				border-radius: var(--radius-md);
+				border: var(--border-thin) solid var(--form-input-border);
 				background-color: var(--form-input-bg);
 				color: var(--form-input-fg);
 				font-size: var(--font-md);
@@ -160,26 +160,51 @@
 				transition:
 					background-color var(--transition-base) var(--ease-in-out),
 					border-color var(--transition-base) var(--ease-in-out),
-					color var(--transition-base) var(--ease-in-out);
+					color var(--transition-base) var(--ease-in-out),
+					fill var(--transition-base) var(--ease-in-out),
+					stroke var(--transition-base) var(--ease-in-out);
+				user-select: none;
+				white-space: nowrap;
+				flex: 1;
 
-				&:focus {
-					outline: none;
-					border-color: var(--form-input-border-focus);
-					background-color: var(--form-input-bg);
+				&.disabled {
+					opacity: 0.5;
 				}
 
-				&:disabled {
-					opacity: 0.6;
-					cursor: not-allowed;
-				}
+				input {
+					background-color: transparent;
+					border: none;
+					line-height: 2rem;
+					font-size: var(--font-md);
+					width: 100%;
+					flex-grow: 1;
+					padding-left: var(--spacing-base);
+					padding-right: var(--spacing-base);
 
-				&::placeholder {
-					color: var(--form-input-placeholder);
+					&:focus {
+						outline: none;
+					}
+
+					&:focus-visible {
+						outline: 2px solid var(--focus-ring, #007bff);
+						outline-offset: 2px;
+					}
+
+					&:disabled {
+						cursor: not-allowed;
+					}
+
+					&::placeholder {
+						color: var(--form-input-placeholder);
+					}
 				}
 			}
 
 			.add-button {
-				padding: var(--spacing-sm) var(--spacing-base);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0 var(--spacing-base);
 				background-color: var(--button-primary-bg);
 				color: var(--button-primary-fg);
 				border: var(--border-thin) solid var(--button-primary-border);
@@ -192,7 +217,7 @@
 					border-color var(--transition-base) var(--ease-in-out),
 					color var(--transition-base) var(--ease-in-out);
 				white-space: nowrap;
-				height: fit-content;
+				height: 100%;
 				line-height: 2rem;
 
 				&:hover:not(:disabled) {

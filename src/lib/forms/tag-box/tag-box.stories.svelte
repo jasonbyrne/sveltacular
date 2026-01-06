@@ -1,27 +1,28 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
-	import TagInputBox from './tag-input-box.svelte';
+	import TagBox from './tag-box.svelte';
 
 	/**
-	 * TagInputBox component for adding and managing an array of string tags.
+	 * TagBox component for adding and managing an array of string tags.
 	 *
 	 * **Accessibility**: Includes proper ARIA attributes, labels, and helper text support.
 	 * Use `aria-describedby` to link helper text and error messages.
 	 *
 	 * **Usage**:
 	 * ```svelte
-	 * <TagInputBox
+	 * <TagBox
 	 *   label="Tags"
 	 *   placeholder="Add a tag..."
 	 *   bind:value={tags}
 	 *   autocomplete={['tag1', 'tag2', 'tag3']}
+	 *   showAddButton={false}
 	 * />
 	 * ```
 	 */
 	const { Story } = defineMeta({
-		component: TagInputBox,
-		title: 'Forms/TagInputBox',
+		component: TagBox,
+		title: 'Forms/TagBox',
 		tags: ['autodocs'],
 		argTypes: {
 			label: {
@@ -100,6 +101,14 @@
 				description: 'Feedback message with optional details array',
 				table: {
 					type: { summary: 'FormFieldFeedback' }
+				}
+			},
+			showAddButton: {
+				control: 'boolean',
+				description: 'Whether to show the add button (tags can be added with Enter or separator keys)',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
 				}
 			},
 			onChange: {
@@ -213,6 +222,16 @@
 		placeholder: 'Type tags separated by pipe or space...',
 		helperText: 'Custom separators: pipe (|) and space',
 		separators: ['|', ' ']
+	}}
+/>
+
+<Story
+	name="WithAddButton"
+	args={{
+		label: 'Tags',
+		placeholder: 'Add a tag...',
+		helperText: 'Add tags with Enter, separator keys, or the Add button',
+		showAddButton: true
 	}}
 />
 
