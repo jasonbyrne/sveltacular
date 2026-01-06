@@ -35,7 +35,8 @@
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
 		"preview": "vite preview",
-		"package": "svelte-kit sync && svelte-package && publint",
+		"build:css": "sass src/styles/sveltacular.scss dist/sveltacular.css --style=expanded --no-source-map",
+		"package": "npm run build:css && svelte-kit sync && svelte-package && publint",
 		"prepublishOnly": "npm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -49,13 +50,17 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"release:patch": "npm version patch --no-git-tag-version=false && npm publish && git push && git push --tags",
+		"release:minor": "npm version minor --no-git-tag-version=false && npm publish && git push && git push --tags",
+		"release:major": "npm version major --no-git-tag-version=false && npm publish && git push && git push --tags"
 	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
-		}
+		},
+		"./styles.css": "./dist/sveltacular.css"
 	},
 	"files": [
 		"dist",

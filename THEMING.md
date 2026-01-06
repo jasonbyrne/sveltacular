@@ -2,6 +2,21 @@
 
 This document describes all CSS variables used in the Sveltacular component library. These variables allow you to customize the appearance of components without modifying the source code.
 
+## Default Stylesheet
+
+All CSS variables listed in this guide are defined in the default stylesheet. To use the default theme, import the stylesheet in your application:
+
+```svelte
+<script>
+	import 'sveltacular/styles.css';
+	import { Button } from 'sveltacular';
+</script>
+```
+
+This provides all default CSS variable values. You can then override any variables to customize the theme (see [Usage Examples](#usage-examples) below).
+
+If you prefer to define all CSS variables yourself, you can skip importing the default stylesheet and provide your own theme definitions.
+
 ## Design Token System
 
 Sveltacular uses a comprehensive design token system organized into logical categories. Design tokens provide consistent spacing, typography, colors, and other design values across all components.

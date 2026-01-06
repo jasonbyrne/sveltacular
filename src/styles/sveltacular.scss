@@ -1,0 +1,15 @@
+/*
+ * Sveltacular Default Styles
+ * 
+ * This file bundles all default theme variables and base styles.
+ * Import this file (or the compiled CSS) to get default styling for all components.
+ * 
+ * Usage: import 'sveltacular/styles.css' in your app
+ */
+
+// Import theme variables first (CSS custom properties)
+@import './theme.scss';
+
+// Import global base styles (includes focus.scss via global.scss)
+@import './global.scss';
+

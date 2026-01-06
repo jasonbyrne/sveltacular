@@ -12,17 +12,23 @@ npm i sveltacular
 
 ## Quick Start
 
+First, import the default styles to get all CSS variables and base styles:
+
 ```svelte
 <script lang="ts">
+	import 'sveltacular/styles.css';
 	import { Button } from 'sveltacular';
 </script>
 
 <Button variant="primary" label="Hello World" />
 ```
 
+**Note**: The styles import is required for components to render with default styling. If you prefer to provide your own theme, you can skip this import and define your own CSS variables (see [Theming](#theming) below).
+
 ## Component Catalog
 
 ### Forms
+
 - **Button** - Multiple variants (primary, secondary, positive, danger, outline)
 - **TextBox** - Text input with validation and formatting options
 - **NumberBox** - Number input with min/max/decimals
@@ -38,6 +44,7 @@ npm i sveltacular
 - **Form** - Form container with validation
 
 ### Generic Components
+
 - **Card** - Card container
 - **Pill** - Badge/pill component
 - **Badge** - Notification badge
@@ -52,6 +59,7 @@ npm i sveltacular
 - **List** - Styled list component
 
 ### Navigation
+
 - **AppBar** - Application bar
 - **SideBar** - Side navigation
 - **Breadcrumbs** - Breadcrumb navigation
@@ -62,16 +70,19 @@ npm i sveltacular
 - **Drawer** - Slide-out drawer
 
 ### Modals
+
 - **Modal** - Generic modal dialog
 - **Alert** - Alert dialog
 - **Confirm** - Confirmation dialog
 - **Prompt** - Input prompt dialog
 
 ### Tables
+
 - **Table** - Table component with header/body/footer
 - **DataGrid** - Advanced data grid
 
 ### Typography
+
 - **Headline** - Heading component
 - **Subtitle** - Subtitle component
 - **Text** - Text component
@@ -79,6 +90,7 @@ npm i sveltacular
 - **CodeBlock** - Code block
 
 ### Layout
+
 - **FlexRow** / **FlexCol** - Flexbox layout
 - **Grid** - Grid layout
 
@@ -102,17 +114,46 @@ import { CheckBox, CheckBoxGroup } from 'sveltacular/forms/check-box';
 
 ## Theming
 
-Sveltacular uses CSS variables for theming. See [THEMING.md](./THEMING.md) for a complete list of available CSS variables.
+Sveltacular uses CSS variables for theming. When you import `sveltacular/styles.css`, all default CSS variables are included. You can override any of these variables to customize the appearance of components.
 
-Example:
+See [THEMING.md](./THEMING.md) for a complete list of available CSS variables.
+
+### Customizing the Theme
+
+Override CSS variables in your own stylesheet (after importing the default styles):
 
 ```css
+/* Import default styles first */
+@import 'sveltacular/styles.css';
+
+/* Then override variables as needed */
 :root {
 	--button-primary-bg: #1e88e5;
 	--form-input-border: #e0e0e0;
 	--base-color-bg: #ffffff;
 }
 ```
+
+Or in a Svelte component:
+
+```svelte
+<script>
+	import 'sveltacular/styles.css';
+	import { Button } from 'sveltacular';
+</script>
+
+<style>
+	:global(:root) {
+		--button-primary-bg: #1e88e5;
+		--form-input-border: #e0e0e0;
+		--base-color-bg: #ffffff;
+	}
+</style>
+```
+
+### Providing Your Own Theme
+
+If you prefer not to use the default stylesheet, you can define all CSS variables yourself. See [THEMING.md](./THEMING.md) for the complete list of required variables.
 
 ## Form Validation
 
@@ -136,6 +177,7 @@ if (!result.isValid) {
 ## Accessibility
 
 Sveltacular components include:
+
 - ARIA attributes for screen readers
 - Keyboard navigation support
 - Focus management utilities
