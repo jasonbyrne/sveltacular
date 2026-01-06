@@ -31,16 +31,18 @@
 
 <style lang="scss">
 	.input {
-		background-color: var(--form-input-disabled-bg, #ccc);
-		color: var(--form-input-fg, #000);
-		font-size: 1rem;
+		background-color: var(--form-input-disabled-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
 		width: 100%;
-		padding-left: 0.5rem;
-		border: solid 1px var(--form-input-border, black);
+		height: 100%;
+		padding-left: var(--spacing-base);
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		gap: 0.5rem;
+		gap: var(--spacing-sm);
 
 		.icon {
 			display: block;
@@ -52,7 +54,7 @@
 		.text {
 			line-height: 2rem;
 			flex-grow: 1;
-			font-size: 1rem;
+			font-size: var(--font-md);
 		}
 
 		a {

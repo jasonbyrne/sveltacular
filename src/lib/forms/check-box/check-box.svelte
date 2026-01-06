@@ -2,6 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	let {
 		value = '',
@@ -10,7 +12,12 @@
 		name = undefined,
 		onChange = undefined,
 		label,
-		children
+		children,
+		size = 'full' as FormFieldSizeOptions,
+		helperText = undefined,
+		feedback = undefined,
+		required = false,
+		inline = false
 	}: {
 		value?: string;
 		isChecked?: boolean;
@@ -19,6 +26,11 @@
 		onChange?: ((data: { isChecked: boolean; value: string }) => void) | undefined;
 		label?: string;
 		children?: Snippet;
+		size?: FormFieldSizeOptions;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		required?: boolean;
+		inline?: boolean;
 	} = $props();
 
 	const id = uniqueId();
@@ -33,32 +45,62 @@
 	};
 </script>
 
-<label>
-	<input
-		type="checkbox"
-		{id}
-		{disabled}
-		{name}
-		{value}
-		bind:checked={isChecked}
-		onchange={onChecked}
-	/>
-	<span class="checkbox">
-		<span class="checkmark"><CheckIcon /></span>
-	</span>
-	{#if children}
-		<div class="text">
-			{@render children()}
-		</div>
-	{:else if label}
-		<div class="text">
-			{label}
-		</div>
-	{/if}
-</label>
+{#if inline}
+	<label class="checkbox-label">
+		<input
+			type="checkbox"
+			{id}
+			{disabled}
+			{name}
+			{value}
+			bind:checked={isChecked}
+			onchange={onChecked}
+			{required}
+		/>
+		<span class="checkbox">
+			<span class="checkmark"><CheckIcon /></span>
+		</span>
+		{#if children}
+			<div class="text">
+				{@render children()}
+			</div>
+		{:else if label}
+			<div class="text">
+				{label}
+			</div>
+		{/if}
+	</label>
+{:else}
+	<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
+		<label class="checkbox-label">
+			<input
+				type="checkbox"
+				{id}
+				{disabled}
+				{name}
+				{value}
+				bind:checked={isChecked}
+				onchange={onChecked}
+				{required}
+			/>
+			<span class="checkbox">
+				<span class="checkmark"><CheckIcon /></span>
+			</span>
+			{#if children}
+				<div class="text">
+					{@render children()}
+				</div>
+			{:else if label}
+				<div class="text">
+					{label}
+				</div>
+			{/if}
+		</label>
+	</FormField>
+{/if}
 
 <style lang="scss">
-	label {
+	.checkbox-label {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;

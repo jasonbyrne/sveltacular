@@ -1,18 +1,41 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
-	import { getMaxWidth, getDisplayType } from '$src/lib/types/size.js';
 	import FormLabel from '$src/lib/forms/form-label/form-label.svelte';
+	import type { AriaRole } from 'svelte/elements';
+
+	export type FormFieldMessage = {
+		text: string;
+		isError?: boolean;
+	};
+
+	export type FormFieldFeedback = FormFieldMessage & {
+		details?: FormFieldMessage[];
+	};
+
+	/**
+	 * Maps size to flex-grow value for relative sizing in flexbox containers (FormRow).
+	 * The size prop controls how much space the field takes relative to its siblings.
+	 */
+	const getFlexGrow = (size: ComponentSize): number => {
+		const flexMap: Record<ComponentSize, number> = {
+			sm: 1,
+			md: 2,
+			lg: 3,
+			xl: 4,
+			full: 4 // Map full to same as xl for backwards compatibility
+		};
+		return flexMap[size];
+	};
 
 	let {
-		size = 'full',
+		size = 'md',
 		label = undefined,
 		id = undefined,
 		required = false,
 		disabled = false,
-		helperText = undefined,
-		errorText = undefined,
-		successText = undefined,
+		helperText,
+		feedback,
 		children
 	}: {
 		size?: ComponentSize;
@@ -20,36 +43,70 @@
 		id?: string | undefined;
 		required?: boolean;
 		disabled?: boolean;
-		helperText?: string | undefined;
-		errorText?: string | undefined;
-		successText?: string | undefined;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
 		children: Snippet;
 	} = $props();
 
-	let displayType = $derived(getDisplayType(size));
-	let maxWidth = $derived(getMaxWidth(size));
+	let flexGrow = $derived(getFlexGrow(size));
 
-	let showHelperText = $derived(!!helperText && !errorText && !successText);
-	let showSuccessText = $derived(!!successText && !errorText);
-	let showErrorText = $derived(!!errorText);
+	// Determine which message to show: feedback takes precedence over helperText
+	let message = $derived.by<FormFieldFeedback | undefined>(() => {
+		if (feedback) return feedback;
+		if (helperText) {
+			return { text: helperText, isError: false };
+		}
+		return undefined;
+	});
+
+	// Determine if we're showing helper text (no feedback) or actual feedback
+	let isHelperText = $derived(!feedback && !!helperText);
+
+	let ariaLive = $derived<'assertive' | 'polite' | undefined>(
+		message && !isHelperText ? (message.isError ? 'assertive' : 'polite') : undefined
+	);
+
+	let ariaRole = $derived<AriaRole | undefined>(
+		message && !isHelperText ? (message.isError ? 'alert' : 'status') : undefined
+	);
+
+	let messageClass = $derived(
+		message ? (isHelperText ? 'helper' : message.isError ? 'error' : 'success') : undefined
+	);
+
+	let messageId = $derived(
+		message && id
+			? isHelperText
+				? `${id}-helper`
+				: message.isError
+					? `${id}-error`
+					: `${id}-success`
+			: undefined
+	);
 </script>
 
-<div class="form-field {size} {displayType} {maxWidth}">
+<div class="form-field {size}" style="--flex-grow: {flexGrow};">
 	{#if label}
 		<FormLabel {id} {required} {disabled} {label} />
 	{/if}
 	{@render children?.()}
-	{#if showHelperText}
-		<div class="helper-text" id="{id}-helper">{helperText}</div>
-	{/if}
-	{#if showSuccessText}
-		<div class="success-text" id="{id}-success" role="status" aria-live="polite">
-			{successText}
-		</div>
-	{/if}
-	{#if showErrorText}
-		<div class="error-text" id="{id}-error" role="alert" aria-live="assertive">
-			{errorText}
+	{#if message}
+		<div
+			class="message-container {messageClass}"
+			role={ariaRole}
+			aria-live={ariaLive}
+			id={messageId}
+		>
+			<div class="message-text">{message.text}</div>
+			{#if message.details && message.details.length > 0}
+				<ul class="message-details">
+					{#each message.details as detail}
+						<li class="message-detail" class:error={detail.isError} class:success={!detail.isError}>
+							{detail.text}
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</div>
 	{/if}
 </div>
@@ -61,7 +118,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
-		flex: 1;
+		// Use flex-grow for relative sizing when inside FormRow (flexbox container)
+		// Size prop controls the flex-grow value for relative sizing
+		flex-grow: var(--flex-grow, 1);
+		flex-shrink: 1;
+		flex-basis: 0;
 
 		// Switch to column layout on mobile phones and below
 		@include breakpoint-down('phablet') {
@@ -69,19 +130,65 @@
 		}
 	}
 
-	.success-text {
+	.message-container {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		font-size: var(--font-sm);
 		line-height: 1.25rem;
 		padding: var(--spacing-xs);
-		color: var(--success, #28a745);
-		font-weight: 500;
+		transition:
+			color var(--transition-base) var(--ease-in-out),
+			opacity var(--transition-base) var(--ease-in-out);
+
+		&.helper {
+			color: var(--form-input-helper-text-fg, var(--body-fg-muted));
+		}
+
+		&.success {
+			color: var(--color-success, #28a745);
+			font-weight: 500;
+		}
+
+		&.error {
+			color: var(--color-error, #dc3545);
+			font-weight: 500;
+		}
 	}
 
-	.error-text {
-		font-size: var(--font-sm);
+	.message-text {
 		line-height: 1.25rem;
-		padding: var(--spacing-xs);
-		color: var(--danger, #dc3545);
-		font-weight: 500;
+	}
+
+	.message-details {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		padding-left: var(--spacing-sm);
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.message-detail {
+		font-size: var(--font-sm);
+		margin: 0;
+		padding: 0;
+		transition:
+			color var(--transition-base) var(--ease-in-out),
+			opacity var(--transition-base) var(--ease-in-out);
+
+		&::before {
+			content: '- ';
+			border-radius: 50%;
+		}
+
+		&.error {
+			color: var(--color-error, #dc3545);
+		}
+
+		&.success {
+			color: var(--color-success, #28a745);
+		}
 	}
 </style>

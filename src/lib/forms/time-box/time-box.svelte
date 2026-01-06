@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
 
 	const id = uniqueId();
@@ -11,7 +11,9 @@
 		disabled = false,
 		required = false,
 		onChange = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined
 	}: {
 		value?: string | null;
 		size?: ComponentSize;
@@ -19,6 +21,8 @@
 		required?: boolean;
 		onChange?: ((value: string) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
 	} = $props();
 
 	const handleInput = (e: Event) => {
@@ -28,7 +32,7 @@
 	};
 </script>
 
-<FormField {size} {label} {id} {required} {disabled}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div class="input" class:disabled>
 		<input
 			{id}

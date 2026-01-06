@@ -9,7 +9,8 @@
 		tags: ['autodocs'],
 		args: {
 			label: 'Label',
-			onChange: fn()
+			onChange: fn(),
+			helperText: 'Helper text'
 		}
 	});
 </script>

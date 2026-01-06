@@ -2,34 +2,54 @@
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 
 	let {
 		checked = $bindable(false),
 		size = 'full' as FormFieldSizeOptions,
 		onChange = undefined,
-		children
+		children,
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined,
+		disabled = false,
+		required = false
 	}: {
 		checked?: boolean;
 		size?: FormFieldSizeOptions;
 		onChange?: ((checked: boolean) => void) | undefined;
 		children?: Snippet;
+		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
+		required?: boolean;
 	} = $props();
 
 	const id = uniqueId();
 </script>
 
-<label class="switch-box {checked ? 'checked' : ''} {size}">
-	<input type="checkbox" bind:checked onchange={() => onChange?.(checked)} {id} />
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<span class="switch">
-		<span class="slider"></span>
-	</span>
-	{#if children}
-		<div class="text">
-			{@render children?.()}
-		</div>
-	{/if}
-</label>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
+	<label class="switch-box {checked ? 'checked' : ''} {size}">
+		<input
+			type="checkbox"
+			bind:checked
+			onchange={() => onChange?.(checked)}
+			{id}
+			{disabled}
+			{required}
+		/>
+		<!-- svelte-ignore a11y_interactive_supports_focus -->
+		<span class="switch">
+			<span class="slider"></span>
+		</span>
+		{#if children}
+			<div class="text">
+				{@render children?.()}
+			</div>
+		{/if}
+	</label>
+</FormField>
 
 <style lang="scss">
 	label {

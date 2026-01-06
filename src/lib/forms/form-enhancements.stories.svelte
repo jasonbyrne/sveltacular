@@ -13,12 +13,12 @@
 	import Slider from './slider/slider.svelte';
 	import FileArea from './file-area/file-area.svelte';
 	import Button from './button/button.svelte';
+	import type { FormFieldFeedback } from './form-field/form-field.svelte';
 
 	let textValue = $state('');
 	let emailValue = $state('');
 	let isValidating = $state(false);
-	let emailError = $state('');
-	let emailSuccess = $state('');
+	let emailFeedback = $state<FormFieldFeedback | undefined>(undefined);
 	let textareaValue = $state('');
 	let sliderValue = $state(50);
 	let selectedFiles = $state<FileList | File[]>([]);
@@ -26,14 +26,12 @@
 	// Simulate async validation
 	const validateEmail = async () => {
 		if (!emailValue) {
-			emailError = '';
-			emailSuccess = '';
+			emailFeedback = undefined;
 			return;
 		}
 
 		isValidating = true;
-		emailError = '';
-		emailSuccess = '';
+		emailFeedback = undefined;
 
 		// Simulate API call
 		await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -41,11 +39,11 @@
 		isValidating = false;
 
 		if (!emailValue.includes('@')) {
-			emailError = 'Please enter a valid email address';
+			emailFeedback = { text: 'Please enter a valid email address', isError: true };
 		} else if (emailValue === 'taken@example.com') {
-			emailError = 'This email is already taken';
+			emailFeedback = { text: 'This email is already taken', isError: true };
 		} else {
-			emailSuccess = 'Email is available!';
+			emailFeedback = { text: 'Email is available!', isError: false };
 		}
 	};
 
@@ -73,13 +71,11 @@
 			type="email"
 			placeholder="Enter your email"
 			helperText="We'll check if this email is available"
-			errorText={emailError}
-			successText={emailSuccess}
+			feedback={emailFeedback}
 			isLoading={isValidating}
 			size="full"
 			onInput={() => {
-				emailError = '';
-				emailSuccess = '';
+				emailFeedback = undefined;
 			}}
 			onChange={validateEmail}
 		/>

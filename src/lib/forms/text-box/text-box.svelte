@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
@@ -12,8 +12,7 @@
 		value = $bindable('' as string | null),
 		placeholder = '',
 		helperText = '',
-		errorText = '',
-		successText = '',
+		feedback = undefined,
 		isLoading = false,
 		showCharacterCount = false,
 		size = 'full',
@@ -37,8 +36,7 @@
 		value?: string | null;
 		placeholder?: string;
 		helperText?: string;
-		errorText?: string;
-		successText?: string;
+		feedback?: FormFieldFeedback;
 		isLoading?: boolean;
 		showCharacterCount?: boolean;
 		size?: FormFieldSizeOptions;
@@ -60,8 +58,8 @@
 		label?: string;
 	} = $props();
 
-	let hasError = $derived(!!errorText);
-	let hasSuccess = $derived(!!successText && !errorText);
+	let hasError = $derived(!!feedback?.isError);
+	let hasSuccess = $derived(!!feedback && !feedback.isError);
 	let describedByIds = $state<string[]>([]);
 	let inputElement: HTMLDivElement | null = $state(null);
 	let successIconElement: HTMLDivElement | null = $state(null);
@@ -74,19 +72,24 @@
 			: ''
 	);
 
-	// Update describedByIds array when helper/error/success text changes
+	// Update describedByIds array when helper/feedback changes
 	$effect(() => {
 		// Track the dependencies we care about
-		const hasHelper = !!helperText;
-		const hasErrorMsg = !!errorText;
-		const hasSuccessMsg = !!successText;
+		const hasHelper = !!helperText && !feedback;
+		const hasFeedback = !!feedback;
 
 		// Use untrack to write to describedByIds without triggering this effect again
 		untrack(() => {
 			describedByIds = [];
-			if (hasHelper) describedByIds.push(`${id}-helper`);
-			if (hasErrorMsg) describedByIds.push(`${id}-error`);
-			if (hasSuccessMsg) describedByIds.push(`${id}-success`);
+			if (hasHelper) {
+				describedByIds.push(`${id}-helper`);
+			} else if (hasFeedback) {
+				if (feedback.isError) {
+					describedByIds.push(`${id}-error`);
+				} else {
+					describedByIds.push(`${id}-success`);
+				}
+			}
 		});
 	});
 
@@ -149,7 +152,7 @@
 	};
 </script>
 
-<FormField {size} {label} {id} {required} {disabled} {helperText} {errorText} {successText}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div
 		class="input {disabled ? 'disabled' : 'enabled'}"
 		class:error={hasError}

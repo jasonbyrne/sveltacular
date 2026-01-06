@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -17,7 +17,13 @@
 		autoResize = false,
 		minRows = 2,
 		maxRows = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined,
+		isLoading = false,
+		maxlength = undefined,
+		minlength = undefined,
+		pattern = undefined
 	}: {
 		size?: FormFieldSizeOptions;
 		value?: string | null;
@@ -30,6 +36,12 @@
 		minRows?: number;
 		maxRows?: number | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		isLoading?: boolean;
+		maxlength?: number | undefined;
+		minlength?: number | undefined;
+		pattern?: string | undefined;
 	} = $props();
 
 	let textareaElement: HTMLTextAreaElement | null = $state(null);
@@ -73,7 +85,7 @@
 	});
 </script>
 
-<FormField {size} {label} {id} {required} {disabled}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<textarea
 		wrap="soft"
 		{id}
@@ -84,6 +96,10 @@
 		{required}
 		{disabled}
 		{readonly}
+		{maxlength}
+		{minlength}
+		{pattern}
+		aria-busy={isLoading}
 		data-auto-resize={autoResize}
 		oninput={handleAutoResize}
 	></textarea>

@@ -8,7 +8,7 @@
 		isDateTimeString
 	} from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
 
@@ -28,7 +28,9 @@
 		steps = [] as DateIncrementStep[],
 		onChange = undefined,
 		onCheckChanged = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined
 	}: {
 		value?: string | undefined | null;
 		defaultValue?: string | undefined;
@@ -42,6 +44,8 @@
 		onChange?: ((value: string | null) => void) | undefined;
 		onCheckChanged?: ((enabled: boolean) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
 	} = $props();
 
 	const getDefaultValue = () => {
@@ -84,7 +88,7 @@
 	let disabled = $derived(!enabled);
 </script>
 
-<FormField {size} {label} {id} {required} {disabled}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div class:nullable class:disabled>
 		<span class="input">
 			<input {...{ type }} {id} {placeholder} {disabled} bind:value {required} oninput={onInput} />

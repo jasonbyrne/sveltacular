@@ -1,18 +1,26 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import FormField from '../form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
 
 	let {
 		value = $bindable('' as string | null),
 		size = 'md' as FormFieldSizeOptions,
 		onChange = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined,
+		disabled = false,
+		required = false
 	}: {
 		value?: string | null;
 		size?: FormFieldSizeOptions;
 		onChange?: ((value: string) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
+		required?: boolean;
 	} = $props();
 
 	const id = uniqueId();
@@ -146,7 +154,7 @@
 	});
 </script>
 
-<FormField {size} {label} id="{id}-areaCode">
+<FormField {size} {label} id="{id}-areaCode" {required} {disabled} {helperText} {feedback}>
 	<div class="input">
 		<span class="areaCode segment">
 			<span>(</span>
@@ -159,6 +167,8 @@
 				bind:value={areaCode}
 				name="areaCode"
 				data-maxlength="3"
+				{disabled}
+				{required}
 			/>
 			<span>)</span>
 		</span>
@@ -172,6 +182,8 @@
 				bind:value={localExt}
 				name="localExt"
 				data-maxlength="3"
+				{disabled}
+				{required}
 			/>
 		</span>
 		<span class="lastFour segment">
@@ -185,6 +197,8 @@
 				bind:value={lastFour}
 				name="lastFour"
 				data-maxlength="4"
+				{disabled}
+				{required}
 			/></span
 		>
 	</div>

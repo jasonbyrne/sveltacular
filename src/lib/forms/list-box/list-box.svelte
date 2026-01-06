@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
 	import debounce from '$src/lib/helpers/debounce.js';
 	import { browser } from '$app/environment';
+	import { onMount, untrack } from 'svelte';
 	import type { SearchFunction } from './list-box.js';
 
 	let {
@@ -19,6 +20,8 @@
 		placeholder = '',
 		onChange = undefined,
 		label = undefined,
+		helperText = undefined,
+		feedback = undefined,
 		virtualScroll = false,
 		itemHeight = 40
 	}: {
@@ -32,19 +35,65 @@
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
 		virtualScroll?: boolean;
 		itemHeight?: number;
 	} = $props();
 
 	const id = uniqueId();
 	const listboxId = `${id}-listbox`;
-	const getText = () => items.find((item) => item.value == value)?.name || '';
 
-	let text = $state(getText());
+	// Use local items state when search function is provided, otherwise use prop
+	let localItems = $state<DropdownOption[]>([]);
+	let currentItems = $derived(search ? localItems : items);
+
+	const getText = () => currentItems.find((item) => item.value == value)?.name || '';
+
+	let text = $state('');
 	let isMenuOpen = $state(false);
 	let highlightIndex = $state(-1);
-	let filteredItems = $state<MenuOption[]>([]);
-	let isSeachable = $derived(searchable || !!search);
+	let isSearchable = $derived(searchable || !!search);
+	let inputElement: HTMLInputElement | null = $state(null);
+	let containerElement: HTMLDivElement | null = $state(null);
+	let isUserTyping = $state(false);
+
+	// Initialize localItems when items prop changes (only when no search function)
+	$effect(() => {
+		if (!search) {
+			localItems = [...items];
+		}
+	});
+
+	// Initialize text from value on mount and when value/items change (but not when user is typing)
+	$effect(() => {
+		// Track value and currentItems to update text when they change
+		const currentValue = value;
+		const itemsForText = currentItems;
+		const userIsTyping = isUserTyping;
+
+		// Don't change text if user is currently typing in searchable mode
+		if (isSearchable && userIsTyping) {
+			return;
+		}
+
+		const newText = itemsForText.find((item) => item.value == currentValue)?.name || '';
+		// Use untrack to read current text without making effect reactive to text changes
+		const currentText = untrack(() => text);
+		if (currentText !== newText) {
+			text = newText;
+		}
+	});
+
+	// Compute filtered items reactively
+	let filteredItems = $derived.by(() => {
+		const searchText = text.trim().toLowerCase();
+		return searchText && isSearchable
+			? currentItems
+					.map((item, index) => ({ ...item, index }))
+					.filter((item) => item.name.toLowerCase().includes(searchText))
+			: currentItems.map((item, index) => ({ ...item, index }));
+	});
 
 	// Get the ID of the highlighted option for ARIA
 	let activeDescendant = $derived(
@@ -53,121 +102,203 @@
 			: undefined
 	);
 
+	// Reset highlight when filter changes
+	$effect(() => {
+		if (highlightIndex >= filteredItems.length) {
+			highlightIndex = -1;
+		}
+	});
+
 	// When an item is selected from the dropdown menu
 	const onSelect = (item: MenuOption) => {
+		isUserTyping = false;
 		value = item.value;
 		onChange?.(value);
 		text = getText();
-		applyFilter();
 		isMenuOpen = false;
+		highlightIndex = -1;
+		if (browser && inputElement) {
+			inputElement.blur();
+		}
 	};
 
-	const focusOnInput = () => {
-		if (browser) document.getElementById(id)?.focus();
+	// Open/close dropdown
+	const openDropdown = () => {
+		if (!disabled) {
+			isMenuOpen = true;
+			if (browser && inputElement) {
+				inputElement.focus();
+			}
+		}
 	};
 
-	// Toggle open or closed
-	const toggle = () => (isMenuOpen = !open);
+	const closeDropdown = () => {
+		isMenuOpen = false;
+		highlightIndex = -1;
+		isUserTyping = false;
+		if (!isSearchable && browser && inputElement) {
+			// Reset text to selected value when closing non-searchable dropdown
+			text = getText();
+		}
+	};
 
-	// Click arrow
-	const clickArrow = () => {
+	const toggleDropdown = () => {
+		if (isMenuOpen) {
+			closeDropdown();
+		} else {
+			openDropdown();
+		}
+	};
+
+	// Click arrow button
+	const clickArrow = (e: MouseEvent | KeyboardEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
 		if (disabled) return;
-		toggle();
-		if (isMenuOpen) focusOnInput();
+		toggleDropdown();
+	};
+
+	// Handle clicks on the input (for non-searchable mode)
+	const handleInputClick = (e: MouseEvent) => {
+		if (disabled) return;
+		// For non-searchable mode, clicking the input should open the dropdown
+		if (!isSearchable && !isMenuOpen) {
+			e.preventDefault();
+			openDropdown();
+		}
 	};
 
 	// Handle key presses in the input
-	const onInputKeyPress = (e: KeyboardEvent) => {
+	const onInputKeyDown = (e: KeyboardEvent) => {
 		if (disabled) return;
-		if (e.key == 'Escape') {
-			isMenuOpen = false;
+
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			closeDropdown();
+			if (browser && inputElement) {
+				inputElement.blur();
+			}
 			return;
 		}
-		if (e.key == 'Enter' || e.key == 'Tab') {
-			isMenuOpen = false;
-			if (highlightIndex > -1) {
+
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
+				onSelect(filteredItems[highlightIndex]);
+			} else if (!isMenuOpen) {
+				openDropdown();
+			}
+			return;
+		}
+
+		if (e.key === 'Tab') {
+			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
+				e.preventDefault();
 				onSelect(filteredItems[highlightIndex]);
 			}
 			return;
 		}
-		if (e.key == 'ArrowDown') {
-			highlightIndex = Math.min(highlightIndex + 1, filteredItems.length - 1);
-			isMenuOpen = true;
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			if (!isMenuOpen) {
+				openDropdown();
+			}
+			if (filteredItems.length > 0) {
+				highlightIndex = Math.min(highlightIndex + 1, filteredItems.length - 1);
+			}
 			return;
 		}
-		if (e.key == 'ArrowUp') {
-			highlightIndex = Math.max(highlightIndex - 1, -1);
-			if (highlightIndex == -1) isMenuOpen = false;
+
+		if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			if (isMenuOpen && filteredItems.length > 0) {
+				highlightIndex = Math.max(highlightIndex - 1, 0);
+			}
 			return;
 		}
-		if (e.key.length == 1 || e.key == 'Backspace' || e.key == 'Delete') {
-			isMenuOpen = true;
-			highlightIndex = 0;
-			triggerSearch();
+
+		// For searchable mode, allow typing
+		if (isSearchable && (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Delete')) {
+			isUserTyping = true;
+			if (!isMenuOpen) {
+				openDropdown();
+			}
+			highlightIndex = -1;
+			// Let the input handle the character, then trigger search
+			if (browser) {
+				setTimeout(() => triggerSearch(), 0);
+			}
 		}
 	};
 
 	// User is typing in the search box
 	const triggerSearch = debounce(async () => {
-		if (search && isSeachable) {
-			items = await search(text);
+		if (search && isSearchable) {
+			localItems = await search(text);
 		}
-		updateText();
-		applyFilter();
 	}, 300);
 
-	// Text or items have changed, we should apply the filter
-	const applyFilter = () => {
-		const searchText = text.trim().toLowerCase();
-		filteredItems =
-			searchText && isSeachable
-				? items
-						.map((item, index) => ({ ...item, index }))
-						.filter((item) => item.name.toLowerCase().includes(searchText))
-				: items.map((item, index) => ({ ...item, index }));
-	};
-
-	const clear = () => {
+	const clear = (e: MouseEvent | KeyboardEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
 		if (disabled) return;
+		isUserTyping = false;
 		text = '';
-		value = '';
-		triggerSearch();
-		focusOnInput();
-	};
-
-	// When items change, we should change the text to match the value
-	const updateText = async () => {
-		if (browser) {
-			const textBox = document.getElementById(id) as HTMLInputElement;
-			// Don't change text if they're currently typing
-			if (document.activeElement != textBox) text = getText();
+		value = null;
+		onChange?.(null);
+		if (browser && inputElement) {
+			inputElement.focus();
 		}
 	};
 
-	// Do initial search
-	triggerSearch();
+	// Close dropdown when clicking outside
+	onMount(() => {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (containerElement && !containerElement.contains(e.target as Node)) {
+				closeDropdown();
+			}
+		};
+
+		if (browser) {
+			document.addEventListener('mousedown', handleClickOutside);
+			return () => {
+				document.removeEventListener('mousedown', handleClickOutside);
+			};
+		}
+	});
 
 	let open = $derived(isMenuOpen && !disabled);
 </script>
 
-<FormField {size} {label} {id} {required} {disabled}>
-	<div class="{open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}">
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
+	<div
+		class="listbox-container {open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}"
+		bind:this={containerElement}
+	>
 		<input
 			type="text"
 			{id}
 			bind:value={text}
+			bind:this={inputElement}
 			{required}
 			{disabled}
 			{placeholder}
-			readonly={!isSeachable}
+			readonly={!isSearchable}
 			role="combobox"
 			aria-expanded={open}
 			aria-controls={listboxId}
-			aria-autocomplete={isSeachable ? 'list' : 'none'}
+			aria-autocomplete={isSearchable ? 'list' : 'none'}
 			aria-activedescendant={activeDescendant}
 			aria-haspopup="listbox"
-			onfocus={() => (isMenuOpen = true)}
-			onkeyup={onInputKeyPress}
+			onkeydown={onInputKeyDown}
+			onclick={handleInputClick}
+			oninput={() => {
+				if (isSearchable) {
+					isUserTyping = true;
+					triggerSearch();
+				}
+			}}
 			data-value={value}
 			data-text={text}
 		/>
@@ -182,7 +313,7 @@
 		>
 			<AngleUpIcon />
 		</button>
-		{#if text && isSeachable}
+		{#if text && isSearchable}
 			<button
 				type="button"
 				class="clear"
@@ -199,8 +330,8 @@
 			<Menu
 				items={filteredItems}
 				{open}
-				closeAfterSelect={false}
-				searchText={text}
+				closeAfterSelect={true}
+				searchText={isSearchable ? text : ''}
 				{onSelect}
 				size="full"
 				bind:highlightIndex
@@ -214,8 +345,26 @@
 </FormField>
 
 <style lang="scss">
-	div {
+	.listbox-container {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
 		position: relative;
+		width: 100%;
+		height: 100%;
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
+		font-weight: 500;
+		line-height: 2rem;
+		transition:
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out),
+			fill var(--transition-base) var(--ease-in-out),
+			stroke var(--transition-base) var(--ease-in-out);
 
 		&.disabled {
 			opacity: 0.5;
@@ -224,23 +373,31 @@
 		}
 
 		input {
+			background-color: transparent;
+			border: none;
+			line-height: 2rem;
+			font-size: var(--font-md);
 			width: 100%;
-			padding: var(--spacing-sm) var(--spacing-base);
-			border-radius: var(--radius-md);
-			border: var(--border-thin) solid var(--form-input-border);
-			background-color: var(--form-input-bg);
+			flex-grow: 1;
+			padding-left: var(--spacing-base);
+			padding-right: var(--spacing-base);
 			color: var(--form-input-fg);
-			font-size: var(--font-base);
-			font-weight: 500;
-			line-height: 1.25rem;
-			transition:
-				background-color var(--transition-base) var(--ease-in-out),
-				border-color var(--transition-base) var(--ease-in-out),
-				color var(--transition-base) var(--ease-in-out),
-				fill var(--transition-base) var(--ease-in-out),
-				stroke var(--transition-base) var(--ease-in-out);
 			user-select: none;
 			white-space: nowrap;
+			cursor: pointer;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
+			}
+
+			&[readonly] {
+				cursor: pointer;
+			}
 		}
 
 		button {
@@ -250,20 +407,41 @@
 			padding: 0;
 			margin: 0;
 			position: absolute;
-			top: 0.65rem;
-			width: 1rem;
-			height: 1rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			z-index: 2;
 			color: var(--form-input-fg, black);
+			cursor: pointer;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
+			}
 
 			&.icon {
-				right: 1rem;
+				right: var(--spacing-base);
+				width: 1rem;
+				height: 1rem;
 				transition: transform 0.3s linear;
 				transform: rotate(180deg);
+
+				:global(svg) {
+					width: 100%;
+					height: 100%;
+				}
 			}
 
 			&.clear {
-				right: 3rem;
+				right: calc(var(--spacing-base) + 2rem);
+				width: 1.25rem;
+				height: 1.25rem;
+				font-size: var(--font-sm);
+				font-weight: 600;
 			}
 		}
 
@@ -276,7 +454,20 @@
 			top: 100%;
 			left: 0;
 			width: 100%;
-			z-index: 3;
+			z-index: 1000;
+			margin-top: 0.25rem;
+
+			:global(.menu) {
+				font-size: var(--font-sm, 0.875rem);
+
+				:global(li) {
+					:global(div) {
+						padding: 0.25rem 0.5rem;
+						line-height: 1.25;
+						font-size: var(--font-sm, 0.875rem);
+					}
+				}
+			}
 		}
 	}
 </style>

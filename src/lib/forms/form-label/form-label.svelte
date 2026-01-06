@@ -5,10 +5,10 @@
 		disabled = false,
 		label = ''
 	}: {
-		id?: string | undefined;
+		id?: string;
 		required?: boolean;
 		disabled?: boolean;
-		label?: string;
+		label: string;
 	} = $props();
 </script>
 
@@ -20,10 +20,12 @@
 		margin-bottom: var(--spacing-sm);
 		font-weight: 500;
 		font-size: var(--font-base);
+		margin: 0;
 
 		&.required::after {
 			content: '*';
 			margin-left: var(--spacing-xs);
+			color: var(--color-danger);
 		}
 
 		&.disabled {

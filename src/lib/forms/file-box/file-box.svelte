@@ -32,7 +32,7 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled}>
-	<div>
+	<div class="input">
 		<input
 			{id}
 			{placeholder}
@@ -49,28 +49,57 @@
 </FormField>
 
 <style lang="scss">
-	input {
+	.input {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		position: relative;
 		width: 100%;
-		padding: var(--spacing-sm) var(--spacing-base);
+		height: 100%;
+		box-sizing: border-box;
 		border-radius: var(--radius-md);
 		border: var(--border-thin) solid var(--form-input-border);
 		background-color: var(--form-input-bg);
 		color: var(--form-input-fg);
-		font-size: var(--font-base);
+		font-size: var(--font-md);
 		font-weight: 500;
-		line-height: 1.25rem;
+		line-height: 2rem;
 		transition:
-			background-color 0.2s ease-in-out,
-			border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out,
-			fill 0.2s ease-in-out,
-			stroke 0.2s ease-in-out;
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out),
+			fill var(--transition-base) var(--ease-in-out),
+			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
 
-		&::placeholder {
-			color: var(--form-input-placeholder, #888);
-			font-style: italic;
+		input {
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			padding: 0;
+			padding-left: var(--spacing-base);
+			padding-right: var(--spacing-base);
+			margin: 0;
+			background-color: transparent;
+			border: none;
+			line-height: 2rem;
+			font-size: var(--font-md);
+			color: inherit;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
+			}
+
+			&::placeholder {
+				color: var(--form-input-placeholder, #888);
+				font-style: italic;
+			}
 		}
 	}
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import Chip from '$src/lib/generic/chip/chip.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
@@ -17,7 +17,7 @@
 		size = 'full' as FormFieldSizeOptions,
 		label = undefined as string | undefined,
 		helperText = undefined as string | undefined,
-		errorText = undefined as string | undefined,
+		feedback = undefined as FormFieldFeedback | undefined,
 		onChange = undefined as ((value: string[]) => void) | undefined
 	}: {
 		value?: string[];
@@ -29,7 +29,7 @@
 		size?: FormFieldSizeOptions;
 		label?: string;
 		helperText?: string;
-		errorText?: string;
+		feedback?: FormFieldFeedback;
 		onChange?: ((value: string[]) => void) | undefined;
 	} = $props();
 
@@ -82,7 +82,7 @@
 	}
 </script>
 
-<FormField {size} {label} {id} {required} {disabled} {helperText} {errorText}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div class="tag-input">
 		<div class="input-container">
 			<div class="input-wrapper">
@@ -147,8 +147,9 @@
 
 			.tag-input-field {
 				width: 100%;
-				height: 2.5rem;
-				padding: 0 var(--spacing-base);
+				height: 100%;
+				padding-left: var(--spacing-base);
+				padding-right: var(--spacing-base);
 				border: var(--border-thin) solid var(--form-input-border);
 				border-radius: var(--radius-md);
 				background-color: var(--form-input-bg);
@@ -192,7 +193,7 @@
 					color var(--transition-base) var(--ease-in-out);
 				white-space: nowrap;
 				height: fit-content;
-				min-height: 2.5rem;
+				line-height: 2rem;
 
 				&:hover:not(:disabled) {
 					background-color: var(--button-primary-hover-bg);

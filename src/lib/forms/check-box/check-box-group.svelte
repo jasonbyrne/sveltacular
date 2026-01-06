@@ -69,6 +69,7 @@
 				bind:isChecked={item.isChecked}
 				onChange={handleCheckboxChange}
 				label={item.name}
+				inline={true}
 			/>
 		{/each}
 	</div>

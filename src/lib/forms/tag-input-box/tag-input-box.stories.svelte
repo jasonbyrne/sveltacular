@@ -95,11 +95,11 @@
 					type: { summary: 'string' }
 				}
 			},
-			errorText: {
-				control: 'text',
-				description: 'Error message displayed below the input',
+			feedback: {
+				control: 'object',
+				description: 'Feedback message with optional details array',
 				table: {
-					type: { summary: 'string' }
+					type: { summary: 'FormFieldFeedback' }
 				}
 			},
 			onChange: {
@@ -170,7 +170,7 @@
 	args={{
 		label: 'Tags',
 		placeholder: 'Add a tag...',
-		errorText: 'Maximum 5 tags allowed',
+		feedback: { text: 'Maximum 5 tags allowed', isError: true },
 		value: ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6']
 	}}
 />

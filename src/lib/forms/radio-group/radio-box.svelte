@@ -9,19 +9,28 @@
 		value = undefined as RadioValue,
 		group = $bindable(undefined as string | undefined),
 		disabled = false,
-		children = undefined
+		children = undefined,
+		onChange = undefined
 	}: {
 		value?: RadioValue;
 		group?: string | undefined;
 		disabled?: boolean;
 		children?: Snippet;
+		onChange?: ((value: string) => void) | undefined;
 	} = $props();
 
 	const id = uniqueId();
 </script>
 
 <label>
-	<input type="radio" bind:group {value} {disabled} {id} />
+	<input
+		type="radio"
+		bind:group
+		{value}
+		{disabled}
+		{id}
+		onchange={() => onChange?.(String(value || ''))}
+	/>
 	<span class="checkbox">
 		<span class="checkmark"><CheckIcon /></span>
 	</span>

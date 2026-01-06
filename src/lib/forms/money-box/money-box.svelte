@@ -275,28 +275,32 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		border-radius: 0.25rem;
-		border: 1px solid var(--form-input-border, black);
-		background-color: var(--form-input-bg, white);
-		color: var(--form-input-fg, black);
-		font-size: 1rem;
+		box-sizing: border-box;
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
 		font-weight: 500;
 		line-height: 2rem;
 		transition:
-			background-color 0.2s ease-in-out,
-			border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out,
-			fill 0.2s ease-in-out,
-			stroke 0.2s ease-in-out;
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out),
+			fill var(--transition-base) var(--ease-in-out),
+			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
 
 		input {
 			background-color: transparent;
 			border: none;
+			box-sizing: border-box;
 			line-height: 2rem;
-			font-size: 1rem;
-			padding-left: 1rem;
+			font-size: var(--font-md);
+			padding: 0;
+			padding-left: var(--spacing-base);
+			margin: 0;
 
 			&:focus {
 				outline: none;
@@ -308,7 +312,7 @@
 		}
 
 		.separator {
-			width: 1rem;
+			width: var(--spacing-base);
 			text-align: center;
 		}
 
@@ -318,20 +322,20 @@
 
 		.prefix,
 		.suffix {
-			font-size: 1rem;
+			font-size: var(--font-md);
 			line-height: 2rem;
-			padding-left: 1rem;
-			padding-right: 1rem;
-			background-color: var(--form-input-accent-bg, #ccc);
-			color: var(--form-input-accent-fg, black);
+			padding-left: var(--spacing-base);
+			padding-right: var(--spacing-base);
+			background-color: var(--form-input-accent-bg);
+			color: var(--form-input-accent-fg);
 		}
 
 		.prefix {
-			border-right: 1px solid var(--form-input-border, black);
+			border-right: var(--border-thin) solid var(--form-input-border);
 		}
 
 		.suffix {
-			border-left: 1px solid var(--form-input-border, black);
+			border-left: var(--border-thin) solid var(--form-input-border);
 		}
 	}
 </style>

@@ -4,7 +4,6 @@
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
-	import { onMount } from 'svelte';
 
 	let {
 		items = [] as MenuOption[],
@@ -84,7 +83,7 @@
 	});
 </script>
 
-<ul 
+<ul
 	role="listbox"
 	id={listboxId}
 	class="menu {open ? 'open' : 'closed'} {size}"
@@ -94,7 +93,7 @@
 	{#if instructions}
 		<li class="instructions" role="presentation">{instructions}</li>
 	{/if}
-	
+
 	{#if virtualScroll && virtual}
 		<!-- Virtual scrolling mode -->
 		<div style="height: {virtual.totalHeight}px; position: relative;">

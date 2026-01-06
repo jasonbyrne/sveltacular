@@ -93,18 +93,11 @@
 					type: { summary: '(value: string) => void' }
 				}
 			},
-			successText: {
-				control: 'text',
-				description: 'Success message displayed below the input',
+			feedback: {
+				control: 'object',
+				description: 'Feedback message with optional details array (for password requirements, etc.)',
 				table: {
-					type: { summary: 'string' }
-				}
-			},
-			errorText: {
-				control: 'text',
-				description: 'Error message displayed below the input',
-				table: {
-					type: { summary: 'string' }
+					type: { summary: 'FormFieldFeedback' }
 				}
 			},
 			isLoading: {
@@ -186,7 +179,7 @@
 		type: 'email',
 		placeholder: 'Enter your email',
 		label: 'Email Address',
-		successText: 'Email is available!',
+		feedback: { text: 'Email is available!', isError: false },
 		helperText: "We'll never share your email"
 	}}
 />
@@ -221,7 +214,49 @@
 		type: 'email',
 		placeholder: 'Enter your email',
 		label: 'Email Address',
-		errorText: 'This email is already taken',
+		feedback: { text: 'This email is already taken', isError: true },
 		helperText: "We'll never share your email"
+	}}
+/>
+
+<Story
+	name="PasswordRequirements"
+	args={{
+		type: 'password',
+		placeholder: 'Enter your password',
+		label: 'Password',
+		helperText: 'Create a strong password',
+		feedback: {
+			text: 'Password requirements: 2/5 met',
+			isError: true,
+			details: [
+				{ text: 'At least 8 characters', isError: true },
+				{ text: 'Contains uppercase letter', isError: true },
+				{ text: 'Contains lowercase letter', isError: false },
+				{ text: 'Contains number', isError: false },
+				{ text: 'Contains special character', isError: true }
+			]
+		}
+	}}
+/>
+
+<Story
+	name="PasswordRequirementsMet"
+	args={{
+		type: 'password',
+		placeholder: 'Enter your password',
+		label: 'Password',
+		helperText: 'Create a strong password',
+		feedback: {
+			text: 'Password meets all requirements',
+			isError: false,
+			details: [
+				{ text: 'At least 8 characters', isError: false },
+				{ text: 'Contains uppercase letter', isError: false },
+				{ text: 'Contains lowercase letter', isError: false },
+				{ text: 'Contains number', isError: false },
+				{ text: 'Contains special character', isError: false }
+			]
+		}
 	}}
 />

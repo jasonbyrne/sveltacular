@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	const id = uniqueId();
 
@@ -19,7 +19,12 @@
 		suffix = null as string | null,
 		step = 1,
 		onChange = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined,
+		disabled = false,
+		required = false,
+		readonly = false
 	}: {
 		value?: number | null;
 		placeholder?: string;
@@ -33,6 +38,11 @@
 		step?: number;
 		onChange?: ((value: number | null) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
+		required?: boolean;
+		readonly?: boolean;
 	} = $props();
 
 	const valueChanged = () => {
@@ -66,7 +76,7 @@
 	};
 </script>
 
-<FormField {size} {label} {id}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div class="input {type}">
 		{#if prefix}
 			<span class="prefix">{prefix}</span>
@@ -80,6 +90,9 @@
 			{step}
 			{min}
 			{max}
+			{disabled}
+			{readonly}
+			{required}
 			onchange={valueChanged}
 			oninput={onInput}
 			onkeypress={onKeyPress}
