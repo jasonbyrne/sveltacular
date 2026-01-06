@@ -1,18 +1,20 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import FlexRow from '../layout/flex-row.svelte';
 
 	let { children }: { children: Snippet } = $props();
 </script>
 
 <div>
-	<FlexRow justifyContent="stretch">
-		{@render children?.()}
-	</FlexRow>
+	{@render children?.()}
 </div>
 
 <style>
 	div {
-		margin-top: 1.5rem;
+		display: flex;
+		flex-direction: row;
+		gap: var(--spacing-base);
+		justify-content: flex-end;
+		margin-top: var(--spacing-lg);
+		margin-top: var(--spacing-xl);
 	}
 </style>

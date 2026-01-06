@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import FormField from '../form-field.svelte';
+	import FormField from '../form-field/form-field.svelte';
 
 	let {
 		value = $bindable('' as string | null),
@@ -192,16 +192,27 @@
 
 <style lang="scss">
 	.input {
-		background-color: var(--form-input-bg, #fff);
-		color: var(--form-input-fg, #000);
-		font-size: 1rem;
-		width: 100%;
-		padding-left: 0.5rem;
-		border: solid 1px var(--form-input-border, black);
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		gap: 0.5rem;
+		position: relative;
+		width: 100%;
+		height: 100%;
+		border-radius: var(--radius-md);
+		border: var(--border-thin) solid var(--form-input-border);
+		background-color: var(--form-input-bg);
+		color: var(--form-input-fg);
+		font-size: var(--font-md);
+		font-weight: 500;
+		line-height: 2rem;
+		padding-left: var(--spacing-base);
+		gap: var(--spacing-sm);
+		transition:
+			background-color var(--transition-base) var(--ease-in-out),
+			border-color var(--transition-base) var(--ease-in-out),
+			color var(--transition-base) var(--ease-in-out);
+		user-select: none;
+		white-space: nowrap;
 
 		.segment {
 			position: relative;
@@ -223,19 +234,24 @@
 		}
 
 		input {
-			line-height: 2rem;
-			flex-grow: 1;
-			font-size: 1rem;
-			border: none;
 			background-color: transparent;
-			color: inherit;
+			border: none;
+			line-height: 2rem;
+			font-size: var(--font-md);
+			width: 100%;
+			flex-grow: 1;
 			padding: 0;
 			margin: 0;
 			text-align: center;
-			width: 100%;
+			color: inherit;
 
 			&:focus {
 				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
 			}
 		}
 	}

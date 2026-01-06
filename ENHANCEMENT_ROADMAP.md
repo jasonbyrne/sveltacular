@@ -206,49 +206,12 @@
 
 ---
 
-### 2.2 Combobox Component ✅ COMPLETED
+### 2.2 Combobox Component ❌ NOT IMPLEMENTED
 
-**Status:** ✅ **IMPLEMENTED**  
+**Status:** ❌ **REMOVED** (Component was deleted due to freezing issues)  
 **Effort:** Medium | **Impact:** HIGH
 
-**What was built:**
-
-- ✅ Searchable select with typeahead and debounced search (300ms)
-- ✅ Full keyboard navigation (arrows, enter, escape, home, end, tab, backspace)
-- ✅ Multi-select variant with removable chips
-- ✅ Virtual scrolling integration for large option lists (10,000+ items)
-- ✅ Fully accessible (ARIA 1.2 combobox pattern)
-- ✅ Async search support via `onSearch` callback
-- ✅ Max selections limit for multi-select mode
-- ✅ Loading indicator during async operations
-- ✅ Clear button to reset selections
-- ✅ Help text, error text, success text support
-- ✅ Screen reader announcements for state changes
-- ✅ Size variants (sm, md, lg, full)
-
-**Features:**
-
-- Single-select and multi-select modes
-- Real-time filtering with search highlighting
-- Chip display for multi-select with individual remove buttons
-- Optional close-on-select behavior
-- Disabled and required states
-- Integration with existing form validation
-- Leverages existing positioning and virtual scrolling utilities
-
-**Components enhanced:**
-
-- Created ComboBox component with full feature set
-- Integrated with existing Menu component for dropdown rendering
-- Uses Chip component for multi-select display
-- Leverages focus management and announcer utilities
-
-**Files created:**
-
-- `src/lib/forms/combo-box/combo-box.svelte` - Main component
-- `src/lib/forms/combo-box/index.ts` - Barrel export
-- `src/lib/forms/combo-box/combo-box.stories.svelte` - Comprehensive Storybook documentation
-- `COMBOBOX_TESTING.md` - Testing guide and manual test checklist
+**Note:** This component was previously implemented but was removed because it kept freezing. It has not been re-implemented.
 
 **Why:** Standard component in all modern libraries, more powerful than basic select
 

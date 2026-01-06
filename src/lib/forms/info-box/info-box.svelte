@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LinkIcon from '$src/lib/icons/link-icon.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
-	import FormField from '../form-field.svelte';
+	import FormField from '../form-field/form-field.svelte';
 
 	let {
 		size = 'md' as FormFieldSizeOptions,

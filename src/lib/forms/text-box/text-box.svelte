@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckIcon from '$src/lib/icons/check-icon.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 

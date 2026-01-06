@@ -3,6 +3,14 @@
 	import Form from './form.svelte';
 	import TextBox from './text-box/text-box.svelte';
 	import Button from './button/button.svelte';
+	import FormRow from './form-row/form-row.svelte';
+	import FormHeader from './form-header.svelte';
+	import FormSection from './form-section/form-section.svelte';
+	import FormFooter from './form-footer.svelte';
+	import FileBox from './file-box/file-box.svelte';
+	import MoneyBox from './money-box/money-box.svelte';
+	import TimeBox from './time-box/time-box.svelte';
+	import BoolBox from './bool-box/bool-box.svelte';
 
 	/**
 	 * Form component for wrapping form fields and handling submission.
@@ -55,13 +63,24 @@
 </script>
 
 <Story name="Default" args={{ action: '/submit', method: 'post' }}>
-	Basic form with text input and submit button.
-	<TextBox type="text" placeholder="Enter your name" label="Name" />
-	<Button variant="primary" label="Submit" />
-</Story>
-
-<Story name="GetMethod" args={{ action: '/search', method: 'get' }}>
-	Form using GET method for search functionality.
-	<TextBox type="search" placeholder="Search..." label="Search" />
-	<Button variant="primary" label="Search" />
+	<FormHeader>Basic form</FormHeader>
+	<FormSection title="Section">
+		<FormRow>
+			<TextBox type="text" placeholder="Enter your name" label="Name" />
+			<TextBox type="email" placeholder="Enter your email" label="Email" />
+		</FormRow>
+		<FormRow>
+			<MoneyBox label="Money" />
+			<FileBox label="File" />
+		</FormRow>
+	</FormSection>
+	<FormSection title="Section 2">
+		<FormRow>
+			<TimeBox label="Time" />
+			<BoolBox label="Bool" />
+		</FormRow>
+	</FormSection>
+	<FormFooter>
+		<Button variant="primary" label="Submit" />
+	</FormFooter>
 </Story>

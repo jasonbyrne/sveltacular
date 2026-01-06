@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
 
 	const id = uniqueId();
@@ -76,12 +76,7 @@
 				aria-valuetext={displayValue}
 			/>
 			{#if showTooltip && (isDragging || sliderRef === document.activeElement)}
-				<div 
-					class="slider-tooltip" 
-					style="left: {percentage}%;"
-					role="tooltip"
-					aria-live="polite"
-				>
+				<div class="slider-tooltip" style="left: {percentage}%;" role="tooltip" aria-live="polite">
 					{displayValue}
 				</div>
 			{/if}
@@ -96,23 +91,27 @@
 	.slider-wrapper {
 		position: relative;
 		width: 100%;
-		padding: 0.5rem 0;
+		display: flex;
+		align-items: center;
+		min-height: 2rem;
 
 		.slider-track-container {
 			position: relative;
-			padding-top: 2rem;
+			width: 100%;
+			flex: 1;
 		}
 
 		input[type='range'] {
 			width: 100%;
 			height: 0.5rem;
-			border-radius: 0.25rem;
+			border-radius: var(--radius-md);
 			background: var(--form-input-border, #ccc);
 			outline: none;
 			-webkit-appearance: none;
 			appearance: none;
 			position: relative;
 			z-index: 1;
+			margin: 0;
 
 			&::-webkit-slider-thumb {
 				-webkit-appearance: none;
@@ -122,7 +121,9 @@
 				border-radius: 50%;
 				background: var(--form-input-selected-bg, #3182ce);
 				cursor: pointer;
-				transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+				transition:
+					transform 0.15s ease-in-out,
+					box-shadow 0.15s ease-in-out;
 
 				&:hover {
 					transform: scale(1.1);
@@ -142,7 +143,9 @@
 				background: var(--form-input-selected-bg, #3182ce);
 				cursor: pointer;
 				border: none;
-				transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+				transition:
+					transform 0.15s ease-in-out,
+					box-shadow 0.15s ease-in-out;
 
 				&:hover {
 					transform: scale(1.1);
@@ -173,7 +176,7 @@
 
 		.slider-tooltip {
 			position: absolute;
-			top: 0;
+			top: -2.5rem;
 			transform: translateX(-50%);
 			padding: 0.375rem 0.625rem;
 			background-color: var(--tooltip-bg, #000);
@@ -213,12 +216,13 @@
 
 		.value-display {
 			text-align: center;
-			margin-top: 0.5rem;
-			font-size: 0.875rem;
+			margin-left: var(--spacing-base);
+			font-size: var(--font-md);
 			color: var(--form-input-fg, #000);
 			font-weight: 500;
+			line-height: 2rem;
+			min-width: 3rem;
+			flex-shrink: 0;
 		}
 	}
 </style>
-
-

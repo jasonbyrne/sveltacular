@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import FormField from '../form-field.svelte';
+	import FormField from '../form-field/form-field.svelte';
 	import { untrack } from 'svelte';
-	
+
 	const id = uniqueId();
 
 	let {
@@ -35,18 +35,18 @@
 
 	let isValueInCents = $derived(units === 'cents');
 	const fieldOrder = ['dollars', 'cents'];
-	
+
 	const getDollarsFromValue = () => {
 		if (!value) return '0';
 		if (isValueInCents) return String(Math.abs(Math.floor(value / 100)));
 		return String(Math.abs(Math.floor(value)));
-	}
+	};
 
 	const getCentsFromValue = () => {
 		if (!value) return '00';
 		if (isValueInCents) return String(Math.abs(Math.round(value % 100))).padStart(2, '0');
 		return String(Math.abs(Math.round((value % 1) * 100))).padStart(2, '0');
-	}
+	};
 
 	let dollars = $state(getDollarsFromValue());
 	let cents = $state(getCentsFromValue());
@@ -74,9 +74,10 @@
 		const selection = [target.selectionStart ?? 0, target.selectionEnd ?? 0];
 		const key = e instanceof KeyboardEvent ? e.key : '';
 		const isNumber = !isNaN(Number(key));
-		const isDecimal =key === '.';
+		const isDecimal = key === '.';
 		const isBackspace = key === 'Backspace';
-		const isAllowed = isNumber || isDecimal || ['Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(key);
+		const isAllowed =
+			isNumber || isDecimal || ['Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(key);
 		return {
 			element: target,
 			name,
@@ -91,8 +92,8 @@
 			isAllowed,
 			lastState: lastState[index],
 			value: target.value,
-			next: nextName ? document.getElementById(`${id}-${nextName}`) as HTMLInputElement : null,
-			previous: prevName ? document.getElementById(`${id}-${prevName}`) as HTMLInputElement : null
+			next: nextName ? (document.getElementById(`${id}-${nextName}`) as HTMLInputElement) : null,
+			previous: prevName ? (document.getElementById(`${id}-${prevName}`) as HTMLInputElement) : null
 		};
 	};
 
@@ -116,8 +117,8 @@
 
 	const moveExtraCentsToDollars = (centsValue: string, append = true) => {
 		if (centsValue.length > 2 && isNumericString(centsValue) && Number(centsValue) > 0) {
-			const whole = centsValue.substring(0, centsValue.length -2);
-			const decimal = centsValue.substring(centsValue.length -2);
+			const whole = centsValue.substring(0, centsValue.length - 2);
+			const decimal = centsValue.substring(centsValue.length - 2);
 			dollars = append ? `${dollars}${whole}` : whole;
 			cents = decimal;
 		}
@@ -130,7 +131,7 @@
 			e.preventDefault();
 			if (target.next && allowCents) focusAndHighlightText(target.next);
 			return;
-		};
+		}
 		if (target.name === 'cents' && target.value.length >= 2 && !target.isHighligted) {
 			if (target.isNumber) moveExtraCentsToDollars(`${target.value}${e.key}`);
 			return e.preventDefault();
@@ -141,14 +142,24 @@
 	const onKeyUp = (e: KeyboardEvent) => {
 		const target = getTargetProperties(e);
 		// Back arrow
-		if (target.key === 'ArrowLeft' && !target.isHighligted && target.previous && target.lastState.selectionStart === 0) {
+		if (
+			target.key === 'ArrowLeft' &&
+			!target.isHighligted &&
+			target.previous &&
+			target.lastState.selectionStart === 0
+		) {
 			const preservedValue = String(target.previous.value);
 			focusAndHighlightText(target.previous);
 			target.previous.value = preservedValue;
 			return e.preventDefault();
 		}
 		// Right arrow
-		if (target.key === 'ArrowRight' && !target.isHighligted && target.next && target.lastState.selectionStart === target.value.length) {
+		if (
+			target.key === 'ArrowRight' &&
+			!target.isHighligted &&
+			target.next &&
+			target.lastState.selectionStart === target.value.length
+		) {
 			focusAndHighlightText(target.next);
 			return e.preventDefault();
 		}
@@ -197,8 +208,8 @@
 		let centValue = Math.abs(isNumericString(cents) ? Number(cents) : 0);
 		let dollarValue = Math.abs(isNumericString(dollars) ? Number(dollars) : 0);
 		// Update value
-		if (isValueInCents) value = (dollarValue * 100) + centValue;
-		else value = dollarValue + (centValue / 100);
+		if (isValueInCents) value = dollarValue * 100 + centValue;
+		else value = dollarValue + centValue / 100;
 		// Enforce min and max
 		if (min && value < min) value = min;
 		if (max && value > max) value = max;
@@ -206,7 +217,6 @@
 		cents = String(centValue).padStart(2, '0');
 		onChange?.(value);
 	};
-
 </script>
 
 <FormField {size} {label} {id}>
@@ -272,8 +282,12 @@
 		font-size: 1rem;
 		font-weight: 500;
 		line-height: 2rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color 0.2s ease-in-out,
+			border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out,
+			fill 0.2s ease-in-out,
+			stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
 

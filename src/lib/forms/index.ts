@@ -14,18 +14,18 @@ export { default as UrlBox } from './url-box/url-box.svelte';
 
 // Form components with barrel files
 export * from './check-box/index.js';
-export * from './combo-box/index.js';
 export * from './list-box/index.js';
 export * from './phone-box/index.js';
 export * from './radio-group/index.js';
 
 // Form structure components
 export { default as Form } from './form.svelte';
-export { default as FormField } from './form-field.svelte';
+export { default as FormField } from './form-field/form-field.svelte';
 export { default as FormFooter } from './form-footer.svelte';
 export { default as FormHeader } from './form-header.svelte';
-export { default as FormLabel } from './form-label.svelte';
-export { default as FormSection } from './form-section.svelte';
+export { default as FormLabel } from './form-label/form-label.svelte';
+export { default as FormSection } from './form-section/form-section.svelte';
+export { default as FormRow } from './form-row/form-row.svelte';
 
 // New form components
 export { default as Slider } from './slider/slider.svelte';
@@ -33,4 +33,3 @@ export { default as TimeBox } from './time-box/time-box.svelte';
 
 // Validation utilities
 export * from './validation.js';
-

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
 	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
@@ -45,7 +45,7 @@
 	let highlightIndex = $state(-1);
 	let filteredItems = $state<MenuOption[]>([]);
 	let isSeachable = $derived(searchable || !!search);
-	
+
 	// Get the ID of the highlighted option for ARIA
 	let activeDescendant = $derived(
 		highlightIndex >= 0 && filteredItems[highlightIndex]
@@ -201,7 +201,7 @@
 				{open}
 				closeAfterSelect={false}
 				searchText={text}
-				onSelect={onSelect}
+				{onSelect}
 				size="full"
 				bind:highlightIndex
 				bind:value

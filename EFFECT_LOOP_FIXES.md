@@ -24,7 +24,9 @@ Wrapped all state-writing code inside `$effect()` blocks with Svelte's `untrack(
 
 ## Files Fixed
 
-### 1. **combo-box.svelte**
+### 1. **combo-box.svelte** (Component Removed)
+**Note**: This component was removed from the codebase due to freezing issues. This section is kept for historical reference only.
+
 **Problem:** `applyFilter()` effect modified `filteredItems` and `highlightIndex` on every state change
 **Fix:** 
 - Explicitly tracked only `searchQuery` and `items` as dependencies
@@ -129,10 +131,8 @@ All modified components were successfully hot-reloaded in Storybook without erro
    - Type in a text field with `successText` prop - verify checkmark animation works once
    - Type in a text field with `showCharacterCount` - verify counter updates smoothly
 
-2. **ComboBox Component:**
-   - Type in search field - verify filtering works smoothly
-   - Select items in multi-select mode - verify no lockups
-   - Clear selections - verify UI updates correctly
+2. **ComboBox Component:** (Component Removed)
+   - ❌ Component was removed from the codebase due to freezing issues
 
 3. **PhoneBox Component:**
    - Type phone number - verify parts update correctly

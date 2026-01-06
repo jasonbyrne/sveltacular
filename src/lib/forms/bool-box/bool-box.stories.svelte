@@ -8,6 +8,7 @@
 		title: 'Forms/BoolBox',
 		tags: ['autodocs'],
 		args: {
+			label: 'Label',
 			onChange: fn()
 		}
 	});
@@ -26,5 +27,3 @@
 <Story name="ActiveInactive" args={{ options: ['Active', 'Inactive'] }} />
 
 <Story name="VisibleHidden" args={{ options: ['Visible', 'Hidden'] }} />
-
-

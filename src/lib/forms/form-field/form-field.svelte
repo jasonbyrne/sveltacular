@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
 	import { getMaxWidth, getDisplayType } from '$src/lib/types/size.js';
-	import FormLabel from '$src/lib/forms/form-label.svelte';
+	import FormLabel from '$src/lib/forms/form-label/form-label.svelte';
 
 	let {
 		size = 'full',
@@ -34,7 +34,7 @@
 	let showErrorText = $derived(!!errorText);
 </script>
 
-<div style={`display: ${displayType}; width: 100%; min-width: 10rem; max-width: ${maxWidth}`}>
+<div class="form-field {size} {displayType} {maxWidth}">
 	{#if label}
 		<FormLabel {id} {required} {disabled} {label} />
 	{/if}
@@ -55,16 +55,18 @@
 </div>
 
 <style lang="scss">
-	div {
-		margin-bottom: var(--spacing-base);
-		margin-right: var(--spacing-base);
-	}
+	@use '$styles/breakpoints' as *;
 
-	.helper-text {
-		font-size: var(--font-sm);
-		line-height: 1.25rem;
-		padding: var(--spacing-xs);
-		color: var(--body-fg);
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		flex: 1;
+
+		// Switch to column layout on mobile phones and below
+		@include breakpoint-down('phablet') {
+			width: 100%;
+		}
 	}
 
 	.success-text {

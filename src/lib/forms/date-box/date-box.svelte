@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import { addUnits, currentDateTime, isDateString, isDateOrDateTimeString, isDateTimeString } from '$src/lib/helpers/date.js';
+	import {
+		addUnits,
+		currentDateTime,
+		isDateString,
+		isDateOrDateTimeString,
+		isDateTimeString
+	} from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
 
-	type DateIncrementStep = { label: string; value: number, unit: DateUnit };
+	type DateIncrementStep = { label: string; value: number; unit: DateUnit };
 
 	const id = uniqueId();
 
@@ -91,7 +97,12 @@
 		{#if steps.length > 0}
 			<span class="steps">
 				{#each steps as step}
-					<Button noMargin={true} collapse={true} onClick={() => incrementValue(step)} label={step.label} />
+					<Button
+						noMargin={true}
+						collapse={true}
+						onClick={() => incrementValue(step)}
+						label={step.label}
+					/>
 				{/each}
 			</span>
 		{/if}
@@ -109,8 +120,12 @@
 		font-size: 0.875rem;
 		font-weight: 500;
 		line-height: 1.25rem;
-		transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
-			color 0.2s ease-in-out, fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+		transition:
+			background-color 0.2s ease-in-out,
+			border-color 0.2s ease-in-out,
+			color 0.2s ease-in-out,
+			fill 0.2s ease-in-out,
+			stroke 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
 

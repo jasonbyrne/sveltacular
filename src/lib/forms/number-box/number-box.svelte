@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	const id = uniqueId();
 
@@ -54,7 +54,10 @@
 	const onKeyPress = (e: KeyboardEvent) => {
 		const isNumber = !isNaN(Number(e.key));
 		const isDecimal = e.key === '.';
-		const isAllowed = isNumber || isDecimal || ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key);
+		const isAllowed =
+			isNumber ||
+			isDecimal ||
+			['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key);
 		if (!isAllowed) return e.preventDefault();
 		if (isDecimal && decimals === 0) return e.preventDefault();
 		const newValue = `${value}${e.key}`;

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	let {
 		id,
@@ -108,4 +107,3 @@
 		color: var(--form-input-error-fg);
 	}
 </style>
-

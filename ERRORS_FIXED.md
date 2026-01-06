@@ -66,12 +66,14 @@ $effect(() => {
 
 ---
 
-### 3. ❌ Storybook Legacy API Error
-**Error**: Stories file is using legacy API
+### 3. ❌ Storybook Legacy API Error (Historical - Component Removed)
+**Note**: The combo-box component was removed from the codebase due to freezing issues. This section is kept for historical reference only.
+
+**Error**: Stories file was using legacy API
 
 **Fix**: ✅ Rewrote story file using modern Storybook format with proper `context="module"` and Meta type.
 
-**Code Change**:
+**Code Change** (Historical Reference):
 ```svelte
 <!-- BEFORE (WRONG - Legacy API) -->
 <script context="module">
@@ -105,58 +107,26 @@ $effect(() => {
 
 ## Verification
 
-### File Status
-- ✅ `/src/lib/forms/combo-box/combo-box.svelte` - Fixed (no duplicate attributes)
-- ✅ `/src/lib/forms/combo-box/combo-box.stories.svelte` - Fixed (modern API format)
+### File Status (Historical)
+- ❌ `/src/lib/forms/combo-box/combo-box.svelte` - Component removed
+- ❌ `/src/lib/forms/combo-box/combo-box.stories.svelte` - Component removed
 - ✅ No linter errors reported
 
-### Code Quality
-- ✅ No duplicate attributes
-- ✅ ARIA compliance (ARIA 1.2 specification)
-- ✅ Proper reactive state management
-- ✅ Modern Storybook format
-- ✅ TypeScript typed
-
 ---
 
-## Current Status
+## Summary of Changes (Historical Reference)
 
-**All errors have been fixed!** ✅
-
-The terminal may show cached errors from the dev server, but the actual files are correct. The dev server will clear these errors on next full reload or restart.
-
-### To Clear Cached Errors:
-```bash
-# Option 1: Restart the watch process
-Ctrl+C  # Stop the current process
-npm run watch  # Restart
-
-# Option 2: Restart Storybook
-Ctrl+C  # Stop Storybook
-npm run storybook  # Restart
-```
-
----
-
-## Summary of Changes
-
-### combo-box.svelte
+### combo-box.svelte (Removed)
 1. ✅ Removed duplicate `value` attribute from input element
 2. ✅ Added `$effect()` to manage display text in single-select mode
 3. ✅ Removed invalid `aria-multiselectable` from combobox input
 
-### combo-box.stories.svelte
+### combo-box.stories.svelte (Removed)
 1. ✅ Converted to modern Storybook API format
 2. ✅ Added proper TypeScript types
 3. ✅ Fixed context="module" structure
 
----
-
-## Testing Checklist
-
-After restarting the dev server, verify:
-- [ ] Component renders without errors
-- [ ] Single-select mode shows selected item text
+**Note**: These fixes were applied before the component was removed due to freezing issues.
 - [ ] Multi-select mode shows chips
 - [ ] Search/typeahead works
 - [ ] Keyboard navigation functional
@@ -165,6 +135,8 @@ After restarting the dev server, verify:
 ---
 
 **Status**: ✅ **ALL ERRORS FIXED - READY FOR TESTING**
+
+
 
 
 

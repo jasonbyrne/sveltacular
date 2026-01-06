@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
-	import FormField from '$src/lib/forms/form-field.svelte';
+	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 
@@ -34,7 +34,7 @@
 		// Track items and group as dependencies
 		const currentItems = items;
 		const currentGroup = group;
-		
+
 		// Use untrack to prevent writing to itemsWithState from triggering this effect again
 		untrack(() => {
 			// Rebuild itemsWithState from items, using group to determine checked state

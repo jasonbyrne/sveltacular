@@ -1,8 +1,14 @@
 # ComboBox Component - Testing Guide
 
-## Component Overview
+## ❌ Component Removed
 
-The ComboBox component has been successfully implemented with the following features:
+**Status:** This component was removed from the codebase because it kept freezing.
+
+This testing guide is kept for historical reference only. The ComboBox component is no longer available in the codebase.
+
+## Component Overview (Historical Reference)
+
+The ComboBox component was previously implemented with the following features:
 
 ### ✅ Core Features Implemented
 
@@ -224,6 +230,8 @@ The ComboBox component is **feature-complete** and ready for use. It follows bes
 - Code quality (TypeScript, proper prop types, JSDoc comments)
 
 The component integrates seamlessly with the existing Sveltacular design system and leverages existing helpers (positioning, virtual scrolling, focus management, announcements).
+
+
 
 
 
