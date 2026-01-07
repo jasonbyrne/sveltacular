@@ -20,22 +20,4 @@
 		align-items: center;
 		margin-top: 70px;
 	}
-
-	article {
-		width: 100%;
-		max-width: 1200px;
-		margin-top: 20px;
-		padding-bottom: 10px;
-		border-bottom: dashed 1px #ccc;
-
-		code {
-			font-family: monospace;
-			background-color: #f4f4f4;
-			padding: 8px;
-			border-radius: 5px;
-			display: block;
-			margin-top: 4px;
-			margin-bottom: 4px;
-		}
-	}
 </style>

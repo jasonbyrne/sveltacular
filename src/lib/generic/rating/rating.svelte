@@ -61,11 +61,11 @@
 				color: var(--rating-filled-color, #ffc107);
 			}
 
-			&:hover:not([readonly]) {
+			&:hover:not(:disabled) {
 				color: var(--rating-hover-color, #ffb300);
 			}
 
-			&[readonly] {
+			&:disabled {
 				cursor: default;
 			}
 

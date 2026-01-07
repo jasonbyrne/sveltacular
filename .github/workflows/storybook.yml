@@ -1,5 +1,10 @@
 name: Deploy Storybook
 
+# NOTE: GitHub Pages must be enabled in repository settings before this workflow can run.
+# Go to: https://github.com/jasonbyrne/sveltacular/settings/pages
+# Source: Select "GitHub Actions" (not "Deploy from a branch")
+# No folder selection needed - the workflow handles deployment automatically
+
 on:
   push:
     branches: [main]

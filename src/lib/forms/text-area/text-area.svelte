@@ -98,7 +98,6 @@
 		{readonly}
 		{maxlength}
 		{minlength}
-		{pattern}
 		aria-busy={isLoading}
 		data-auto-resize={autoResize}
 		oninput={handleAutoResize}

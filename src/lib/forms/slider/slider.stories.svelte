@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import Slider from './slider.svelte';
@@ -117,6 +117,9 @@
 			onChange: fn()
 		}
 	});
+
+	// Format function for percentage display
+	const formatPercentage = (v: number) => `${v}%`;
 </script>
 
 <Story name="Default" args={{ label: 'Volume', value: 50, min: 0, max: 100 }}>
@@ -143,7 +146,7 @@
 	Slider with custom range and step value.
 </Story>
 
-<Story name="WithFormat" args={{ label: 'Percentage', value: 75, min: 0, max: 100, formatValue: (v) => `${v}%` }}>
+<Story name="WithFormat" args={{ label: 'Percentage', value: 75, min: 0, max: 100, formatValue: formatPercentage }}>
 	Slider with custom value formatting function.
 </Story>
 

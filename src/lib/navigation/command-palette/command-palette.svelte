@@ -532,7 +532,7 @@
 		backdrop-filter: blur(20px);
 		background: rgba(255, 255, 255, 0.95);
 
-		[data-theme='dark'] & {
+		:global([data-theme='dark']) & {
 			background: rgba(30, 30, 30, 0.95);
 		}
 	}
@@ -620,7 +620,7 @@
 		&--selected {
 			background: var(--primary-light);
 
-			[data-theme='dark'] & {
+			:global([data-theme='dark']) & {
 				background: rgba(var(--primary-rgb), 0.15);
 			}
 		}
@@ -673,7 +673,7 @@
 			padding: 0 2px;
 			border-radius: 2px;
 
-			[data-theme='dark'] & {
+			:global([data-theme='dark']) & {
 				background: rgba(var(--warning-rgb), 0.3);
 			}
 		}
@@ -694,7 +694,7 @@
 			padding: 0 2px;
 			border-radius: 2px;
 
-			[data-theme='dark'] & {
+			:global([data-theme='dark']) & {
 				background: rgba(var(--warning-rgb), 0.3);
 			}
 		}
@@ -709,7 +709,7 @@
 		font-weight: 600;
 		border-radius: var(--radius-sm);
 
-		[data-theme='dark'] & {
+		:global([data-theme='dark']) & {
 			background: rgba(var(--info-rgb), 0.2);
 			color: var(--info-light);
 		}
