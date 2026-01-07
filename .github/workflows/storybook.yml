@@ -56,7 +56,7 @@ jobs:
     name: Deploy to GitHub Pages
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      # URL will be set from deployment output, not from environment settings
     runs-on: ubuntu-latest
     needs: build
     
@@ -64,4 +64,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      
+      - name: Display deployment URL
+        run: |
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "Note: If you see jasonbyrne.net, check environment settings at:"
+          echo "https://github.com/jasonbyrne/sveltacular/settings/environments"
 
