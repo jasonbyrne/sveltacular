@@ -17,6 +17,6 @@
 	Flex content with different sizes aligned middle would go here
 </Story>
 
-<Story name="Wrap" args={{ alignItems: 'center', wrap: true }}>Flex content that wraps would go here</Story>
-
-
+<Story name="Wrap" args={{ alignItems: 'center', wrap: true }}
+	>Flex content that wraps would go here</Story
+>

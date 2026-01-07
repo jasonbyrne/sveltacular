@@ -27,6 +27,7 @@
 
 <Story name="FlatLarge" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'lg' }} />
 
-<Story name="FlatExtraLarge" args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'xl' }} />
-
-
+<Story
+	name="FlatExtraLarge"
+	args={{ currentPage: 10, totalPages: 50, style: 'flat', size: 'xl' }}
+/>

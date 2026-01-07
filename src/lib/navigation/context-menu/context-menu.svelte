@@ -1,10 +1,10 @@
 <script lang="ts">
 	/**
 	 * ContextMenu Component
-	 * 
+	 *
 	 * A right-click menu with keyboard support and nested submenus.
 	 * Fully accessible with ARIA roles and keyboard navigation.
-	 * 
+	 *
 	 * @component
 	 * @example
 	 * ```svelte
@@ -14,7 +14,7 @@
 	 *   <ContextMenuDivider />
 	 *   <ContextMenuItem onClick={() => console.log('Delete')}>Delete</ContextMenuItem>
 	 * </ContextMenu>
-	 * 
+	 *
 	 * <div oncontextmenu={(e) => { e.preventDefault(); menu.show(e); }}>
 	 *   Right-click me
 	 * </div>
@@ -41,7 +41,7 @@
 	let y = $state(0);
 	let menuRef = $state<HTMLDivElement | null>(null);
 	let highlightedIndex = $state(0);
-	
+
 	/**
 	 * Show the context menu at the given position
 	 */
@@ -50,7 +50,7 @@
 		y = event.clientY;
 		isOpen = true;
 		highlightedIndex = 0;
-		
+
 		// Wait for next tick to ensure menu is rendered
 		setTimeout(() => {
 			adjustPosition();
@@ -159,7 +159,7 @@
 	 */
 	function handleClickOutside(event: MouseEvent) {
 		if (!isOpen || !menuRef) return;
-		
+
 		const target = event.target as Node;
 		if (!menuRef.contains(target)) {
 			hide();
@@ -219,11 +219,10 @@
 		padding: 0.25rem 0;
 		font-family: var(--base-font-family, sans-serif);
 		outline: none;
-		
+
 		&:focus-visible {
 			outline: 2px solid var(--focus-ring-color, #0066cc);
 			outline-offset: 2px;
 		}
 	}
 </style>
-

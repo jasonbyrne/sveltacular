@@ -27,17 +27,3 @@ export const getMaxWidth = (size: ComponentSize): string => {
 export const getDisplayType = (size: ComponentSize): 'block' | 'inline-block' => {
 	return ['xl', 'full'].includes(size) ? 'block' : 'inline-block';
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-

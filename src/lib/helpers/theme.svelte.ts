@@ -1,17 +1,17 @@
 /**
  * Theme Management Composable
- * 
+ *
  * Provides reactive theme state and utilities for switching between light and dark modes.
  * The theme preference is persisted in localStorage and synced across tabs.
- * 
+ *
  * @example
  * ```svelte
  * <script>
  *   import { useTheme } from '$lib/helpers/theme.svelte';
- *   
+ *
  *   const theme = useTheme();
  * </script>
- * 
+ *
  * <button onclick={() => theme.toggle()}>
  *   Current theme: {theme.current}
  * </button>
@@ -27,7 +27,7 @@ const MEDIA_QUERY = '(prefers-color-scheme: dark)';
 class ThemeManager {
 	current = $state<Theme>('system');
 	resolved = $state<ResolvedTheme>('light');
-	
+
 	private mediaQuery: MediaQueryList | null = null;
 	private initialized = false;
 
@@ -48,7 +48,7 @@ class ThemeManager {
 		// Set up media query listener for system preference
 		this.mediaQuery = window.matchMedia(MEDIA_QUERY);
 		this.updateResolvedTheme();
-		
+
 		// Listen for system theme changes
 		this.mediaQuery.addEventListener('change', () => {
 			this.updateResolvedTheme();
@@ -76,7 +76,7 @@ class ThemeManager {
 
 	private applyTheme() {
 		if (typeof document === 'undefined') return;
-		
+
 		this.updateResolvedTheme();
 		document.documentElement.setAttribute('data-theme', this.resolved);
 	}
@@ -133,7 +133,7 @@ let themeManager: ThemeManager | null = null;
 
 /**
  * Get the theme manager instance
- * 
+ *
  * @returns ThemeManager instance with reactive theme state
  */
 export function useTheme(): ThemeManager {
@@ -142,4 +142,3 @@ export function useTheme(): ThemeManager {
 	}
 	return themeManager;
 }
-

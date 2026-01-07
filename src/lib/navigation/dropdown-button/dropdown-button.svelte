@@ -38,7 +38,12 @@
 	let hasText = $derived(text && text.length > 0);
 </script>
 
-<div class="dropdown-button {variant} icon-{icon}" class:open role="presentation" onkeydown={handleKeyDown}>
+<div
+	class="dropdown-button {variant} icon-{icon}"
+	class:open
+	role="presentation"
+	onkeydown={handleKeyDown}
+>
 	<button
 		id={buttonId}
 		type="button"

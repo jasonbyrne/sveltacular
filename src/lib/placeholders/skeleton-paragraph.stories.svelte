@@ -16,4 +16,3 @@
 <Story name="Custom Lines" args={{ minLines: 2, maxLines: 4 }} />
 
 <Story name="Many Lines" args={{ minLines: 5, maxLines: 8 }} />
-

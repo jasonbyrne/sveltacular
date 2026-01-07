@@ -14,5 +14,3 @@
 <Story name="WithoutCaption" args={{ src: sources }} />
 
 <Story name="WithCaption" args={{ src: sources }}>Svelte Logo</Story>
-
-

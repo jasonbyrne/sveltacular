@@ -62,13 +62,9 @@
 	Avatar displaying initials generated from a name (JD).
 </Story>
 
-<Story name="Placeholder">
-	Avatar placeholder when no image or name is provided.
-</Story>
+<Story name="Placeholder">Avatar placeholder when no image or name is provided.</Story>
 
-<Story name="Small" args={{ name: 'JD', size: 'sm' }}>
-	Small avatar size for compact spaces.
-</Story>
+<Story name="Small" args={{ name: 'JD', size: 'sm' }}>Small avatar size for compact spaces.</Story>
 
 <Story name="Large" args={{ name: 'John Doe', size: 'lg' }}>
 	Large avatar size for prominent display.
@@ -81,16 +77,3 @@
 <Story name="LongName" args={{ name: 'John Michael Smith' }}>
 	Avatar with a longer name (shows first two initials: JM).
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -18,4 +18,3 @@
 <Story name="Large Table" args={{ columns: 6, rows: 10 }} />
 
 <Story name="Wide Table" args={{ columns: 8, rows: 5 }} />
-

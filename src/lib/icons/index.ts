@@ -11,4 +11,3 @@ export { default as MobilePhoneIcon } from './mobile-phone-icon.svelte';
 export { default as PhoneIcon } from './phone-icon.svelte';
 export { default as SvgIcon } from './svg-icon.svelte';
 export { default as UploadIcon } from './upload-icon.svelte';
-

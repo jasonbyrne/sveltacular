@@ -27,4 +27,3 @@ export function useCopyState(duration = 2000) {
 		setCopied
 	};
 }
-

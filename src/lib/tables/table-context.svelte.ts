@@ -187,4 +187,3 @@ export function createTableContext<T extends JsonObject = JsonObject>(
 export function getTableContext<T extends JsonObject = JsonObject>(): TableContext<T> | undefined {
 	return getContext(TABLE_CONTEXT_KEY);
 }
-

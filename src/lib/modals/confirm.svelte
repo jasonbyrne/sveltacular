@@ -49,7 +49,12 @@
 
 {#if open}
 	<Overlay onClick={no}>
-		<Dialog {size} role="alertdialog" aria-modal="true" aria-labelledby={title ? 'confirm-title' : undefined}>
+		<Dialog
+			{size}
+			role="alertdialog"
+			aria-modal="true"
+			aria-labelledby={title ? 'confirm-title' : undefined}
+		>
 			{#if title}
 				<DialogHeader id="confirm-title">
 					{title}

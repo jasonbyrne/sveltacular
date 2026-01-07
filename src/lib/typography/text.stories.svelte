@@ -26,5 +26,3 @@
 <Story name="TransformLowercase" args={{ transform: 'lowercase' }}>
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.
 </Story>
-
-

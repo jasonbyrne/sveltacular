@@ -179,10 +179,7 @@ describe('fuzzy-search', () => {
 
 		it('should handle all characters matched', () => {
 			const result = highlightMatches('hello', [0, 1, 2, 3, 4]);
-			expect(result).toBe(
-				'<mark>h</mark><mark>e</mark><mark>l</mark><mark>l</mark><mark>o</mark>'
-			);
+			expect(result).toBe('<mark>h</mark><mark>e</mark><mark>l</mark><mark>l</mark><mark>o</mark>');
 		});
 	});
 });
-

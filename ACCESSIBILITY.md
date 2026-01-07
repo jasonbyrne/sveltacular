@@ -5,13 +5,16 @@ Sveltacular is committed to WCAG 2.1 AA compliance across all components. This d
 ## Core Accessibility Features
 
 ### 1. Focus Management
+
 Located in `src/lib/helpers/focus.ts`, provides:
+
 - **Focus Trap**: Traps keyboard focus within modals and dialogs
 - **Roving Tabindex**: Manages keyboard navigation in lists, menus, and tabs
 - **Focus Restoration**: Restores focus when closing modals
 - **Focusable Element Detection**: Finds all interactive elements
 
 **Usage Example:**
+
 ```typescript
 import { createFocusTrap, RovingTabindexManager } from '$lib/helpers/focus';
 
@@ -21,18 +24,21 @@ const cleanup = createFocusTrap(modalElement);
 
 // Roving tabindex for a menu
 const manager = new RovingTabindexManager(menuItems, {
-  orientation: 'vertical',
-  loop: true
+	orientation: 'vertical',
+	loop: true
 });
 ```
 
 ### 2. Screen Reader Announcements
+
 Located in `src/lib/helpers/announcer.ts`, provides:
+
 - **Live Region Management**: Announces dynamic content changes
 - **Polite vs Assertive**: Control announcement priority
 - **Convenience Functions**: Pre-built announcements for common scenarios
 
 **Usage Example:**
+
 ```typescript
 import { announcePolite, announceError, announceLoading } from '$lib/helpers/announcer';
 
@@ -52,6 +58,7 @@ announceLoaded('Data loaded successfully');
 ### Forms
 
 #### TextBox
+
 - ✅ Proper label association with `for`/`id`
 - ✅ `aria-required` for required fields
 - ✅ `aria-invalid` for validation errors
@@ -60,11 +67,13 @@ announceLoaded('Data loaded successfully');
 - ✅ Focus-visible styles for keyboard navigation
 
 **Props:**
+
 - `errorText`: Displays error with proper ARIA attributes
 - `helperText`: Provides additional context
 - `required`: Marks field as required
 
 #### Button
+
 - ✅ Proper button semantics
 - ✅ `aria-label` support for icon-only buttons
 - ✅ `aria-busy` for loading states
@@ -72,11 +81,13 @@ announceLoaded('Data loaded successfully');
 - ✅ Keyboard accessible (Enter/Space)
 
 **Props:**
+
 - `loading`: Shows loading state with aria-busy
 - `ariaLabel`: Override accessible label
 - `disabled`: Disables interaction
 
 #### ListBox (Select/Combobox)
+
 - ✅ ARIA 1.2 Combobox pattern
 - ✅ `role="combobox"` on input
 - ✅ `role="listbox"` on dropdown
@@ -89,6 +100,7 @@ announceLoaded('Data loaded successfully');
 ### Navigation
 
 #### Tabs
+
 - ✅ ARIA Tabs pattern
 - ✅ `role="tablist"` on container
 - ✅ `role="tab"` on each tab button
@@ -100,12 +112,14 @@ announceLoaded('Data loaded successfully');
 - ✅ Focus-visible styles
 
 **Keyboard Support:**
+
 - `Arrow Left/Right`: Navigate between tabs
 - `Home`: Jump to first tab
 - `End`: Jump to last tab
 - `Enter/Space`: Activate tab
 
 #### Accordion
+
 - ✅ ARIA Accordion pattern
 - ✅ `<h3>` heading for semantic structure
 - ✅ `aria-expanded` on toggle button
@@ -118,6 +132,7 @@ announceLoaded('Data loaded successfully');
 ### Modals & Dialogs
 
 #### Modal
+
 - ✅ ARIA Dialog pattern
 - ✅ `role="dialog"` on modal window
 - ✅ `aria-modal="true"` to indicate modal behavior
@@ -128,6 +143,7 @@ announceLoaded('Data loaded successfully');
 - ✅ Click outside to close (if dismissable)
 
 **Keyboard Support:**
+
 - `Tab`: Cycles through focusable elements (trapped)
 - `Shift+Tab`: Cycles backward
 - `Escape`: Closes modal (if dismissable)
@@ -135,6 +151,7 @@ announceLoaded('Data loaded successfully');
 ## Keyboard Navigation Standards
 
 ### Global Patterns
+
 - **Tab**: Move to next focusable element
 - **Shift+Tab**: Move to previous focusable element
 - **Enter**: Activate buttons, links, submit forms
@@ -142,6 +159,7 @@ announceLoaded('Data loaded successfully');
 - **Escape**: Close modals, dropdowns, cancel operations
 
 ### List/Menu Navigation
+
 - **Arrow Down/Up**: Navigate items (vertical)
 - **Arrow Left/Right**: Navigate items (horizontal)
 - **Home**: Jump to first item
@@ -150,6 +168,7 @@ announceLoaded('Data loaded successfully');
 - **Escape**: Close menu
 
 ### Form Navigation
+
 - **Tab**: Move between form fields
 - **Arrow keys**: Navigate radio buttons, select options
 - **Space**: Toggle checkboxes, open dropdowns
@@ -157,11 +176,13 @@ announceLoaded('Data loaded successfully');
 ## Color Contrast
 
 All components meet WCAG 2.1 AA contrast requirements:
+
 - **Normal text**: Minimum 4.5:1 contrast ratio
 - **Large text**: Minimum 3:1 contrast ratio
 - **UI components**: Minimum 3:1 contrast ratio
 
 CSS custom properties allow theme customization while maintaining contrast:
+
 ```scss
 --body-fg: #212529;
 --body-bg: #ffffff;
@@ -173,6 +194,7 @@ CSS custom properties allow theme customization while maintaining contrast:
 ## Focus Indicators
 
 All interactive elements have visible focus indicators:
+
 - Modern `:focus-visible` pseudo-class (with fallback)
 - 2px outline with offset for clarity
 - High contrast focus rings
@@ -181,12 +203,14 @@ All interactive elements have visible focus indicators:
 ## Screen Reader Support
 
 Tested with:
+
 - **NVDA** (Windows)
 - **JAWS** (Windows)
 - **VoiceOver** (macOS/iOS)
 - **TalkBack** (Android)
 
 ### Best Practices
+
 1. Use semantic HTML (`<button>`, `<nav>`, `<main>`, etc.)
 2. Provide text alternatives for icons
 3. Use `aria-label` for icon-only buttons
@@ -219,6 +243,7 @@ When creating or modifying components:
 ## Reporting Issues
 
 If you discover an accessibility issue:
+
 1. Check if it's a known limitation
 2. Test with multiple assistive technologies
 3. Provide specific reproduction steps
@@ -226,4 +251,3 @@ If you discover an accessibility issue:
 5. Open an issue on GitHub
 
 We take accessibility seriously and will prioritize fixes for any barriers to access.
-

@@ -38,7 +38,8 @@
 			orientation: {
 				control: 'select',
 				options: ['horizontal', 'vertical'],
-				description: 'Layout orientation (vertical stacks icon/text, horizontal places them side by side)',
+				description:
+					'Layout orientation (vertical stacks icon/text, horizontal places them side by side)',
 				table: {
 					type: { summary: "'horizontal' | 'vertical'" },
 					defaultValue: { summary: "'vertical'" }
@@ -65,9 +66,7 @@
 	});
 </script>
 
-<Story name="Default" args={{}}>
-	Default empty state with standard message.
-</Story>
+<Story name="Default" args={{}}>Default empty state with standard message.</Story>
 
 <Story name="WithMessage" args={{ text: 'No results found' }}>
 	Empty state with custom message text.
@@ -106,5 +105,3 @@
 <Story name="AlignedEnd" args={{ text: 'No results found', align: 'end' }}>
 	Empty state aligned to the end (bottom).
 </Story>
-
-

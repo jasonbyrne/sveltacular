@@ -10,5 +10,3 @@
 </script>
 
 <Story name="Default">Toaster content would go here</Story>
-
-

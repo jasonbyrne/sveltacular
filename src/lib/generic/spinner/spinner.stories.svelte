@@ -40,17 +40,11 @@
 	});
 </script>
 
-<Story name="Small" args={{ size: 'sm' }}>
-	Small spinner for compact spaces.
-</Story>
+<Story name="Small" args={{ size: 'sm' }}>Small spinner for compact spaces.</Story>
 
-<Story name="Medium" args={{ size: 'md' }}>
-	Medium spinner (default size) for most use cases.
-</Story>
+<Story name="Medium" args={{ size: 'md' }}>Medium spinner (default size) for most use cases.</Story>
 
-<Story name="Large" args={{ size: 'lg' }}>
-	Large spinner for prominent loading states.
-</Story>
+<Story name="Large" args={{ size: 'lg' }}>Large spinner for prominent loading states.</Story>
 
 <Story name="ExtraLarge" args={{ size: 'xl' }}>
 	Extra large spinner for full-page loading states.
@@ -64,19 +58,4 @@
 	Secondary variant spinner with secondary color.
 </Story>
 
-<Story name="AllSizes" args={{}}>
-	All spinner sizes displayed together for comparison.
-</Story>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<Story name="AllSizes" args={{}}>All spinner sizes displayed together for comparison.</Story>

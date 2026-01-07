@@ -1,6 +1,6 @@
 /**
  * Live Region Announcer
- * 
+ *
  * Provides utilities for announcing dynamic content changes to screen readers
  * using ARIA live regions. Useful for:
  * - Form validation messages
@@ -82,7 +82,7 @@ class Announcer {
 
 	/**
 	 * Announce a message to screen readers
-	 * 
+	 *
 	 * @param message - The message to announce
 	 * @param options - Announcement options
 	 *   - priority: 'polite' (default) or 'assertive'
@@ -90,11 +90,7 @@ class Announcer {
 	 *   - clearAfter: Clear the message after N ms (default: 1000)
 	 */
 	announce(message: string, options: AnnouncerOptions = {}) {
-		const {
-			priority = 'polite',
-			delay = 0,
-			clearAfter = 1000
-		} = options;
+		const { priority = 'polite', delay = 0, clearAfter = 1000 } = options;
 
 		// Ensure initialized
 		this.initialize();
@@ -293,4 +289,3 @@ export function announceSelection(item: string, position?: number, total?: numbe
 	}
 	announcer.polite(message);
 }
-

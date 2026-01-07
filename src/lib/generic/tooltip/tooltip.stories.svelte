@@ -237,8 +237,7 @@
 			> prop.
 		</p>
 		<p style="color: #666;">
-			Use <code
-				style="background: #f0f0f0; padding: 0.125rem 0.25rem; border-radius: 0.25rem;"
+			Use <code style="background: #f0f0f0; padding: 0.125rem 0.25rem; border-radius: 0.25rem;"
 				>bind:open</code
 			> to control the state from a parent component.
 		</p>
@@ -312,7 +311,11 @@
 		<Tooltip title="Pro Tip" text="Keyboard shortcuts can speed up your workflow">
 			<Button label="Title + Text" />
 		</Tooltip>
-		<Tooltip title="Important!" text="Save your work regularly to avoid data loss" placement="bottom">
+		<Tooltip
+			title="Important!"
+			text="Save your work regularly to avoid data loss"
+			placement="bottom"
+		>
 			<Button label="Title + Text (Bottom)" />
 		</Tooltip>
 		<Tooltip title="Quick Info" placement="right">
@@ -348,7 +351,12 @@
 			{#snippet content()}
 				<div style="text-align: left;">
 					<strong style="display: block; margin-bottom: 0.25rem;">Pro Tip!</strong>
-					<span>Use <code style="background: rgba(255,255,255,0.2); padding: 0 0.25rem; border-radius: 2px;">Ctrl+K</code> to open command palette</span>
+					<span
+						>Use <code
+							style="background: rgba(255,255,255,0.2); padding: 0 0.25rem; border-radius: 2px;"
+							>Ctrl+K</code
+						> to open command palette</span
+					>
 				</div>
 			{/snippet}
 			<Button label="Rich content" />
@@ -463,7 +471,9 @@
 				Use <kbd
 					style="background: #f0f0f0; padding: 0.125rem 0.375rem; border-radius: 0.25rem; border: 1px solid #ccc;"
 					>Tab</kbd
-				> to navigate, <kbd
+				>
+				to navigate,
+				<kbd
 					style="background: #f0f0f0; padding: 0.125rem 0.375rem; border-radius: 0.25rem; border: 1px solid #ccc;"
 					>Escape</kbd
 				> to close

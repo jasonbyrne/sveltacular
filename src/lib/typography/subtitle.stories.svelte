@@ -26,5 +26,3 @@
 <Story name="TransformUppercase" args={{ transform: 'uppercase' }}>Subtitle</Story>
 
 <Story name="TransformCapitalize" args={{ transform: 'capitalize' }}>foo bar</Story>
-
-

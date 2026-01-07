@@ -22,4 +22,3 @@ export * from './transform.js';
 export * from './ucfirst.js';
 export * from './unique-id.js';
 export * from './use-virtual-list.svelte.js';
-

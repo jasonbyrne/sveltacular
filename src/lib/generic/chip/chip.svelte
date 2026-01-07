@@ -19,9 +19,7 @@
 <div class="chip {size} {variant}">
 	<span class="label">{label}</span>
 	{#if removable}
-		<button type="button" class="remove" onclick={onRemove} aria-label="Remove {label}">
-			×
-		</button>
+		<button type="button" class="remove" onclick={onRemove} aria-label="Remove {label}"> × </button>
 	{/if}
 </div>
 
@@ -95,17 +93,3 @@
 		}
 	}
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

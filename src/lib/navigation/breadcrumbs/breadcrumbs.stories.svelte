@@ -22,5 +22,3 @@
 <Story name="Large" args={{ homeUrl: 'https://www.google.com', crumbs, size: 'lg' }} />
 
 <Story name="NoHomeLink" args={{ crumbs }} />
-
-

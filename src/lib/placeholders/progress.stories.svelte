@@ -10,5 +10,3 @@
 </script>
 
 <Story name="Default" args={{ value: 50 }} />
-
-

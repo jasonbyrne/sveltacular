@@ -22,9 +22,7 @@
 	});
 </script>
 
-<Story name="Standard">
-	Standard horizontal divider for separating content sections.
-</Story>
+<Story name="Standard">Standard horizontal divider for separating content sections.</Story>
 
 <Story name="InContext">
 	<div style="padding: 1rem;">
@@ -52,5 +50,3 @@
 		</section>
 	</div>
 </Story>
-
-

@@ -23,17 +23,3 @@ describe('uniqueId', () => {
 		expect(/^[0-9a-f]+$/i.test(id)).toBe(true);
 	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

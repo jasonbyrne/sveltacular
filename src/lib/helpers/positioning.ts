@@ -1,24 +1,24 @@
 /**
  * Positioning Utilities
- * 
+ *
  * Pure JavaScript positioning calculations for tooltips, popovers, dropdowns, etc.
  * Handles viewport collision detection, auto-flip positioning, and arrow placement.
- * 
+ *
  * Built from scratch with zero dependencies as an alternative to Floating UI.
  */
 
-export type Placement = 
-	| 'top' 
-	| 'top-start' 
+export type Placement =
+	| 'top'
+	| 'top-start'
 	| 'top-end'
-	| 'bottom' 
-	| 'bottom-start' 
+	| 'bottom'
+	| 'bottom-start'
 	| 'bottom-end'
-	| 'left' 
-	| 'left-start' 
+	| 'left'
+	| 'left-start'
 	| 'left-end'
-	| 'right' 
-	| 'right-start' 
+	| 'right'
+	| 'right-start'
 	| 'right-end';
 
 export type Side = 'top' | 'bottom' | 'left' | 'right';
@@ -42,37 +42,37 @@ export interface PositionOptions {
 	 * Preferred placement for the floating element
 	 */
 	placement: Placement;
-	
+
 	/**
 	 * Offset from the reference element in pixels
 	 * @default 8
 	 */
 	offset?: number;
-	
+
 	/**
 	 * Whether to flip to opposite side if doesn't fit
 	 * @default true
 	 */
 	autoFlip?: boolean;
-	
+
 	/**
 	 * Whether to adjust alignment if doesn't fit
 	 * @default true
 	 */
 	autoAlign?: boolean;
-	
+
 	/**
 	 * Padding from viewport edges in pixels
 	 * @default 8
 	 */
 	viewportPadding?: number;
-	
+
 	/**
 	 * Whether to include an arrow/pointer
 	 * @default false
 	 */
 	arrow?: boolean;
-	
+
 	/**
 	 * Size of the arrow in pixels
 	 * @default 8
@@ -231,13 +231,7 @@ export function calculatePosition(
 	floatingElement: Element,
 	options: PositionOptions
 ): Position {
-	const {
-		placement,
-		offset = 8,
-		autoFlip = true,
-		autoAlign = true,
-		viewportPadding = 8
-	} = options;
+	const { placement, offset = 8, autoFlip = true, autoAlign = true, viewportPadding = 8 } = options;
 
 	const reference = getRect(referenceElement);
 	const floating = getRect(floatingElement);
@@ -252,7 +246,13 @@ export function calculatePosition(
 	// Try flipping to opposite side if doesn't fit
 	if (!fits && autoFlip) {
 		const oppositeSide = getOppositeSide(side);
-		const flippedPosition = calculatePositionForSide(reference, floating, oppositeSide, alignment, offset);
+		const flippedPosition = calculatePositionForSide(
+			reference,
+			floating,
+			oppositeSide,
+			alignment,
+			offset
+		);
 		const flippedFits = fitsInViewport(flippedPosition, floating, viewport, viewportPadding);
 
 		if (flippedFits) {
@@ -268,7 +268,13 @@ export function calculatePosition(
 		for (const testAlignment of alignments) {
 			if (testAlignment === alignment) continue;
 
-			const adjustedPosition = calculatePositionForSide(reference, floating, side, testAlignment, offset);
+			const adjustedPosition = calculatePositionForSide(
+				reference,
+				floating,
+				side,
+				testAlignment,
+				offset
+			);
 			const adjustedFits = fitsInViewport(adjustedPosition, floating, viewport, viewportPadding);
 
 			if (adjustedFits) {
@@ -325,7 +331,7 @@ export function calculateArrowPosition(
 		const floatingLeft = floating.left;
 		// Center the arrow (which is arrowSize*2 wide) on the reference center
 		arrowPosition.left = referenceCenterX - floatingLeft - arrowSize;
-		
+
 		// Clamp arrow within floating element bounds, with padding to avoid rounded corners
 		// Typical border-radius is 4-6px, so keep arrow at least 8px from edges
 		const cornerPadding = arrowSize; // Keep arrow away from border-radius areas
@@ -339,7 +345,7 @@ export function calculateArrowPosition(
 		const floatingTop = floating.top;
 		// Center the arrow (which is arrowSize*2 tall) on the reference center
 		arrowPosition.top = referenceCenterY - floatingTop - arrowSize;
-		
+
 		// Clamp arrow within floating element bounds, with padding to avoid rounded corners
 		// Typical border-radius is 4-6px, so keep arrow at least 8px from edges
 		const cornerPadding = arrowSize; // Keep arrow away from border-radius areas
@@ -363,7 +369,7 @@ export function createPositionUpdater(
 ): () => void {
 	const update = () => {
 		const position = calculatePosition(referenceElement, floatingElement, options);
-		
+
 		let arrow: ArrowPosition | undefined;
 		if (options.arrow) {
 			arrow = calculateArrowPosition(
@@ -390,4 +396,3 @@ export function createPositionUpdater(
 		window.removeEventListener('resize', update);
 	};
 }
-

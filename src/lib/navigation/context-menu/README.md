@@ -17,31 +17,23 @@ A fully-featured right-click menu component with keyboard navigation and nested 
 
 ```svelte
 <script>
-  import { ContextMenu, ContextMenuItem, ContextMenuDivider } from 'sveltacular';
-  
-  let menu;
-  
-  function showMenu(event) {
-    event.preventDefault();
-    menu.show(event);
-  }
+	import { ContextMenu, ContextMenuItem, ContextMenuDivider } from 'sveltacular';
+
+	let menu;
+
+	function showMenu(event) {
+		event.preventDefault();
+		menu.show(event);
+	}
 </script>
 
-<div oncontextmenu={showMenu}>
-  Right-click me
-</div>
+<div oncontextmenu={showMenu}>Right-click me</div>
 
 <ContextMenu bind:this={menu}>
-  <ContextMenuItem onClick={() => console.log('New')}>
-    New File
-  </ContextMenuItem>
-  <ContextMenuItem onClick={() => console.log('Open')}>
-    Open
-  </ContextMenuItem>
-  <ContextMenuDivider />
-  <ContextMenuItem onClick={() => console.log('Delete')} danger>
-    Delete
-  </ContextMenuItem>
+	<ContextMenuItem onClick={() => console.log('New')}>New File</ContextMenuItem>
+	<ContextMenuItem onClick={() => console.log('Open')}>Open</ContextMenuItem>
+	<ContextMenuDivider />
+	<ContextMenuItem onClick={() => console.log('Delete')} danger>Delete</ContextMenuItem>
 </ContextMenu>
 ```
 
@@ -49,10 +41,10 @@ A fully-featured right-click menu component with keyboard navigation and nested 
 
 ```svelte
 <ContextMenuItem onClick={() => console.log('Copy')}>
-  {#snippet icon()}
-    <CopyIcon />
-  {/snippet}
-  Copy
+	{#snippet icon()}
+		<CopyIcon />
+	{/snippet}
+	Copy
 </ContextMenuItem>
 ```
 
@@ -60,15 +52,11 @@ A fully-featured right-click menu component with keyboard navigation and nested 
 
 ```svelte
 <ContextMenuItem>
-  {#snippet submenu()}
-    <ContextMenuItem onClick={() => console.log('Option 1')}>
-      Option 1
-    </ContextMenuItem>
-    <ContextMenuItem onClick={() => console.log('Option 2')}>
-      Option 2
-    </ContextMenuItem>
-  {/snippet}
-  More Options
+	{#snippet submenu()}
+		<ContextMenuItem onClick={() => console.log('Option 1')}>Option 1</ContextMenuItem>
+		<ContextMenuItem onClick={() => console.log('Option 2')}>Option 2</ContextMenuItem>
+	{/snippet}
+	More Options
 </ContextMenuItem>
 ```
 
@@ -76,21 +64,21 @@ A fully-featured right-click menu component with keyboard navigation and nested 
 
 ### ContextMenu
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `onOpen` | `() => void` | `undefined` | Callback when menu opens |
-| `onClose` | `() => void` | `undefined` | Callback when menu closes |
-| `closeOnClick` | `boolean` | `true` | Auto-close menu when item is clicked |
+| Prop           | Type         | Default     | Description                          |
+| -------------- | ------------ | ----------- | ------------------------------------ |
+| `onOpen`       | `() => void` | `undefined` | Callback when menu opens             |
+| `onClose`      | `() => void` | `undefined` | Callback when menu closes            |
+| `closeOnClick` | `boolean`    | `true`      | Auto-close menu when item is clicked |
 
 ### ContextMenuItem
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `onClick` | `() => void` | `undefined` | Callback when item is clicked |
-| `disabled` | `boolean` | `false` | Disable the menu item |
-| `danger` | `boolean` | `false` | Style as destructive action (red) |
-| `icon` | `Snippet` | `undefined` | Optional icon snippet |
-| `submenu` | `Snippet` | `undefined` | Optional submenu content |
+| Prop       | Type         | Default     | Description                       |
+| ---------- | ------------ | ----------- | --------------------------------- |
+| `onClick`  | `() => void` | `undefined` | Callback when item is clicked     |
+| `disabled` | `boolean`    | `false`     | Disable the menu item             |
+| `danger`   | `boolean`    | `false`     | Style as destructive action (red) |
+| `icon`     | `Snippet`    | `undefined` | Optional icon snippet             |
+| `submenu`  | `Snippet`    | `undefined` | Optional submenu content          |
 
 ## Methods
 
@@ -140,16 +128,3 @@ Due to limitations in the Storybook Svelte CSF parser with advanced Svelte 5 syn
 
 **Component Version:** 1.0.0  
 **Last Updated:** January 3, 2026
-
-
-
-
-
-
-
-
-
-
-
-
-

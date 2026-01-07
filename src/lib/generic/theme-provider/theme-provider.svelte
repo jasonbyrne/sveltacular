@@ -1,10 +1,10 @@
 <script lang="ts">
 	/**
 	 * Theme Provider Component
-	 * 
+	 *
 	 * Wraps your application to provide theme management functionality.
 	 * Automatically applies the selected theme and syncs with system preferences.
-	 * 
+	 *
 	 * @component
 	 * @example
 	 * ```svelte
@@ -12,7 +12,7 @@
 	 *   <App />
 	 * </ThemeProvider>
 	 * ```
-	 * 
+	 *
 	 * Or with initial theme:
 	 * ```svelte
 	 * <ThemeProvider initialTheme="dark">
@@ -44,12 +44,7 @@
 		renderWrapper?: boolean;
 	}
 
-	let {
-		initialTheme,
-		children,
-		class: className,
-		renderWrapper = false
-	}: Props = $props();
+	let { initialTheme, children, class: className, renderWrapper = false }: Props = $props();
 
 	const theme = useTheme();
 
@@ -58,7 +53,7 @@
 		if (initialTheme) {
 			theme.set(initialTheme);
 		}
-		
+
 		// Apply theme to document
 		if (typeof document !== 'undefined') {
 			document.documentElement.setAttribute('data-theme', theme.resolved);
@@ -80,4 +75,3 @@
 {:else}
 	{@render children?.()}
 {/if}
-

@@ -14,4 +14,3 @@ export * from './command-palette/index.js';
 
 // New navigation components
 export { default as Drawer } from './drawer/drawer.svelte';
-

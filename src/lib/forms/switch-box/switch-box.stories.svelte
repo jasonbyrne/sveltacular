@@ -24,5 +24,3 @@
 <Story name="Small" args={{ checked: true, size: 'sm' }}>Turn on sync</Story>
 
 <Story name="NoLabel" args={{ checked: false }} />
-
-

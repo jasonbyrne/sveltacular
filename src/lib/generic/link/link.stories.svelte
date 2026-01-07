@@ -90,5 +90,3 @@
 <Story name="InlineBlock" args={{ href: 'https://www.google.com', display: 'inline-block' }}>
 	Inline-block link for custom sizing.
 </Story>
-
-

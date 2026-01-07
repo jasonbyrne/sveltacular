@@ -34,17 +34,3 @@ describe('formatNumber', () => {
 		expect(result).toMatch(/1[,.]234/);
 	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

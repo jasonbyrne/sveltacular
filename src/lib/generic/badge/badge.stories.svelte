@@ -64,9 +64,7 @@
 	});
 </script>
 
-<Story name="Default" args={{ count: 5 }}>
-	Standard badge with a count value.
-</Story>
+<Story name="Default" args={{ count: 5 }}>Standard badge with a count value.</Story>
 
 <Story name="Max" args={{ count: 150, max: 99 }}>
 	Badge showing "99+" when count exceeds the max value.
@@ -84,9 +82,7 @@
 	Warning variant badge (typically yellow/orange) for caution indicators.
 </Story>
 
-<Story name="Sizes" args={{ count: 5 }}>
-	Badge in different sizes: sm, md, lg, xl.
-</Story>
+<Story name="Sizes" args={{ count: 5 }}>Badge in different sizes: sm, md, lg, xl.</Story>
 
 <Story name="ShowZero" args={{ count: 0, showZero: true }}>
 	Badge with showZero enabled, displaying even when count is zero.
@@ -95,16 +91,3 @@
 <Story name="HiddenWhenZero" args={{ count: 0, showZero: false }}>
 	Badge hidden when count is zero (default behavior).
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-

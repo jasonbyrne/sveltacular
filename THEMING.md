@@ -353,17 +353,17 @@ To customize the theme, define these variables in your global CSS or in a theme 
 	/* Override base colors */
 	--base-color-bg: #ffffff;
 	--base-color-fg: #1a1a1a;
-	
+
 	/* Customize spacing */
 	--spacing-base: 1.25rem; /* Increase default spacing */
-	
+
 	/* Customize border radius */
 	--radius-md: 0.75rem; /* More rounded corners */
-	
+
 	/* Customize semantic colors */
 	--color-success: #10b981;
 	--color-error: #ef4444;
-	
+
 	/* Component-specific overrides */
 	--button-primary-bg: #3b82f6;
 	--form-input-border: #d1d5db;
@@ -375,23 +375,23 @@ To customize the theme, define these variables in your global CSS or in a theme 
 For dark mode, override these in a `[data-theme="dark"]` selector:
 
 ```css
-[data-theme="dark"] {
+[data-theme='dark'] {
 	/* Base colors */
 	--base-color-bg: #1a202c;
 	--base-color-fg: #f7fafc;
-	
+
 	/* Semantic colors - adjusted for dark mode */
 	--color-info: #63b3ed;
 	--color-success: #68d391;
 	--color-error: #fc8181;
 	--color-warning: #f6ad55;
-	
+
 	/* Component overrides */
 	--button-primary-bg: #4299e1;
 	--form-input-bg: #2d3748;
 	--form-input-border: #4a5568;
 	--form-input-fg: #f7fafc;
-	
+
 	/* Table styling */
 	--table-bg: #2d3748;
 	--table-header-bg: #1a202c;
@@ -412,7 +412,7 @@ When building custom components, use the design tokens for consistency:
 	box-shadow: var(--shadow-md);
 	font-size: var(--font-base);
 	transition: all var(--transition-base) var(--ease-in-out);
-	
+
 	&:hover {
 		background-color: var(--gray-100);
 	}

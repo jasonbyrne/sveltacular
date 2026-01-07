@@ -1,6 +1,6 @@
 /**
  * Focus Management Utilities
- * 
+ *
  * Provides utilities for managing focus in accessible components including:
  * - Roving tabindex for keyboard navigation
  * - Focus trapping for modals/dialogs
@@ -31,9 +31,7 @@ export const FOCUSABLE_SELECTOR = [
  * Get all focusable elements within a container
  */
 export function getFocusableElements(container: HTMLElement): HTMLElement[] {
-	return Array.from(
-		container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
-	).filter((el) => {
+	return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter((el) => {
 		// Filter out elements that are not visible
 		return (
 			el.offsetWidth > 0 &&
@@ -280,9 +278,7 @@ export function rovingTabindex(
 	let manager: RovingTabindexManager;
 
 	function updateManager() {
-		const items = Array.from(
-			node.querySelectorAll<HTMLElement>(options.itemSelector)
-		);
+		const items = Array.from(node.querySelectorAll<HTMLElement>(options.itemSelector));
 		if (manager) {
 			manager.updateItems(items);
 		} else {

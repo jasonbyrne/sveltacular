@@ -16,5 +16,3 @@
 <Story name="Standard" args={{ isChecked: true, label: 'Turn on sync' }} />
 
 <Story name="NoLabel" args={{ isChecked: false }} />
-
-

@@ -51,7 +51,7 @@
 		if (open && browser) {
 			// Store cleanup function
 			let untrap: (() => void) | null = null;
-			
+
 			// Wait for next tick to ensure dialogElement is bound
 			setTimeout(() => {
 				if (dialogElement) {
@@ -59,7 +59,7 @@
 					untrap = trapFocus(dialogElement);
 				}
 			}, 0);
-			
+
 			// Return cleanup function
 			return () => {
 				if (untrap) {

@@ -26,17 +26,3 @@ describe('capitalize', () => {
 		expect(capitalize('hELLo wOrLd')).toBe('HELLo WOrLd');
 	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

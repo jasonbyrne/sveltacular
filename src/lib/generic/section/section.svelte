@@ -21,9 +21,13 @@
 		children: Snippet;
 	} = $props();
 
-	setContext('section', { 
-		get level() { return level; },
-		get title() { return title; }
+	setContext('section', {
+		get level() {
+			return level;
+		},
+		get title() {
+			return title;
+		}
 	});
 </script>
 

@@ -36,7 +36,10 @@
 
 <Story name="ValueSelected" args={{ items, value: 'svelte', label: 'Best JavaScript Framework' }} />
 
-<Story name="Searchable" args={{ items: US_States, searchable: true, label: 'State or Territory' }} />
+<Story
+	name="Searchable"
+	args={{ items: US_States, searchable: true, label: 'State or Territory' }}
+/>
 
 <Story
 	name="SearchableDisabled"

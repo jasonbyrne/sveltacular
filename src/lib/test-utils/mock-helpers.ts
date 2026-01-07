@@ -18,14 +18,14 @@ export function mockFunction<T extends (...args: any[]) => any>(
  */
 export function mockConsole() {
 	const originalConsole = { ...console };
-	
+
 	beforeEach(() => {
 		console.log = vi.fn();
 		console.warn = vi.fn();
 		console.error = vi.fn();
 		console.info = vi.fn();
 	});
-	
+
 	afterEach(() => {
 		Object.assign(console, originalConsole);
 	});
@@ -43,9 +43,9 @@ export function mockFetch(response: any, options?: { ok?: boolean; status?: numb
 		blob: async () => new Blob([JSON.stringify(response)]),
 		arrayBuffer: async () => new ArrayBuffer(0)
 	};
-	
+
 	global.fetch = vi.fn().mockResolvedValue(mockResponse);
-	
+
 	return global.fetch;
 }
 
@@ -56,7 +56,7 @@ export function mockTimers() {
 	beforeEach(() => {
 		vi.useFakeTimers();
 	});
-	
+
 	afterEach(() => {
 		vi.useRealTimers();
 	});
@@ -67,11 +67,11 @@ export function mockTimers() {
  */
 export function mockDateNow(timestamp: number = 1609459200000) {
 	const originalDateNow = Date.now;
-	
+
 	beforeEach(() => {
 		Date.now = vi.fn(() => timestamp);
 	});
-	
+
 	afterEach(() => {
 		Date.now = originalDateNow;
 	});
@@ -95,22 +95,19 @@ export function mockClipboard() {
 		write: vi.fn().mockResolvedValue(undefined),
 		read: vi.fn().mockResolvedValue([])
 	};
-	
+
 	Object.defineProperty(navigator, 'clipboard', {
 		value: mockClipboard,
 		writable: true
 	});
-	
+
 	return mockClipboard;
 }
 
 /**
  * Mock getBoundingClientRect for positioning tests
  */
-export function mockGetBoundingClientRect(
-	element: Element,
-	rect: Partial<DOMRect>
-): void {
+export function mockGetBoundingClientRect(element: Element, rect: Partial<DOMRect>): void {
 	const defaultRect: DOMRect = {
 		x: 0,
 		y: 0,
@@ -122,7 +119,7 @@ export function mockGetBoundingClientRect(
 		left: 0,
 		toJSON: () => ({})
 	};
-	
+
 	element.getBoundingClientRect = vi.fn(() => ({ ...defaultRect, ...rect }));
 }
 
@@ -135,13 +132,13 @@ export function mockViewport(width: number = 1024, height: number = 768): void {
 		configurable: true,
 		value: width
 	});
-	
+
 	Object.defineProperty(window, 'innerHeight', {
 		writable: true,
 		configurable: true,
 		value: height
 	});
-	
+
 	// Trigger resize event
 	window.dispatchEvent(new Event('resize'));
 }
@@ -160,12 +157,12 @@ export function mockMediaQuery(query: string, matches: boolean = true) {
 		removeEventListener: vi.fn(),
 		dispatchEvent: vi.fn()
 	}));
-	
+
 	Object.defineProperty(window, 'matchMedia', {
 		writable: true,
 		value: mockMatchMedia
 	});
-	
+
 	return mockMatchMedia;
 }
 
@@ -203,4 +200,3 @@ export function createMockFiles(count: number = 3): File[] {
 		createMockFile(`file${i + 1}.txt`, `Content ${i + 1}`)
 	);
 }
-

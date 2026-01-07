@@ -38,7 +38,12 @@
 
 {#if open}
 	<Overlay onClick={close}>
-		<Dialog {size} role="alertdialog" aria-modal="true" aria-labelledby={title ? 'alert-title' : undefined}>
+		<Dialog
+			{size}
+			role="alertdialog"
+			aria-modal="true"
+			aria-labelledby={title ? 'alert-title' : undefined}
+		>
 			{#if title}
 				<DialogHeader id="alert-title">
 					{title}

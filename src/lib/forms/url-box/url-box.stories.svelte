@@ -15,5 +15,3 @@
 </script>
 
 <Story name="Default" args={{ placeholder: 'www.svelte.dev' }} />
-
-

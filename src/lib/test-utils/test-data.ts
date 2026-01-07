@@ -112,4 +112,3 @@ export const mockColors = [
 	{ id: 'blue', label: 'Blue', value: '#0000ff' },
 	{ id: 'yellow', label: 'Yellow', value: '#ffff00' }
 ];
-

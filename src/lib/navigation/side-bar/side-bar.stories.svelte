@@ -14,5 +14,3 @@
 </script>
 
 <Story name="Standard" args={{ open: true }}>Sidebar content would go here</Story>
-
-

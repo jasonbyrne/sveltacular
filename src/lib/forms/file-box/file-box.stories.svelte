@@ -14,5 +14,3 @@
 </script>
 
 <Story name="Standard" args={{ label: 'Choose a file' }} />
-
-

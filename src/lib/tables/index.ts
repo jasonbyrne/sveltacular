@@ -29,4 +29,3 @@ export {
 	sortRows,
 	compareValues
 } from './cell-renderers.js';
-

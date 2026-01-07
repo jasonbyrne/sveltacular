@@ -17,7 +17,7 @@
 		font-family: var(--base-font-family, sans-serif);
 		color: #2d3748;
 
-		:global([data-theme="dark"]) & {
+		:global([data-theme='dark']) & {
 			color: #e6edf3;
 		}
 	}

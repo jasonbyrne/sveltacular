@@ -12,5 +12,3 @@
 <Story name="Standard" args={{}} />
 
 <Story name="XLarge" args={{ size: 'xl', color: 'red' }} />
-
-

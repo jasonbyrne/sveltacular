@@ -58,7 +58,8 @@
 			},
 			separators: {
 				control: 'object',
-				description: 'Array of characters that act as tag separators (default: comma and semicolon)',
+				description:
+					'Array of characters that act as tag separators (default: comma and semicolon)',
 				table: {
 					type: { summary: 'string[]' },
 					defaultValue: { summary: "[' ', ';']" }
@@ -105,7 +106,8 @@
 			},
 			showAddButton: {
 				control: 'boolean',
-				description: 'Whether to show the add button (tags can be added with Enter or separator keys)',
+				description:
+					'Whether to show the add button (tags can be added with Enter or separator keys)',
 				table: {
 					type: { summary: 'boolean' },
 					defaultValue: { summary: 'false' }
@@ -149,7 +151,17 @@
 	args={{
 		label: 'Skills',
 		placeholder: 'Add a skill...',
-		autocomplete: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'React', 'Vue', 'Svelte', 'Angular'],
+		autocomplete: [
+			'JavaScript',
+			'TypeScript',
+			'Python',
+			'Java',
+			'C++',
+			'React',
+			'Vue',
+			'Svelte',
+			'Angular'
+		],
 		helperText: 'Select from suggestions or type your own'
 	}}
 />
@@ -234,4 +246,3 @@
 		showAddButton: true
 	}}
 />
-

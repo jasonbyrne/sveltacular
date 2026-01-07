@@ -9,14 +9,14 @@ export function hasAccessibleName(element: Element): boolean {
 	const ariaLabel = element.getAttribute('aria-label');
 	const ariaLabelledBy = element.getAttribute('aria-labelledby');
 	const title = element.getAttribute('title');
-	
+
 	if (ariaLabel || title) return true;
-	
+
 	if (ariaLabelledBy) {
 		const labelElement = document.getElementById(ariaLabelledBy);
 		return !!labelElement?.textContent?.trim();
 	}
-	
+
 	// Check for label element
 	if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
 		const id = element.id;
@@ -25,7 +25,7 @@ export function hasAccessibleName(element: Element): boolean {
 			return !!label?.textContent?.trim();
 		}
 	}
-	
+
 	return false;
 }
 
@@ -35,16 +35,16 @@ export function hasAccessibleName(element: Element): boolean {
 export function getAccessibleName(element: Element): string {
 	const ariaLabel = element.getAttribute('aria-label');
 	if (ariaLabel) return ariaLabel;
-	
+
 	const ariaLabelledBy = element.getAttribute('aria-labelledby');
 	if (ariaLabelledBy) {
 		const labelElement = document.getElementById(ariaLabelledBy);
 		return labelElement?.textContent?.trim() || '';
 	}
-	
+
 	const title = element.getAttribute('title');
 	if (title) return title;
-	
+
 	// Check for label element
 	if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
 		const id = element.id;
@@ -53,7 +53,7 @@ export function getAccessibleName(element: Element): string {
 			return label?.textContent?.trim() || '';
 		}
 	}
-	
+
 	return element.textContent?.trim() || '';
 }
 
@@ -62,16 +62,16 @@ export function getAccessibleName(element: Element): string {
  */
 export function isKeyboardAccessible(element: Element): boolean {
 	const tabindex = element.getAttribute('tabindex');
-	
+
 	// Elements with tabindex="-1" are programmatically focusable but not keyboard accessible
 	if (tabindex === '-1') return false;
-	
+
 	// Interactive elements are keyboard accessible by default
 	const interactiveElements = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'];
 	if (interactiveElements.includes(element.tagName)) {
 		return !element.hasAttribute('disabled');
 	}
-	
+
 	// Elements with positive or zero tabindex are keyboard accessible
 	return tabindex !== null && parseInt(tabindex) >= 0;
 }
@@ -90,7 +90,7 @@ export function hasRole(element: Element, expectedRole: string): boolean {
 export function hasDescription(element: Element): boolean {
 	const ariaDescribedBy = element.getAttribute('aria-describedby');
 	if (!ariaDescribedBy) return false;
-	
+
 	const descriptionElement = document.getElementById(ariaDescribedBy);
 	return !!descriptionElement?.textContent?.trim();
 }
@@ -101,7 +101,7 @@ export function hasDescription(element: Element): boolean {
 export function getDescription(element: Element): string {
 	const ariaDescribedBy = element.getAttribute('aria-describedby');
 	if (!ariaDescribedBy) return '';
-	
+
 	const descriptionElement = document.getElementById(ariaDescribedBy);
 	return descriptionElement?.textContent?.trim() || '';
 }
@@ -117,10 +117,7 @@ export function isInvalid(element: Element): boolean {
  * Check if element is marked as required
  */
 export function isRequired(element: Element): boolean {
-	return (
-		element.hasAttribute('required') ||
-		element.getAttribute('aria-required') === 'true'
-	);
+	return element.hasAttribute('required') || element.getAttribute('aria-required') === 'true';
 }
 
 /**
@@ -169,7 +166,7 @@ export function getFocusableElements(container: Element = document.body): Elemen
 		'textarea:not([disabled])',
 		'[tabindex]:not([tabindex="-1"])'
 	].join(',');
-	
+
 	return Array.from(container.querySelectorAll(selector));
 }
 
@@ -179,10 +176,10 @@ export function getFocusableElements(container: Element = document.body): Elemen
 export function isFocusTrapped(container: Element): boolean {
 	const focusableElements = getFocusableElements(container);
 	const activeElement = document.activeElement;
-	
+
 	if (!activeElement) return false;
-	
-	return focusableElements.some(el => el === activeElement || el.contains(activeElement));
+
+	return focusableElements.some((el) => el === activeElement || el.contains(activeElement));
 }
 
 /**
@@ -211,12 +208,12 @@ export function hasGoodContrast(element: HTMLElement): boolean {
 	const style = window.getComputedStyle(element);
 	const color = style.color;
 	const backgroundColor = style.backgroundColor;
-	
+
 	// If no background color is set, we can't determine contrast
 	if (!backgroundColor || backgroundColor === 'rgba(0, 0, 0, 0)') {
 		return true; // Assume parent has proper contrast
 	}
-	
+
 	// This is a simplified check - real contrast calculation is complex
 	// For production, use axe-core or similar tools
 	return color !== backgroundColor;
@@ -235,20 +232,19 @@ export function hasSufficientTouchTargetSize(element: HTMLElement): boolean {
  */
 export function getTabOrder(container: Element = document.body): Element[] {
 	const focusableElements = getFocusableElements(container);
-	
+
 	return focusableElements.sort((a, b) => {
 		const aTabIndex = parseInt(a.getAttribute('tabindex') || '0');
 		const bTabIndex = parseInt(b.getAttribute('tabindex') || '0');
-		
+
 		// Elements with tabindex > 0 come first, in order
 		if (aTabIndex > 0 && bTabIndex > 0) {
 			return aTabIndex - bTabIndex;
 		}
 		if (aTabIndex > 0) return -1;
 		if (bTabIndex > 0) return 1;
-		
+
 		// Otherwise, use DOM order
 		return 0;
 	});
 }
-

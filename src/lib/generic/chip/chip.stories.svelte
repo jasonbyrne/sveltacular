@@ -66,9 +66,7 @@
 	});
 </script>
 
-<Story name="Default" args={{ label: 'Chip' }}>
-	Standard chip with default styling.
-</Story>
+<Story name="Default" args={{ label: 'Chip' }}>Standard chip with default styling.</Story>
 
 <Story name="Removable" args={{ label: 'Removable Chip', removable: true }}>
 	Chip with a remove button that can be clicked or activated with keyboard.
@@ -82,23 +80,8 @@
 	Negative variant chip (typically red) for error or warning states.
 </Story>
 
-<Story name="Sizes" args={{ label: 'Chip' }}>
-	Chip in different sizes: sm, md, lg.
-</Story>
+<Story name="Sizes" args={{ label: 'Chip' }}>Chip in different sizes: sm, md, lg.</Story>
 
 <Story name="WithRemoveHandler" args={{ label: 'Click to remove', removable: true }}>
 	Removable chip with remove handler for demonstration.
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-

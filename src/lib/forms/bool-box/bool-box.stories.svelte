@@ -102,13 +102,9 @@
 	});
 </script>
 
-<Story name="Default" args={{}}>
-	Default BoolBox with Yes/No options.
-</Story>
+<Story name="Default" args={{}}>Default BoolBox with Yes/No options.</Story>
 
-<Story name="YesNo" args={{ options: ['Yes', 'No'] }}>
-	Standard Yes/No boolean selection.
-</Story>
+<Story name="YesNo" args={{ options: ['Yes', 'No'] }}>Standard Yes/No boolean selection.</Story>
 
 <Story name="TrueFalse" args={{ options: ['True', 'False'] }}>
 	True/False boolean selection for technical contexts.
@@ -130,11 +126,21 @@
 	Visible/Hidden selection for visibility controls.
 </Story>
 
-<Story name="WithLabel" args={{ label: 'Enable notifications', helperText: 'Receive push notifications on your device' }}>
+<Story
+	name="WithLabel"
+	args={{ label: 'Enable notifications', helperText: 'Receive push notifications on your device' }}
+>
 	BoolBox with label and helper text.
 </Story>
 
-<Story name="Required" args={{ label: 'Accept terms', required: true, helperText: 'You must accept the terms to continue' }}>
+<Story
+	name="Required"
+	args={{
+		label: 'Accept terms',
+		required: true,
+		helperText: 'You must accept the terms to continue'
+	}}
+>
 	Required BoolBox field with validation indicator.
 </Story>
 
@@ -142,6 +148,12 @@
 	Disabled BoolBox that cannot be changed.
 </Story>
 
-<Story name="WithError" args={{ label: 'Enable feature', feedback: { text: 'This feature is currently unavailable', isError: true } }}>
+<Story
+	name="WithError"
+	args={{
+		label: 'Enable feature',
+		feedback: { text: 'This feature is currently unavailable', isError: true }
+	}}
+>
 	BoolBox with error feedback message.
 </Story>

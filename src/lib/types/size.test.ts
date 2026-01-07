@@ -37,17 +37,3 @@ describe('size utilities', () => {
 		});
 	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

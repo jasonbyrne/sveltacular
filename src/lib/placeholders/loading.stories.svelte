@@ -17,8 +17,8 @@
 
 <Story name="SpinnerLarge" args={{ type: 'spinner', spinnerSize: 'lg' }}>Loading...</Story>
 
-<Story name="SpinnerSecondary" args={{ type: 'spinner', spinnerVariant: 'secondary' }}>Loading...</Story>
+<Story name="SpinnerSecondary" args={{ type: 'spinner', spinnerVariant: 'secondary' }}
+	>Loading...</Story
+>
 
 <Story name="ContentBlock" args={{ type: 'block' }}>Loading Content...</Story>
-
-

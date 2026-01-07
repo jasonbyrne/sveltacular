@@ -104,13 +104,13 @@ import { render } from '$lib/test-utils';
 import Button from './button.svelte';
 
 describe('Button', () => {
-  it('should render with label', () => {
-    const { container } = render(Button, { label: 'Click me' });
-    const button = container.querySelector('button');
-    
-    expect(button).toBeInTheDocument();
-    expect(button?.textContent).toContain('Click me');
-  });
+	it('should render with label', () => {
+		const { container } = render(Button, { label: 'Click me' });
+		const button = container.querySelector('button');
+
+		expect(button).toBeInTheDocument();
+		expect(button?.textContent).toContain('Click me');
+	});
 });
 ```
 
@@ -121,13 +121,13 @@ import { fireEvent } from '@testing-library/svelte';
 import { vi } from 'vitest';
 
 it('should call onClick when clicked', async () => {
-  const onClick = vi.fn();
-  const { container } = render(Button, { label: 'Click', onClick });
-  const button = container.querySelector('button')!;
-  
-  await fireEvent.click(button);
-  
-  expect(onClick).toHaveBeenCalledTimes(1);
+	const onClick = vi.fn();
+	const { container } = render(Button, { label: 'Click', onClick });
+	const button = container.querySelector('button')!;
+
+	await fireEvent.click(button);
+
+	expect(onClick).toHaveBeenCalledTimes(1);
 });
 ```
 
@@ -137,14 +137,14 @@ it('should call onClick when clicked', async () => {
 import { waitForSvelte } from '$lib/test-utils';
 
 it('should update value on input', async () => {
-  let value = $state('');
-  const { container } = render(TextBox, { label: 'Name', value });
-  const input = container.querySelector('input')!;
-  
-  await fireEvent.input(input, { target: { value: 'Jane' } });
-  await waitForSvelte();
-  
-  expect(input).toHaveValue('Jane');
+	let value = $state('');
+	const { container } = render(TextBox, { label: 'Name', value });
+	const input = container.querySelector('input')!;
+
+	await fireEvent.input(input, { target: { value: 'Jane' } });
+	await waitForSvelte();
+
+	expect(input).toHaveValue('Jane');
 });
 ```
 
@@ -154,12 +154,12 @@ it('should update value on input', async () => {
 import { hasAccessibleName, isKeyboardAccessible } from '$lib/test-utils';
 
 it('should be accessible', () => {
-  const { container } = render(Button, { label: 'Accessible' });
-  const button = container.querySelector('button')!;
-  
-  expect(hasAccessibleName(button)).toBe(true);
-  expect(isKeyboardAccessible(button)).toBe(true);
-  expect(button).toHaveAttribute('aria-label');
+	const { container } = render(Button, { label: 'Accessible' });
+	const button = container.querySelector('button')!;
+
+	expect(hasAccessibleName(button)).toBe(true);
+	expect(isKeyboardAccessible(button)).toBe(true);
+	expect(button).toHaveAttribute('aria-label');
 });
 ```
 
@@ -173,18 +173,18 @@ it('should be accessible', () => {
 import { test, expect } from '@playwright/test';
 
 test.describe('Button Component', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/?path=/story/forms-button--default');
-    await page.waitForSelector('iframe[id="storybook-preview-iframe"]');
-  });
-  
-  test('should render and be clickable', async ({ page }) => {
-    const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
-    const button = frame.locator('button').first();
-    
-    await expect(button).toBeVisible();
-    await button.click();
-  });
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/?path=/story/forms-button--default');
+		await page.waitForSelector('iframe[id="storybook-preview-iframe"]');
+	});
+
+	test('should render and be clickable', async ({ page }) => {
+		const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
+		const button = frame.locator('button').first();
+
+		await expect(button).toBeVisible();
+		await button.click();
+	});
 });
 ```
 
@@ -192,10 +192,10 @@ test.describe('Button Component', () => {
 
 ```typescript
 test('should match visual snapshot', async ({ page }) => {
-  const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
-  const button = frame.locator('button').first();
-  
-  await expect(button).toHaveScreenshot('button-default.png');
+	const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
+	const button = frame.locator('button').first();
+
+	await expect(button).toHaveScreenshot('button-default.png');
 });
 ```
 
@@ -203,13 +203,13 @@ test('should match visual snapshot', async ({ page }) => {
 
 ```typescript
 test('should navigate with keyboard', async ({ page }) => {
-  const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
-  const button = frame.locator('button').first();
-  
-  await button.focus();
-  await page.keyboard.press('Enter');
-  
-  // Assert expected behavior
+	const frame = page.frameLocator('iframe[id="storybook-preview-iframe"]');
+	const button = frame.locator('button').first();
+
+	await button.focus();
+	await page.keyboard.press('Enter');
+
+	// Assert expected behavior
 });
 ```
 
@@ -236,11 +236,11 @@ await waitForTicks(3);
 
 ```typescript
 import {
-  mockFetch,
-  mockTimers,
-  mockViewport,
-  mockMediaQuery,
-  mockClipboard
+	mockFetch,
+	mockTimers,
+	mockViewport,
+	mockMediaQuery,
+	mockClipboard
 } from '$lib/test-utils';
 
 // Mock fetch API
@@ -261,13 +261,13 @@ mockMediaQuery('(prefers-color-scheme: dark)', true);
 
 ```typescript
 import {
-  hasAccessibleName,
-  getAccessibleName,
-  isKeyboardAccessible,
-  hasRole,
-  isInvalid,
-  isRequired,
-  getFocusableElements
+	hasAccessibleName,
+	getAccessibleName,
+	isKeyboardAccessible,
+	hasRole,
+	isInvalid,
+	isRequired,
+	getFocusableElements
 } from '$lib/test-utils';
 
 // Check accessibility
@@ -288,11 +288,11 @@ const focusable = getFocusableElements(container);
 
 ```typescript
 import {
-  mockMenuItems,
-  mockListItems,
-  mockUsers,
-  mockTableData,
-  generateLargeDataset
+	mockMenuItems,
+	mockListItems,
+	mockUsers,
+	mockTableData,
+	generateLargeDataset
 } from '$lib/test-utils';
 
 // Use predefined test data
@@ -310,15 +310,15 @@ const largeDataset = generateLargeDataset(10000);
 
 ```typescript
 describe('Size Variants', () => {
-  it('should apply size classes', () => {
-    const sizes = ['sm', 'md', 'lg', 'xl'] as const;
-    
-    sizes.forEach(size => {
-      const { container } = render(Button, { label: 'Test', size });
-      const button = container.querySelector('button');
-      expect(button).toHaveClass(size);
-    });
-  });
+	it('should apply size classes', () => {
+		const sizes = ['sm', 'md', 'lg', 'xl'] as const;
+
+		sizes.forEach((size) => {
+			const { container } = render(Button, { label: 'Test', size });
+			const button = container.querySelector('button');
+			expect(button).toHaveClass(size);
+		});
+	});
 });
 ```
 
@@ -326,19 +326,19 @@ describe('Size Variants', () => {
 
 ```typescript
 describe('Validation', () => {
-  it('should show error message', () => {
-    const { container } = render(TextBox, {
-      label: 'Email',
-      errorText: 'Invalid email'
-    });
-    
-    const error = container.querySelector('.error-text');
-    const input = container.querySelector('input');
-    
-    expect(error).toBeInTheDocument();
-    expect(error?.textContent).toBe('Invalid email');
-    expect(input).toHaveAttribute('aria-invalid', 'true');
-  });
+	it('should show error message', () => {
+		const { container } = render(TextBox, {
+			label: 'Email',
+			errorText: 'Invalid email'
+		});
+
+		const error = container.querySelector('.error-text');
+		const input = container.querySelector('input');
+
+		expect(error).toBeInTheDocument();
+		expect(error?.textContent).toBe('Invalid email');
+		expect(input).toHaveAttribute('aria-invalid', 'true');
+	});
 });
 ```
 
@@ -346,15 +346,15 @@ describe('Validation', () => {
 
 ```typescript
 describe('Async Loading', () => {
-  it('should show loading state', async () => {
-    vi.useFakeTimers();
-    
-    const { container } = render(Component, { isLoading: true });
-    
-    expect(container.querySelector('.loading')).toBeInTheDocument();
-    
-    vi.useRealTimers();
-  });
+	it('should show loading state', async () => {
+		vi.useFakeTimers();
+
+		const { container } = render(Component, { isLoading: true });
+
+		expect(container.querySelector('.loading')).toBeInTheDocument();
+
+		vi.useRealTimers();
+	});
 });
 ```
 
@@ -362,15 +362,15 @@ describe('Async Loading', () => {
 
 ```typescript
 describe('Keyboard Navigation', () => {
-  it('should navigate with arrow keys', async () => {
-    const { container } = render(Menu, { items: mockMenuItems });
-    const menu = container.querySelector('[role="menu"]')!;
-    
-    await fireEvent.keyDown(menu, { key: 'ArrowDown' });
-    
-    const firstItem = container.querySelector('[role="menuitem"]');
-    expect(firstItem).toHaveAttribute('tabindex', '0');
-  });
+	it('should navigate with arrow keys', async () => {
+		const { container } = render(Menu, { items: mockMenuItems });
+		const menu = container.querySelector('[role="menu"]')!;
+
+		await fireEvent.keyDown(menu, { key: 'ArrowDown' });
+
+		const firstItem = container.querySelector('[role="menuitem"]');
+		expect(firstItem).toHaveAttribute('tabindex', '0');
+	});
 });
 ```
 
@@ -378,14 +378,14 @@ describe('Keyboard Navigation', () => {
 
 ```typescript
 describe('Focus Trap', () => {
-  it('should trap focus within modal', async () => {
-    const { container } = render(Modal, { open: true });
-    const modal = container.querySelector('[role="dialog"]')!;
-    const focusable = getFocusableElements(modal);
-    
-    expect(focusable.length).toBeGreaterThan(0);
-    expect(isFocusTrapped(modal)).toBe(true);
-  });
+	it('should trap focus within modal', async () => {
+		const { container } = render(Modal, { open: true });
+		const modal = container.querySelector('[role="dialog"]')!;
+		const focusable = getFocusableElements(modal);
+
+		expect(focusable.length).toBeGreaterThan(0);
+		expect(isFocusTrapped(modal)).toBe(true);
+	});
 });
 ```
 
@@ -511,9 +511,13 @@ npm run test:coverage
 
 ```typescript
 // Increase timeout for slow tests
-test('slow operation', async () => {
-  // ...
-}, { timeout: 10000 });
+test(
+	'slow operation',
+	async () => {
+		// ...
+	},
+	{ timeout: 10000 }
+);
 ```
 
 ### Flaky Tests
@@ -573,4 +577,3 @@ When adding new components:
 5. Update this guide if introducing new patterns
 
 For questions or issues, please open a GitHub issue.
-

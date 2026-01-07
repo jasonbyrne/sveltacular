@@ -46,5 +46,3 @@
 <Story name="AgoLongPast" args={{ style: 'long', type: 'ago', value: '2023-08-13' }} />
 
 <Story name="AgoLongFuture" args={{ style: 'long', type: 'ago', value: '2030-08-13' }} />
-
-

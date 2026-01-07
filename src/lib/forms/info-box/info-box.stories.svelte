@@ -11,6 +11,7 @@
 
 <Story name="Default" args={{ value: 'Some text goes here', label: 'Some Label' }} />
 
-<Story name="WithLink" args={{ value: 'Some text goes here', href: 'https://www.google.com', label: 'Some Label' }} />
-
-
+<Story
+	name="WithLink"
+	args={{ value: 'Some text goes here', href: 'https://www.google.com', label: 'Some Label' }}
+/>

@@ -91,19 +91,4 @@
 	Empty rating (no stars selected) ready for user input.
 </Story>
 
-<Story name="Full" args={{ value: 5, max: 5 }}>
-	Full rating (all stars selected).
-</Story>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<Story name="Full" args={{ value: 5, max: 5 }}>Full rating (all stars selected).</Story>

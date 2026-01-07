@@ -32,7 +32,7 @@
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div>
 		{#each items as item}
-			<RadioBox bind:group {disabled} value={item.value} onChange={onChange}>{item.name}</RadioBox>
+			<RadioBox bind:group {disabled} value={item.value} {onChange}>{item.name}</RadioBox>
 		{/each}
 	</div>
 </FormField>

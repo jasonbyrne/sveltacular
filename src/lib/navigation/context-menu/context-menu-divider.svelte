@@ -1,9 +1,9 @@
 <script lang="ts">
 	/**
 	 * ContextMenuDivider Component
-	 * 
+	 *
 	 * Visual separator for context menu items.
-	 * 
+	 *
 	 * @component
 	 */
 </script>
@@ -17,16 +17,3 @@
 		background-color: var(--form-input-border, #e5e7eb);
 	}
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-

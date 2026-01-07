@@ -15,7 +15,9 @@
 	});
 </script>
 
-<Story name="Default" args={{ title: 'Something Will Happen', open: true }}>Do you want to do this thing?</Story>
+<Story name="Default" args={{ title: 'Something Will Happen', open: true }}
+	>Do you want to do this thing?</Story
+>
 
 <Story
 	name="ConfirmCancelOrSave"
@@ -29,5 +31,3 @@
 >
 	Form content would go here
 </Story>
-
-

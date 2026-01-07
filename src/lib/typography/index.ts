@@ -4,4 +4,3 @@ export { default as Text } from './text.svelte';
 export { default as CodeBlock } from './code-block.svelte';
 export { default as Code } from './code.svelte';
 export { default as Paragraph } from './paragraph.svelte';
-

@@ -95,7 +95,8 @@
 			},
 			feedback: {
 				control: 'object',
-				description: 'Feedback message with optional details array (for password requirements, etc.)',
+				description:
+					'Feedback message with optional details array (for password requirements, etc.)',
 				table: {
 					type: { summary: 'FormFieldFeedback' }
 				}

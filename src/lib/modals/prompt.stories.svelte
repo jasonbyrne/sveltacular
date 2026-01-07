@@ -15,6 +15,6 @@
 	});
 </script>
 
-<Story name="Default" args={{ open: true, title: 'Rename File' }}>What would you like to rename this file to?</Story>
-
-
+<Story name="Default" args={{ open: true, title: 'Rename File' }}
+	>What would you like to rename this file to?</Story
+>

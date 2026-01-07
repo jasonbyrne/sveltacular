@@ -15,5 +15,3 @@
 </script>
 
 <Story name="Default" args={{ items: US_States }} />
-
-

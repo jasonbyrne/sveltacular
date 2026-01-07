@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { createValidationRules, validate, validateForm, type ValidationRule } from './validation.js';
+import {
+	createValidationRules,
+	validate,
+	validateForm,
+	type ValidationRule
+} from './validation.js';
 
 describe('createValidationRules', () => {
 	describe('required', () => {
@@ -129,28 +134,20 @@ describe('createValidationRules', () => {
 
 describe('validate', () => {
 	it('should return isValid true when all rules pass', () => {
-		const rules = [
-			createValidationRules.required(),
-			createValidationRules.minLength(3)
-		];
+		const rules = [createValidationRules.required(), createValidationRules.minLength(3)];
 		const result = validate('hello', rules);
 		expect(result.isValid).toBe(true);
 	});
 
 	it('should return isValid false when any rule fails', () => {
-		const rules = [
-			createValidationRules.required(),
-			createValidationRules.minLength(10)
-		];
+		const rules = [createValidationRules.required(), createValidationRules.minLength(10)];
 		const result = validate('hi', rules);
 		expect(result.isValid).toBe(false);
 		expect(result.message).toBeDefined();
 	});
 
 	it('should return custom message from rule', () => {
-		const rules = [
-			createValidationRules.required('Custom required message')
-		];
+		const rules = [createValidationRules.required('Custom required message')];
 		const result = validate('', rules);
 		expect(result.isValid).toBe(false);
 		expect(result.message).toBe('Custom required message');
@@ -165,8 +162,14 @@ describe('validateForm', () => {
 			age: 25
 		};
 		const rules = {
-			name: [createValidationRules.required(), createValidationRules.minLength(3)] as ValidationRule<unknown>[],
-			email: [createValidationRules.required(), createValidationRules.email()] as ValidationRule<unknown>[],
+			name: [
+				createValidationRules.required(),
+				createValidationRules.minLength(3)
+			] as ValidationRule<unknown>[],
+			email: [
+				createValidationRules.required(),
+				createValidationRules.email()
+			] as ValidationRule<unknown>[],
 			age: [createValidationRules.min(18)] as ValidationRule<unknown>[]
 		};
 		const results = validateForm(values, rules);
@@ -192,7 +195,3 @@ describe('validateForm', () => {
 		expect(results.age?.isValid).toBe(false);
 	});
 });
-
-
-
-

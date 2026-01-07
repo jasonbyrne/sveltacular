@@ -121,14 +121,11 @@ export const pressEffect: Action<HTMLElement> = (node) => {
 		animation?.cancel();
 
 		// Scale down
-		animation = node.animate(
-			[{ transform: 'scale(1)' }, { transform: 'scale(0.95)' }],
-			{
-				duration: duration.fast,
-				easing: easing.decelerate,
-				fill: 'forwards'
-			}
-		);
+		animation = node.animate([{ transform: 'scale(1)' }, { transform: 'scale(0.95)' }], {
+			duration: duration.fast,
+			easing: easing.decelerate,
+			fill: 'forwards'
+		});
 	};
 
 	const handlePointerUp = () => {
@@ -277,10 +274,7 @@ export const pulse: Action<HTMLElement, boolean> = (node, shouldPulse) => {
  * </button>
  * ```
  */
-export const ripple: Action<HTMLElement, { color?: string } | undefined> = (
-	node,
-	options = {}
-) => {
+export const ripple: Action<HTMLElement, { color?: string } | undefined> = (node, options = {}) => {
 	const handleClick = (e: MouseEvent) => {
 		if (prefersReducedMotion()) return;
 
@@ -379,4 +373,3 @@ export const autoFocus: Action<HTMLElement, { delay?: number } | undefined> = (
 		}
 	};
 };
-

@@ -48,13 +48,7 @@
 			</span>
 		</button>
 	</h3>
-	<div
-		id={panelId}
-		role="region"
-		aria-labelledby={buttonId}
-		class="menu"
-		hidden={!expanded}
-	>
+	<div id={panelId} role="region" aria-labelledby={buttonId} class="menu" hidden={!expanded}>
 		{@render children?.()}
 	</div>
 </div>

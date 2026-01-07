@@ -18,5 +18,3 @@
 <Story name="Python" args={{ lang: 'python' }}>print("Hello, World!")</Story>
 
 <Story name="HTML" args={{ lang: 'html' }}>Hello World</Story>
-
-

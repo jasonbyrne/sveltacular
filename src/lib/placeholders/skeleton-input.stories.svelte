@@ -12,5 +12,3 @@
 <Story name="Default" args={{}} />
 
 <Story name="Pulse" args={{ animation: 'pulse' }} />
-
-

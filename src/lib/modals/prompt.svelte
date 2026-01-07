@@ -59,7 +59,12 @@
 
 {#if open}
 	<Overlay onClick={no}>
-		<Dialog {size} role="dialog" aria-modal="true" aria-labelledby={title ? 'prompt-title' : undefined}>
+		<Dialog
+			{size}
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby={title ? 'prompt-title' : undefined}
+		>
 			{#if title}
 				<DialogHeader id="prompt-title">
 					{title}
@@ -67,17 +72,17 @@
 				<Divider />
 			{/if}
 			<DialogCloseButton show={showCloseButton} onClick={no} />
-		<DialogBody>
-			<TextBox bind:value {placeholder} {type} {required} size="full" />
-			{#if children}
-				{@render children()}
-			{/if}
-		</DialogBody>
+			<DialogBody>
+				<TextBox bind:value {placeholder} {type} {required} size="full" />
+				{#if children}
+					{@render children()}
+				{/if}
+			</DialogBody>
 			<Divider />
-		<DialogFooter>
-			<Button onClick={no} variant={cancelVariant} size="full" label={cancelText} />
-			<Button onClick={yes} variant={okVariant} size="full" label={okText} />
-		</DialogFooter>
+			<DialogFooter>
+				<Button onClick={no} variant={cancelVariant} size="full" label={cancelText} />
+				<Button onClick={yes} variant={okVariant} size="full" label={okText} />
+			</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}

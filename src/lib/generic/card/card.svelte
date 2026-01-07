@@ -52,7 +52,8 @@
 		box-shadow: var(--shadow-md);
 		background-color: var(--card-bg);
 		color: var(--card-fg);
-		transition: transform var(--transition-base) var(--ease-out),
+		transition:
+			transform var(--transition-base) var(--ease-out),
 			box-shadow var(--transition-base) var(--ease-out);
 
 		strong {

@@ -96,12 +96,7 @@ export function fuzzySearch<T = any>(
 	items: T[],
 	options: FuzzySearchOptions = {}
 ): FuzzyMatch[] {
-	const {
-		keys = [],
-		threshold = 0,
-		limit = Infinity,
-		caseSensitive = false
-	} = options;
+	const { keys = [], threshold = 0, limit = Infinity, caseSensitive = false } = options;
 
 	const results: FuzzyMatch[] = [];
 
@@ -166,4 +161,3 @@ export function highlightMatches(str: string, matches: number[]): string {
 	result += str.slice(lastIndex);
 	return result;
 }
-

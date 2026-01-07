@@ -24,5 +24,3 @@
 <Story name="Level6" args={{ level: 6 }}>Headline 6</Story>
 
 <Story name="Transform" args={{ transform: 'uppercase' }}>Headline Uppercase</Story>
-
-

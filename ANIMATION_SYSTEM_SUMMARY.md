@@ -57,18 +57,21 @@ Built a comprehensive animation system from scratch with **zero runtime dependen
 ## Components Enhanced
 
 ### 1. Button Component
+
 - **Enhancement:** Press effect applied to all buttons
 - **Behavior:** Scales down to 0.95 on press, bounces back to 1.02, then settles at 1.0
 - **File:** `src/lib/forms/button/button.svelte`
 - **Usage:** Automatic - no props needed
 
 ### 2. TextBox Component
+
 - **Enhancement:** Shake animation when error appears
 - **Behavior:** Shakes horizontally when `errorText` prop changes from empty to error
 - **File:** `src/lib/forms/text-box/text-box.svelte`
 - **Usage:** Automatic - triggers when `errorText` is set
 
 ### 3. Modal Component
+
 - **Enhancement:** Enter animations for overlay and dialog
 - **Behavior:**
   - Overlay: Fades in (0 → 1 opacity)
@@ -81,11 +84,13 @@ Built a comprehensive animation system from scratch with **zero runtime dependen
 ## Accessibility Features
 
 ### Prefers Reduced Motion
+
 - **All animations** automatically respect `prefers-reduced-motion` media query
 - When enabled, animations either skip entirely or have duration set to 0ms
 - Implemented at the core level (`animations.ts`)
 
 ### Performance Optimizations
+
 - Web Animations API for GPU acceleration
 - RequestAnimationFrame for spring physics (60fps)
 - Passive event listeners where applicable
@@ -115,10 +120,7 @@ console.log(scale.value); // 1.0 → 1.5 (animated)
 ```typescript
 import { useSpringObject } from 'sveltacular/helpers';
 
-const position = useSpringObject(
-  { x: 0, y: 0, scale: 1 },
-  { preset: 'gentle' }
-);
+const position = useSpringObject({ x: 0, y: 0, scale: 1 }, { preset: 'gentle' });
 
 position.set({ x: 100, y: 50, scale: 1.2 });
 
@@ -130,23 +132,19 @@ console.log(position.values); // { x: 0→100, y: 0→50, scale: 1→1.2 }
 
 ```svelte
 <script>
-  import { fadeIn, shake, pressEffect } from 'sveltacular/helpers';
-  
-  let hasError = $state(false);
+	import { fadeIn, shake, pressEffect } from 'sveltacular/helpers';
+
+	let hasError = $state(false);
 </script>
 
 <!-- Fade in on mount -->
-<div use:fadeIn={{ duration: 300 }}>
-  Content
-</div>
+<div use:fadeIn={{ duration: 300 }}>Content</div>
 
 <!-- Shake when error appears -->
 <input use:shake={hasError} />
 
 <!-- Press effect on button -->
-<button use:pressEffect>
-  Click me
-</button>
+<button use:pressEffect> Click me </button>
 ```
 
 ### Direct Animation
@@ -155,8 +153,8 @@ console.log(position.values); // { x: 0→100, y: 0→50, scale: 1→1.2 }
 import { animateShake, duration, easing } from 'sveltacular/helpers';
 
 animateShake(element, {
-  duration: duration.base,
-  easing: easing.standard
+	duration: duration.base,
+	easing: easing.standard
 });
 ```
 
@@ -205,17 +203,18 @@ animateShake(element, {
 Uses semi-implicit Euler integration for realistic spring motion:
 
 ```typescript
-springForce = -stiffness * (currentValue - targetValue)
-dampingForce = -damping * velocity
-acceleration = springForce + dampingForce
+springForce = -stiffness * (currentValue - targetValue);
+dampingForce = -damping * velocity;
+acceleration = springForce + dampingForce;
 
-velocity = velocity + acceleration * deltaTime
-value = value + velocity * deltaTime
+velocity = velocity + acceleration * deltaTime;
+value = value + velocity * deltaTime;
 ```
 
 ### Settling Detection
 
 Spring is considered "settled" when:
+
 - Value difference from target < precision threshold
 - Velocity < precision threshold
 
@@ -230,6 +229,7 @@ Spring is considered "settled" when:
 ## Export Updates
 
 Updated `src/lib/helpers/index.ts` to export:
+
 - `animations.ts` - All animation utilities
 - `spring.svelte.ts` - Spring composables
 - `animation-actions.ts` - Svelte actions
@@ -270,13 +270,14 @@ These can be added later if needed:
 ✅ **Well tested** - 200+ lines of test coverage  
 ✅ **TypeScript support** - Full type definitions  
 ✅ **Svelte 5 native** - Uses $state and modern patterns  
-✅ **Applied to components** - Button, TextBox, Modal enhanced  
+✅ **Applied to components** - Button, TextBox, Modal enhanced
 
 ---
 
 ## Bundle Size Impact
 
 Estimated addition: **~3-4KB gzipped**
+
 - animations.ts: ~1.5KB
 - spring.svelte.ts: ~1KB
 - animation-actions.ts: ~1.5KB
@@ -288,6 +289,7 @@ Total library remains well under 100KB core bundle target.
 ## Conclusion
 
 The animation system is production-ready and follows all Sveltacular principles:
+
 - Zero dependencies ✅
 - Vanilla SASS only ✅ (CSS animations via inline styles)
 - Svelte 5 native ✅
@@ -295,4 +297,3 @@ The animation system is production-ready and follows all Sveltacular principles:
 - Performant ✅
 
 All animations feel polished, modern, and respect user preferences. The system is extensible and easy to use throughout the library.
-

@@ -19,14 +19,10 @@
 
 	// Get row ID for selection
 	let rowId = $derived(
-		row && context?.config.rowIdKey
-			? (row[context.config.rowIdKey] as string | number)
-			: undefined
+		row && context?.config.rowIdKey ? (row[context.config.rowIdKey] as string | number) : undefined
 	);
 
-	let isSelected = $derived(
-		rowId !== undefined && context ? context.isRowSelected(rowId) : false
-	);
+	let isSelected = $derived(rowId !== undefined && context ? context.isRowSelected(rowId) : false);
 
 	let canSelect = $derived(selectable && context?.config.enableSelection && rowId !== undefined);
 

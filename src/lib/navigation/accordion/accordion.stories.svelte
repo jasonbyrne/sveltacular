@@ -14,5 +14,3 @@
 </script>
 
 <Story name="Standard" args={{ title: 'Card title' }}>Navigation items would go here</Story>
-
-

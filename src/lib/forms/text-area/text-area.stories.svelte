@@ -18,6 +18,7 @@
 
 <Story name="TextAreaLarge" args={{ placeholder: 'Placeholder text', rows: 10, size: 'lg' }} />
 
-<Story name="TextAreaWithLabel" args={{ placeholder: 'Placeholder text', rows: 10, label: 'Comments' }} />
-
-
+<Story
+	name="TextAreaWithLabel"
+	args={{ placeholder: 'Placeholder text', rows: 10, label: 'Comments' }}
+/>

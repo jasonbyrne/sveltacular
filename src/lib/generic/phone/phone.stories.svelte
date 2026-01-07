@@ -18,5 +18,3 @@
 <Story name="WithExtension" args={{ value: '555-555-5555 x123' }} />
 
 <Story name="WithoutAreaCode" args={{ value: '555-5555' }} />
-
-

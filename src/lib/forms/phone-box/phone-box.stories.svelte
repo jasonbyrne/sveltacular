@@ -20,5 +20,3 @@
 <Story name="NoValue" args={{ label: 'Some Label' }} />
 
 <Story name="Small" args={{ value: '5551239876', size: 'sm', label: 'Some Label' }} />
-
-

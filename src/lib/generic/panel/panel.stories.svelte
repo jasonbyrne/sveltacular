@@ -12,5 +12,3 @@
 <Story name="Default" args={{ title: 'This is the panel title' }}>
 	Panel content would go here
 </Story>
-
-

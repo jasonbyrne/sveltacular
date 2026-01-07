@@ -31,4 +31,3 @@ export { default as Avatar } from './avatar/avatar.svelte';
 export { default as Popover } from './popover/popover.svelte';
 export { default as Rating } from './rating/rating.svelte';
 export { default as Chip } from './chip/chip.svelte';
-

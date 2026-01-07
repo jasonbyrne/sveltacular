@@ -65,5 +65,3 @@ describe('ago', () => {
 		expect(result).toContain('+');
 	});
 });
-
-

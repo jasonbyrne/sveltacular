@@ -3,36 +3,36 @@
 
 	/**
 	 * Visual Modernization - Modern UI enhancements for Sveltacular
-	 * 
+	 *
 	 * This story showcases the modern visual enhancements added to Sveltacular, including:
-	 * 
+	 *
 	 * - **Layered Shadows**: Multiple shadow layers for depth and realism
 	 * - **Glassmorphism**: Frosted glass effects with backdrop-filter
 	 * - **Enhanced Focus Rings**: Modern offset focus-visible styles
 	 * - **Shimmer Animations**: Smooth shimmer effects for skeleton loaders
 	 * - **Enhanced Empty States**: Better styling and visual hierarchy
-	 * 
+	 *
 	 * All enhancements respect `prefers-reduced-motion` and include fallbacks for older browsers.
-	 * 
+	 *
 	 * ## Features
-	 * 
+	 *
 	 * ### Layered Shadows
-	 * Cards and elevated elements now use multiple shadow layers (`--shadow-md`, `--shadow-lg`, `--shadow-xl`, `--shadow-2xl`) 
+	 * Cards and elevated elements now use multiple shadow layers (`--shadow-md`, `--shadow-lg`, `--shadow-xl`, `--shadow-2xl`)
 	 * that create more realistic depth.
-	 * 
+	 *
 	 * ### Glassmorphism
-	 * Modal dialogs and overlays can use frosted glass effects with the `glass` and `blur` props. 
+	 * Modal dialogs and overlays can use frosted glass effects with the `glass` and `blur` props.
 	 * This creates a modern, Apple-inspired aesthetic.
-	 * 
+	 *
 	 * ### Focus Rings
-	 * All interactive elements now have consistent, offset focus rings that are visible but unobtrusive, 
+	 * All interactive elements now have consistent, offset focus rings that are visible but unobtrusive,
 	 * similar to GitHub and Linear.
-	 * 
+	 *
 	 * ### Shimmer Animations
 	 * Skeleton loaders now support a smooth shimmer animation that looks more polished than simple pulsing.
-	 * 
+	 *
 	 * ## Accessibility
-	 * 
+	 *
 	 * - All animations respect `prefers-reduced-motion`
 	 * - Focus rings are always visible for keyboard navigation
 	 * - Glassmorphism includes fallbacks for older browsers
@@ -64,8 +64,8 @@
 	<div style="margin-bottom: 2rem;">
 		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Layered Shadows</h3>
 		<p style="margin-bottom: 1.5rem; color: var(--gray-600);">
-			Cards now use multiple shadow layers for more realistic depth. Hover over clickable cards to see
-			the shadow elevation change.
+			Cards now use multiple shadow layers for more realistic depth. Hover over clickable cards to
+			see the shadow elevation change.
 		</p>
 
 		<CardContainer>
@@ -84,7 +84,9 @@
 
 <Story name="Glassmorphism">
 	<div style="margin-bottom: 2rem;">
-		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Glassmorphism Effects</h3>
+		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">
+			Glassmorphism Effects
+		</h3>
 		<p style="margin-bottom: 1.5rem; color: var(--gray-600);">
 			Modal dialogs can use frosted glass effects with the <code>glass</code> and <code>blur</code> props.
 			The overlay can also blur the background content.
@@ -92,11 +94,8 @@
 
 		<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
 			<Button onClick={() => (standardModalOpen = true)}>Open Standard Modal</Button>
-			<Button onClick={() => (glassModalOpen = true)} variant="secondary"
-				>Open Glass Modal</Button
-			>
-			<Button onClick={() => (blurModalOpen = true)} variant="positive"
-				>Open Modal with Blur</Button
+			<Button onClick={() => (glassModalOpen = true)} variant="secondary">Open Glass Modal</Button>
+			<Button onClick={() => (blurModalOpen = true)} variant="positive">Open Modal with Blur</Button
 			>
 		</div>
 
@@ -108,8 +107,12 @@
 
 		<Modal bind:open={glassModalOpen} glass={true}>
 			<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Glass Modal</h3>
-			<p style="margin-bottom: 1rem;">This modal uses glassmorphism with backdrop-filter: blur().</p>
-			<p style="color: var(--gray-600);">Notice the frosted glass effect on the modal background.</p>
+			<p style="margin-bottom: 1rem;">
+				This modal uses glassmorphism with backdrop-filter: blur().
+			</p>
+			<p style="color: var(--gray-600);">
+				Notice the frosted glass effect on the modal background.
+			</p>
 		</Modal>
 
 		<Modal bind:open={blurModalOpen} blur={true} glass={true}>
@@ -157,7 +160,9 @@
 
 <Story name="EmptyStates">
 	<div style="margin-bottom: 2rem;">
-		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Enhanced Empty States</h3>
+		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">
+			Enhanced Empty States
+		</h3>
 		<p style="margin-bottom: 1.5rem; color: var(--gray-600);">
 			Empty state components now have better styling with improved color hierarchy and spacing.
 		</p>
@@ -204,12 +209,10 @@
 
 <Story name="FocusRings">
 	<div style="margin-bottom: 2rem;">
-		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">
-			Modern Focus Rings
-		</h3>
+		<h3 style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;">Modern Focus Rings</h3>
 		<p style="margin-bottom: 1.5rem; color: var(--gray-600);">
-			All interactive elements now have consistent, offset focus rings. Tab through these elements to
-			see the focus rings. They only appear on keyboard focus (:focus-visible), not mouse clicks.
+			All interactive elements now have consistent, offset focus rings. Tab through these elements
+			to see the focus rings. They only appear on keyboard focus (:focus-visible), not mouse clicks.
 		</p>
 
 		<div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
@@ -266,7 +269,9 @@
 						<code>--focus-ring-color</code>: Ring color (default: info blue)
 					</li>
 					<li style="margin-bottom: 0.25rem;"><code>--focus-ring-width</code>: Ring thickness</li>
-					<li style="margin-bottom: 0.25rem;"><code>--focus-ring-offset</code>: Space from element</li>
+					<li style="margin-bottom: 0.25rem;">
+						<code>--focus-ring-offset</code>: Space from element
+					</li>
 					<li style="margin-bottom: 0.25rem;">
 						<code>--focus-ring</code>: Complete box-shadow value
 					</li>
@@ -295,4 +300,3 @@
 		font-size: 0.875em;
 	}
 </style>
-

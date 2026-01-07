@@ -1,9 +1,9 @@
 <script lang="ts">
 	/**
 	 * ContextMenuItem Component
-	 * 
+	 *
 	 * Individual item in a context menu. Can contain a submenu.
-	 * 
+	 *
 	 * @component
 	 */
 	import type { Snippet } from 'svelte';
@@ -48,7 +48,7 @@
 		}
 
 		onClick?.();
-		
+
 		// Get the context menu and tell it to close
 		const contextMenu = getContext('contextMenu') as any;
 		if (contextMenu?.handleItemClick) {
@@ -131,17 +131,17 @@
 	 */
 	function getSubmenuPosition() {
 		if (!itemRef) return 'left: 100%; top: 0;';
-		
+
 		const rect = itemRef.getBoundingClientRect();
 		const viewportWidth = window.innerWidth;
-		
+
 		// Check if submenu would go off right edge
 		const wouldOverflow = rect.right + 200 > viewportWidth; // Assume 200px submenu width
-		
+
 		if (wouldOverflow) {
 			return 'right: 100%; top: 0;';
 		}
-		
+
 		return 'left: 100%; top: 0;';
 	}
 </script>
@@ -165,16 +165,16 @@
 			{@render icon()}
 		</span>
 	{/if}
-	
+
 	<span class="label">
 		{@render children()}
 	</span>
-	
+
 	{#if submenu}
 		<span class="arrow" aria-hidden="true">
 			<AngleRightIcon />
 		</span>
-		
+
 		{#if showSubmenu}
 			<div
 				bind:this={submenuRef}
@@ -277,4 +277,3 @@
 		}
 	}
 </style>
-

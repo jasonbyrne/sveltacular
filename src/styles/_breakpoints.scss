@@ -63,4 +63,3 @@ $breakpoints: (
 		@warn "One or both breakpoints not found in $breakpoints map: `#{$lower}`, `#{$upper}`.";
 	}
 }
-

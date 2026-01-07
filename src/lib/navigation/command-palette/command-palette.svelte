@@ -133,9 +133,7 @@
 			// Also search keywords
 			const keywordMatches = commands.filter((cmd) => {
 				if (!cmd.keywords) return false;
-				return cmd.keywords.some((keyword) =>
-					keyword.toLowerCase().includes(query.toLowerCase())
-				);
+				return cmd.keywords.some((keyword) => keyword.toLowerCase().includes(query.toLowerCase()));
 			});
 
 			// Combine and dedupe
@@ -212,18 +210,18 @@
 		query = '';
 		selectedIndex = 0;
 		onOpen?.();
-	// Focus input after opening
-	setTimeout(() => inputElement?.focus(), 10);
-	announce('Command palette opened', { priority: 'polite' });
+		// Focus input after opening
+		setTimeout(() => inputElement?.focus(), 10);
+		announce('Command palette opened', { priority: 'polite' });
 	}
 
 	// Close palette
 	function closePalette() {
-	open = false;
-	query = '';
-	selectedIndex = 0;
-	onClose?.();
-	announce('Command palette closed', { priority: 'polite' });
+		open = false;
+		query = '';
+		selectedIndex = 0;
+		onClose?.();
+		announce('Command palette closed', { priority: 'polite' });
 	}
 
 	// Execute command
@@ -232,10 +230,10 @@
 
 		// Add to recent commands
 		if (showRecent) {
-			recentCommands = [
-				command.id,
-				...recentCommands.filter((id) => id !== command.id)
-			].slice(0, maxRecent);
+			recentCommands = [command.id, ...recentCommands.filter((id) => id !== command.id)].slice(
+				0,
+				maxRecent
+			);
 			localStorage.setItem('command-palette-recent', JSON.stringify(recentCommands));
 		}
 
@@ -243,33 +241,31 @@
 		command.action?.();
 		onSelect?.(command);
 
-	// Close palette
-	closePalette();
+		// Close palette
+		closePalette();
 
-	announce(`Executed: ${command.label}`, { priority: 'assertive' });
+		announce(`Executed: ${command.label}`, { priority: 'assertive' });
 	}
 
 	// Keyboard navigation
 	function handleKeydown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'ArrowDown':
-			event.preventDefault();
-			selectedIndex = Math.min(selectedIndex + 1, flatCommands.length - 1);
-			scrollToSelected();
-			announce(
-				`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
-				{ priority: 'polite' }
-			);
+				event.preventDefault();
+				selectedIndex = Math.min(selectedIndex + 1, flatCommands.length - 1);
+				scrollToSelected();
+				announce(`${flatCommands[selectedIndex]?.label || 'Unknown command'}`, {
+					priority: 'polite'
+				});
 				break;
 
 			case 'ArrowUp':
-			event.preventDefault();
-			selectedIndex = Math.max(selectedIndex - 1, 0);
-			scrollToSelected();
-			announce(
-				`${flatCommands[selectedIndex]?.label || 'Unknown command'}`,
-				{ priority: 'polite' }
-			);
+				event.preventDefault();
+				selectedIndex = Math.max(selectedIndex - 1, 0);
+				scrollToSelected();
+				announce(`${flatCommands[selectedIndex]?.label || 'Unknown command'}`, {
+					priority: 'polite'
+				});
 				break;
 
 			case 'Home':
@@ -300,9 +296,7 @@
 
 	// Scroll selected item into view
 	function scrollToSelected() {
-		const element = document.querySelector(
-			`.command-palette__item[data-index="${selectedIndex}"]`
-		);
+		const element = document.querySelector(`.command-palette__item[data-index="${selectedIndex}"]`);
 		element?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 	}
 
@@ -777,4 +771,3 @@
 		}
 	}
 </style>
-

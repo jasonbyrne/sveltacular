@@ -32,7 +32,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
-[tabindex]:not([tabindex="-1"]):focus-visible {
+[tabindex]:not([tabindex='-1']):focus-visible {
 	outline: none;
 	box-shadow: var(--focus-ring);
 	transition: box-shadow var(--transition-fast) var(--ease-out);
@@ -45,8 +45,7 @@ select:focus-visible,
 	input:focus-visible,
 	textarea:focus-visible,
 	select:focus-visible,
-	[tabindex]:not([tabindex="-1"]):focus-visible {
+	[tabindex]:not([tabindex='-1']):focus-visible {
 		transition: none;
 	}
 }
-

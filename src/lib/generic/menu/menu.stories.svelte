@@ -22,5 +22,3 @@
 >
 	Pick a state
 </Story>
-
-

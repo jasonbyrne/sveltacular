@@ -91,9 +91,7 @@
 	});
 </script>
 
-<Story name="Default" args={{ label: 'Time' }}>
-	Default TimeBox with label.
-</Story>
+<Story name="Default" args={{ label: 'Time' }}>Default TimeBox with label.</Story>
 
 <Story name="WithValue" args={{ label: 'Time', value: '14:30' }}>
 	TimeBox with a pre-selected time value (2:30 PM).
@@ -103,7 +101,10 @@
 	Required TimeBox field with validation indicator.
 </Story>
 
-<Story name="WithHelperText" args={{ label: 'Meeting time', helperText: 'Select the time for your meeting' }}>
+<Story
+	name="WithHelperText"
+	args={{ label: 'Meeting time', helperText: 'Select the time for your meeting' }}
+>
 	TimeBox with helper text providing additional context.
 </Story>
 
@@ -111,23 +112,13 @@
 	Disabled TimeBox that cannot be changed.
 </Story>
 
-<Story name="WithError" args={{ label: 'Time', feedback: { text: 'Please select a valid time', isError: true } }}>
+<Story
+	name="WithError"
+	args={{ label: 'Time', feedback: { text: 'Please select a valid time', isError: true } }}
+>
 	TimeBox with error feedback message.
 </Story>
 
 <Story name="Sizes" args={{ label: 'Time' }}>
 	TimeBox in different sizes: sm, md, lg, xl, full.
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-

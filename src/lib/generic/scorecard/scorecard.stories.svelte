@@ -19,6 +19,6 @@
 
 <Story name="Right" args={{ value: 12334, caption: 'right' }}>Page Views</Story>
 
-<Story name="Link" args={{ value: 12334, caption: 'above', href: 'https://www.google.com' }}>Page Views</Story>
-
-
+<Story name="Link" args={{ value: 12334, caption: 'above', href: 'https://www.google.com' }}
+	>Page Views</Story
+>

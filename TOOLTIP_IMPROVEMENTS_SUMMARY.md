@@ -7,6 +7,7 @@ The Tooltip component has been completely rewritten from scratch to meet best-in
 ## Key Problems Solved
 
 ### Previous Issues
+
 1. **Inconsistent behavior** - Dual positioning modes (autoPosition vs legacy) caused confusion
 2. **Incorrect ARIA roles** - `role="button"` on wrapper was semantically incorrect
 3. **Non-standard keyboard interaction** - Enter/Space toggled tooltip which isn't standard
@@ -17,6 +18,7 @@ The Tooltip component has been completely rewritten from scratch to meet best-in
 8. **Empty content showing** - Tooltips with empty/null text still appeared
 
 ### Solutions Implemented
+
 ✅ **Unified positioning system** - Single, consistent positioning approach using the existing `usePosition` helper
 ✅ **Proper accessibility** - Correct ARIA attributes, proper keyboard support (Escape to close)
 ✅ **Multiple trigger modes** - hover, focus, click, and manual/controlled modes
@@ -39,27 +41,28 @@ Add an optional title that displays prominently above the tooltip content:
 ```svelte
 <!-- Title + Text -->
 <Tooltip title="Pro Tip" text="Keyboard shortcuts save time">
-  <Button label="Help" />
+	<Button label="Help" />
 </Tooltip>
 
 <!-- Title only -->
 <Tooltip title="New Feature">
-  <Badge text="Beta" />
+	<Badge text="Beta" />
 </Tooltip>
 
 <!-- Title with custom content -->
 <Tooltip title="Requirements">
-  {#snippet content()}
-    <ul>
-      <li>Item 1</li>
-      <li>Item 2</li>
-    </ul>
-  {/snippet}
-  <Button label="Info" />
+	{#snippet content()}
+		<ul>
+			<li>Item 1</li>
+			<li>Item 2</li>
+		</ul>
+	{/snippet}
+	<Button label="Info" />
 </Tooltip>
 ```
 
 The title is styled with:
+
 - Bold font weight (600)
 - Slightly larger font size (0.9375rem vs 0.875rem)
 - Customizable via `--tooltip-title-fg` CSS variable
@@ -70,22 +73,22 @@ The title is styled with:
 ```svelte
 <!-- Hover (default) -->
 <Tooltip text="Hover to see" trigger="hover">
-  <Button label="Hover me" />
+	<Button label="Hover me" />
 </Tooltip>
 
 <!-- Focus (keyboard accessible) -->
 <Tooltip text="Focus to see" trigger="focus">
-  <Button label="Tab to me" />
+	<Button label="Tab to me" />
 </Tooltip>
 
 <!-- Click (toggle) -->
 <Tooltip text="Click to toggle" trigger="click">
-  <Button label="Click me" />
+	<Button label="Click me" />
 </Tooltip>
 
 <!-- Manual (controlled) -->
 <Tooltip text="Controlled" trigger="manual" bind:open={myState}>
-  <Button label="Controlled" />
+	<Button label="Controlled" />
 </Tooltip>
 ```
 
@@ -94,17 +97,17 @@ The title is styled with:
 ```svelte
 <!-- Open after 500ms -->
 <Tooltip text="Delayed" openDelay={500}>
-  <Button label="Hover me" />
+	<Button label="Hover me" />
 </Tooltip>
 
 <!-- Close after 300ms -->
 <Tooltip text="Stays open" closeDelay={300}>
-  <Button label="Hover me" />
+	<Button label="Hover me" />
 </Tooltip>
 
 <!-- Both delays -->
 <Tooltip text="Both delays" openDelay={300} closeDelay={300}>
-  <Button label="Hover me" />
+	<Button label="Hover me" />
 </Tooltip>
 ```
 
@@ -113,28 +116,28 @@ The title is styled with:
 ```svelte
 <!-- Simple text -->
 <Tooltip text="Simple text">
-  <Button label="Button" />
+	<Button label="Button" />
 </Tooltip>
 
 <!-- Title + Text -->
 <Tooltip title="Pro Tip" text="Keyboard shortcuts speed up your workflow">
-  <Button label="Title + Text" />
+	<Button label="Title + Text" />
 </Tooltip>
 
 <!-- Title only -->
 <Tooltip title="Important!">
-  <Button label="Title only" />
+	<Button label="Title only" />
 </Tooltip>
 
 <!-- Rich content with snippets (for complex layouts) -->
 <Tooltip>
-  {#snippet content()}
-    <div>
-      <strong>Pro Tip!</strong>
-      <p>Use Ctrl+K for shortcuts</p>
-    </div>
-  {/snippet}
-  <Button label="Rich content" />
+	{#snippet content()}
+		<div>
+			<strong>Pro Tip!</strong>
+			<p>Use Ctrl+K for shortcuts</p>
+		</div>
+	{/snippet}
+	<Button label="Rich content" />
 </Tooltip>
 ```
 
@@ -143,16 +146,24 @@ The title is styled with:
 All 12 placement options from the positioning system:
 
 ```typescript
-type Placement = 
-  | 'top' | 'top-start' | 'top-end'
-  | 'bottom' | 'bottom-start' | 'bottom-end'
-  | 'left' | 'left-start' | 'left-end'
-  | 'right' | 'right-start' | 'right-end';
+type Placement =
+	| 'top'
+	| 'top-start'
+	| 'top-end'
+	| 'bottom'
+	| 'bottom-start'
+	| 'bottom-end'
+	| 'left'
+	| 'left-start'
+	| 'left-end'
+	| 'right'
+	| 'right-start'
+	| 'right-end';
 ```
 
 ```svelte
 <Tooltip text="Positioned" placement="bottom-start">
-  <Button label="Button" />
+	<Button label="Button" />
 </Tooltip>
 ```
 
@@ -160,7 +171,7 @@ type Placement =
 
 ```svelte
 <Tooltip text="Won't show" disabled>
-  <Button label="Disabled" />
+	<Button label="Disabled" />
 </Tooltip>
 ```
 
@@ -168,13 +179,14 @@ type Placement =
 
 ```svelte
 <Tooltip text="Custom" class="my-tooltip">
-  <Button label="Button" />
+	<Button label="Button" />
 </Tooltip>
 ```
 
 ### 8. Content Validation
 
 Tooltips automatically validate content and will **not appear** if:
+
 - `title`, `text`, and `content` are all empty/null/undefined
 - `text` is only whitespace and no `title` or `content` provided
 - All content values are falsy
@@ -182,20 +194,20 @@ Tooltips automatically validate content and will **not appear** if:
 ```svelte
 <!-- These will NOT show tooltips -->
 <Tooltip text="">
-  <Button label="Empty" />
+	<Button label="Empty" />
 </Tooltip>
 
 <Tooltip text={undefined}>
-  <Button label="Undefined" />
+	<Button label="Undefined" />
 </Tooltip>
 
 <Tooltip text="   ">
-  <Button label="Whitespace" />
+	<Button label="Whitespace" />
 </Tooltip>
 
 <!-- This WILL show (title is valid) -->
 <Tooltip title="Warning!">
-  <Button label="Has title" />
+	<Button label="Has title" />
 </Tooltip>
 ```
 
@@ -208,16 +220,19 @@ This prevents empty tooltips from appearing and causing confusion.
 The tooltip supports three types of content that can be used together:
 
 ### Title (Optional Heading)
+
 - **Use for:** Short heading or label
 - **Styling:** Bold, slightly larger text
 - **Example:** `title="Pro Tip"`
 
 ### Text (Body Content)
+
 - **Use for:** Main tooltip message
 - **Styling:** Regular text below title
 - **Example:** `text="Save your work regularly"`
 
 ### Content (Custom Snippet)
+
 - **Use for:** Complex layouts (lists, formatted text, etc.)
 - **Styling:** Full control over markup
 - **Example:** Custom HTML with lists, code blocks, etc.
@@ -227,37 +242,37 @@ The tooltip supports three types of content that can be used together:
 ```svelte
 <!-- ✅ Good: Title + Text for structured info -->
 <Tooltip title="Password Requirements" text="At least 8 characters with one number">
-  <Button label="Help" />
+	<Button label="Help" />
 </Tooltip>
 
 <!-- ✅ Good: Title only for brief labels -->
 <Tooltip title="New Feature">
-  <Badge text="Beta" />
+	<Badge text="Beta" />
 </Tooltip>
 
 <!-- ✅ Good: Text only for simple tooltips -->
 <Tooltip text="Click to copy">
-  <Icon name="copy" />
+	<Icon name="copy" />
 </Tooltip>
 
 <!-- ✅ Good: Content snippet for complex layouts -->
 <Tooltip>
-  {#snippet content()}
-    <ul>
-      <li>Feature 1</li>
-      <li>Feature 2</li>
-    </ul>
-  {/snippet}
-  <Button label="Features" />
+	{#snippet content()}
+		<ul>
+			<li>Feature 1</li>
+			<li>Feature 2</li>
+		</ul>
+	{/snippet}
+	<Button label="Features" />
 </Tooltip>
 
 <!-- ❌ Avoid: Title in content snippet (use title prop) -->
 <Tooltip>
-  {#snippet content()}
-    <strong>Title</strong>
-    <p>Text</p>
-  {/snippet}
-  <Button label="Bad" />
+	{#snippet content()}
+		<strong>Title</strong>
+		<p>Text</p>
+	{/snippet}
+	<Button label="Bad" />
 </Tooltip>
 ```
 
@@ -267,29 +282,37 @@ The tooltip supports three types of content that can be used together:
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string \| undefined` | `undefined` | Optional title/heading displayed above content |
-| `text` | `string \| undefined` | `undefined` | Simple text content for tooltip body |
-| `content` | `Snippet \| undefined` | `undefined` | Rich content snippet (overrides text) |
-| `placement` | `Placement` | `'top'` | Position relative to trigger element |
-| `offset` | `number` | `8` | Distance in pixels from trigger |
-| `arrow` | `boolean` | `true` | Show arrow pointing to trigger |
-| `trigger` | `'hover' \| 'focus' \| 'click' \| 'manual'` | `'hover'` | How tooltip is triggered |
-| `openDelay` | `number` | `0` | Delay in ms before showing |
-| `closeDelay` | `number` | `0` | Delay in ms before hiding |
-| `open` | `boolean` (bindable) | `false` | Controlled open state |
-| `disabled` | `boolean` | `false` | Disable tooltip completely |
-| `class` | `string` | `''` | Additional CSS classes for trigger |
-| `children` | `Snippet` (required) | - | Trigger element content |
+| Prop         | Type                                        | Default     | Description                                    |
+| ------------ | ------------------------------------------- | ----------- | ---------------------------------------------- |
+| `title`      | `string \| undefined`                       | `undefined` | Optional title/heading displayed above content |
+| `text`       | `string \| undefined`                       | `undefined` | Simple text content for tooltip body           |
+| `content`    | `Snippet \| undefined`                      | `undefined` | Rich content snippet (overrides text)          |
+| `placement`  | `Placement`                                 | `'top'`     | Position relative to trigger element           |
+| `offset`     | `number`                                    | `8`         | Distance in pixels from trigger                |
+| `arrow`      | `boolean`                                   | `true`      | Show arrow pointing to trigger                 |
+| `trigger`    | `'hover' \| 'focus' \| 'click' \| 'manual'` | `'hover'`   | How tooltip is triggered                       |
+| `openDelay`  | `number`                                    | `0`         | Delay in ms before showing                     |
+| `closeDelay` | `number`                                    | `0`         | Delay in ms before hiding                      |
+| `open`       | `boolean` (bindable)                        | `false`     | Controlled open state                          |
+| `disabled`   | `boolean`                                   | `false`     | Disable tooltip completely                     |
+| `class`      | `string`                                    | `''`        | Additional CSS classes for trigger             |
+| `children`   | `Snippet` (required)                        | -           | Trigger element content                        |
 
 ### Placement Options
 
 ```typescript
-'top' | 'top-start' | 'top-end' |
-'bottom' | 'bottom-start' | 'bottom-end' |
-'left' | 'left-start' | 'left-end' |
-'right' | 'right-start' | 'right-end'
+'top' |
+	'top-start' |
+	'top-end' |
+	'bottom' |
+	'bottom-start' |
+	'bottom-end' |
+	'left' |
+	'left-start' |
+	'left-end' |
+	'right' |
+	'right-start' |
+	'right-end';
 ```
 
 ---
@@ -321,12 +344,14 @@ The tooltip supports three types of content that can be used together:
 ## Behavioral Improvements
 
 ### Hover Mode
+
 - Shows on `mouseenter`, hides on `mouseleave`
 - Tooltip stays open when hovering over it
 - Respects open/close delays
 - Closes on Escape key
 
 ### Focus Mode
+
 - Shows on `focus`, hides on `blur`
 - Keyboard accessible with Tab navigation
 - Wrapper is made focusable with `tabindex="0"`
@@ -335,6 +360,7 @@ The tooltip supports three types of content that can be used together:
 - Ideal for keyboard-only users
 
 ### Click Mode
+
 - Toggles on click
 - Closes on click outside
 - Closes on Escape key
@@ -342,6 +368,7 @@ The tooltip supports three types of content that can be used together:
 - Shows `aria-expanded` state
 
 ### Manual Mode
+
 - Fully controlled by parent component
 - Bind to `open` prop for state management
 - No automatic triggers
@@ -388,25 +415,16 @@ The new stories showcase:
 ### Before (Old API)
 
 ```svelte
-<Tooltip 
-  text="My tooltip" 
-  position="top" 
-  autoPosition={true}
-  arrow={true}
->
-  <Button label="Button" />
+<Tooltip text="My tooltip" position="top" autoPosition={true} arrow={true}>
+	<Button label="Button" />
 </Tooltip>
 ```
 
 ### After (New API)
 
 ```svelte
-<Tooltip 
-  text="My tooltip" 
-  placement="top"
-  arrow={true}
->
-  <Button label="Button" />
+<Tooltip text="My tooltip" placement="top" arrow={true}>
+	<Button label="Button" />
 </Tooltip>
 ```
 
@@ -434,12 +452,12 @@ Customize tooltip appearance using CSS variables:
 
 ```css
 :root {
-  --tooltip-bg: #1a1a1a;           /* Background color */
-  --tooltip-fg: #ffffff;            /* Text color */
-  --tooltip-title-fg: #ffffff;     /* Title text color (defaults to tooltip-fg) */
-  --radius-md: 0.375rem;            /* Border radius */
-  --font-sm: 0.875rem;              /* Body font size */
-  --shadow-lg: ...;                 /* Box shadow */
+	--tooltip-bg: #1a1a1a; /* Background color */
+	--tooltip-fg: #ffffff; /* Text color */
+	--tooltip-title-fg: #ffffff; /* Title text color (defaults to tooltip-fg) */
+	--radius-md: 0.375rem; /* Border radius */
+	--font-sm: 0.875rem; /* Body font size */
+	--shadow-lg: ...; /* Box shadow */
 }
 ```
 
@@ -448,16 +466,16 @@ Customize tooltip appearance using CSS variables:
 ```css
 /* Lighter tooltip with colored title */
 .my-tooltip {
-  --tooltip-bg: #f9fafb;
-  --tooltip-fg: #111827;
-  --tooltip-title-fg: #6366f1;
+	--tooltip-bg: #f9fafb;
+	--tooltip-fg: #111827;
+	--tooltip-title-fg: #6366f1;
 }
 
 /* Dark tooltip with accent title */
 .dark-tooltip {
-  --tooltip-bg: #1f2937;
-  --tooltip-fg: #e5e7eb;
-  --tooltip-title-fg: #fbbf24;
+	--tooltip-bg: #1f2937;
+	--tooltip-fg: #e5e7eb;
+	--tooltip-title-fg: #fbbf24;
 }
 ```
 
@@ -468,6 +486,7 @@ Customize tooltip appearance using CSS variables:
 ### State Management
 
 Uses Svelte 5 runes for reactive state:
+
 - `$state` - For open state, refs, timeouts
 - `$derived` - For computed handlers, ARIA attributes
 - `$effect` - For side effects (click outside, position updates, cleanup)
@@ -475,6 +494,7 @@ Uses Svelte 5 runes for reactive state:
 ### Memory Management
 
 Proper cleanup of:
+
 - ✅ Event listeners (mouse, keyboard, click outside)
 - ✅ Timeouts (open delay, close delay)
 - ✅ Position manager (scroll, resize listeners)
@@ -526,6 +546,7 @@ Proper cleanup of:
 ### Automated Testing
 
 Consider adding tests for:
+
 - Trigger modes (hover, focus, click)
 - Delay functionality
 - Click outside behavior
@@ -538,12 +559,14 @@ Consider adding tests for:
 ## Browser Compatibility
 
 Works with all modern browsers:
+
 - ✅ Chrome/Edge (Chromium)
 - ✅ Firefox
 - ✅ Safari
 - ✅ Mobile browsers
 
 Requires:
+
 - Svelte 5
 - Modern CSS (CSS variables, animations)
 - Modern JavaScript (ES2020+)
@@ -553,22 +576,26 @@ Requires:
 ## Comparison to Other Libraries
 
 ### Bits UI
+
 - ✅ Similar trigger modes (hover, focus, click)
 - ✅ Rich content support
 - ✅ Controlled state
 - ✅ Accessibility features
 
 ### Melt UI
+
 - ✅ Headless approach (we have our own positioning)
 - ✅ Accessibility-first
 - ✅ Flexible content
 
 ### TheUI
+
 - ✅ Multiple trigger modes
 - ✅ Animation support
 - ✅ Positioning options
 
 ### Flowbite-Svelte
+
 - ✅ Multiple placements
 - ✅ Arrow support
 - ✅ Animation transitions
@@ -595,6 +622,7 @@ Potential future improvements:
 ## Resources
 
 ### Research Sources
+
 - [Bits UI Tooltip](https://bits-ui.com/docs/components/tooltip)
 - [Melt UI](https://melt-ui.com)
 - [TheUI Tooltip](https://theui.dev/docs/tooltip)
@@ -603,6 +631,7 @@ Potential future improvements:
 - [WAI-ARIA Tooltip Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
 
 ### Related Components
+
 - Popover - For more complex interactive content
 - Dropdown - For menus and selection
 - Context Menu - For right-click menus
@@ -621,4 +650,3 @@ The rewritten Tooltip component is now:
 ✅ **Production-ready** - Proper cleanup, memory management
 
 The component now meets or exceeds best-in-breed standards from leading Svelte 5 component libraries while maintaining consistency with the Sveltacular design system.
-

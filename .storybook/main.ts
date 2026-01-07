@@ -17,8 +17,17 @@ const config = {
 		options: {}
 	},
 
+	// Configure base path for GitHub Pages deployment
+	// Project Pages are served at username.github.io/repo-name/, so we need the base path
+	...(process.env.GITHUB_ACTIONS && {
+		// Only set base path when building in GitHub Actions
+		// The base path matches the repository name
+		base: '/sveltacular/'
+	}),
+
 	async viteFinal(config) {
 		return mergeConfig(config, {
+			base: process.env.GITHUB_ACTIONS ? '/sveltacular/' : '/',
 			resolve: {
 				alias: { $lib: path.resolve(__dirname, '../src/lib') }
 			}

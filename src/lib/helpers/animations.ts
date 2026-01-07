@@ -86,11 +86,7 @@ export function stepSpring(
 /**
  * Check if spring has settled (stopped moving)
  */
-export function isSpringSettled(
-	current: SpringState,
-	target: number,
-	precision: number
-): boolean {
+export function isSpringSettled(current: SpringState, target: number, precision: number): boolean {
 	const valueDiff = Math.abs(current.value - target);
 	const velocityThreshold = precision;
 	return valueDiff < precision && Math.abs(current.velocity) < velocityThreshold;
@@ -255,10 +251,7 @@ export interface AnimationOptions {
 /**
  * Animate element shake (for errors)
  */
-export function animateShake(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateShake(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createShakeKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.standard,
@@ -270,10 +263,7 @@ export function animateShake(
 /**
  * Animate element bounce (for success)
  */
-export function animateBounce(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateBounce(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createBounceKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.standard,
@@ -285,10 +275,7 @@ export function animateBounce(
 /**
  * Animate element pulse
  */
-export function animatePulse(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animatePulse(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createPulseKeyframes(), {
 		duration: options.duration ?? duration.moderate,
 		easing: options.easing ?? easing.standard,
@@ -300,10 +287,7 @@ export function animatePulse(
 /**
  * Animate element fade in
  */
-export function animateFadeIn(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateFadeIn(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createFadeInKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.standard,
@@ -314,10 +298,7 @@ export function animateFadeIn(
 /**
  * Animate element fade out
  */
-export function animateFadeOut(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateFadeOut(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createFadeOutKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.standard,
@@ -328,10 +309,7 @@ export function animateFadeOut(
 /**
  * Animate element slide in from top
  */
-export function animateSlideInTop(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateSlideInTop(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createSlideInTopKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.decelerate,
@@ -356,10 +334,7 @@ export function animateSlideInBottom(
 /**
  * Animate element scale in
  */
-export function animateScaleIn(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateScaleIn(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createScaleInKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.decelerate,
@@ -370,14 +345,10 @@ export function animateScaleIn(
 /**
  * Animate element scale out
  */
-export function animateScaleOut(
-	element: HTMLElement,
-	options: AnimationOptions = {}
-): Animation {
+export function animateScaleOut(element: HTMLElement, options: AnimationOptions = {}): Animation {
 	return animate(element, createScaleOutKeyframes(), {
 		duration: options.duration ?? duration.base,
 		easing: options.easing ?? easing.accelerate,
 		fill: options.fill ?? 'forwards'
 	});
 }
-

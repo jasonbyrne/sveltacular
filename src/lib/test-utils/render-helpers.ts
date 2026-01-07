@@ -37,20 +37,17 @@ export async function waitForTicks(count: number = 2): Promise<void> {
 /**
  * Wait for an element to appear in the DOM
  */
-export async function waitForElement(
-	selector: string,
-	timeout: number = 1000
-): Promise<Element> {
+export async function waitForElement(selector: string, timeout: number = 1000): Promise<Element> {
 	const startTime = Date.now();
-	
+
 	while (Date.now() - startTime < timeout) {
 		const element = document.querySelector(selector);
 		if (element) {
 			return element;
 		}
-		await new Promise(resolve => setTimeout(resolve, 50));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 	}
-	
+
 	throw new Error(`Element "${selector}" not found within ${timeout}ms`);
 }
 
@@ -62,15 +59,15 @@ export async function waitForElementToBeRemoved(
 	timeout: number = 1000
 ): Promise<void> {
 	const startTime = Date.now();
-	
+
 	while (Date.now() - startTime < timeout) {
 		const element = document.querySelector(selector);
 		if (!element) {
 			return;
 		}
-		await new Promise(resolve => setTimeout(resolve, 50));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 	}
-	
+
 	throw new Error(`Element "${selector}" still present after ${timeout}ms`);
 }
 
@@ -93,10 +90,7 @@ export function createKeyboardEvent(
 /**
  * Simulate mouse event
  */
-export function createMouseEvent(
-	type: string,
-	options?: MouseEventInit
-): MouseEvent {
+export function createMouseEvent(type: string, options?: MouseEventInit): MouseEvent {
 	return new MouseEvent(type, {
 		bubbles: true,
 		cancelable: true,
@@ -137,20 +131,12 @@ export function hasClass(element: Element, className: string): boolean {
  */
 export function isVisible(element: HTMLElement): boolean {
 	const style = window.getComputedStyle(element);
-	return (
-		style.display !== 'none' &&
-		style.visibility !== 'hidden' &&
-		style.opacity !== '0'
-	);
+	return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
 }
 
 /**
  * Check if element is disabled
  */
 export function isDisabled(element: HTMLElement): boolean {
-	return (
-		element.hasAttribute('disabled') ||
-		element.getAttribute('aria-disabled') === 'true'
-	);
+	return element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true';
 }
-

@@ -2,14 +2,14 @@ import { describe, it, expect } from 'vitest';
 
 /**
  * Visual Modernization Tests
- * 
+ *
  * Tests for the enhanced visual features:
  * - Layered shadows in theme.scss
  * - Glassmorphism effects
  * - Enhanced focus rings
  * - Shimmer animations
  * - Enhanced empty states
- * 
+ *
  * Note: Full component tests require @testing-library/svelte which is part of
  * Priority 1.3 (Testing Infrastructure). These tests validate the design tokens.
  */
@@ -33,9 +33,15 @@ describe('Visual Modernization - Design Tokens', () => {
 		});
 
 		it('shadow token names follow convention', () => {
-			const shadowTokens = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl', '--shadow-2xl'];
-			
-			shadowTokens.forEach(token => {
+			const shadowTokens = [
+				'--shadow-sm',
+				'--shadow-md',
+				'--shadow-lg',
+				'--shadow-xl',
+				'--shadow-2xl'
+			];
+
+			shadowTokens.forEach((token) => {
 				expect(token).toMatch(/^--shadow-(sm|md|lg|xl|2xl)$/);
 			});
 		});
@@ -60,11 +66,7 @@ describe('Visual Modernization - Design Tokens', () => {
 
 	describe('Glassmorphism Tokens', () => {
 		it('defines glass effect design tokens', () => {
-			const glassTokens = [
-				'--glass-bg',
-				'--glass-border',
-				'--glass-blur'
-			];
+			const glassTokens = ['--glass-bg', '--glass-border', '--glass-blur'];
 
 			glassTokens.forEach((token) => {
 				expect(token).toBeTruthy();
@@ -77,8 +79,8 @@ describe('Visual Modernization - Design Tokens', () => {
 	describe('Animation Support', () => {
 		it('skeleton animation types are valid', () => {
 			const validAnimations = ['pulse', 'shimmer', 'none'];
-			
-			validAnimations.forEach(animation => {
+
+			validAnimations.forEach((animation) => {
 				expect(['pulse', 'shimmer', 'none']).toContain(animation);
 			});
 		});
@@ -118,28 +120,27 @@ describe('Visual Modernization - Design Tokens', () => {
 	describe('CSS Class Names', () => {
 		it('uses consistent naming for glass classes', () => {
 			const glassClasses = ['glass', 'glass-light', 'glass-heavy', 'glass-subtle'];
-			
-			glassClasses.forEach(className => {
+
+			glassClasses.forEach((className) => {
 				expect(className).toMatch(/^glass/);
 			});
 		});
 
 		it('uses consistent naming for focus classes', () => {
 			const focusClasses = ['focus-ring', 'focus-ring-sm', 'focus-ring-lg'];
-			
-			focusClasses.forEach(className => {
+
+			focusClasses.forEach((className) => {
 				expect(className).toMatch(/^focus-ring/);
 			});
 		});
 
 		it('uses consistent naming for animation classes', () => {
 			const animationClasses = ['pulse', 'shimmer', 'none'];
-			
-			animationClasses.forEach(className => {
+
+			animationClasses.forEach((className) => {
 				expect(typeof className).toBe('string');
 				expect(className.length).toBeGreaterThan(0);
 			});
 		});
 	});
 });
-

@@ -1,26 +1,26 @@
 /**
  * Position Composable
- * 
+ *
  * Reactive positioning for floating elements (tooltips, popovers, dropdowns).
  * Automatically updates position on scroll and resize events.
- * 
+ *
  * @example
  * ```svelte
  * <script>
  *   import { usePosition } from '$lib/helpers/use-position.svelte';
- *   
+ *
  *   let buttonRef: HTMLElement;
  *   let tooltipRef: HTMLElement;
- *   
+ *
  *   const position = usePosition(() => buttonRef, () => tooltipRef, {
  *     placement: 'top',
  *     arrow: true
  *   });
  * </script>
- * 
+ *
  * <button bind:this={buttonRef}>Hover me</button>
- * 
- * <div 
+ *
+ * <div
  *   bind:this={tooltipRef}
  *   style="position: fixed; top: {position.top}px; left: {position.left}px;"
  * >
@@ -29,12 +29,12 @@
  * ```
  */
 
-import { 
-	calculatePosition, 
+import {
+	calculatePosition,
 	calculateArrowPosition,
-	type Position, 
+	type Position,
 	type ArrowPosition,
-	type PositionOptions 
+	type PositionOptions
 } from './positioning.js';
 import { onMount } from 'svelte';
 
@@ -44,13 +44,13 @@ export interface UsePositionOptions extends PositionOptions {
 	 * @default true
 	 */
 	enabled?: boolean;
-	
+
 	/**
 	 * Update position on scroll
 	 * @default true
 	 */
 	updateOnScroll?: boolean;
-	
+
 	/**
 	 * Update position on resize
 	 * @default true
@@ -64,19 +64,19 @@ export class PositionManager {
 	left = $state(0);
 	side = $state<Position['side']>('bottom');
 	alignment = $state<Position['alignment']>('center');
-	
+
 	// Arrow state
 	arrowTop = $state<number | undefined>(undefined);
 	arrowLeft = $state<number | undefined>(undefined);
 	arrowSide = $state<ArrowPosition['side']>('bottom');
-	
+
 	// Element getters
 	private getReferenceElement: () => Element | null;
 	private getFloatingElement: () => Element | null;
-	
+
 	// Options
 	private options: UsePositionOptions;
-	
+
 	// Cleanup
 	private cleanup: (() => void) | null = null;
 	private rafId: number | null = null;
@@ -164,7 +164,7 @@ export class PositionManager {
 
 		// Store cleanup function
 		this.cleanup = () => {
-			listeners.forEach(cleanup => cleanup());
+			listeners.forEach((cleanup) => cleanup());
 			if (this.rafId !== null) {
 				cancelAnimationFrame(this.rafId);
 				this.rafId = null;
@@ -202,7 +202,7 @@ export class PositionManager {
 	 */
 	get arrowStyle(): string {
 		const styles: string[] = ['position: absolute;'];
-		
+
 		if (this.arrowLeft !== undefined) {
 			styles.push(`left: ${this.arrowLeft}px;`);
 		}
@@ -233,7 +233,7 @@ export class PositionManager {
 
 /**
  * Create a position manager instance
- * 
+ *
  * @param getReferenceElement - Function that returns the reference element
  * @param getFloatingElement - Function that returns the floating element
  * @param options - Positioning options
@@ -254,4 +254,3 @@ export function usePosition(
 
 	return manager;
 }
-

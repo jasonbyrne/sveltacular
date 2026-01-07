@@ -260,4 +260,3 @@ export function useSpringObject<T extends Record<string, number>>(
 		}
 	};
 }
-

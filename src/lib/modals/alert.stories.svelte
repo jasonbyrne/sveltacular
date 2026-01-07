@@ -5,16 +5,16 @@
 
 	/**
 	 * Alert modal component for displaying important messages.
-	 * 
-	 * **Accessibility**: 
+	 *
+	 * **Accessibility**:
 	 * - Uses `role="alertdialog"` for screen readers
 	 * - Focus is trapped within the modal
 	 * - Supports keyboard navigation (ESC to close)
 	 * - Properly labeled with aria-labelledby
-	 * 
-	 * **Usage**: 
+	 *
+	 * **Usage**:
 	 * ```svelte
-	 * <Alert 
+	 * <Alert
 	 *   bind:open={showAlert}
 	 *   title="Error"
 	 *   buttonVariant="danger"
@@ -96,5 +96,3 @@
 <Story name="AlertXLarge" args={{ title: 'Extra Large', open: true, size: 'xl' }}>
 	Something went wrong and we need to make sure you see this.
 </Story>
-
-

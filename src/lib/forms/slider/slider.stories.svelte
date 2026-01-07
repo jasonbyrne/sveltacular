@@ -134,11 +134,17 @@
 	Disabled slider that cannot be changed.
 </Story>
 
-<Story name="WithoutTooltip" args={{ label: 'Volume', value: 50, min: 0, max: 100, showTooltip: false }}>
+<Story
+	name="WithoutTooltip"
+	args={{ label: 'Volume', value: 50, min: 0, max: 100, showTooltip: false }}
+>
 	Slider without tooltip (value display still shown).
 </Story>
 
-<Story name="WithoutValueDisplay" args={{ label: 'Volume', value: 50, min: 0, max: 100, showValue: false }}>
+<Story
+	name="WithoutValueDisplay"
+	args={{ label: 'Volume', value: 50, min: 0, max: 100, showValue: false }}
+>
 	Slider without value display (tooltip still shown on interaction).
 </Story>
 
@@ -146,19 +152,9 @@
 	Slider with custom range and step value.
 </Story>
 
-<Story name="WithFormat" args={{ label: 'Percentage', value: 75, min: 0, max: 100, formatValue: formatPercentage }}>
+<Story
+	name="WithFormat"
+	args={{ label: 'Percentage', value: 75, min: 0, max: 100, formatValue: formatPercentage }}
+>
 	Slider with custom value formatting function.
 </Story>
-
-
-
-
-
-
-
-
-
-
-
-
-
