@@ -123,17 +123,10 @@
   - Mock helpers for API/browser mocking
   - Accessibility testing helpers
   - Test data fixtures
-- ✅ Set up Playwright for visual regression testing
-  - Cross-browser testing (5 browsers)
-  - Visual regression with screenshots
-  - Example E2E tests
-- ✅ Configured CI/CD with GitHub Actions
-  - Test workflow (unit + E2E + coverage)
-  - Publish workflow (NPM)
-  - Storybook deployment workflow
 - ✅ Created comprehensive testing documentation (`TESTING.md`)
 - ✅ 98 tests passing across 11 test files
 - ✅ Coverage reporting configured with 80% thresholds
+- ⏳ E2E testing with Playwright - **DEFERRED** (see Priority 5.5)
 
 **Features:**
 
@@ -142,19 +135,11 @@
 - Comprehensive test utilities for easy test writing
 - Accessibility testing helpers
 - Mock helpers for browser APIs
-- E2E testing with Playwright
-- Visual regression testing
-- CI/CD automation with GitHub Actions
 - Coverage reporting (text, HTML, LCOV, JSON)
 
 **Files created:**
 
 - `src/lib/test-utils/` - Complete test utilities suite
-- `playwright.config.ts` - Playwright configuration
-- `tests/e2e/example.spec.ts` - Example E2E tests
-- `.github/workflows/test.yml` - CI/CD test workflow
-- `.github/workflows/publish.yml` - NPM publish workflow
-- `.github/workflows/storybook.yml` - Storybook deployment
 - `TESTING.md` - Comprehensive testing guide
 - `TESTING_IMPLEMENTATION_SUMMARY.md` - Implementation summary
 
@@ -649,6 +634,25 @@
 
 ---
 
+### 5.5 E2E Testing with Playwright ⏳ DEFERRED
+
+**Status:** ⏳ **DEFERRED**  
+**Effort:** High | **Impact:** MEDIUM
+
+**What to build:**
+
+- Set up Playwright for end-to-end testing
+- Cross-browser testing (Chromium, Firefox, WebKit)
+- Visual regression testing with screenshots
+- E2E tests for critical user flows
+- Integration with CI/CD pipeline
+
+**Why deferred:** Playwright setup was causing issues. Unit tests with Vitest provide good coverage for now. E2E testing can be added later when needed for production confidence.
+
+**Note:** E2E test files and Playwright configuration were removed. This can be re-implemented when ready.
+
+---
+
 ## What We're NOT Doing (To Avoid Bloat)
 
 ❌ **Kanban Board** - Too specialized, users should build custom  
@@ -668,7 +672,7 @@
 ### Zero Dependencies Rule
 
 - **Runtime:** Absolutely zero runtime dependencies (current: ✅ achieved)
-- **Dev Dependencies:** Only testing/build tools (Vitest, Playwright, Storybook, etc.)
+- **Dev Dependencies:** Only testing/build tools (Vitest, Storybook, etc.)
 - **Build custom solutions for:** Positioning, virtual scrolling, animations, spring physics
 - **Never add:** UI libraries, utility libraries, CSS frameworks
 

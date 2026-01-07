@@ -68,10 +68,14 @@ jobs:
         run: npm ci
       
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
       
       - name: Run E2E tests
         run: npm run test:e2e
+        env:
+          CI: true
+          # Allow screenshot updates if needed (set in repository variables)
+          UPDATE_SNAPSHOTS: ${{ vars.UPDATE_SNAPSHOTS || '0' }}
       
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

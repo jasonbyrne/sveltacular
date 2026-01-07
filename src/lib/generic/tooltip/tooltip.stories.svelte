@@ -5,11 +5,46 @@
 	import Badge from '$src/lib/generic/badge/badge.svelte';
 	import Link from '$src/lib/generic/link/link.svelte';
 
+	/**
+	 * Tooltip component for displaying contextual information on hover, focus, or click.
+	 *
+	 * **Accessibility**: Tooltips are properly positioned and include ARIA attributes.
+	 * Supports keyboard navigation (Tab to focus, Escape to close). The component
+	 * automatically hides when content is empty or whitespace-only.
+	 *
+	 * **Usage**:
+	 * ```svelte
+	 * <Tooltip text="Helpful information">
+	 *   <Button label="Hover me" />
+	 * </Tooltip>
+	 * ```
+	 */
 	const { Story } = defineMeta({
 		component: Tooltip,
 		title: 'Generic/Tooltip',
 		tags: ['autodocs'],
 		argTypes: {
+			title: {
+				control: 'text',
+				description: 'Optional title text displayed above the main text',
+				table: {
+					type: { summary: 'string | undefined' }
+				}
+			},
+			text: {
+				control: 'text',
+				description: 'Main tooltip text content',
+				table: {
+					type: { summary: 'string | undefined' }
+				}
+			},
+			content: {
+				control: 'object',
+				description: 'Optional snippet for custom rich content',
+				table: {
+					type: { summary: 'Snippet | undefined' }
+				}
+			},
 			placement: {
 				control: 'select',
 				options: [
@@ -26,24 +61,68 @@
 					'right-start',
 					'right-end'
 				],
-				description: 'Position of the tooltip relative to trigger'
+				description: 'Position of the tooltip relative to trigger',
+				table: {
+					type: { summary: 'Placement' },
+					defaultValue: { summary: "'top'" }
+				}
 			},
 			trigger: {
 				control: 'select',
 				options: ['hover', 'focus', 'click', 'manual'],
-				description: 'How the tooltip is triggered'
+				description: 'How the tooltip is triggered',
+				table: {
+					type: { summary: "'hover' | 'focus' | 'click' | 'manual'" },
+					defaultValue: { summary: "'hover'" }
+				}
 			},
 			arrow: {
 				control: 'boolean',
-				description: 'Show arrow pointing to trigger'
+				description: 'Show arrow pointing to trigger',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'true' }
+				}
 			},
 			openDelay: {
 				control: 'number',
-				description: 'Delay in ms before showing tooltip'
+				description: 'Delay in ms before showing tooltip',
+				table: {
+					type: { summary: 'number' },
+					defaultValue: { summary: '0' }
+				}
 			},
 			closeDelay: {
 				control: 'number',
-				description: 'Delay in ms before hiding tooltip'
+				description: 'Delay in ms before hiding tooltip',
+				table: {
+					type: { summary: 'number' },
+					defaultValue: { summary: '0' }
+				}
+			},
+			open: {
+				control: 'boolean',
+				description: 'Controlled open state (for manual trigger mode)',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			disabled: {
+				control: 'boolean',
+				description: 'Whether the tooltip is disabled',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			offset: {
+				control: 'number',
+				description: 'Offset distance from trigger element in pixels',
+				table: {
+					type: { summary: 'number' },
+					defaultValue: { summary: '8' }
+				}
 			}
 		}
 	});

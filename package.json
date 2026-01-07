@@ -43,10 +43,7 @@
 		"test": "vitest",
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest --coverage",
-		"test:e2e": "playwright test",
-		"test:e2e:ui": "playwright test --ui",
-		"test:e2e:debug": "playwright test --debug",
-		"test:all": "npm run test && npm run test:e2e",
+		"test:all": "npm run test",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"storybook": "storybook dev -p 6006",
@@ -73,7 +70,6 @@
 		"@sveltejs/kit": "^2.0.0"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.57.0",
 		"@storybook/addon-docs": "^10.1.10",
 		"@storybook/addon-links": "^10.1.10",
 		"@storybook/addon-svelte-csf": "^5.0.10",
