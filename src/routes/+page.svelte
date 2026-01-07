@@ -1,45 +1,16 @@
 <script lang="ts">
-	import BoolBox from '$src/lib/forms/bool-box/bool-box.svelte';
-	import Button from '$src/lib/forms/button/button.svelte';
-	import CheckBox from '$src/lib/forms/check-box/check-box.svelte';
-	import Panel from '$src/lib/generic/panel/panel.svelte';
 	import AppBar from '$src/lib/navigation/app-bar/app-bar.svelte';
 	import AppLogo from '$src/lib/navigation/app-bar/app-logo.svelte';
+	import Paragraph from '$src/lib/typography/paragraph.svelte';
 </script>
 
 <AppBar size="sm" position="top">
 	<AppLogo src="/sveltacular-transparent.png" alt="Sveltacular" href="/" />
-	<div>sdfasd</div>
+	<div>Svelte 5 Native Component Library</div>
 </AppBar>
 
 <main>
-	<article>
-		<h2>Button</h2>
-		<code>&lt;Button variant="*" label="[button text]" /&gt;</code>
-		<div>
-			<Button variant="primary" label="primary" />
-			<Button variant="secondary" label="secondary" />
-			<Button variant="positive" label="positive" />
-			<Button variant="danger" label="danger" />
-			<Button variant="outline" label="outline" />
-		</div>
-	</article>
-	<article>
-		<h2>BoolBox</h2>
-		<code>&lt;BoolBox style="*"&gt;[button text]&lt;/BoolBox&gt;</code>
-		<div><BoolBox /></div>
-		<code>&lt;BoolBox options=['Visible', 'Hidden']&gt;[button text]&lt;/BoolBox&gt;</code>
-		<div>
-			<BoolBox options={['Visible', 'Hidden']} />
-		</div>
-	</article>
-	<article>
-		<h2>CheckBox</h2>
-		<code>&lt;CheckBox isChecked=true|false>[text]&lt;/CheckBox></code>
-		<div>
-			<CheckBox isChecked={true}>Turn on sync</CheckBox>
-		</div>
-	</article>
+	<Paragraph>This is a placeholder. We are deploying Storybook, not this page.</Paragraph>
 </main>
 
 <style lang="scss">
