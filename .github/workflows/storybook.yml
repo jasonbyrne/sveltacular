@@ -40,6 +40,13 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
       
+      - name: Remove any CNAME file (ensure default GitHub Pages URL)
+        run: |
+          if [ -f ./storybook-static/CNAME ]; then
+            rm ./storybook-static/CNAME
+            echo "Removed CNAME file to use default GitHub Pages URL"
+          fi
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
