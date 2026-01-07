@@ -54,9 +54,9 @@ jobs:
   
   deploy:
     name: Deploy to GitHub Pages
+    # Don't specify environment URL - let GitHub Pages determine it automatically
     environment:
       name: github-pages
-      # URL will be set from deployment output, not from environment settings
     runs-on: ubuntu-latest
     needs: build
     
@@ -65,9 +65,13 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       
-      - name: Display deployment URL
+      - name: Display actual deployment URL
         run: |
-          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
-          echo "Note: If you see jasonbyrne.net, check environment settings at:"
+          echo "Actual GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
+          echo ""
+          echo "If this shows jasonbyrne.net, the issue is in GitHub's environment settings."
+          echo "You MUST remove the custom URL from:"
           echo "https://github.com/jasonbyrne/sveltacular/settings/environments"
+          echo ""
+          echo "Click on 'github-pages' environment, then remove any 'Environment URL' field."
 
