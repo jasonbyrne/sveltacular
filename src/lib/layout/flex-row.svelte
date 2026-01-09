@@ -1,97 +1,112 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	let {
-		marginBottom = 0,
-		marginTop = 0,
-		gap = '1rem',
-		size = 'full' as 'auto' | 'full',
-		wrap = false,
-		justifyContent = 'space-between' as
-			| 'start'
-			| 'center'
-			| 'end'
-			| 'space-between'
-			| 'space-around'
-			| 'space-evenly'
-			| 'stretch'
-			| 'baseline',
-		alignItems = 'stretch' as 'start' | 'center' | 'end' | 'stretch' | 'auto',
-		alignContent = 'stretch' as
-			| 'start'
-			| 'center'
-			| 'end'
-			| 'space-between'
-			| 'space-around'
-			| 'stretch',
-		children
-	}: {
-		marginBottom?: string | number;
-		marginTop?: string | number;
-		gap?: string | number;
-		size?: 'auto' | 'full';
-		wrap?: boolean;
-		justifyContent?:
-			| 'start'
-			| 'center'
-			| 'end'
-			| 'space-between'
-			| 'space-around'
-			| 'space-evenly'
-			| 'stretch'
-			| 'baseline';
-		alignItems?: 'start' | 'center' | 'end' | 'stretch' | 'auto';
-		alignContent?: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch';
-		children: Snippet;
-	} = $props();
+	type JustifyContent =
+		| 'flex-start'
+		| 'flex-end'
+		| 'center'
+		| 'space-between'
+		| 'space-around'
+		| 'space-evenly';
 
-	let _marginTop = $derived(typeof marginTop === 'number' ? `${marginTop}px` : marginTop);
-	let _marginBottom = $derived(
-		typeof marginBottom === 'number' ? `${marginBottom}px` : marginBottom
+	type AlignItems = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
+
+	type SpacingSize = 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl';
+
+	interface Props {
+		/** Content to display in the flex row */
+		children: Snippet;
+		/** Gap between items (standard size token or custom CSS value) */
+		gap?: SpacingSize | string | number;
+		/** Whether to wrap items to next line */
+		wrap?: boolean;
+		/** Justify content along the main axis */
+		justify?: JustifyContent;
+		/** Align items along the cross axis */
+		align?: AlignItems;
+		/** Whether to take full width (default: true) */
+		fullWidth?: boolean;
+		/** Margin on all sides (standard size token or custom CSS value) */
+		margin?: SpacingSize | string | number;
+		/** Top margin override (standard size token or custom CSS value) */
+		marginTop?: SpacingSize | string | number;
+		/** Bottom margin override (standard size token or custom CSS value) */
+		marginBottom?: SpacingSize | string | number;
+		/** Additional CSS classes */
+		class?: string;
+	}
+
+	const spacingTokenMap: Record<SpacingSize, string> = {
+		xs: 'var(--spacing-xs)',
+		sm: 'var(--spacing-sm)',
+		md: 'var(--spacing-md)',
+		base: 'var(--spacing-base)',
+		lg: 'var(--spacing-lg)',
+		xl: 'var(--spacing-xl)',
+		'2xl': 'var(--spacing-2xl)'
+	};
+
+	const normalizeSpacing = (
+		value: SpacingSize | string | number | undefined
+	): string | undefined => {
+		if (value === undefined) return undefined;
+		if (typeof value === 'number') return `${value}px`;
+		if (value in spacingTokenMap) return spacingTokenMap[value as SpacingSize];
+		return value;
+	};
+
+	let {
+		children,
+		gap = 'base',
+		wrap = false,
+		justify = 'flex-start',
+		align = 'stretch',
+		fullWidth = true,
+		margin,
+		marginTop,
+		marginBottom,
+		class: className = ''
+	}: Props = $props();
+
+	const gapValue = $derived(normalizeSpacing(gap) ?? 'var(--spacing-base)');
+	const marginValue = $derived(normalizeSpacing(margin));
+	const marginTopValue = $derived(
+		marginTop !== undefined ? normalizeSpacing(marginTop) : marginValue
 	);
-	let _justifyContent = $derived(
-		['start', 'end'].includes(justifyContent)
-			? `flex-${justifyContent}`
-			: ['between', 'around', 'evenly'].includes(justifyContent)
-				? `space-${justifyContent}`
-				: justifyContent
+	const marginBottomValue = $derived(
+		marginBottom !== undefined ? normalizeSpacing(marginBottom) : marginValue
 	);
-	let _alignContent = $derived(
-		['start', 'end'].includes(alignContent)
-			? `flex-${alignContent}`
-			: ['between', 'around'].includes(alignContent)
-				? `space-${alignContent}`
-				: alignContent
-	);
-	let _alignItems = $derived(
-		['start', 'end'].includes(alignItems) ? `flex-${alignItems}` : alignItems
-	);
-	let _gap = $derived(typeof gap === 'number' ? `${gap}px` : gap);
 </script>
 
 <div
-	style={`
-		margin-top: ${_marginTop}; margin-bottom: ${_marginBottom}; gap: ${_gap}; 
-		justify-content: ${_justifyContent}; align-items: ${_alignItems}; align-content: ${_alignContent};
-	`}
-	class="size-{size} {wrap ? 'wrap' : 'nowrap'}"
+	class="flex-row {wrap ? 'wrap' : ''} {!fullWidth ? 'auto-width' : ''} {className}"
+	style="
+		--gap: {gapValue};
+		--justify: {justify};
+		--align: {align};
+		{marginTopValue ? `margin-top: ${marginTopValue};` : ''}
+		{marginBottomValue ? `margin-bottom: ${marginBottomValue};` : ''}
+	"
 >
-	{@render children?.()}
+	{@render children()}
 </div>
 
 <style lang="scss">
-	div {
+	.flex-row {
 		display: flex;
+		flex-direction: row;
 		width: 100%;
+		gap: var(--gap, var(--spacing-base));
+		justify-content: var(--justify, flex-start);
+		align-items: var(--align, stretch);
 		flex-wrap: nowrap;
-		column-gap: 1rem;
-
-		&.size-auto {
-			width: auto;
-		}
 
 		&.wrap {
 			flex-wrap: wrap;
+		}
+
+		&.auto-width {
+			width: auto;
 		}
 	}
 </style>

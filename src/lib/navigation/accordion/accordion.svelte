@@ -57,9 +57,15 @@
 	.accordion {
 		background: #eee;
 		color: #000;
-		max-height: 3rem;
-		transition: max-height 1s ease;
-		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		min-height: fit-content;
+
+		h3 {
+			margin: 0;
+			padding: 0;
+		}
 
 		button {
 			appearance: none;
@@ -73,12 +79,15 @@
 			justify-content: space-between;
 			align-items: center;
 			font-size: 1rem;
+			box-sizing: border-box;
+			min-height: fit-content;
 
 			.icon {
 				width: 1rem;
 				height: 1rem;
 				display: block;
 				transition: transform 0.3s linear;
+				flex-shrink: 0;
 			}
 
 			&:hover {
@@ -90,13 +99,14 @@
 			padding: 1rem;
 			opacity: 0;
 			transition: opacity 0.3s linear;
+			max-height: 0;
+			overflow: hidden;
 		}
 
 		&.expanded {
-			max-height: 800px;
-
 			.menu {
 				opacity: 1;
+				max-height: none;
 			}
 
 			.icon {
