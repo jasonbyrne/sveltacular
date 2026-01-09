@@ -4,7 +4,7 @@
 
 	const { Story } = defineMeta({
 		component: Header,
-		title: 'Generic/Headline',
+		title: 'Generic/Header',
 		tags: ['autodocs']
 	});
 </script>

@@ -7,7 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const config = {
-	stories: ['../src/lib/**/*.stories.@(js|jsx|ts|tsx|svelte)'],
+	stories: [
+		'../src/stories/introduction.stories.svelte', // Landing page first
+		'../src/lib/**/*.stories.@(js|jsx|ts|tsx|svelte)'
+	],
 	staticDirs: [{ from: '../static', to: '/assets' }],
 
 	addons: ['@storybook/addon-links', '@storybook/addon-docs', '@storybook/addon-svelte-csf'],

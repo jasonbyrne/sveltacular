@@ -55,7 +55,7 @@ jobs:
           fi
           echo "Listing storybook-static contents:"
           ls -la ./storybook-static/ | head -20
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -70,11 +70,10 @@ jobs:
     needs: build
 
     steps:
-      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      
+
       - name: Display deployment information
         run: |
           echo "=== Deployment Information ==="
