@@ -52,11 +52,21 @@
 
 	// Handle header cell click - toggle select all when clicking anywhere in the cell
 	function handleCellClick(event: MouseEvent) {
-		// Don't double-toggle if the click was on the actual input element
 		const target = event.target as HTMLElement;
-		if (target.tagName === 'INPUT') return;
+		const currentTarget = event.currentTarget as HTMLElement;
 
-		handleSelectAllChange({ isChecked: !localChecked, value: '' });
+		// If the click is on the label or any of its children (input, span, etc.),
+		// let the component's native handlers take care of it
+		const label = currentTarget.querySelector('label');
+		if (label && (target === label || label.contains(target))) {
+			// Let the native checkbox handler work
+			return;
+		}
+
+		// Only handle cell click if clicking directly on the cell (not on the label/input)
+		if (target === currentTarget) {
+			handleSelectAllChange({ isChecked: !localChecked, value: '' });
+		}
 	}
 </script>
 

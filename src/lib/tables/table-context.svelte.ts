@@ -8,7 +8,7 @@ export interface TableContextConfig<T extends JsonObject = JsonObject> {
 	selectionMode?: 'none' | 'single' | 'multi';
 	rowIdKey?: keyof T & string;
 	onSort?: (column: string, direction: SortDirection) => void;
-	onSelectionChange?: (selectedRows: T[]) => void;
+	onSelectionChange?: (selectedRowIds: (string | number)[]) => void;
 	rows?: T[]; // Needed to compute selectedRows from selectedIds
 }
 
@@ -120,9 +120,9 @@ export class TableContext<T extends JsonObject = JsonObject> {
 	}
 	
 	private notifySelectionChange(rows?: T[]) {
-		if (this.config.onSelectionChange && rows) {
-			const selectedRows = this.getSelectedRows(rows);
-			this.config.onSelectionChange(selectedRows);
+		if (this.config.onSelectionChange) {
+			const selectedRowIds = Array.from(this.selectedIds);
+			this.config.onSelectionChange(selectedRowIds);
 		}
 	}
 

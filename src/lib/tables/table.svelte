@@ -21,7 +21,7 @@
 		rowIdKey?: string;
 		stickyHeader?: boolean;
 		onSort?: (column: string, direction: 'asc' | 'desc') => void;
-		onSelectionChange?: (selectedRows: JsonObject[]) => void;
+		onSelectionChange?: (selectedRowIds: (string | number)[]) => void;
 	} = $props();
 
 	// Create table context for child components

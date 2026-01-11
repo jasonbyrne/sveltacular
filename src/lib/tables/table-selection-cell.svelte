@@ -78,18 +78,33 @@
 	// Handle cell click - toggle selection when clicking anywhere in the cell
 	function handleCellClick(event: MouseEvent) {
 		const target = event.target as HTMLElement;
+		const currentTarget = event.currentTarget as HTMLElement;
 
-		if (selectionMode === 'multi') {
-			// For checkboxes: skip if clicking on input to avoid double-toggle
-			if (target.tagName === 'INPUT') return;
-			handleCheckboxChange({ isChecked: !localChecked, value: '' });
-		} else if (selectionMode === 'single' && rowId !== undefined) {
-			// For radios: always handle the click ourselves to enable deselection
-			// Native radio buttons don't allow unchecking, so we take control
-			if (target.tagName === 'INPUT') {
-				event.preventDefault();
+		// If the click is on the label or any of its children (input, span, etc.),
+		// let the component's native handlers take care of it
+		const label = currentTarget.querySelector('label');
+		if (label && (target === label || label.contains(target))) {
+			// For single selection, we need to handle deselection ourselves
+			// since native radio buttons don't allow unchecking
+			if (selectionMode === 'single' && rowId !== undefined) {
+				// Check if already selected and toggle off if so
+				if (context?.radioGroup === String(rowId)) {
+					event.preventDefault();
+					handleRadioChange(String(rowId));
+				}
+				// If not selected, let the native handler select it
 			}
-			handleRadioChange(String(rowId));
+			// For multi-selection, always let the native checkbox handler work
+			return;
+		}
+
+		// Only handle cell click if clicking directly on the cell (not on the label/input)
+		if (target === currentTarget) {
+			if (selectionMode === 'multi') {
+				handleCheckboxChange({ isChecked: !localChecked, value: '' });
+			} else if (selectionMode === 'single' && rowId !== undefined) {
+				handleRadioChange(String(rowId));
+			}
 		}
 	}
 </script>

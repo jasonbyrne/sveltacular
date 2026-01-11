@@ -25,17 +25,23 @@
 	} from './cell-renderers.js';
 	import type { Snippet } from 'svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
+	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
 
 	interface Action {
 		text: string;
-		onClick: (row: JsonObject) => unknown;
+		variant?: ButtonVariant;
+		href?: (row: JsonObject) => string;
+		onClick?: (row: JsonObject) => unknown;
 	}
 
 	interface Actions {
 		text?: string;
-		type?: string;
+		type?: 'buttons' | 'dropdown';
+		variant?: ButtonVariant | 'default';
+		size?: FormFieldSizeOptions;
+		align?: 'left' | 'center' | 'right';
 		items: Action[];
 	}
 
@@ -113,10 +119,15 @@
 	let colCount = $derived(
 		Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0) + (hasSelectionCol ? 1 : 0)
 	);
-	
+	let actionButtonVariant = $derived.by(() => {
+		return !actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant;
+	});
+	let actionButtonSize = $derived(actions?.size ?? 'sm');
+	let actionAlign = $derived(actions?.align ?? 'center');
+
 	// Track selected count from selection change callbacks
 	let internalSelectedCount = $state(0);
-	
+
 	// Sync selectedCount with internal tracking
 	$effect(() => {
 		selectedCount = internalSelectedCount;
@@ -198,10 +209,16 @@
 	{selectionMode}
 	{rowIdKey}
 	onSort={handleSortChange}
-	onSelectionChange={(selectedRows) => {
-		onSelectionChange?.(selectedRows);
+	onSelectionChange={(selectedRowIds) => {
+		// Convert selected IDs to actual row objects
+		// Use sortedRows (before pagination) to include all selected rows, not just current page
+		const selectedRowObjects = (sortedRows ?? []).filter((row) => {
+			const id = row[rowIdKey] as string | number;
+			return id !== undefined && selectedRowIds.includes(id);
+		});
+		onSelectionChange?.(selectedRowObjects);
 		// Track selected count from the callback
-		internalSelectedCount = selectedRows.length;
+		internalSelectedCount = selectedRowIds.length;
 	}}
 >
 	{#if children}
@@ -228,7 +245,7 @@
 				</TableHeaderCell>
 			{/each}
 			{#if hasActionCol}
-				<TableHeaderCell type="actions">Actions</TableHeaderCell>
+				<TableHeaderCell type="actions" align={actionAlign}>Actions</TableHeaderCell>
 			{/if}
 		</tr>
 	</TableHeader>
@@ -284,26 +301,32 @@
 									</TableCell>
 								{/each}
 								{#if hasActionCol && actions}
-									<TableCell type="actions">
+									<TableCell type="actions" align={actionAlign}>
 										{#if actions.type === 'dropdown'}
 											<DropdownButton text={actions.text ?? ''} variant="ghost">
 												{#each actions.items as action}
-													<DropdownItem onClick={() => action.onClick(row)}
+													<DropdownItem
+														href={action.href ? action.href(row) : undefined}
+														onClick={action.onClick ? () => action.onClick?.(row) : undefined}
 														>{action.text}</DropdownItem
 													>
 												{/each}
 											</DropdownButton>
 										{:else}
-											{#each actions.items as action}
-												<Button
-													collapse={true}
-													size="sm"
-													type="button"
-													variant={actions.type === 'outline' ? 'outline' : 'secondary'}
-													onClick={() => action.onClick(row)}
-													label={action.text}
-												/>
-											{/each}
+											<div class="actions">
+												{#each actions.items as action}
+													{@const buttonVariant = action.variant ?? actionButtonVariant}
+													<Button
+														collapse={true}
+														type="button"
+														variant={buttonVariant}
+														size={actionButtonSize}
+														href={action.href ? action.href(row) : undefined}
+														onClick={action.onClick ? () => action.onClick?.(row) : undefined}
+														label={action.text}
+													/>
+												{/each}
+											</div>
 										{/if}
 									</TableCell>
 								{/if}
@@ -336,24 +359,31 @@
 						</TableCell>
 					{/each}
 					{#if hasActionCol && actions}
-						<TableCell type="actions">
+						<TableCell type="actions" align={actionAlign}>
 							{#if actions.type === 'dropdown'}
 								<DropdownButton text={actions.text ?? ''} variant="ghost">
 									{#each actions.items as action}
-										<DropdownItem onClick={() => action.onClick(row)}>{action.text}</DropdownItem>
+										<DropdownItem
+											href={action.href ? action.href(row) : undefined}
+											onClick={action.onClick ? () => action.onClick?.(row) : undefined}
+											>{action.text}</DropdownItem
+										>
 									{/each}
 								</DropdownButton>
 							{:else}
-								{#each actions.items as action}
-									<Button
-										collapse={true}
-										size="sm"
-										type="button"
-										variant={actions.type === 'outline' ? 'outline' : 'secondary'}
-										onClick={() => action.onClick(row)}
-										label={action.text}
-									/>
-								{/each}
+								<div class="actions">
+									{#each actions.items as action}
+										{@const buttonVariant = action.variant ?? actionButtonVariant}
+										<Button
+											type="button"
+											variant={buttonVariant}
+											size={actionButtonSize}
+											href={action.href ? action.href(row) : undefined}
+											onClick={action.onClick ? () => action.onClick?.(row) : undefined}
+											label={action.text}
+										/>
+									{/each}
+								</div>
 							{/if}
 						</TableCell>
 					{/if}
@@ -414,5 +444,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.actions {
+		display: flex;
+		gap: 0.5rem;
 	}
 </style>
