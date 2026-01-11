@@ -24,18 +24,17 @@
 	const ctx = getContext<TabContext>(tabContext);
 	const tabStyle = ctx.variant || 'traditional';
 
-	// Generate ID once - explicitly capture initial prop values for stable tab identity
-	// Using untrack() to indicate we intentionally want non-reactive initial values
+	// Generate ID once - capture initial prop values for stable tab identity
 	const _id = untrack(
 		() => id || label.trim().toLocaleLowerCase().replaceAll(' ', '_') || uniqueId()
 	);
 
-	// Register this tab once on mount (like wizard does)
+	// Register this tab once on mount
 	onMount(() => {
 		ctx.register(_id, label, href, disabled);
 	});
 
-	// Access the $state object's properties directly - THIS creates reactive dependencies!
+	// Reactively check if this tab is active
 	const isActive = $derived(ctx.state.active === _id);
 
 	// Handle activation side effects
