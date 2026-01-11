@@ -199,7 +199,6 @@
 			width: 100%;
 			flex-grow: 1;
 			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
 
 			&:focus {
 				outline: none;

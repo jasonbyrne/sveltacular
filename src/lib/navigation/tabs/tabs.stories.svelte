@@ -38,9 +38,9 @@
 	<Tab label="Tab three">Tab three</Tab>
 </Story>
 
-<Story name="With Default Active" args={{ variant: 'traditional' }}>
+<Story name="With Active Tab" args={{ variant: 'traditional', activeTab: 'tab_two' }}>
 	<Tab label="Tab one">Tab one content</Tab>
-	<Tab label="Tab two" defaultActive>Tab two content (default active)</Tab>
+	<Tab id="tab_two" label="Tab two">Tab two content (active via activeTab prop)</Tab>
 	<Tab label="Tab three">Tab three content</Tab>
 </Story>
 

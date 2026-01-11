@@ -22,3 +22,16 @@
 	name="TextAreaWithLabel"
 	args={{ placeholder: 'Placeholder text', rows: 10, label: 'Comments' }}
 />
+
+<Story
+	name="CharacterCounter"
+	args={{
+		placeholder: 'Tell us about yourself',
+		label: 'Bio',
+		showCharacterCount: true,
+		maxlength: 200,
+		helperText: 'Share a bit about who you are',
+		value: 'I am a software developer passionate about creating user-friendly interfaces.',
+		rows: 4
+	}}
+/>

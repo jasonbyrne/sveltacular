@@ -21,6 +21,7 @@
 		helperText = undefined,
 		feedback = undefined,
 		isLoading = false,
+		showCharacterCount = false,
 		maxlength = undefined,
 		minlength = undefined,
 		pattern = undefined
@@ -39,12 +40,23 @@
 		helperText?: string;
 		feedback?: FormFieldFeedback;
 		isLoading?: boolean;
+		showCharacterCount?: boolean;
 		maxlength?: number | undefined;
 		minlength?: number | undefined;
 		pattern?: string | undefined;
 	} = $props();
 
 	let textareaElement: HTMLTextAreaElement | null = $state(null);
+
+	// Character count functionality
+	let characterCount = $derived((value || '').length);
+	let characterLimitClass = $derived(
+		maxlength && characterCount > maxlength * 0.9
+			? characterCount >= maxlength
+				? 'at-limit'
+				: 'near-limit'
+			: ''
+	);
 
 	// Auto-resize functionality
 	const handleAutoResize = () => {
@@ -86,25 +98,37 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<textarea
-		wrap="soft"
-		{id}
-		{placeholder}
-		rows={autoResize ? minRows : rows}
-		bind:value
-		bind:this={textareaElement}
-		{required}
-		{disabled}
-		{readonly}
-		{maxlength}
-		{minlength}
-		aria-busy={isLoading}
-		data-auto-resize={autoResize}
-		oninput={handleAutoResize}
-	></textarea>
+	<div class="textarea-container">
+		<textarea
+			wrap="soft"
+			{id}
+			{placeholder}
+			rows={autoResize ? minRows : rows}
+			bind:value
+			bind:this={textareaElement}
+			{required}
+			{disabled}
+			{readonly}
+			{maxlength}
+			{minlength}
+			aria-busy={isLoading}
+			data-auto-resize={autoResize}
+			oninput={handleAutoResize}
+		></textarea>
+		{#if showCharacterCount && maxlength}
+			<div class="character-count {characterLimitClass}">
+				{characterCount} / {maxlength}
+			</div>
+		{/if}
+	</div>
 </FormField>
 
 <style lang="scss">
+	.textarea-container {
+		position: relative;
+		width: 100%;
+	}
+
 	textarea {
 		width: 100%;
 		height: auto;
@@ -136,6 +160,27 @@
 		&[data-auto-resize='true'] {
 			resize: none;
 			overflow-y: hidden;
+		}
+	}
+
+	.character-count {
+		font-size: var(--font-sm);
+		line-height: 1.25rem;
+		padding: var(--spacing-xs);
+		text-align: right;
+		color: var(--body-fg);
+		position: absolute;
+		right: 0;
+		bottom: 0;
+
+		&.near-limit {
+			color: var(--warning, #ffc107);
+			font-weight: 500;
+		}
+
+		&.at-limit {
+			color: var(--danger, #dc3545);
+			font-weight: 600;
 		}
 	}
 </style>

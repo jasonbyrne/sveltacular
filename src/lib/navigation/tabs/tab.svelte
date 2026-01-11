@@ -8,15 +8,15 @@
 	let {
 		label,
 		href,
-		defaultActive = false,
 		id = undefined,
+		disabled = false,
 		onActivate = undefined,
 		children = undefined
 	}: {
 		label: string;
 		href?: string | undefined;
-		defaultActive?: boolean;
 		id?: string | undefined;
+		disabled?: boolean;
 		onActivate?: ((id: string) => void) | undefined;
 		children?: Snippet;
 	} = $props();
@@ -32,7 +32,7 @@
 
 	// Register this tab once on mount (like wizard does)
 	onMount(() => {
-		ctx.register(_id, label, defaultActive, href);
+		ctx.register(_id, label, href, disabled);
 	});
 
 	// Access the $state object's properties directly - THIS creates reactive dependencies!

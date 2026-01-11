@@ -7,10 +7,12 @@
 	let {
 		variant = 'traditional' as TabVariant,
 		onChange = undefined,
+		activeTab = $bindable(null as string | null),
 		children
 	}: {
 		variant?: TabVariant;
 		onChange?: ((id: string | null) => void) | undefined;
+		activeTab?: string | null;
 		children: Snippet;
 	} = $props();
 
@@ -26,10 +28,72 @@
 	let registrationIndex = 0;
 	let isInitialized = $state(false);
 
-	const register = (id: string, label: string, isActive: boolean, href?: string) => {
+	// Cache for tab lookups to improve performance
+	const tabCache = new Map<string, TabDefinition>();
+
+	const register = (id: string, label: string, href?: string, disabled = false) => {
+		// Prevent duplicate registrations
+		if (tabCache.has(id)) {
+			console.warn(`Tab with id "${id}" is already registered. Ignoring duplicate.`);
+			return;
+		}
+
 		const index = registrationIndex++;
-		tabState.tabs.push({ id, label, defaultActive: isActive, index, href });
+		const tab: TabDefinition = { id, label, index, href, disabled };
+		tabState.tabs.push(tab);
+		tabCache.set(id, tab);
 	};
+
+	// Sync from activeTab (parent) to tabState.active (internal)
+	// This allows parent to control which tab is active
+	// Using untrack to prevent reactive dependencies that could cause loops
+	$effect(() => {
+		const currentActiveTab = activeTab;
+		const currentActiveState = tabState.active;
+
+		// Check if current active tab becomes disabled - clear it if so
+		if (currentActiveState !== null) {
+			const activeTabDef = tabCache.get(currentActiveState);
+			if (activeTabDef?.disabled) {
+				// Active tab was disabled, find first enabled tab or clear
+				const enabledTabs = tabState.tabs.filter((tab) => !tab.disabled);
+				if (enabledTabs.length > 0) {
+					const firstEnabled = enabledTabs.sort((a, b) => a.index - b.index)[0];
+					tabState.active = firstEnabled.id;
+					activeTab = firstEnabled.id;
+				} else {
+					tabState.active = null;
+					activeTab = null;
+				}
+				return;
+			}
+		}
+
+		// Skip if values are already in sync
+		if (currentActiveTab === currentActiveState) return;
+
+		// If activeTab is explicitly set (including null), sync it to internal state
+		if (currentActiveTab !== undefined) {
+			if (currentActiveTab === null) {
+				// Parent wants to clear active tab
+				if (currentActiveState !== null) {
+					tabState.active = null;
+				}
+			} else {
+				// Only update if the tab exists and is not disabled
+				const tab = tabCache.get(currentActiveTab);
+				if (tab) {
+					if (!tab.disabled && currentActiveState !== currentActiveTab) {
+						tabState.active = currentActiveTab;
+					} else if (tab.disabled) {
+						// If parent tries to activate a disabled tab, revert activeTab
+						activeTab = currentActiveState;
+					}
+				}
+				// If tabs haven't registered yet, initialization will handle it
+			}
+		}
+	});
 
 	// Initialize active tab - only run once when tabs are available
 	$effect(() => {
@@ -45,6 +109,16 @@
 			const currentTabs = tabState.tabs;
 			if (currentTabs.length === 0) return;
 
+			// If activeTab is already set by parent, use it (after verifying it's valid and not disabled)
+			if (activeTab !== null && activeTab !== undefined) {
+				const tab = tabCache.get(activeTab);
+				if (tab && !tab.disabled) {
+					tabState.active = activeTab;
+					isInitialized = true;
+					return;
+				}
+			}
+
 			// Check for anchor in URL first (but only if it matches a tab in THIS group)
 			const anchor = getAnchor();
 			if (anchor) {
@@ -52,58 +126,60 @@
 				const groupPrefix = `${groupId}-`;
 				if (anchor.startsWith(groupPrefix)) {
 					const tabId = anchor.slice(groupPrefix.length);
-					const tabExists = currentTabs.some((tab) => tab.id === tabId);
-					if (tabExists) {
+					const tab = tabCache.get(tabId);
+					if (tab && !tab.disabled) {
 						tabState.active = tabId;
+						activeTab = tabId;
 						isInitialized = true;
 						return;
 					}
 				}
 				// Also check for direct tab ID match (for backward compatibility)
-				const tabExists = currentTabs.some((tab) => tab.id === anchor);
-				if (tabExists) {
+				const tab = tabCache.get(anchor);
+				if (tab && !tab.disabled) {
 					tabState.active = anchor;
+					activeTab = anchor;
 					isInitialized = true;
 					return;
 				}
 			}
 
-			// Check for defaultActive tab
-			const defaultActiveTab = currentTabs.find((tab) => tab.defaultActive);
-			if (defaultActiveTab) {
-				tabState.active = defaultActiveTab.id;
-				isInitialized = true;
-				return;
-			}
-
-			// Default to first tab (by registration index, which should be the first in DOM order)
+			// Default to first enabled tab (by registration index, which should be the first in DOM order)
 			// Sort by index to get the first registered tab (lowest index = first)
-			const sortedTabs = [...currentTabs].sort((a, b) => a.index - b.index);
+			const sortedTabs = [...currentTabs]
+				.filter((tab) => !tab.disabled)
+				.sort((a, b) => a.index - b.index);
 			const firstTab = sortedTabs[0];
 			if (firstTab) {
 				tabState.active = firstTab.id;
+				activeTab = firstTab.id;
 				isInitialized = true;
 			}
 		});
 	});
 	const selectTab = (id: string) => {
-		const tab = tabState.tabs.find((t) => t.id === id);
-		if (tab?.disabled) return;
+		// Use cache for faster lookup
+		const tab = tabCache.get(id);
+		if (!tab || tab.disabled) return;
 
-		tabState.active = id;
+		// Only update if different to avoid unnecessary re-renders
+		if (tabState.active !== id) {
+			tabState.active = id;
+			activeTab = id;
 
-		// Only use anchor navigation if tab doesn't have href (href navigation is handled by Tab component)
-		// Scope anchor to this group to avoid conflicts with multiple tab groups
-		if (!tab?.href) {
-			navigateToAnchor(`${groupId}-${id}`);
-		}
+			// Only use anchor navigation if tab doesn't have href (href navigation is handled by Tab component)
+			// Scope anchor to this group to avoid conflicts with multiple tab groups
+			if (!tab.href) {
+				navigateToAnchor(`${groupId}-${id}`);
+			}
 
-		onChange?.(id);
+			onChange?.(id);
 
-		// Focus the selected tab (scoped to this group)
-		const button = document.getElementById(`tab-${groupId}-${id}`);
-		if (button) {
-			button.focus();
+			// Focus the selected tab (scoped to this group)
+			const button = document.getElementById(`tab-${groupId}-${id}`);
+			if (button) {
+				button.focus();
+			}
 		}
 	};
 
@@ -161,15 +237,17 @@
 	<div class="tab-head">
 		<div role="tablist">
 			{#each tabState.tabs as tab}
-				<li class={tabState.active == tab.id ? 'active' : 'inactive'}>
+				<li class={tabState.active == tab.id ? 'active' : 'inactive'} class:disabled={tab.disabled}>
 					<button
 						id="tab-{groupId}-{tab.id}"
 						role="tab"
 						aria-selected={tabState.active === tab.id}
 						aria-controls="tabpanel-{groupId}-{tab.id}"
-						tabindex={tabState.active === tab.id ? 0 : -1}
+						aria-disabled={tab.disabled || false}
+						tabindex={tab.disabled ? -1 : tabState.active === tab.id ? 0 : -1}
+						disabled={tab.disabled || false}
 						onclick={() => selectTab(tab.id)}
-						onkeydown={(e) => handleKeydown(e, tab.id)}
+						onkeydown={(e) => !tab.disabled && handleKeydown(e, tab.id)}
 					>
 						{tab.label}
 					</button>
@@ -208,6 +286,11 @@
 		li.active button {
 			font-weight: 700;
 			cursor: default;
+		}
+
+		li.disabled button {
+			opacity: 0.5;
+			cursor: not-allowed;
 		}
 
 		button {

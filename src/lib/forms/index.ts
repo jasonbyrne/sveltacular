@@ -2,6 +2,7 @@
 export { default as Button } from './button/button.svelte';
 export { default as BoolBox } from './bool-box/bool-box.svelte';
 export { default as DateBox } from './date-box/date-box.svelte';
+export { default as DimensionBox } from './dimension-box/dimension-box.svelte';
 export { default as FileArea } from './file-area/file-area.svelte';
 export { default as FileBox } from './file-box/file-box.svelte';
 export { default as InfoBox } from './info-box/info-box.svelte';

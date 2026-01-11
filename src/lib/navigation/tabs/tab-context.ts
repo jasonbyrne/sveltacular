@@ -10,7 +10,6 @@ export type TabVariant =
 export type TabDefinition = {
 	id: string;
 	label: string;
-	defaultActive: boolean;
 	index: number;
 	disabled?: boolean;
 	href?: string;
@@ -23,6 +22,6 @@ export interface TabContext {
 	};
 	variant: TabVariant;
 	groupId: string;
-	register: (id: string, label: string, isActive: boolean, href?: string) => void;
+	register: (id: string, label: string, href?: string, disabled?: boolean) => void;
 }
 export const tabContext = 'tabContext';
