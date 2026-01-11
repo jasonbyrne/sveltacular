@@ -6,42 +6,48 @@
 
 	let {
 		children,
+		rows = [],
 		enableSorting = true,
-		enableSelection = false,
-		selectionMode = 'multi',
+		selectionMode = 'none',
 		rowIdKey = 'id',
 		stickyHeader = false,
 		onSort = undefined,
 		onSelectionChange = undefined
 	}: {
 		children?: Snippet;
+		rows?: JsonObject[];
 		enableSorting?: boolean;
-		enableSelection?: boolean;
-		selectionMode?: 'single' | 'multi';
+		selectionMode?: 'none' | 'single' | 'multi';
 		rowIdKey?: string;
 		stickyHeader?: boolean;
 		onSort?: (column: string, direction: 'asc' | 'desc') => void;
-		onSelectionChange?: (selectedIds: Set<string | number>) => void;
+		onSelectionChange?: (selectedRows: JsonObject[]) => void;
 	} = $props();
 
 	// Create table context for child components
 	// Using untrack() to indicate we intentionally want non-reactive initial values
 	const config: TableContextConfig<JsonObject> = {
 		enableSorting: untrack(() => enableSorting),
-		enableSelection: untrack(() => enableSelection),
 		selectionMode: untrack(() => selectionMode),
 		rowIdKey: untrack(() => rowIdKey),
 		onSort: untrack(() => onSort),
-		onSelectionChange: untrack(() => onSelectionChange)
+		onSelectionChange: untrack(() => onSelectionChange),
+		rows: untrack(() => rows)
 	};
 
-	createTableContext(config);
+	const context = createTableContext(config);
+
+	// Keep context.config.rows updated reactively when rows prop changes
+	// This is essential for selection features to work correctly
+	$effect(() => {
+		context.config.rows = rows;
+	});
 </script>
 
 <table
 	class:sticky-header={stickyHeader}
 	role="grid"
-	aria-rowcount={enableSelection ? undefined : undefined}
+	aria-rowcount={undefined}
 	aria-colcount={undefined}
 >
 	{@render children?.()}

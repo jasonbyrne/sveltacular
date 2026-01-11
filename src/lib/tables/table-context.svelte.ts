@@ -5,11 +5,11 @@ const TABLE_CONTEXT_KEY = Symbol('table-context');
 
 export interface TableContextConfig<T extends JsonObject = JsonObject> {
 	enableSorting?: boolean;
-	enableSelection?: boolean;
-	selectionMode?: 'single' | 'multi';
+	selectionMode?: 'none' | 'single' | 'multi';
 	rowIdKey?: keyof T & string;
 	onSort?: (column: string, direction: SortDirection) => void;
-	onSelectionChange?: (selectedIds: Set<string | number>) => void;
+	onSelectionChange?: (selectedRows: T[]) => void;
+	rows?: T[]; // Needed to compute selectedRows from selectedIds
 }
 
 export class TableContext<T extends JsonObject = JsonObject> {
@@ -20,6 +20,12 @@ export class TableContext<T extends JsonObject = JsonObject> {
 	// Selection state
 	selectedIds = $state<Set<string | number>>(new Set());
 	lastSelectedIndex = $state<number | null>(null);
+	
+	// Radio button group state (for single selection mode)
+	radioGroup = $state<string | undefined>(undefined);
+	
+	// Reactive selected count
+	selectedCount = $derived(this.selectedIds.size);
 
 	// Configuration
 	config: TableContextConfig<T>;
@@ -27,8 +33,7 @@ export class TableContext<T extends JsonObject = JsonObject> {
 	constructor(config: TableContextConfig<T> = {}) {
 		this.config = {
 			enableSorting: true,
-			enableSelection: false,
-			selectionMode: 'multi',
+			selectionMode: 'none',
 			rowIdKey: 'id' as keyof T & string,
 			...config
 		};
@@ -75,23 +80,29 @@ export class TableContext<T extends JsonObject = JsonObject> {
 	}
 
 	// Selection methods
-	toggleRow(id: string | number, index: number, shiftKey = false) {
-		if (!this.config.enableSelection) return;
+	toggleRow(id: string | number, index: number, shiftKey = false, rows?: T[]) {
+		if (this.config.selectionMode === 'none') return;
 
 		if (this.config.selectionMode === 'single') {
 			// Single selection mode
 			if (this.selectedIds.has(id)) {
 				this.selectedIds.delete(id);
+				this.radioGroup = undefined;
+				// Trigger reactivity
+				this.selectedIds = new Set(this.selectedIds);
 			} else {
 				this.selectedIds.clear();
 				this.selectedIds.add(id);
+				this.radioGroup = String(id);
+				// Trigger reactivity
+				this.selectedIds = new Set(this.selectedIds);
 			}
 			this.lastSelectedIndex = index;
 		} else {
 			// Multi selection mode
-			if (shiftKey && this.lastSelectedIndex !== null) {
+			if (shiftKey && this.lastSelectedIndex !== null && rows) {
 				// Range selection
-				this.selectRange(this.lastSelectedIndex, index);
+				this.selectRange(this.lastSelectedIndex, index, rows);
 			} else {
 				// Toggle single row
 				if (this.selectedIds.has(id)) {
@@ -99,11 +110,20 @@ export class TableContext<T extends JsonObject = JsonObject> {
 				} else {
 					this.selectedIds.add(id);
 				}
+				// Trigger reactivity
+				this.selectedIds = new Set(this.selectedIds);
 				this.lastSelectedIndex = index;
 			}
 		}
 
-		this.config.onSelectionChange?.(new Set(this.selectedIds));
+		this.notifySelectionChange(rows);
+	}
+	
+	private notifySelectionChange(rows?: T[]) {
+		if (this.config.onSelectionChange && rows) {
+			const selectedRows = this.getSelectedRows(rows);
+			this.config.onSelectionChange(selectedRows);
+		}
 	}
 
 	selectRange(startIndex: number, endIndex: number, rows?: T[]) {
@@ -121,27 +141,58 @@ export class TableContext<T extends JsonObject = JsonObject> {
 				}
 			}
 		}
+		
+		// Trigger reactivity
+		this.selectedIds = new Set(this.selectedIds);
 
-		this.config.onSelectionChange?.(new Set(this.selectedIds));
+		this.notifySelectionChange(rows);
 	}
 
 	selectAll(rows: T[]) {
-		if (!this.config.enableSelection) return;
+		if (this.config.selectionMode === 'none') return;
 
+		// Clear first, then add all to ensure proper state update
+		this.selectedIds.clear();
 		rows.forEach((row) => {
 			const id = row[this.config.rowIdKey!] as string | number;
 			if (id !== undefined) {
 				this.selectedIds.add(id);
 			}
 		});
+		
+		// Trigger reactivity by reassigning (Svelte 5 tracks Set mutations, but ensure it's reactive)
+		this.selectedIds = new Set(this.selectedIds);
 
-		this.config.onSelectionChange?.(new Set(this.selectedIds));
+		this.notifySelectionChange(rows);
 	}
 
-	deselectAll() {
+	deselectAll(rows?: T[]) {
 		this.selectedIds.clear();
+		// Trigger reactivity by reassigning
+		this.selectedIds = new Set(this.selectedIds);
 		this.lastSelectedIndex = null;
-		this.config.onSelectionChange?.(new Set(this.selectedIds));
+		this.radioGroup = undefined;
+		this.notifySelectionChange(rows);
+	}
+	
+	// Method to handle radio group changes (from radio button bindings)
+	setRadioSelection(value: string | undefined, rows?: T[]) {
+		if (this.config.selectionMode !== 'single') return;
+		
+		if (value) {
+			this.selectedIds.clear();
+			this.selectedIds.add(value);
+			// Trigger reactivity
+			this.selectedIds = new Set(this.selectedIds);
+			this.radioGroup = value;
+			this.notifySelectionChange(rows);
+		} else {
+			this.selectedIds.clear();
+			// Trigger reactivity
+			this.selectedIds = new Set(this.selectedIds);
+			this.radioGroup = undefined;
+			this.notifySelectionChange(rows);
+		}
 	}
 
 	isRowSelected(id: string | number): boolean {
@@ -164,6 +215,7 @@ export class TableContext<T extends JsonObject = JsonObject> {
 		});
 	}
 
+	// selectedCount is now a reactive derived state, but keep this method for backwards compatibility
 	getSelectedCount(): number {
 		return this.selectedIds.size;
 	}

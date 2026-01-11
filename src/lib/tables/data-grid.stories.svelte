@@ -140,32 +140,20 @@
 	Sortable Employees (click column headers)
 </Story>
 
-<Story name="WithSelection" args={{ rows, cols, enableSelection: true, selectionMode: 'multi' }}>
-	Employees with Multi-Select (click rows, use Shift for range)
+<Story name="WithMultiSelection" args={{ rows, cols, selectionMode: 'multi', enableSorting: true }}>
+	Employees with Multi-Select (checkboxes with select all)
 </Story>
 
-<Story
-	name="WithSingleSelection"
-	args={{ rows, cols, enableSelection: true, selectionMode: 'single' }}
->
-	Employees with Single Selection
-</Story>
-
-<Story
-	name="WithSortingAndSelection"
-	args={{ rows, cols, enableSorting: true, enableSelection: true }}
->
-	Fully Interactive Table
+<Story name="WithSingleSelection" args={{ rows, cols, selectionMode: 'single', enableSorting: true }}>
+	Employees with Single Selection (radio buttons)
 </Story>
 
 <Story name="WithStickyHeader" args={{ rows, cols, stickyHeader: true }}>
 	Employees with Sticky Header (scroll down)
 </Story>
 
-<Story name="WithEdit" args={{ rows, cols: colsNoSort, actions: editAction }}>Employees</Story>
-
-<Story name="WithMultipleActions" args={{ rows, cols: colsNoSort, actions: multiAction }}>
-	Employees
+<Story name="WithActions" args={{ rows, cols: colsNoSort, actions: multiAction }}>
+	Employees with Actions
 </Story>
 
 <Story
@@ -180,22 +168,6 @@
 	Countries with Pagination
 </Story>
 
-<Story
-	name="FullFeatured"
-	args={{
-		rows,
-		cols,
-		enableSorting: true,
-		enableSelection: true,
-		stickyHeader: true,
-		actions: multiAction
-	}}
->
-	All Features Combined
-</Story>
-
 <Story name="NoData" args={{ rows: [], cols }}>Employees (No Data)</Story>
 
 <Story name="Loading" args={{ rows: undefined, cols }}>Employees (Loading...)</Story>
-
-<Story name="NoColumns" args={{ rows, cols: [] }}>No Columns Defined</Story>

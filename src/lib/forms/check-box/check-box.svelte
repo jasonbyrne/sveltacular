@@ -12,6 +12,7 @@
 		name = undefined,
 		onChange = undefined,
 		label,
+		ariaLabel,
 		children,
 		size = 'full' as FormFieldSizeOptions,
 		helperText = undefined,
@@ -25,6 +26,7 @@
 		name?: string | undefined;
 		onChange?: ((data: { isChecked: boolean; value: string }) => void) | undefined;
 		label?: string;
+		ariaLabel?: string;
 		children?: Snippet;
 		size?: FormFieldSizeOptions;
 		helperText?: string;
@@ -32,6 +34,9 @@
 		required?: boolean;
 		inline?: boolean;
 	} = $props();
+
+	// Use ariaLabel if provided, otherwise fall back to label for accessibility
+	let inputAriaLabel = $derived(ariaLabel ?? label);
 
 	const id = uniqueId();
 
@@ -56,18 +61,21 @@
 			bind:checked={isChecked}
 			onchange={onChecked}
 			{required}
+			aria-label={inputAriaLabel}
 		/>
 		<span class="checkbox">
 			<span class="checkmark"><Icon type="check" size="sm" fill="#fff" mask /></span>
 		</span>
-		{#if children}
-			<div class="text">
-				{@render children()}
-			</div>
-		{:else if label}
-			<div class="text">
-				{label}
-			</div>
+		{#if !ariaLabel}
+			{#if children}
+				<div class="text">
+					{@render children()}
+				</div>
+			{:else if label}
+				<div class="text">
+					{label}
+				</div>
+			{/if}
 		{/if}
 	</label>
 {:else}
@@ -82,6 +90,7 @@
 				bind:checked={isChecked}
 				onchange={onChecked}
 				{required}
+				aria-label={inputAriaLabel}
 			/>
 			<span class="checkbox">
 				<span class="checkmark"> <Icon type="check" size="sm" fill="#fff" mask /></span>
@@ -130,7 +139,7 @@
 			user-select: none;
 
 			.checkmark {
-				display: block;
+				display: none;
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -156,6 +165,7 @@
 				border-color: var(--form-input-border);
 
 				.checkmark {
+					display: block;
 					width: 100%;
 					height: 100%;
 				}

@@ -4,6 +4,8 @@
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
+	import TableSelectionCell from './table-selection-cell.svelte';
+	import TableSelectionHeaderCell from './table-selection-header-cell.svelte';
 	import type { ColumnDef, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
 	import Button from '../forms/button/button.svelte';
 	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
@@ -21,10 +23,8 @@
 		getCellTypeClass,
 		sortRows
 	} from './cell-renderers.js';
-	import { getTableContext } from './table-context.svelte.js';
 	import type { Snippet } from 'svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
-	import { onMount } from 'svelte';
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
 
@@ -48,12 +48,12 @@
 		actions = undefined,
 		stickyHeader = false,
 		enableSorting = true,
-		enableSelection = false,
-		selectionMode = 'multi',
+		selectionMode = 'none',
 		rowIdKey = 'id',
 		onPageChange = null,
 		onSort = undefined,
 		onSelectionChange = undefined,
+		selectedCount = $bindable(0),
 		children = undefined,
 		virtualScroll = false,
 		rowHeight = 48,
@@ -67,12 +67,12 @@
 		actions?: Actions;
 		stickyHeader?: boolean;
 		enableSorting?: boolean;
-		enableSelection?: boolean;
-		selectionMode?: 'single' | 'multi';
+		selectionMode?: 'none' | 'single' | 'multi';
 		rowIdKey?: string;
 		onPageChange?: PaginationEvent | null;
 		onSort?: (column: string, direction: 'asc' | 'desc') => void;
-		onSelectionChange?: (selectedIds: Set<string | number>) => void;
+		onSelectionChange?: (selectedRows: JsonObject[]) => void;
+		selectedCount?: number;
 		children?: Snippet;
 		virtualScroll?: boolean;
 		rowHeight?: number;
@@ -108,8 +108,19 @@
 
 	// Computed values
 	let hasActionCol = $derived(actions?.items && actions.items.length > 0);
+	let hasSelectionCol = $derived(selectionMode !== 'none');
 	let visibleCols = $derived(cols.filter((col) => !col.hidden));
-	let colCount = $derived(Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0));
+	let colCount = $derived(
+		Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0) + (hasSelectionCol ? 1 : 0)
+	);
+	
+	// Track selected count from selection change callbacks
+	let internalSelectedCount = $state(0);
+	
+	// Sync selectedCount with internal tracking
+	$effect(() => {
+		selectedCount = internalSelectedCount;
+	});
 
 	// Manage sort state directly in DataGrid (not via context)
 	let currentSortColumn = $state<string | null>(null);
@@ -181,13 +192,17 @@
 </script>
 
 <Table
+	rows={filteredRows ?? []}
 	{stickyHeader}
 	enableSorting={false}
-	{enableSelection}
 	{selectionMode}
 	{rowIdKey}
 	onSort={handleSortChange}
-	{onSelectionChange}
+	onSelectionChange={(selectedRows) => {
+		onSelectionChange?.(selectedRows);
+		// Track selected count from the callback
+		internalSelectedCount = selectedRows.length;
+	}}
 >
 	{#if children}
 		<TableCaption side={captionSide} align={captionAlign}>{@render children?.()}</TableCaption>
@@ -195,6 +210,9 @@
 
 	<TableHeader sticky={stickyHeader}>
 		<tr>
+			{#if hasSelectionCol}
+				<TableSelectionHeaderCell />
+			{/if}
 			{#each visibleCols as col}
 				<TableHeaderCell
 					type={col.type}
@@ -245,7 +263,10 @@
 						<div
 							style="position: absolute; top: {vItem.offsetTop}px; height: {vItem.height}px; width: 100%; display: table; table-layout: fixed;"
 						>
-							<TableRow {row} rowIndex={index} selectable={enableSelection}>
+							<TableRow {row} rowIndex={index} selectable={hasSelectionCol}>
+								{#if hasSelectionCol}
+									<TableSelectionCell {row} rowIndex={index} />
+								{/if}
 								{#each visibleCols as col}
 									{@const cellValue = formatCell(row, col)}
 									{@const cellLink = getCellLink(row, col)}
@@ -294,7 +315,10 @@
 		{:else}
 			<!-- Regular rendering mode -->
 			{#each filteredRows as row, index}
-				<TableRow {row} rowIndex={index} selectable={enableSelection}>
+				<TableRow {row} rowIndex={index} selectable={hasSelectionCol}>
+					{#if hasSelectionCol}
+						<TableSelectionCell {row} rowIndex={index} />
+					{/if}
 					{#each visibleCols as col}
 						{@const cellValue = formatCell(row, col)}
 						{@const cellLink = getCellLink(row, col)}

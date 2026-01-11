@@ -22,36 +22,11 @@
 		row && context?.config.rowIdKey ? (row[context.config.rowIdKey] as string | number) : undefined
 	);
 
-	let isSelected = $derived(rowId !== undefined && context ? context.isRowSelected(rowId) : false);
-
-	let canSelect = $derived(selectable && context?.config.enableSelection && rowId !== undefined);
-
-	function handleClick(event: MouseEvent) {
-		if (canSelect && rowId !== undefined && rowIndex !== undefined) {
-			const shiftKey = event.shiftKey;
-			context?.toggleRow(rowId, rowIndex, shiftKey);
-		}
-	}
-
-	function handleKeyDown(event: KeyboardEvent) {
-		if (canSelect && (event.key === 'Enter' || event.key === ' ')) {
-			event.preventDefault();
-			if (rowId !== undefined && rowIndex !== undefined) {
-				context?.toggleRow(rowId, rowIndex, event.shiftKey);
-			}
-		}
-	}
+	let selectionMode = $derived(context?.config.selectionMode ?? 'none');
+	let canSelect = $derived(selectable && selectionMode !== 'none' && rowId !== undefined);
 </script>
 
-<tr
-	class:selectable={canSelect}
-	class:selected={isSelected}
-	aria-selected={canSelect ? isSelected : undefined}
-	tabindex={canSelect ? 0 : undefined}
-	onclick={handleClick}
-	onkeydown={handleKeyDown}
-	role={canSelect ? 'row' : undefined}
->
+<tr class:selectable={canSelect}>
 	{@render children?.()}
 </tr>
 
@@ -69,8 +44,6 @@
 	}
 
 	tr.selectable {
-		cursor: pointer;
-
 		&:hover {
 			background-color: var(--table-row-hover-bg, rgba(0, 0, 0, 0.05));
 		}
@@ -79,14 +52,5 @@
 			outline: 2px solid var(--focus-color, #0066cc);
 			outline-offset: -2px;
 		}
-	}
-
-	tr.selected {
-		background-color: var(--table-row-selected-bg, rgba(0, 102, 204, 0.1)) !important;
-		border-color: var(--table-row-selected-border, #0066cc);
-	}
-
-	tr.selected.selectable:hover {
-		background-color: var(--table-row-selected-hover-bg, rgba(0, 102, 204, 0.15)) !important;
 	}
 </style>

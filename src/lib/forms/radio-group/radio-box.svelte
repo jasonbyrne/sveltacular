@@ -9,12 +9,14 @@
 		value = undefined as RadioValue,
 		group = $bindable(undefined as string | undefined),
 		disabled = false,
+		ariaLabel,
 		children = undefined,
 		onChange = undefined
 	}: {
 		value?: RadioValue;
 		group?: string | undefined;
 		disabled?: boolean;
+		ariaLabel?: string;
 		children?: Snippet;
 		onChange?: ((value: string) => void) | undefined;
 	} = $props();
@@ -29,12 +31,13 @@
 		{value}
 		{disabled}
 		{id}
+		aria-label={ariaLabel}
 		onchange={() => onChange?.(String(value || ''))}
 	/>
-	<span class="checkbox">
-		<span class="checkmark"><Icon type="check" size="sm" /></span>
+	<span class="radio-circle">
+		<span class="radio-dot"></span>
 	</span>
-	{#if children}
+	{#if !ariaLabel && children}
 		<div class="text">
 			{@render children?.()}
 		</div>
@@ -50,40 +53,28 @@
 		font-size: 1rem;
 		cursor: pointer;
 
-		.checkbox {
+		.radio-circle {
 			position: relative;
 			width: 1.2rem;
 			height: 1.2rem;
-			border-radius: 0.6rem;
+			border-radius: 50%;
 			border: 1px solid var(--form-input-border, black);
 			background-color: var(--form-input-bg, white);
-			color: var(--form-input-fg, black);
-			font-size: 0.875rem;
-			font-weight: 500;
-			line-height: 1.25rem;
 			transition:
 				background-color 0.2s ease-in-out,
-				border-color 0.2s ease-in-out,
-				color 0.2s ease-in-out,
-				fill 0.2s ease-in-out,
-				stroke 0.2s ease-in-out;
+				border-color 0.2s ease-in-out;
 			user-select: none;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			padding-top: 0.1rem;
 
-			.checkmark {
-				display: block;
-				width: 0;
-				height: 0;
-				line-height: 100%;
-				color: var(--form-input-selected-fg, white);
-				fill: var(--form-input-selected-bg, #3182ce);
-				stroke: var(--form-input-selected-fg, white);
-				transition:
-					width 0.2s ease-in-out,
-					height 0.2s ease-in-out;
+			.radio-dot {
+				display: none;
+				width: 0.5rem;
+				height: 0.5rem;
+				border-radius: 50%;
+				background-color: var(--form-input-selected-bg, #3182ce);
+				transition: opacity 0.2s ease-in-out;
 			}
 		}
 
@@ -92,12 +83,11 @@
 			height: 0;
 			position: absolute;
 
-			&:checked + .checkbox {
-				background-color: var(--form-input-selected-bg, #3182ce);
+			&:checked + .radio-circle {
+				border-color: var(--form-input-selected-bg, #3182ce);
 
-				.checkmark {
-					width: 100%;
-					height: 100%;
+				.radio-dot {
+					display: block;
 				}
 			}
 		}
