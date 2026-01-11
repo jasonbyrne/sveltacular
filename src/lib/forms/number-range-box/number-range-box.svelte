@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const minId = uniqueId();
@@ -22,6 +22,9 @@
 		required = false,
 		size = 'full' as FormFieldSizeOptions,
 		label = undefined as string | undefined,
+		helperText = undefined as string | undefined,
+		feedback = undefined as FormFieldFeedback | undefined,
+		disabled = false,
 		onChange = undefined as ((minValue: number | null, maxValue: number | null) => void) | undefined
 	}: {
 		minValue?: number | null;
@@ -38,6 +41,9 @@
 		required?: boolean;
 		size?: FormFieldSizeOptions;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
 		onChange?: ((minValue: number | null, maxValue: number | null) => void) | undefined;
 	} = $props();
 
@@ -104,12 +110,14 @@
 		if (!isAllowed) return e.preventDefault();
 		if (isDecimal && !allowDecimals) return e.preventDefault();
 	};
+
+	let hasError = $derived(!!feedback?.isError);
 </script>
 
-<FormField {size} {label} id={minId} {required}>
+<FormField {size} {label} id={minId} {required} {disabled} {helperText} {feedback}>
 	<div class="number-range-inputs">
 		<div class="input-group">
-			<div class="input">
+			<div class="input {disabled ? 'disabled' : ''}" class:error={hasError}>
 				{#if prefix}
 					<span class="prefix">{prefix}</span>
 				{/if}
@@ -125,6 +133,7 @@
 					oninput={(e) => onInput(e, true)}
 					onkeypress={(e) => onKeyPress(e, true)}
 					{required}
+					{disabled}
 				/>
 				{#if suffix}
 					<span class="suffix">{suffix}</span>
@@ -132,7 +141,7 @@
 			</div>
 		</div>
 		<div class="input-group">
-			<div class="input">
+			<div class="input {disabled ? 'disabled' : ''}" class:error={hasError}>
 				{#if prefix}
 					<span class="prefix">{prefix}</span>
 				{/if}
@@ -148,6 +157,7 @@
 					oninput={(e) => onInput(e, false)}
 					onkeypress={(e) => onKeyPress(e, false)}
 					{required}
+					{disabled}
 				/>
 				{#if suffix}
 					<span class="suffix">{suffix}</span>
@@ -190,6 +200,14 @@
 			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
+
+		&.disabled {
+			opacity: 0.5;
+		}
+
+		&.error {
+			border-color: var(--color-error, #dc3545);
+		}
 
 		input {
 			background-color: transparent;

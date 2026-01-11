@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
@@ -58,7 +58,7 @@
 			{required}
 		/>
 		<span class="checkbox">
-			<span class="checkmark"><CheckIcon /></span>
+			<span class="checkmark"><Icon type="check" size="sm" fill="#fff" mask /></span>
 		</span>
 		{#if children}
 			<div class="text">
@@ -84,7 +84,7 @@
 				{required}
 			/>
 			<span class="checkbox">
-				<span class="checkmark"><CheckIcon /></span>
+				<span class="checkmark"> <Icon type="check" size="sm" fill="#fff" mask /></span>
 			</span>
 			{#if children}
 				<div class="text">

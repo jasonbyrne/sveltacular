@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import HamburgerIcon from '$src/lib/icons/hamburger-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { get, writable } from 'svelte/store';
 
@@ -39,7 +39,7 @@
 
 <div class="icon {$open ? 'open' : 'closed'} {collapse}">
 	<button type="button" onclick={toggle}>
-		<HamburgerIcon />
+		<Icon type="hamburger" size="md" />
 	</button>
 </div>
 <nav class="{align} {spacing} {collapse} {$open ? 'open' : 'closed'}">

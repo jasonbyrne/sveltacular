@@ -1,12 +1,12 @@
 <script lang="ts">
-	import EnvelopeIcon from '$src/lib/icons/envelope-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	let { value }: { value: string } = $props();
 </script>
 
 <a href="mailto:{value}" title="Email Address">
 	<span class="icon">
-		<EnvelopeIcon />
+		<Icon type="envelope" size="sm" />
 	</span>
 	<span class="address">
 		{value}

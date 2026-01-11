@@ -51,6 +51,7 @@
 		right: 0;
 		z-index: 999;
 		height: 3rem;
+		overflow: visible;
 		font-family: var(--base-font-family, sans-serif);
 
 		&.fixed {

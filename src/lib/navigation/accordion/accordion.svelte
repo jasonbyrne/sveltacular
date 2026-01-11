@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 
 	let {
@@ -44,7 +44,7 @@
 				{title}
 			</span>
 			<span class="icon" aria-hidden="true">
-				<AngleUpIcon />
+				<Icon type="angle-up" size="sm" />
 			</span>
 		</button>
 	</h3>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const baseId = uniqueId();
@@ -23,6 +23,9 @@
 		required = false,
 		size = 'full' as FormFieldSizeOptions,
 		label = undefined as string | undefined,
+		helperText = undefined as string | undefined,
+		feedback = undefined as FormFieldFeedback | undefined,
+		disabled = false,
 		onChange = undefined as ((value: (number | null)[]) => void) | undefined
 	}: {
 		dimensions?: string[];
@@ -36,6 +39,9 @@
 		required?: boolean;
 		size?: FormFieldSizeOptions;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
 		onChange?: ((value: (number | null)[]) => void) | undefined;
 	} = $props();
 
@@ -97,13 +103,15 @@
 	const getPlaceholder = (dimension: string) => {
 		return dimension;
 	};
+
+	let hasError = $derived(!!feedback?.isError);
 </script>
 
-<FormField {size} {label} id={getDimensionId(0)} {required}>
+<FormField {size} {label} id={getDimensionId(0)} {required} {disabled} {helperText} {feedback}>
 	<div class="dimension-inputs">
 		{#each dimensions as dimension, index}
 			<div class="input-group">
-				<div class="input">
+				<div class="input {disabled ? 'disabled' : ''}" class:error={hasError}>
 					{#if prefix}
 						<span class="prefix">{prefix}</span>
 					{/if}
@@ -119,6 +127,7 @@
 						oninput={(e) => onInput(e, index)}
 						onkeypress={onKeyPress}
 						{required}
+						{disabled}
 					/>
 					{#if suffix}
 						<span class="suffix">{suffix}</span>
@@ -174,6 +183,14 @@
 			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
+
+		&.disabled {
+			opacity: 0.5;
+		}
+
+		&.error {
+			border-color: var(--color-error, #dc3545);
+		}
 
 		input {
 			background-color: transparent;

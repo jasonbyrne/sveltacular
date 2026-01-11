@@ -40,7 +40,10 @@
 		flex-direction: column;
 		gap: 0.2rem;
 		align-items: center;
+		justify-content: center;
 		height: 100%;
+		min-width: 0;
+		padding: 0.25rem 0.5rem;
 		font-family: var(--nav-font-family, sans-serif);
 		color: var(--nav-link, black);
 		text-decoration: none;
@@ -48,6 +51,7 @@
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
+		overflow: visible;
 
 		&:hover {
 			color: var(--nav-link-hover, black);
@@ -55,10 +59,53 @@
 		}
 
 		.icon {
-			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 1.5rem;
 			height: 1.5rem;
+			flex-shrink: 0;
 			fill: var(--nav-link, black);
 			stroke: var(--nav-link, black);
+
+			:global(svg) {
+				width: 100%;
+				height: 100%;
+				max-width: 1.5rem;
+				max-height: 1.5rem;
+			}
+		}
+
+		.title {
+			font-size: 0.875rem;
+			white-space: nowrap;
+			overflow: visible;
+			text-overflow: ellipsis;
+			line-height: 1.2;
+		}
+	}
+
+	:global(header.sm button),
+	:global(header.xs button) {
+		flex-direction: row;
+		padding: 0.125rem 0.375rem;
+		gap: 0.375rem;
+		align-items: center;
+
+		.icon {
+			width: 1.25rem;
+			height: 1.25rem;
+			flex-shrink: 0;
+
+			:global(svg) {
+				max-width: 1.25rem;
+				max-height: 1.25rem;
+			}
+		}
+
+		.title {
+			font-size: 0.75rem;
+			line-height: 1;
 		}
 	}
 
@@ -78,10 +125,12 @@
 
 			.title {
 				flex-grow: 1;
+				font-size: 1rem;
 			}
 
 			.icon {
 				width: 1.5rem;
+				height: 1.5rem;
 			}
 		}
 	}

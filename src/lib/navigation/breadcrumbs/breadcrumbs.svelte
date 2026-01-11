@@ -1,5 +1,5 @@
 <script lang="ts">
-	import HomeIcon from '$src/lib/icons/home-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	type Crumb = { label: string; href?: string } | string;
 
@@ -26,7 +26,7 @@
 		{#if homeUrl}
 			<li class="home">
 				<a href={homeUrl} aria-label="Home">
-					<HomeIcon />
+					<Icon type="home" size="sm" />
 				</a>
 			</li>
 		{/if}

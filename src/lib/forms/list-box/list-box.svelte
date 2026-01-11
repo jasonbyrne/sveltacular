@@ -3,7 +3,7 @@
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
-	import AngleUpIcon from '$src/lib/icons/angle-up-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import debounce from '$src/lib/helpers/debounce.js';
 	import { browser } from '$app/environment';
 	import { onMount, untrack } from 'svelte';
@@ -311,7 +311,7 @@
 			aria-label={open ? 'Close options' : 'Open options'}
 			tabindex="-1"
 		>
-			<AngleUpIcon />
+			<Icon type="angle-up" size="sm" />
 		</button>
 		{#if text && isSearchable}
 			<button

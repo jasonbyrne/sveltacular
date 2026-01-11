@@ -36,7 +36,7 @@
 
 		/* Responsive padding for larger screens */
 		@include breakpoint-up('tablet') {
-			padding: 0 var(--spacing-xl, 2rem);
+			padding: 0 var(--spacing-md, 1rem);
 		}
 
 		/* Increase max-width on large screens to better utilize space */
@@ -46,7 +46,7 @@
 		}
 
 		/* Add extra bottom padding on mobile for better UX */
-		@include breakpoint-down('mobile') {
+		@include breakpoint-down('phablet') {
 			padding-bottom: 2rem;
 		}
 	}

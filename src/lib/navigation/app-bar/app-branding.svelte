@@ -14,12 +14,13 @@
 <style>
 	div {
 		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: row;
 		width: 100%;
 		height: 100%;
 		padding-left: var(--spacing-sm);
 		padding-right: var(--spacing-sm);
+		overflow: visible;
 	}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LinkIcon from '$src/lib/icons/link-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import type { FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField from '../form-field/form-field.svelte';
 
@@ -20,7 +20,7 @@
 	<div class="input">
 		{#if href}
 			<span class="icon">
-				<LinkIcon />
+				<Icon type="link" size="sm" />
 			</span>
 			<a {href} class="text">{value}</a>
 		{:else}

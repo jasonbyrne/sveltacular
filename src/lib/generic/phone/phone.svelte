@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { capitalize } from '$src/lib/helpers/capitalize.js';
-	import MobilePhoneIcon from '$src/lib/icons/mobile-phone-icon.svelte';
-	import PhoneIcon from '$src/lib/icons/phone-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	let {
 		value,
@@ -33,9 +32,9 @@
 <a href="{protocol}:{phoneNumberDigits}" title={capitalize(type)}>
 	<span class="icon">
 		{#if isCellPhone}
-			<MobilePhoneIcon />
+			<Icon type="mobile-phone" size="sm" />
 		{:else}
-			<PhoneIcon />
+			<Icon type="phone" size="sm" />
 		{/if}
 	</span>
 	<span class="number">

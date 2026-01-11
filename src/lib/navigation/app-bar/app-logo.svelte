@@ -29,17 +29,20 @@
 
 <style lang="scss">
 	div {
-		display: block;
-		width: 100%;
+		display: flex;
+		align-items: center;
+		width: auto;
 		height: 100%;
-		overflow: hidden;
+		overflow: visible;
 
 		a {
-			display: block;
-			width: 100%;
+			display: flex;
+			align-items: center;
+			width: auto;
 			height: 100%;
 			text-decoration: none;
 			color: var(--nav-link, #333);
+			line-height: 1;
 
 			&:hover {
 				color: var(--nav-link-hover, #333);

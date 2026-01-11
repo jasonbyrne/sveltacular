@@ -181,9 +181,8 @@ npm i sveltacular
 ### Images & Icons
 
 - **Image** - Image component with lazy loading
-- **Icon** - Icon component
-- **SvgIcon** - SVG icon wrapper
-- Built-in icons: AngleRightIcon, AngleUpIcon, CheckIcon, CopyIcon, EnvelopeIcon, FolderOpenIcon, HamburgerIcon, HomeIcon, LinkIcon, MobilePhoneIcon, PhoneIcon, UploadIcon
+- **Icon** - Unified icon component with type-safe icon types, CSS mask support, and external image support
+  - Built-in icon types: `angle-right`, `angle-up`, `check`, `copy`, `envelope`, `folder-open`, `hamburger`, `home`, `link`, `mobile-phone`, `phone`, `upload`
 
 ### Data
 

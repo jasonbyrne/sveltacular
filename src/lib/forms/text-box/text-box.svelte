@@ -3,7 +3,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -186,7 +186,7 @@
 			</div>
 		{:else if hasSuccess}
 			<div class="success-indicator" bind:this={successIconElement}>
-				<CheckIcon />
+				<Icon type="check" size="sm" />
 			</div>
 		{/if}
 		{#if suffix}

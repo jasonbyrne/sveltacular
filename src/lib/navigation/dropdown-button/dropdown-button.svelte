@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { AngleUpIcon } from '$src/lib/index.js';
+	import { Icon } from '$src/lib/index.js';
 	import { hasContext } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 
@@ -62,7 +62,7 @@
 		{#if icon === 'arrow'}
 			<div class="icon" aria-hidden="true">
 				<span>
-					<AngleUpIcon />
+					<Icon type="angle-up" size="sm" />
 				</span>
 			</div>
 		{/if}

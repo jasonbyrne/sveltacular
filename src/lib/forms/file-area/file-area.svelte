@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import UploadIcon from '$src/lib/icons/upload-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	type SelectFilesTarget = null | { files: FileList | null | undefined };
 	type DroppedFiles = FileList | File[];
@@ -93,7 +93,7 @@
 		ondragexit={dragStop}
 	>
 		<input type="file" id="upload-button" accept="image/*" onchange={selectFiles} {disabled} />
-		<div class="icon"><UploadIcon /></div>
+		<div class="icon"><Icon type="upload" size="lg" /></div>
 		<div class="text">
 			{#if children}
 				{@render children?.()}

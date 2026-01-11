@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import Icon from '$lib/icons/icon.svelte';
+	import type { IconType } from '$lib/icons/types.js';
 
 	let {
 		colspan = 1,
@@ -73,6 +75,17 @@
 			}
 		}
 	}
+
+	// Determine which icon to show based on sort state
+	let sortIconType = $derived<IconType | undefined>(
+		canSort
+			? isSorted
+				? sortDirection === 'asc'
+					? 'triangle-up'
+					: 'triangle-down'
+				: 'triangle-up-down'
+			: undefined
+	);
 </script>
 
 <th
@@ -91,17 +104,14 @@
 		<span class="header-text">
 			{@render children?.()}
 		</span>
-		{#if canSort}
+		{#if canSort && sortIconType}
 			<span class="sort-indicator" aria-hidden="true">
-				{#if isSorted}
-					{#if sortDirection === 'asc'}
-						<span class="sort-arrow">▲</span>
-					{:else}
-						<span class="sort-arrow">▼</span>
-					{/if}
-				{:else}
-					<span class="sort-arrow unsorted">⇅</span>
-				{/if}
+				<Icon
+					type={sortIconType}
+					size="sm"
+					variant="secondary"
+					class="sort-arrow {isSorted ? '' : 'unsorted'}"
+				/>
 			</span>
 		{/if}
 	</div>
@@ -166,7 +176,6 @@
 		flex-shrink: 0;
 		display: inline-flex;
 		align-items: center;
-		font-size: 0.75rem;
 		opacity: 0.7;
 	}
 
@@ -179,7 +188,7 @@
 		}
 	}
 
-	th.sortable:hover .sort-arrow.unsorted {
+	th.sortable:hover :global(.sort-arrow.unsorted) {
 		opacity: 0.6;
 	}
 </style>

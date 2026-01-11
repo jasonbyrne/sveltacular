@@ -9,7 +9,7 @@
 	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
 	import Empty from '../generic/empty/empty.svelte';
 	import Pill from '../generic/pill/pill.svelte';
-	import FolderOpenIcon from '../icons/folder-open-icon.svelte';
+	import Icon from '../icons/icon.svelte';
 	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
@@ -229,7 +229,7 @@
 							<Loading />
 						{:else}
 							<Empty>
-								<FolderOpenIcon />
+								<Icon type="folder-open" size="lg" />
 							</Empty>
 						{/if}
 					</div>

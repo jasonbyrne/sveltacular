@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	type RadioValue = string | number | boolean | undefined | null;
 
@@ -32,7 +32,7 @@
 		onchange={() => onChange?.(String(value || ''))}
 	/>
 	<span class="checkbox">
-		<span class="checkmark"><CheckIcon /></span>
+		<span class="checkmark"><Icon type="check" size="sm" /></span>
 	</span>
 	{#if children}
 		<div class="text">

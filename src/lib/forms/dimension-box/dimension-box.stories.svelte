@@ -108,6 +108,28 @@
 					defaultValue: { summary: "'full'" }
 				}
 			},
+			helperText: {
+				control: 'text',
+				description: 'Helper text displayed below the inputs',
+				table: {
+					type: { summary: 'string' }
+				}
+			},
+			feedback: {
+				control: 'object',
+				description: 'Error or success feedback message',
+				table: {
+					type: { summary: 'FormFieldFeedback' }
+				}
+			},
+			disabled: {
+				control: 'boolean',
+				description: 'Whether the inputs are disabled',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
 			onChange: {
 				action: 'changed',
 				description: 'Called when any dimension value changes',
@@ -199,5 +221,36 @@
 	args={{
 		label: 'Package Size',
 		dimensions: ['Length', 'Width', 'Height']
+	}}
+/>
+
+<Story
+	name="WithHelperText"
+	args={{
+		label: 'Dimensions',
+		dimensions: ['Width', 'Depth', 'Height'],
+		helperText: 'Enter dimensions in inches'
+	}}
+/>
+
+<Story
+	name="WithError"
+	args={{
+		label: 'Dimensions',
+		dimensions: ['Width', 'Depth', 'Height'],
+		feedback: {
+			text: 'Dimensions must be greater than 0',
+			isError: true
+		}
+	}}
+/>
+
+<Story
+	name="Disabled"
+	args={{
+		label: 'Dimensions',
+		dimensions: ['Width', 'Depth', 'Height'],
+		value: [10, 5, 8],
+		disabled: true
 	}}
 />

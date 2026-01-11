@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CheckIcon from '$src/lib/icons/check-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/index.js';
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
@@ -123,7 +123,7 @@
 							</FlexItem>
 							<FlexItem>
 								{#if item.value === value}
-									<span class="check" aria-hidden="true"><CheckIcon /></span>
+									<span class="check" aria-hidden="true"><Icon type="check" size="sm" /></span>
 								{/if}
 							</FlexItem>
 						</FlexRow>
@@ -156,7 +156,7 @@
 						</FlexItem>
 						<FlexItem>
 							{#if item.value === value}
-								<span class="check" aria-hidden="true"><CheckIcon /></span>
+								<span class="check" aria-hidden="true"><Icon type="check" size="sm" /></span>
 							{/if}
 						</FlexItem>
 					</FlexRow>

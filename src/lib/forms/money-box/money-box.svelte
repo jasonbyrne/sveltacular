@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
-	import FormField from '../form-field/form-field.svelte';
+	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
 	import { untrack } from 'svelte';
 
 	const id = uniqueId();
@@ -16,6 +16,10 @@
 		units = 'ones' as 'ones' | 'cents',
 		min = 0,
 		max = null as number | null,
+		required = false,
+		helperText = undefined as string | undefined,
+		feedback = undefined as FormFieldFeedback | undefined,
+		disabled = false,
 		onChange = undefined,
 		label = undefined
 	}: {
@@ -29,6 +33,10 @@
 		units?: 'ones' | 'cents';
 		min?: number;
 		max?: number | null;
+		required?: boolean;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		disabled?: boolean;
 		onChange?: ((value: number | null) => void) | undefined;
 		label?: string;
 	} = $props();
@@ -217,10 +225,12 @@
 		cents = String(centValue).padStart(2, '0');
 		onChange?.(value);
 	};
+
+	let hasError = $derived(!!feedback?.isError);
 </script>
 
-<FormField {size} {label} {id}>
-	<div class="input {currency}" class:allowCents {id}>
+<FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
+	<div class="input {currency}" class:allowCents class:disabled class:error={hasError} {id}>
 		{#if prefix}
 			<span class="prefix">{prefix}</span>
 		{/if}
@@ -240,6 +250,8 @@
 			name="dollars"
 			id="{id}-dollars"
 			inputmode="numeric"
+			{required}
+			{disabled}
 		/>
 		{#if allowCents}
 			<span class="separator">.</span>
@@ -258,6 +270,8 @@
 				name="cents"
 				id="{id}-cents"
 				inputmode="numeric"
+				{required}
+				{disabled}
 			/>
 		{/if}
 
@@ -291,6 +305,14 @@
 			stroke var(--transition-base) var(--ease-in-out);
 		user-select: none;
 		white-space: nowrap;
+
+		&.disabled {
+			opacity: 0.5;
+		}
+
+		&.error {
+			border-color: var(--color-error, #dc3545);
+		}
 
 		input {
 			background-color: transparent;

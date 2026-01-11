@@ -8,7 +8,7 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import { getContext } from 'svelte';
-	import AngleRightIcon from '$src/lib/icons/angle-right-icon.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
 
 	let {
 		onClick = undefined,
@@ -172,7 +172,7 @@
 
 	{#if submenu}
 		<span class="arrow" aria-hidden="true">
-			<AngleRightIcon />
+			<Icon type="angle-right" size="sm" />
 		</span>
 
 		{#if showSubmenu}
