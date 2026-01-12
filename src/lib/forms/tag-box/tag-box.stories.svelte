@@ -6,6 +6,14 @@
 	/**
 	 * TagBox component for adding and managing an array of string tags.
 	 *
+	 * **Features**:
+	 * - Custom autocomplete dropdown with keyboard navigation
+	 * - Strict mode to limit tags to only allowed values
+	 * - Case-insensitive duplicate detection
+	 * - Maximum tags limit
+	 * - Visual feedback for invalid attempts
+	 * - Multiple separator support (comma, semicolon, etc.)
+	 *
 	 * **Accessibility**: Includes proper ARIA attributes, labels, and helper text support.
 	 * Use `aria-describedby` to link helper text and error messages.
 	 *
@@ -16,7 +24,9 @@
 	 *   placeholder="Add a tag..."
 	 *   bind:value={tags}
 	 *   autocomplete={['tag1', 'tag2', 'tag3']}
-	 *   showAddButton={false}
+	 *   strict={false}
+	 *   caseInsensitive={true}
+	 *   maxTags={10}
 	 * />
 	 * ```
 	 */
@@ -111,6 +121,30 @@
 				table: {
 					type: { summary: 'boolean' },
 					defaultValue: { summary: 'false' }
+				}
+			},
+			strict: {
+				control: 'boolean',
+				description: 'If true, only tags from the autocomplete list can be added',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			caseInsensitive: {
+				control: 'boolean',
+				description: 'If true, duplicate detection is case-insensitive',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'true' }
+				}
+			},
+			maxTags: {
+				control: 'number',
+				description: 'Maximum number of tags allowed (undefined = no limit)',
+				table: {
+					type: { summary: 'number | undefined' },
+					defaultValue: { summary: 'undefined' }
 				}
 			},
 			onChange: {
@@ -244,5 +278,162 @@
 		placeholder: 'Add a tag...',
 		helperText: 'Add tags with Enter, separator keys, or the Add button',
 		showAddButton: true
+	}}
+/>
+
+<Story
+	name="StrictMode"
+	args={{
+		label: 'Programming Languages',
+		placeholder: 'Select a language...',
+		autocomplete: [
+			'JavaScript',
+			'TypeScript',
+			'Python',
+			'Java',
+			'C++',
+			'Go',
+			'Rust',
+			'Ruby',
+			'PHP',
+			'Swift'
+		],
+		strict: true,
+		helperText: 'Only languages from the dropdown are allowed (strict mode)'
+	}}
+/>
+
+<Story
+	name="MaxTags"
+	args={{
+		label: 'Top 3 Skills',
+		placeholder: 'Add a skill...',
+		autocomplete: ['JavaScript', 'TypeScript', 'Python', 'Java', 'React', 'Vue', 'Svelte'],
+		maxTags: 3,
+		helperText: 'Maximum 3 tags allowed'
+	}}
+/>
+
+<Story
+	name="StrictModeWithMaxTags"
+	args={{
+		label: 'Select up to 5 technologies',
+		placeholder: 'Type to search...',
+		autocomplete: [
+			'React',
+			'Vue',
+			'Svelte',
+			'Angular',
+			'Node.js',
+			'Express',
+			'Django',
+			'Flask',
+			'PostgreSQL',
+			'MongoDB',
+			'Redis',
+			'Docker',
+			'Kubernetes'
+		],
+		strict: true,
+		maxTags: 5,
+		helperText: 'Search and select up to 5 technologies from the list'
+	}}
+/>
+
+<Story
+	name="CaseSensitiveDuplicates"
+	args={{
+		label: 'Case-Sensitive Tags',
+		placeholder: 'Add a tag...',
+		caseInsensitive: false,
+		helperText: 'Duplicate detection is case-sensitive (React and react are different)',
+		value: ['React', 'react', 'REACT']
+	}}
+/>
+
+<Story
+	name="ImprovedKeyboardNavigation"
+	args={{
+		label: 'Skills with Keyboard Navigation',
+		placeholder: 'Type and use arrow keys...',
+		autocomplete: [
+			'JavaScript',
+			'TypeScript',
+			'Python',
+			'Java',
+			'C++',
+			'Go',
+			'Rust',
+			'Ruby',
+			'PHP',
+			'Swift',
+			'Kotlin',
+			'Dart',
+			'Elixir',
+			'Scala'
+		],
+		helperText: 'Use ↑↓ arrow keys to navigate, Enter/Tab to select, Esc to close'
+	}}
+/>
+
+<Story
+	name="LargeAutocompleteList"
+	args={{
+		label: 'Countries',
+		placeholder: 'Type to search countries...',
+		autocomplete: [
+			'United States',
+			'United Kingdom',
+			'Canada',
+			'Australia',
+			'Germany',
+			'France',
+			'Italy',
+			'Spain',
+			'Japan',
+			'China',
+			'India',
+			'Brazil',
+			'Mexico',
+			'Argentina',
+			'Netherlands',
+			'Belgium',
+			'Switzerland',
+			'Austria',
+			'Sweden',
+			'Norway',
+			'Denmark',
+			'Finland',
+			'Poland',
+			'Czech Republic',
+			'Ireland',
+			'Portugal',
+			'Greece',
+			'Turkey',
+			'South Korea',
+			'Singapore',
+			'Thailand',
+			'Vietnam',
+			'Indonesia',
+			'Malaysia',
+			'Philippines',
+			'New Zealand',
+			'South Africa',
+			'Egypt',
+			'Nigeria',
+			'Kenya'
+		],
+		helperText: 'Filtered suggestions update as you type'
+	}}
+/>
+
+<Story
+	name="EmptyTagValidation"
+	args={{
+		label: 'Tags with Empty Prevention',
+		placeholder: 'Try adding empty spaces...',
+		showAddButton: true,
+		helperText: 'Empty tags and whitespace-only tags are automatically filtered out',
+		value: ['valid-tag', '  ', 'another-tag', '']
 	}}
 />

@@ -57,6 +57,7 @@
 	let inputElement: HTMLInputElement | null = $state(null);
 	let containerElement: HTMLDivElement | null = $state(null);
 	let isUserTyping = $state(false);
+	let isLoading = $state(false);
 
 	// Initialize localItems when items prop changes (only when no search function)
 	$effect(() => {
@@ -94,6 +95,9 @@
 					.filter((item) => item.name.toLowerCase().includes(searchText))
 			: currentItems.map((item, index) => ({ ...item, index }));
 	});
+
+	// Check if there are no results when searching
+	let hasNoResults = $derived(isSearchable && text.trim() && filteredItems.length === 0 && !isLoading);
 
 	// Get the ID of the highlighted option for ARIA
 	let activeDescendant = $derived(
@@ -136,10 +140,8 @@
 		isMenuOpen = false;
 		highlightIndex = -1;
 		isUserTyping = false;
-		if (!isSearchable && browser && inputElement) {
-			// Reset text to selected value when closing non-searchable dropdown
-			text = getText();
-		}
+		// Reset text to selected value when closing dropdown
+		text = getText();
 	};
 
 	const toggleDropdown = () => {
@@ -185,6 +187,9 @@
 			e.preventDefault();
 			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
 				onSelect(filteredItems[highlightIndex]);
+			} else if (isMenuOpen && isSearchable && filteredItems.length > 0) {
+				// In searchable mode with matches but no highlight, select first item
+				onSelect(filteredItems[0]);
 			} else if (!isMenuOpen) {
 				openDropdown();
 			}
@@ -195,6 +200,10 @@
 			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
 				e.preventDefault();
 				onSelect(filteredItems[highlightIndex]);
+			} else if (isMenuOpen && isSearchable && filteredItems.length > 0) {
+				// In searchable mode with matches but no highlight, select first item
+				e.preventDefault();
+				onSelect(filteredItems[0]);
 			}
 			return;
 		}
@@ -224,7 +233,8 @@
 			if (!isMenuOpen) {
 				openDropdown();
 			}
-			highlightIndex = -1;
+			// Auto-highlight first item when typing for easier selection
+			highlightIndex = 0;
 			// Let the input handle the character, then trigger search
 			if (browser) {
 				setTimeout(() => triggerSearch(), 0);
@@ -235,7 +245,12 @@
 	// User is typing in the search box
 	const triggerSearch = debounce(async () => {
 		if (search && isSearchable) {
-			localItems = await search(text);
+			isLoading = true;
+			try {
+				localItems = await search(text);
+			} finally {
+				isLoading = false;
+			}
 		}
 	}, 300);
 
@@ -272,6 +287,14 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
+	<!-- ARIA live region for screen reader announcements -->
+	<div class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+		{#if isSearchable && text && isLoading}
+			Searching...
+		{:else if isSearchable && text}
+			{filteredItems.length} {filteredItems.length === 1 ? 'result' : 'results'} found
+		{/if}
+	</div>
 	<div
 		class="listbox-container {open ? 'open' : 'closed'} {disabled ? 'disabled' : 'enabled'}"
 		bind:this={containerElement}
@@ -291,6 +314,7 @@
 			aria-autocomplete={isSearchable ? 'list' : 'none'}
 			aria-activedescendant={activeDescendant}
 			aria-haspopup="listbox"
+			aria-busy={isLoading}
 			onkeydown={onInputKeyDown}
 			onclick={handleInputClick}
 			oninput={() => {
@@ -313,7 +337,12 @@
 		>
 			<Icon type="angle-up" size="sm" />
 		</button>
-		{#if text && isSearchable}
+		{#if isLoading}
+			<div class="loading-indicator" aria-hidden="true">
+				<div class="spinner"></div>
+			</div>
+		{/if}
+		{#if value && isSearchable && !isLoading}
 			<button
 				type="button"
 				class="clear"
@@ -327,19 +356,23 @@
 			</button>
 		{/if}
 		<div class="dropdown">
-			<Menu
-				items={filteredItems}
-				{open}
-				closeAfterSelect={true}
-				searchText={isSearchable ? text : ''}
-				{onSelect}
-				size="full"
-				bind:highlightIndex
-				bind:value
-				{listboxId}
-				{virtualScroll}
-				{itemHeight}
-			/>
+			{#if hasNoResults && open}
+				<div class="no-results" role="status">No results found</div>
+			{:else}
+				<Menu
+					items={filteredItems}
+					{open}
+					closeAfterSelect={true}
+					searchText={isSearchable ? text : ''}
+					{onSelect}
+					size="full"
+					bind:highlightIndex
+					bind:value
+					{listboxId}
+					{virtualScroll}
+					{itemHeight}
+				/>
+			{/if}
 		</div>
 	</div>
 </FormField>
@@ -436,38 +469,91 @@
 				}
 			}
 
-			&.clear {
-				right: calc(var(--spacing-base) + 2rem);
-				width: 1.25rem;
-				height: 1.25rem;
-				font-size: var(--font-sm);
-				font-weight: 600;
-			}
+		&.clear {
+			right: calc(var(--spacing-base) + 2rem);
+			width: 1.25rem;
+			height: 1.25rem;
+			font-size: var(--font-sm);
+			font-weight: 600;
+		}
+	}
+
+	&.open .icon {
+		transform: rotate(0deg);
+	}
+
+	.loading-indicator {
+		position: absolute;
+		right: calc(var(--spacing-base) + 2rem);
+		width: 1.25rem;
+		height: 1.25rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+
+		.spinner {
+			width: 1rem;
+			height: 1rem;
+			border: 2px solid var(--form-input-border);
+			border-top-color: var(--form-input-fg);
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+		}
+	}
+
+	.dropdown {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		z-index: 1000;
+		margin-top: 0.25rem;
+
+		.no-results {
+			padding: 1rem;
+			text-align: center;
+			color: var(--text-muted, #6c757d);
+			font-size: var(--font-sm, 0.875rem);
+			background-color: var(--form-input-bg);
+			border: var(--border-thin) solid var(--form-input-border);
+			border-radius: var(--radius-md);
 		}
 
-		&.open .icon {
-			transform: rotate(0deg);
-		}
+		:global(.menu) {
+			font-size: var(--font-sm, 0.875rem);
 
-		.dropdown {
-			position: absolute;
-			top: 100%;
-			left: 0;
-			width: 100%;
-			z-index: 1000;
-			margin-top: 0.25rem;
-
-			:global(.menu) {
-				font-size: var(--font-sm, 0.875rem);
-
-				:global(li) {
-					:global(div) {
-						padding: 0.25rem 0.5rem;
-						line-height: 1.25;
-						font-size: var(--font-sm, 0.875rem);
-					}
+			:global(li) {
+				:global(div) {
+					padding: 0.25rem 0.5rem;
+					line-height: 1.25;
+					font-size: var(--font-sm, 0.875rem);
 				}
 			}
 		}
 	}
+}
+
+// Screen reader only content
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+// Animation for loading spinner
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
 </style>
