@@ -215,17 +215,25 @@
 		}
 
 		&.nullable {
-			input,
-			.input-null-text {
-				padding-left: 2.5rem;
-			}
-
 			.toggle {
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
 				left: 0.4rem;
 				z-index: 1;
+			}
+
+			// When there's a prefix, only the prefix needs padding
+			.prefix {
+				padding-left: 2.5rem;
+			}
+
+			// When there's NO prefix, the input and null text need padding
+			&:not(:has(.prefix)) {
+				input,
+				.input-null-text {
+					padding-left: 2.5rem;
+				}
 			}
 		}
 

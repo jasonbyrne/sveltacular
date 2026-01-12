@@ -14,14 +14,17 @@
 		disabled = false,
 		required = false,
 		readonly = false,
+		nullable = false,
 		maxlength = undefined,
 		minlength = undefined,
 		pattern = undefined,
 		isLoading = false,
 		onChange = undefined,
+		onCheckChanged = undefined,
 		onInput = undefined,
 		onFocus = undefined,
-		onBlur = undefined
+		onBlur = undefined,
+		nullText = ''
 	}: {
 		protocol?: HttpProtocol;
 		value?: string | null;
@@ -33,28 +36,31 @@
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;
+		nullable?: boolean;
 		maxlength?: number | undefined;
 		minlength?: number | undefined;
 		pattern?: string | undefined;
 		isLoading?: boolean;
-		onChange?: ((value: string) => void) | undefined;
-		onInput?: ((value: string) => void) | undefined;
+		onChange?: ((value: string | null) => void) | undefined;
+		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
+		onInput?: ((value: string | null) => void) | undefined;
 		onFocus?: ((e: FocusEvent) => void) | undefined;
 		onBlur?: ((e: FocusEvent) => void) | undefined;
+		nullText?: string;
 	} = $props();
 
 	// On input, parse the value and set the protocol
-	const handleInput = (inputValue: string) => {
+	const handleInput = (inputValue: string | null) => {
 		const cleanValue = inputValue ?? '';
 		const urlParts = cleanValue.split('://');
 		if (['http', 'https'].includes(urlParts[0])) {
 			protocol = urlParts[0] as HttpProtocol;
 			value = urlParts[1];
 		}
-		onInput?.(cleanValue);
+		onInput?.(inputValue);
 	};
 
-	const handleChange = (inputValue: string) => {
+	const handleChange = (inputValue: string | null) => {
 		onChange?.(inputValue);
 	};
 </script>
@@ -67,6 +73,7 @@
 	{size}
 	onInput={handleInput}
 	onChange={handleChange}
+	{onCheckChanged}
 	{onFocus}
 	{onBlur}
 	allowSpaces={false}
@@ -76,8 +83,10 @@
 	{disabled}
 	{required}
 	{readonly}
+	{nullable}
 	{maxlength}
 	{minlength}
 	{pattern}
 	{isLoading}
+	{nullText}
 />
