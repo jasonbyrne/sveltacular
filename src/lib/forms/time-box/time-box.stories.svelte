@@ -61,6 +61,22 @@
 					type: { summary: 'FormFieldFeedback' }
 				}
 			},
+			nullable: {
+				control: 'boolean',
+				description: 'Whether the field can be null (adds a checkbox to toggle value)',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			nullText: {
+				control: 'text',
+				description: 'Text to display when nullable and unchecked',
+				table: {
+					type: { summary: 'string' },
+					defaultValue: { summary: "'-- : -- : --'" }
+				}
+			},
 			disabled: {
 				control: 'boolean',
 				description: 'Whether the input is disabled',
@@ -81,12 +97,20 @@
 				action: 'changed',
 				description: 'Called when the time value changes',
 				table: {
-					type: { summary: '(value: string) => void' }
+					type: { summary: '(value: string | null) => void' }
+				}
+			},
+			onCheckChanged: {
+				action: 'checkChanged',
+				description: 'Called when the nullable checkbox is toggled',
+				table: {
+					type: { summary: '(isChecked: boolean) => void' }
 				}
 			}
 		},
 		args: {
-			onChange: fn()
+			onChange: fn(),
+			onCheckChanged: fn()
 		}
 	});
 </script>
@@ -121,4 +145,41 @@
 
 <Story name="Sizes" args={{ label: 'Time' }}>
 	TimeBox in different sizes: sm, md, lg, xl, full.
+</Story>
+
+<Story
+	name="Nullable"
+	args={{
+		label: 'Meeting time (optional)',
+		nullable: true,
+		value: '14:30',
+		helperText: 'Uncheck to indicate no specific time preference'
+	}}
+>
+	TimeBox with nullable support. Toggle the checkbox to enable/disable the field. When unchecked, the
+	value clears but is remembered if you re-check it.
+</Story>
+
+<Story
+	name="NullableEmpty"
+	args={{
+		label: 'Appointment time',
+		nullable: true,
+		helperText: 'Check to set a time'
+	}}
+>
+	TimeBox with nullable support starting empty. When you check the box, it will default to the
+	current time, or restore your last entered value.
+</Story>
+
+<Story
+	name="NullableCustomText"
+	args={{
+		label: 'Alarm time',
+		nullable: true,
+		nullText: 'No alarm set',
+		helperText: 'Check to set an alarm'
+	}}
+>
+	TimeBox with custom null text displayed when unchecked.
 </Story>

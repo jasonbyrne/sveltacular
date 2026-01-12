@@ -18,7 +18,10 @@
 		minlength = undefined,
 		pattern = undefined,
 		isLoading = false,
-		onChange = undefined
+		onChange = undefined,
+		onInput = undefined,
+		onFocus = undefined,
+		onBlur = undefined
 	}: {
 		protocol?: HttpProtocol;
 		value?: string | null;
@@ -35,6 +38,9 @@
 		pattern?: string | undefined;
 		isLoading?: boolean;
 		onChange?: ((value: string) => void) | undefined;
+		onInput?: ((value: string) => void) | undefined;
+		onFocus?: ((e: FocusEvent) => void) | undefined;
+		onBlur?: ((e: FocusEvent) => void) | undefined;
 	} = $props();
 
 	// On input, parse the value and set the protocol
@@ -45,7 +51,11 @@
 			protocol = urlParts[0] as HttpProtocol;
 			value = urlParts[1];
 		}
-		onChange?.(cleanValue);
+		onInput?.(cleanValue);
+	};
+
+	const handleChange = (inputValue: string) => {
+		onChange?.(inputValue);
 	};
 </script>
 
@@ -56,7 +66,9 @@
 	prefix={protocol + '://'}
 	{size}
 	onInput={handleInput}
-	onChange={handleInput}
+	onChange={handleChange}
+	{onFocus}
+	{onBlur}
 	allowSpaces={false}
 	{label}
 	{helperText}

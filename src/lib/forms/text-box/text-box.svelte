@@ -20,6 +20,7 @@
 		disabled = false,
 		required = false,
 		readonly = false,
+		nullable = false,
 		maxlength = undefined,
 		minlength = undefined,
 		pattern = undefined,
@@ -30,8 +31,12 @@
 		allowLetters = true,
 		textCase = undefined,
 		onChange = undefined,
+		onCheckChanged = undefined,
 		onInput = undefined,
-		label = undefined
+		onFocus = undefined,
+		onBlur = undefined,
+		label = undefined,
+		nullText = ''
 	}: {
 		value?: string | null;
 		placeholder?: string;
@@ -44,6 +49,7 @@
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;
+		nullable?: boolean;
 		maxlength?: number | undefined;
 		minlength?: number | undefined;
 		pattern?: string | undefined;
@@ -53,10 +59,23 @@
 		allowNumbers?: boolean;
 		allowLetters?: boolean;
 		textCase?: 'lower' | 'upper' | undefined;
-		onChange?: ((value: string) => void) | undefined;
-		onInput?: ((value: string) => void) | undefined;
+		onChange?: ((value: string | null) => void) | undefined;
+		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
+		onInput?: ((value: string | null) => void) | undefined;
+		onFocus?: ((e: FocusEvent) => void) | undefined;
+		onBlur?: ((e: FocusEvent) => void) | undefined;
 		label?: string;
+		nullText?: string;
 	} = $props();
+
+	// Track whether the nullable checkbox is checked (i.e., whether field has a value)
+	let isChecked = $state(untrack(() => !!value));
+
+	// Remember the last non-null value so we can restore it when re-checking
+	let lastValue = $state<string | undefined>(undefined);
+
+	// Derive the actual disabled state: disabled prop OR (nullable and unchecked)
+	let inputDisabled = $derived(disabled || (nullable && !isChecked));
 
 	let hasError = $derived(!!feedback?.isError);
 	let hasSuccess = $derived(!!feedback && !feedback.isError);
@@ -71,6 +90,7 @@
 				: 'near-limit'
 			: ''
 	);
+	let showInput = $derived(!nullable || isChecked);
 
 	// Update describedByIds array when helper/feedback changes
 	$effect(() => {
@@ -130,6 +150,33 @@
 		}
 	};
 
+	const checkChanged = () => {
+		if (nullable) {
+			if (isChecked) {
+				// Restore last value if available, otherwise use empty string
+				value = lastValue || '';
+			} else {
+				// Store current value before clearing
+				if (value) {
+					lastValue = value;
+				}
+				value = '';
+			}
+		}
+		onCheckChanged?.(isChecked);
+		handleInputChange();
+	};
+
+	const handleInputChange = () => {
+		const currentValue = !nullable || isChecked ? value : null;
+		// Remember the value if it's not empty
+		if (isChecked && value) {
+			lastValue = value;
+		}
+		onChange?.(currentValue);
+		onInput?.(currentValue);
+	};
+
 	// When the value changes, make sure it is in the correct case
 	const handleInput = (e: Event) => {
 		const cleanValue = String(value);
@@ -147,9 +194,24 @@
 		if (type === 'url') {
 			value = cleanValue.replace(/\s/g, '');
 		}
-		onInput?.(cleanValue);
-		onChange?.(cleanValue);
+		handleInputChange();
 	};
+
+	$effect(() => {
+		if (!value) {
+			// Use untrack to prevent writes to isChecked/value from triggering this effect again
+			untrack(() => {
+				if (nullable) isChecked = false;
+			});
+		} else {
+			// Initialize lastValue if we have an initial value
+			if (!lastValue) {
+				lastValue = value;
+			}
+		}
+	});
+
+	let effectiveNullText = $derived(nullText || placeholder || '--');
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
@@ -157,29 +219,38 @@
 		class="input {disabled ? 'disabled' : 'enabled'}"
 		class:error={hasError}
 		class:success={hasSuccess}
+		class:nullable
 		bind:this={inputElement}
 	>
 		{#if prefix}
 			<div class="prefix">{prefix}</div>
 		{/if}
-		<input
-			{id}
-			{placeholder}
-			bind:value
-			{...{ type }}
-			{disabled}
-			{readonly}
-			{required}
-			{maxlength}
-			{minlength}
-			{pattern}
-			aria-describedby={describedByIds.length > 0 ? describedByIds.join(' ') : undefined}
-			aria-required={required}
-			aria-invalid={hasError}
-			aria-busy={isLoading}
-			onkeypress={onKeyPress}
-			oninput={handleInput}
-		/>
+		{#if showInput}
+			<input
+				{id}
+				{placeholder}
+				bind:value
+				{...{ type }}
+				disabled={inputDisabled}
+				{readonly}
+				{required}
+				{maxlength}
+				{minlength}
+				{pattern}
+				aria-describedby={describedByIds.length > 0 ? describedByIds.join(' ') : undefined}
+				aria-required={required}
+				aria-invalid={hasError}
+				aria-busy={isLoading}
+				onkeypress={onKeyPress}
+				oninput={handleInput}
+				onfocus={onFocus}
+				onblur={onBlur}
+			/>
+		{:else}
+			<div class="input-null-text">
+				{effectiveNullText}
+			</div>
+		{/if}
 		{#if isLoading}
 			<div class="loading-indicator" aria-label="Loading">
 				<div class="spinner"></div>
@@ -191,6 +262,11 @@
 		{/if}
 		{#if suffix}
 			<div class="suffix">{suffix}</div>
+		{/if}
+		{#if nullable}
+			<span class="toggle">
+				<input type="checkbox" bind:checked={isChecked} onchange={checkChanged} />
+			</span>
 		{/if}
 	</div>
 	{#if showCharacterCount && maxlength}
@@ -234,6 +310,21 @@
 
 		&.success {
 			border-color: var(--success, #28a745);
+		}
+
+		&.nullable {
+			input,
+			.input-null-text {
+				padding-left: 2.5rem;
+			}
+
+			.toggle {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				left: 0.4rem;
+				z-index: 1;
+			}
 		}
 
 		.loading-indicator,
@@ -289,6 +380,22 @@
 				outline: 2px solid var(--focus-ring, #007bff);
 				outline-offset: 2px;
 			}
+
+			&:disabled {
+				cursor: not-allowed;
+			}
+		}
+
+		.input-null-text {
+			font-size: var(--font-md);
+			line-height: 2rem;
+			text-align: left;
+			padding-left: var(--spacing-base);
+			margin: 0;
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
 		}
 
 		.prefix,

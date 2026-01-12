@@ -19,6 +19,8 @@
 		search = undefined as SearchFunction | undefined,
 		placeholder = '',
 		onChange = undefined,
+		onFocus = undefined,
+		onBlur = undefined,
 		label = undefined,
 		helperText = undefined,
 		feedback = undefined,
@@ -34,6 +36,8 @@
 		search?: SearchFunction | undefined;
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
+		onFocus?: ((e: FocusEvent) => void) | undefined;
+		onBlur?: ((e: FocusEvent) => void) | undefined;
 		label?: string;
 		helperText?: string;
 		feedback?: FormFieldFeedback;
@@ -142,6 +146,14 @@
 		isUserTyping = false;
 		// Reset text to selected value when closing dropdown
 		text = getText();
+	};
+
+	const handleFocus = (e: FocusEvent) => {
+		onFocus?.(e);
+	};
+
+	const handleBlur = (e: FocusEvent) => {
+		onBlur?.(e);
 	};
 
 	const toggleDropdown = () => {
@@ -323,6 +335,8 @@
 					triggerSearch();
 				}
 			}}
+			onfocus={handleFocus}
+			onblur={handleBlur}
 			data-value={value}
 			data-text={text}
 		/>

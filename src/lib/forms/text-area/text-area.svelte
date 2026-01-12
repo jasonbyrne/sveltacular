@@ -24,7 +24,11 @@
 		showCharacterCount = false,
 		maxlength = undefined,
 		minlength = undefined,
-		pattern = undefined
+		pattern = undefined,
+		onChange = undefined,
+		onInput = undefined,
+		onFocus = undefined,
+		onBlur = undefined
 	}: {
 		size?: FormFieldSizeOptions;
 		value?: string | null;
@@ -44,6 +48,10 @@
 		maxlength?: number | undefined;
 		minlength?: number | undefined;
 		pattern?: string | undefined;
+		onChange?: ((value: string) => void) | undefined;
+		onInput?: ((value: string) => void) | undefined;
+		onFocus?: ((e: FocusEvent) => void) | undefined;
+		onBlur?: ((e: FocusEvent) => void) | undefined;
 	} = $props();
 
 	let textareaElement: HTMLTextAreaElement | null = $state(null);
@@ -74,6 +82,15 @@
 
 		const newHeight = Math.min(Math.max(textareaElement.scrollHeight, minHeight), maxHeight);
 		textareaElement.style.height = `${newHeight}px`;
+	};
+
+	const handleInput = (e: Event) => {
+		handleAutoResize();
+		onInput?.(value || '');
+	};
+
+	const handleChange = (e: Event) => {
+		onChange?.(value || '');
 	};
 
 	// Run auto-resize when value changes
@@ -113,7 +130,10 @@
 			{minlength}
 			aria-busy={isLoading}
 			data-auto-resize={autoResize}
-			oninput={handleAutoResize}
+			oninput={handleInput}
+			onchange={handleChange}
+			onfocus={onFocus}
+			onblur={onBlur}
 		></textarea>
 		{#if showCharacterCount && maxlength}
 			<div class="character-count {characterLimitClass}">

@@ -83,14 +83,14 @@
 				action: 'changed',
 				description: 'Called when the value changes',
 				table: {
-					type: { summary: '(value: string) => void' }
+					type: { summary: '(value: string | null) => void' }
 				}
 			},
 			onInput: {
 				action: 'input',
 				description: 'Called on input events',
 				table: {
-					type: { summary: '(value: string) => void' }
+					type: { summary: '(value: string | null) => void' }
 				}
 			},
 			feedback: {
@@ -123,11 +123,35 @@
 				table: {
 					type: { summary: 'number' }
 				}
+			},
+			nullable: {
+				control: 'boolean',
+				description: 'Whether the field can be null (adds a checkbox to toggle value)',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			nullText: {
+				control: 'text',
+				description: 'Text to display when nullable and unchecked',
+				table: {
+					type: { summary: 'string' },
+					defaultValue: { summary: "''" }
+				}
+			},
+			onCheckChanged: {
+				action: 'checkChanged',
+				description: 'Called when the nullable checkbox is toggled',
+				table: {
+					type: { summary: '(isChecked: boolean) => void' }
+				}
 			}
 		},
 		args: {
 			onChange: fn(),
 			onInput: fn(),
+			onCheckChanged: fn(),
 			type: 'text',
 			size: 'full'
 		}
@@ -261,3 +285,42 @@
 		}
 	}}
 />
+
+<Story
+	name="Nullable"
+	args={{
+		label: 'Middle Name (optional)',
+		nullable: true,
+		value: 'Marie',
+		helperText: 'Uncheck if you do not have a middle name'
+	}}
+>
+	TextBox with nullable support. Toggle the checkbox to enable/disable the field. When unchecked,
+	the value clears but is remembered if you re-check it.
+</Story>
+
+<Story
+	name="NullableEmpty"
+	args={{
+		label: 'Nickname',
+		nullable: true,
+		placeholder: 'Enter a nickname',
+		helperText: 'Check to set a nickname'
+	}}
+>
+	TextBox with nullable support starting empty. When you check the box, it will restore your last
+	entered value or allow you to enter a new one.
+</Story>
+
+<Story
+	name="NullableCustomText"
+	args={{
+		label: 'Secondary Email',
+		nullable: true,
+		nullText: 'No secondary email',
+		helperText: 'Check to add a secondary email address',
+		placeholder: 'Enter your secondary email'
+	}}
+>
+	TextBox with custom null text displayed when unchecked.
+</Story>
