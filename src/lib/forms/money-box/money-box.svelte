@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import { untrack } from 'svelte';
 
 	const id = uniqueId();
@@ -17,11 +18,17 @@
 		min = 0,
 		max = null as number | null,
 		required = false,
+		nullable = false,
 		helperText = undefined as string | undefined,
 		feedback = undefined as FormFieldFeedback | undefined,
 		disabled = false,
 		onChange = undefined,
-		label = undefined
+		onCheckChanged = undefined,
+		onInput = undefined,
+		onFocus = undefined,
+		onBlur = undefined,
+		label = undefined,
+		nullText = ''
 	}: {
 		value?: number | null;
 		prefix?: string;
@@ -34,11 +41,17 @@
 		min?: number;
 		max?: number | null;
 		required?: boolean;
+		nullable?: boolean;
 		helperText?: string;
 		feedback?: FormFieldFeedback;
 		disabled?: boolean;
 		onChange?: ((value: number | null) => void) | undefined;
+		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
+		onInput?: ((value: number | null) => void) | undefined;
+		onFocus?: ((e: FocusEvent) => void) | undefined;
+		onBlur?: ((e: FocusEvent) => void) | undefined;
 		label?: string;
+		nullText?: string;
 	} = $props();
 
 	let isValueInCents = $derived(units === 'cents');
@@ -181,7 +194,7 @@
 		updateLastState(e);
 	};
 
-	const onInput = (e: Event) => {
+	const handleInputEvent = (e: Event) => {
 		const target = getTargetProperties(e);
 		// If they pasted in something non-numeric, revert to last state
 		if (!isNumericString(target.value)) {
@@ -224,17 +237,65 @@
 		// Cents should be padded to 2 digits, so that "5" becomes "05"
 		cents = String(centValue).padStart(2, '0');
 		onChange?.(value);
+		onInput?.(value);
 	};
 
 	let hasError = $derived(!!feedback?.isError);
+
+	// Track whether the nullable checkbox is checked (i.e., whether field has a value)
+	let isChecked = $state(untrack(() => value !== null && value !== undefined));
+
+	// Remember the last non-null value so we can restore it when re-checking
+	let lastValue = $state<number | undefined>(undefined);
+
+	// Derive the actual disabled state: disabled prop OR (nullable and unchecked)
+	let inputDisabled = $derived(disabled || (nullable && !isChecked));
+
+	let showInput = $derived(!nullable || isChecked);
+
+	let effectiveNullText = $derived(nullText || placeholder || '--');
+
+	const checkChanged = () => {
+		if (nullable) {
+			if (isChecked) {
+				// Restore last value if available, otherwise use 0
+				value = lastValue !== undefined ? lastValue : 0;
+			} else {
+				// Store current value before clearing
+				if (value !== null && value !== undefined) {
+					lastValue = value;
+				}
+				value = null;
+			}
+		}
+		onCheckChanged?.(isChecked);
+	};
+
+	$effect(() => {
+		if (value === null || value === undefined) {
+			// Use untrack to prevent writes to isChecked/value from triggering this effect again
+			untrack(() => {
+				if (nullable) isChecked = false;
+			});
+		} else {
+			// Initialize lastValue if we have an initial value
+			if (lastValue === undefined) {
+				lastValue = value;
+			}
+		}
+	});
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div class="input {currency}" class:allowCents class:disabled class:error={hasError} {id}>
-		{#if prefix}
-			<span class="prefix">{prefix}</span>
-		{/if}
-
+	<FormInputWrapper
+		{disabled}
+		error={hasError}
+		{prefix}
+		{suffix}
+		{nullable}
+		nullText={effectiveNullText}
+		onCheckChanged={checkChanged}
+	>
 		<input
 			class="dollars"
 			{placeholder}
@@ -242,16 +303,22 @@
 			type="text"
 			onkeypress={onKeyPress}
 			onkeyup={onKeyUp}
-			oninput={onInput}
+			oninput={handleInputEvent}
 			onchange={handleChange}
 			onmouseup={onSaveStateEvent}
-			onfocus={onSaveStateEvent}
-			onblur={onSaveStateEvent}
+			onfocus={(e) => {
+				onSaveStateEvent(e);
+				onFocus?.(e);
+			}}
+			onblur={(e) => {
+				onSaveStateEvent(e);
+				onBlur?.(e);
+			}}
 			name="dollars"
 			id="{id}-dollars"
 			inputmode="numeric"
 			{required}
-			{disabled}
+			disabled={inputDisabled}
 		/>
 		{#if allowCents}
 			<span class="separator">.</span>
@@ -262,102 +329,62 @@
 				class="cents"
 				onkeypress={onKeyPress}
 				onkeyup={onKeyUp}
-				oninput={onInput}
+				oninput={handleInputEvent}
 				onchange={handleChange}
 				onmouseup={onSaveStateEvent}
-				onfocus={onSaveStateEvent}
-				onblur={onSaveStateEvent}
+				onfocus={(e) => {
+					onSaveStateEvent(e);
+					onFocus?.(e);
+				}}
+				onblur={(e) => {
+					onSaveStateEvent(e);
+					onBlur?.(e);
+				}}
 				name="cents"
 				id="{id}-cents"
 				inputmode="numeric"
 				{required}
-				{disabled}
+				disabled={inputDisabled}
 			/>
 		{/if}
-
-		{#if suffix}
-			<span class="suffix">{suffix}</span>
-		{/if}
-	</div>
+	</FormInputWrapper>
 </FormField>
 
 <style lang="scss">
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
+	input {
+		background-color: transparent;
+		border: none;
 		box-sizing: border-box;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out),
-			fill var(--transition-base) var(--ease-in-out),
-			stroke var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		font-size: var(--font-md);
+		padding: 0;
+		padding-left: var(--spacing-base);
+		margin: 0;
 
-		&.disabled {
-			opacity: 0.5;
+		&:focus {
+			outline: none;
 		}
 
-		&.error {
-			border-color: var(--color-error, #dc3545);
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		input {
-			background-color: transparent;
-			border: none;
-			box-sizing: border-box;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			padding: 0;
-			padding-left: var(--spacing-base);
-			margin: 0;
-
-			&:focus {
-				outline: none;
-			}
+		&:disabled {
+			cursor: not-allowed;
 		}
+	}
 
-		.dollars {
-			flex-grow: 1;
-		}
+	.dollars {
+		flex-grow: 1;
+	}
 
-		.separator {
-			width: var(--spacing-base);
-			text-align: center;
-		}
+	.separator {
+		width: var(--spacing-base);
+		text-align: center;
+	}
 
-		.cents {
-			width: 4rem;
-		}
-
-		.prefix,
-		.suffix {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
-			background-color: var(--form-input-accent-bg);
-			color: var(--form-input-accent-fg);
-		}
-
-		.prefix {
-			border-right: var(--border-thin) solid var(--form-input-border);
-		}
-
-		.suffix {
-			border-left: var(--border-thin) solid var(--form-input-border);
-		}
+	.cents {
+		width: 4rem;
 	}
 </style>

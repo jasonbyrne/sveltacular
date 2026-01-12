@@ -2,6 +2,7 @@
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const minId = uniqueId();
@@ -117,10 +118,12 @@
 <FormField {size} {label} id={minId} {required} {disabled} {helperText} {feedback}>
 	<div class="number-range-inputs">
 		<div class="input-group">
-			<div class="input {disabled ? 'disabled' : ''}" class:error={hasError}>
-				{#if prefix}
-					<span class="prefix">{prefix}</span>
-				{/if}
+			<FormInputWrapper
+				{disabled}
+				error={hasError}
+				prefix={prefix || undefined}
+				suffix={suffix || undefined}
+			>
 				<input
 					id={minId}
 					type="number"
@@ -135,16 +138,15 @@
 					{required}
 					{disabled}
 				/>
-				{#if suffix}
-					<span class="suffix">{suffix}</span>
-				{/if}
-			</div>
+			</FormInputWrapper>
 		</div>
 		<div class="input-group">
-			<div class="input {disabled ? 'disabled' : ''}" class:error={hasError}>
-				{#if prefix}
-					<span class="prefix">{prefix}</span>
-				{/if}
+			<FormInputWrapper
+				{disabled}
+				error={hasError}
+				prefix={prefix || undefined}
+				suffix={suffix || undefined}
+			>
 				<input
 					id={maxId}
 					type="number"
@@ -159,10 +161,7 @@
 					{required}
 					{disabled}
 				/>
-				{#if suffix}
-					<span class="suffix">{suffix}</span>
-				{/if}
-			</div>
+			</FormInputWrapper>
 		</div>
 	</div>
 </FormField>
@@ -178,71 +177,26 @@
 		flex: 1;
 	}
 
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
+	input {
+		background-color: transparent;
+		border: none;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out),
-			fill var(--transition-base) var(--ease-in-out),
-			stroke var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		font-size: var(--font-md);
+		width: 100%;
+		flex-grow: 1;
+		padding-left: var(--spacing-base);
 
-		&.disabled {
-			opacity: 0.5;
+		&:focus {
+			outline: none;
 		}
 
-		&.error {
-			border-color: var(--color-error, #dc3545);
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		input {
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			width: 100%;
-			flex-grow: 1;
-			padding-left: var(--spacing-base);
-
-			&:focus {
-				outline: none;
-			}
-
-			&::placeholder {
-				color: var(--form-input-placeholder);
-			}
-		}
-
-		.prefix,
-		.suffix {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
-			background-color: var(--form-input-accent-bg);
-			color: var(--form-input-accent-fg);
-		}
-
-		.prefix {
-			border-right: var(--border-thin) solid var(--form-input-border);
-		}
-
-		.suffix {
-			border-left: var(--border-thin) solid var(--form-input-border);
+		&:disabled {
+			cursor: not-allowed;
 		}
 	}
 </style>

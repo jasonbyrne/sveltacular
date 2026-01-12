@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -32,7 +33,7 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled}>
-	<div class="input">
+	<FormInputWrapper {disabled}>
 		<input
 			{id}
 			{placeholder}
@@ -45,61 +46,36 @@
 			accept={mimeTypes.join(',')}
 			{capture}
 		/>
-	</div>
+	</FormInputWrapper>
 </FormField>
 
 <style lang="scss">
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
+	input {
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
+		padding: 0;
+		padding-left: var(--spacing-base);
+		padding-right: var(--spacing-base);
+		margin: 0;
+		background-color: transparent;
+		border: none;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out),
-			fill var(--transition-base) var(--ease-in-out),
-			stroke var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		font-size: var(--font-md);
+		color: inherit;
 
-		input {
-			width: 100%;
-			height: 100%;
-			box-sizing: border-box;
-			padding: 0;
-			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
-			margin: 0;
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			color: inherit;
+		&:focus {
+			outline: none;
+		}
 
-			&:focus {
-				outline: none;
-			}
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
+		}
 
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: 2px;
-			}
-
-			&::placeholder {
-				color: var(--form-input-placeholder, #888);
-				font-style: italic;
-			}
+		&::placeholder {
+			color: var(--form-input-placeholder, #888);
+			font-style: italic;
 		}
 	}
 </style>

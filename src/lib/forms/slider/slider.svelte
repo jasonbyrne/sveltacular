@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import FormField from '$src/lib/forms/form-field/form-field.svelte';
-	import type { ComponentSize } from '$src/lib/types/size.js';
+	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
@@ -11,24 +11,30 @@
 		max = 100,
 		step = 1,
 		disabled = false,
-		size = 'full' as ComponentSize,
+		required = false,
+		size = 'full' as FormFieldSizeOptions,
 		showTooltip = true,
 		showValue = true,
 		formatValue = undefined,
 		onChange = undefined,
-		label = undefined
+		label = undefined,
+		helperText = undefined,
+		feedback = undefined
 	}: {
 		value?: number;
 		min?: number;
 		max?: number;
 		step?: number;
 		disabled?: boolean;
-		size?: ComponentSize;
+		required?: boolean;
+		size?: FormFieldSizeOptions;
 		showTooltip?: boolean;
 		showValue?: boolean;
 		formatValue?: ((value: number) => string) | undefined;
 		onChange?: ((value: number) => void) | undefined;
 		label?: string;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
 	} = $props();
 
 	let isDragging = $state(false);
@@ -52,7 +58,7 @@
 	let displayValue = $derived(formatValue ? formatValue(value) : String(value));
 </script>
 
-<FormField {size} {label} {id} {disabled}>
+<FormField {size} {label} {id} {disabled} {required} {helperText} {feedback}>
 	<div class="slider-wrapper">
 		<div class="slider-track-container">
 			<input
@@ -63,6 +69,7 @@
 				{max}
 				{step}
 				{disabled}
+				{required}
 				bind:value
 				oninput={handleInput}
 				onmousedown={handleMouseDown}

@@ -9,6 +9,7 @@
 	} from '$src/lib/helpers/date.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
 
@@ -23,6 +24,7 @@
 		placeholder = '',
 		nullable = false,
 		disabled = false,
+		readonly = false,
 		type = 'date' as 'date' | 'datetime-local',
 		required = false,
 		steps = [] as DateIncrementStep[],
@@ -42,6 +44,7 @@
 		placeholder?: string;
 		nullable?: boolean;
 		disabled?: boolean;
+		readonly?: boolean;
 		type?: 'date' | 'datetime-local';
 		required?: boolean;
 		steps?: DateIncrementStep[];
@@ -127,31 +130,26 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div class:nullable class:disabled>
-		<span class="input">
-			{#if showInput}
-				<input
-					{...{ type }}
-					{id}
-					{placeholder}
-					disabled={inputDisabled}
-					bind:value
-					{required}
-					oninput={handleInput}
-					onfocus={onFocus}
-					onblur={onBlur}
-				/>
-			{:else}
-				<div class="input-null-text">
-					{nullText || '-- / -- / ----'}
-				</div>
-			{/if}
-		</span>
-		{#if nullable}
-			<span class="toggle">
-				<input type="checkbox" bind:checked={isChecked} onchange={checkChanged} />
-			</span>
-		{/if}
+	<div class="date-box-wrapper">
+		<FormInputWrapper
+			{disabled}
+			{nullable}
+			nullText={nullText || '-- / -- / ----'}
+			onCheckChanged={checkChanged}
+		>
+			<input
+				{...{ type }}
+				{id}
+				{placeholder}
+				disabled={inputDisabled}
+				{readonly}
+				bind:value
+				{required}
+				oninput={handleInput}
+				onfocus={onFocus}
+				onblur={onBlur}
+			/>
+		</FormInputWrapper>
 		{#if steps.length > 0}
 			<span class="steps">
 				{#each steps as step}
@@ -168,103 +166,54 @@
 </FormField>
 
 <style lang="scss">
-	div {
+	.date-box-wrapper {
 		display: flex;
 		position: relative;
 		gap: 0.5rem;
 
-		.input {
+		:global(.input) {
 			flex-grow: 1;
-			display: flex;
-			align-items: center;
-			position: relative;
-			border-radius: var(--radius-md);
-			border: var(--border-thin) solid var(--form-input-border);
-			background-color: var(--form-input-bg);
-			color: var(--form-input-fg);
-			font-size: 0.875rem;
-			font-weight: 500;
-			line-height: 1.25rem;
-			transition:
-				background-color var(--transition-base) var(--ease-in-out),
-				border-color var(--transition-base) var(--ease-in-out),
-				color var(--transition-base) var(--ease-in-out);
-			user-select: none;
-			white-space: nowrap;
+		}
 
-			input {
-				background-color: transparent;
-				border: none;
-				color: inherit;
-				font-size: inherit;
-				font-weight: inherit;
-				line-height: inherit;
-				width: 100%;
-				flex-grow: 1;
-				padding: 0.5rem 1rem;
-				margin: 0;
-				box-sizing: border-box;
+		input {
+			background-color: transparent;
+			border: none;
+			color: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			line-height: 2rem;
+			height: 2rem;
+			width: 100%;
+			flex-grow: 1;
+			padding: 0 var(--spacing-base);
+			margin: 0;
+			box-sizing: border-box;
 
-				&:focus {
-					outline: none;
-				}
-
-				&:focus-visible {
-					outline: 2px solid var(--focus-ring, #007bff);
-					outline-offset: 2px;
-				}
-
-				&::placeholder {
-					color: var(--form-input-placeholder, #a0aec0);
-				}
-
-				&:disabled {
-					cursor: not-allowed;
-				}
+			&:focus {
+				outline: none;
 			}
 
-			.input-null-text {
-				width: 100%;
-				padding: 0.5rem 1rem;
-				margin: 0;
-				font-size: inherit;
-				line-height: inherit;
-				display: flex;
-				align-items: center;
-				box-sizing: border-box;
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: 2px;
+			}
+
+			&::placeholder {
+				color: var(--form-input-placeholder, #a0aec0);
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+			}
+
+			&:read-only {
+				cursor: default;
 			}
 		}
 
 		.steps {
 			display: flex;
 			gap: 0.25rem;
-		}
-
-		&:focus-within .input {
-			border-color: var(--form-input-border-focus, #3182ce);
-		}
-
-		&.nullable {
-			.input {
-				input,
-				.input-null-text {
-					padding-left: 2.5rem;
-				}
-			}
-
-			.toggle {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 0.4rem;
-				z-index: 1;
-			}
-		}
-
-		&.disabled {
-			.input {
-				opacity: 0.5;
-			}
 		}
 	}
 </style>

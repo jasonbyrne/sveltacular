@@ -3,6 +3,7 @@
 	import { roundToDecimals } from '$src/lib/helpers/round-to-decimals.js';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 	const id = uniqueId();
 
@@ -145,149 +146,55 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div class="input {type}" class:nullable class:disabled>
-		{#if prefix}
-			<span class="prefix">{prefix}</span>
-		{/if}
-
-		{#if showInput}
-			<input
-				{id}
-				{placeholder}
-				bind:value
-				type="number"
-				{step}
-				{min}
-				{max}
-				disabled={inputDisabled}
-				{readonly}
-				{required}
-				onchange={valueChanged}
-				oninput={handleInput}
-				onkeypress={onKeyPress}
-				onfocus={onFocus}
-				onblur={onBlur}
-			/>
-		{:else}
-			<div class="input-null-text">
-				{effectiveNullText}
-			</div>
-		{/if}
-
-		{#if suffix}
-			<span class="suffix">{suffix}</span>
-		{/if}
-
-		{#if nullable}
-			<span class="toggle">
-				<input type="checkbox" bind:checked={isChecked} onchange={checkChanged} />
-			</span>
-		{/if}
-	</div>
+	<FormInputWrapper
+		{disabled}
+		prefix={prefix || undefined}
+		suffix={suffix || undefined}
+		{nullable}
+		nullText={effectiveNullText}
+		onCheckChanged={checkChanged}
+	>
+		<input
+			{id}
+			{placeholder}
+			bind:value
+			type="number"
+			{step}
+			{min}
+			{max}
+			disabled={inputDisabled}
+			{readonly}
+			{required}
+			onchange={valueChanged}
+			oninput={handleInput}
+			onkeypress={onKeyPress}
+			onfocus={onFocus}
+			onblur={onBlur}
+		/>
+	</FormInputWrapper>
 </FormField>
 
 <style lang="scss">
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
+	input {
+		background-color: transparent;
+		border: none;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out),
-			fill var(--transition-base) var(--ease-in-out),
-			stroke var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		font-size: var(--font-md);
+		width: 100%;
+		flex-grow: 1;
+		padding: 0 0 0 var(--spacing-base);
 
-		&.disabled {
-			opacity: 0.5;
+		&:focus {
+			outline: none;
 		}
 
-		&.nullable {
-			.toggle {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 0.4rem;
-				z-index: 1;
-			}
-
-			// When there's a prefix, only the prefix needs padding
-			.prefix {
-				padding-left: 2.5rem;
-			}
-
-			// When there's NO prefix, the input and null text need padding
-			&:not(:has(.prefix)) {
-				input,
-				.input-null-text {
-					padding-left: 2.5rem;
-				}
-			}
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		input {
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			width: 100%;
-			flex-grow: 1;
-			padding-left: var(--spacing-base);
-
-			&:focus {
-				outline: none;
-			}
-
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: 2px;
-			}
-
-			&:disabled {
-				cursor: not-allowed;
-			}
-		}
-
-		.input-null-text {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			text-align: left;
-			padding-left: var(--spacing-base);
-			margin: 0;
-			flex-grow: 1;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-		}
-
-		.prefix,
-		.suffix {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
-			background-color: var(--form-input-accent-bg);
-			color: var(--form-input-accent-fg);
-		}
-
-		.prefix {
-			border-right: var(--border-thin) solid var(--form-input-border);
-		}
-
-		.suffix {
-			border-left: var(--border-thin) solid var(--form-input-border);
+		&:disabled {
+			cursor: not-allowed;
 		}
 	}
 </style>

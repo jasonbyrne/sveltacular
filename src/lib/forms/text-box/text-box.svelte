@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import Icon from '$src/lib/icons/icon.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
@@ -80,8 +79,6 @@
 	let hasError = $derived(!!feedback?.isError);
 	let hasSuccess = $derived(!!feedback && !feedback.isError);
 	let describedByIds = $state<string[]>([]);
-	let inputElement: HTMLDivElement | null = $state(null);
-	let successIconElement: HTMLDivElement | null = $state(null);
 	let characterCount = $derived((value || '').length);
 	let characterLimitClass = $derived(
 		maxlength && characterCount > maxlength * 0.9
@@ -111,30 +108,6 @@
 				}
 			}
 		});
-	});
-
-	// Trigger shake animation when error appears (track previous error state)
-	let prevHasError = $state(false);
-	$effect(() => {
-		if (hasError && !prevHasError && inputElement) {
-			// Use untrack to prevent animation from triggering effect again
-			untrack(() => {
-				animateShake(inputElement!); // Already checked above
-			});
-		}
-		prevHasError = hasError;
-	});
-
-	// Trigger scale-in animation when success appears (track previous success state)
-	let prevHasSuccess = $state(false);
-	$effect(() => {
-		if (hasSuccess && !prevHasSuccess && successIconElement) {
-			// Use untrack to prevent animation from triggering effect again
-			untrack(() => {
-				animateScaleIn(successIconElement!); // Already checked above
-			});
-		}
-		prevHasSuccess = hasSuccess;
 	});
 
 	// Don't allow certain characters to be typed into the input
@@ -215,60 +188,38 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div
-		class="input {disabled ? 'disabled' : 'enabled'}"
-		class:error={hasError}
-		class:success={hasSuccess}
-		class:nullable
-		bind:this={inputElement}
+	<FormInputWrapper
+		{disabled}
+		error={hasError}
+		success={hasSuccess}
+		{prefix}
+		{suffix}
+		{nullable}
+		nullText={effectiveNullText}
+		{isLoading}
+		onCheckChanged={checkChanged}
 	>
-		{#if prefix}
-			<div class="prefix">{prefix}</div>
-		{/if}
-		{#if showInput}
-			<input
-				{id}
-				{placeholder}
-				bind:value
-				{...{ type }}
-				disabled={inputDisabled}
-				{readonly}
-				{required}
-				{maxlength}
-				{minlength}
-				{pattern}
-				aria-describedby={describedByIds.length > 0 ? describedByIds.join(' ') : undefined}
-				aria-required={required}
-				aria-invalid={hasError}
-				aria-busy={isLoading}
-				onkeypress={onKeyPress}
-				oninput={handleInput}
-				onfocus={onFocus}
-				onblur={onBlur}
-			/>
-		{:else}
-			<div class="input-null-text">
-				{effectiveNullText}
-			</div>
-		{/if}
-		{#if isLoading}
-			<div class="loading-indicator" aria-label="Loading">
-				<div class="spinner"></div>
-			</div>
-		{:else if hasSuccess}
-			<div class="success-indicator" bind:this={successIconElement}>
-				<Icon type="check" size="sm" />
-			</div>
-		{/if}
-		{#if suffix}
-			<div class="suffix">{suffix}</div>
-		{/if}
-		{#if nullable}
-			<span class="toggle">
-				<input type="checkbox" bind:checked={isChecked} onchange={checkChanged} />
-			</span>
-		{/if}
-	</div>
+		<input
+			{id}
+			{placeholder}
+			bind:value
+			{...{ type }}
+			disabled={inputDisabled}
+			{readonly}
+			{required}
+			{maxlength}
+			{minlength}
+			{pattern}
+			aria-describedby={describedByIds.length > 0 ? describedByIds.join(' ') : undefined}
+			aria-required={required}
+			aria-invalid={hasError}
+			aria-busy={isLoading}
+			onkeypress={onKeyPress}
+			oninput={handleInput}
+			onfocus={onFocus}
+			onblur={onBlur}
+		/>
+	</FormInputWrapper>
 	{#if showCharacterCount && maxlength}
 		<div class="character-count {characterLimitClass}">
 			{characterCount} / {maxlength}
@@ -277,151 +228,26 @@
 </FormField>
 
 <style lang="scss">
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
+	input {
+		background-color: transparent;
+		border: none;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out),
-			fill var(--transition-base) var(--ease-in-out),
-			stroke var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		font-size: var(--font-md);
+		width: 100%;
+		flex-grow: 1;
+		padding: 0 0 0 var(--spacing-base);
 
-		&.disabled {
-			opacity: 0.5;
+		&:focus {
+			outline: none;
 		}
 
-		&.error {
-			border-color: var(--danger, #dc3545);
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		&.success {
-			border-color: var(--success, #28a745);
-		}
-
-		&.nullable {
-			.toggle {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 0.4rem;
-				z-index: 1;
-			}
-
-			// When there's a prefix, only the prefix needs padding
-			.prefix {
-				padding-left: 2.5rem;
-			}
-
-			// When there's NO prefix, the input and null text need padding
-			&:not(:has(.prefix)) {
-				input,
-				.input-null-text {
-					padding-left: 2.5rem;
-				}
-			}
-		}
-
-		.loading-indicator,
-		.success-indicator {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0 var(--spacing-base);
-		}
-
-		.loading-indicator {
-			.spinner {
-				width: 1rem;
-				height: 1rem;
-				border: 2px solid var(--form-input-border);
-				border-top-color: var(--primary-500, #3b82f6);
-				border-radius: 50%;
-				animation: spin 0.6s linear infinite;
-			}
-		}
-
-		@keyframes spin {
-			to {
-				transform: rotate(360deg);
-			}
-		}
-
-		.success-indicator {
-			color: var(--success, #28a745);
-			width: 1.5rem;
-			height: 1.5rem;
-
-			:global(svg) {
-				width: 100%;
-				height: 100%;
-			}
-		}
-
-		input {
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			width: 100%;
-			flex-grow: 1;
-			padding-left: var(--spacing-base);
-
-			&:focus {
-				outline: none;
-			}
-
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: 2px;
-			}
-
-			&:disabled {
-				cursor: not-allowed;
-			}
-		}
-
-		.input-null-text {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			text-align: left;
-			padding-left: var(--spacing-base);
-			margin: 0;
-			flex-grow: 1;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-		}
-
-		.prefix,
-		.suffix {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			padding-left: var(--spacing-base);
-			padding-right: var(--spacing-base);
-			background-color: var(--form-input-accent-bg);
-			color: var(--form-input-accent-fg);
-		}
-
-		.prefix {
-			border-right: var(--border-thin) solid var(--form-input-border);
-		}
-
-		.suffix {
-			border-left: var(--border-thin) solid var(--form-input-border);
+		&:disabled {
+			cursor: not-allowed;
 		}
 	}
 

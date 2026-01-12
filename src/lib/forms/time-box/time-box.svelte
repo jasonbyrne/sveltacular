@@ -2,16 +2,18 @@
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import type { ComponentSize } from '$src/lib/types/size.js';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
+	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
 	let {
 		value = $bindable('' as string | null),
-		size = 'full' as ComponentSize,
+		size = 'full' as FormFieldSizeOptions,
 		nullable = false,
 		disabled = false,
 		required = false,
+		readonly = false,
 		onChange = undefined,
 		onCheckChanged = undefined,
 		onInput = undefined,
@@ -23,10 +25,11 @@
 		feedback = undefined
 	}: {
 		value?: string | null;
-		size?: ComponentSize;
+		size?: FormFieldSizeOptions;
 		nullable?: boolean;
 		disabled?: boolean;
 		required?: boolean;
+		readonly?: boolean;
 		onChange?: ((value: string | null) => void) | undefined;
 		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
 		onInput?: ((value: string | null) => void) | undefined;
@@ -109,112 +112,56 @@
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
-	<div class="input" class:nullable class:disabled>
-		{#if showInput}
-			<input
-				{id}
-				type="time"
-				bind:value
-				disabled={inputDisabled}
-				{required}
-				oninput={handleInput}
-				onchange={handleChange}
-				onfocus={onFocus}
-				onblur={onBlur}
-				aria-required={required}
-			/>
-		{:else}
-			<div class="input-null-text">
-				{nullText || '-- : -- : --'}
-			</div>
-		{/if}
-		{#if nullable}
-			<span class="toggle">
-				<input type="checkbox" bind:checked={isChecked} onchange={checkChanged} />
-			</span>
-		{/if}
-	</div>
+	<FormInputWrapper
+		{disabled}
+		{nullable}
+		nullText={nullText || '-- : -- : --'}
+		onCheckChanged={checkChanged}
+	>
+		<input
+			{id}
+			type="time"
+			bind:value
+			disabled={inputDisabled}
+			{required}
+			{readonly}
+			oninput={handleInput}
+			onchange={handleChange}
+			onfocus={onFocus}
+			onblur={onBlur}
+			aria-required={required}
+		/>
+	</FormInputWrapper>
 </FormField>
 
 <style lang="scss">
-	.input {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
+	input[type='time'] {
+		background-color: transparent;
+		border: none;
 		line-height: 2rem;
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+		height: 2rem;
+		font-size: var(--font-md);
+		width: 100%;
+		flex-grow: 1;
+		padding: 0 var(--spacing-base);
+		margin: 0;
+		box-sizing: border-box;
 
-		&.disabled {
-			opacity: 0.5;
+		&:focus {
+			outline: none;
 		}
 
-		&.nullable {
-			input[type='time'] {
-				padding: 0 var(--spacing-base) 0 2.5rem;
-			}
-
-			.toggle {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 0.4rem;
-				z-index: 1;
-			}
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		input[type='time'] {
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			width: 100%;
-			flex-grow: 1;
-			padding: 0 var(--spacing-base);
-			margin: 0;
-			box-sizing: border-box;
-
-			&:focus {
-				outline: none;
-			}
-
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: 2px;
-			}
-
-			&:disabled {
-				cursor: not-allowed;
-			}
+		&:disabled {
+			cursor: not-allowed;
 		}
 
-		&:focus-within {
-			border-color: var(--form-input-border-focus, #3182ce);
-		}
-
-		.input-null-text {
-			font-size: var(--font-md);
-			line-height: 2rem;
-			text-align: left;
-			padding: 0 var(--spacing-base) 0 2.5rem;
-			margin: 0;
-			flex-grow: 1;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
+		&:read-only {
+			cursor: default;
 		}
 	}
 </style>

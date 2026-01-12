@@ -2,25 +2,36 @@
 	import { untrack } from 'svelte';
 	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
 	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 
 	let {
 		value = $bindable('' as string | null),
 		size = 'md' as FormFieldSizeOptions,
+		placeholder = '',
 		onChange = undefined,
+		onCheckChanged = undefined,
 		label = undefined,
 		helperText = undefined,
 		feedback = undefined,
 		disabled = false,
-		required = false
+		required = false,
+		readonly = false,
+		nullable = false,
+		nullText = ''
 	}: {
 		value?: string | null;
 		size?: FormFieldSizeOptions;
-		onChange?: ((value: string) => void) | undefined;
+		placeholder?: string;
+		onChange?: ((value: string | null) => void) | undefined;
+		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
 		label?: string;
 		helperText?: string;
 		feedback?: FormFieldFeedback;
 		disabled?: boolean;
 		required?: boolean;
+		readonly?: boolean;
+		nullable?: boolean;
+		nullText?: string;
 	} = $props();
 
 	const id = uniqueId();
@@ -65,8 +76,9 @@
 	};
 
 	const publishChange = () => {
-		value = getCombinedValue();
-		onChange?.(value);
+		const currentValue = !nullable || isChecked ? getCombinedValue() : null;
+		value = currentValue;
+		onChange?.(currentValue);
 		return value;
 	};
 
@@ -139,8 +151,56 @@
 		}
 	};
 
+	// Track whether the nullable checkbox is checked (i.e., whether field has a value)
+	let isChecked = $state(untrack(() => !!value));
+
+	// Remember the last non-null value so we can restore it when re-checking
+	let lastValue = $state<string | undefined>(undefined);
+
+	// Derive the actual disabled state: disabled prop OR (nullable and unchecked)
+	let inputDisabled = $derived(disabled || (nullable && !isChecked));
+
+	let showInput = $derived(!nullable || isChecked);
+
+	let effectiveNullText = $derived(nullText || '(___) ___-____');
+
+	const checkChanged = () => {
+		if (nullable) {
+			if (isChecked) {
+				// Restore last value if available, otherwise use empty string
+				const restoreValue = lastValue || '';
+				setValue(restoreValue);
+			} else {
+				// Store current value before clearing
+				const currentValue = getCombinedValue();
+				if (currentValue) {
+					lastValue = currentValue;
+				}
+				areaCode = '';
+				localExt = '';
+				lastFour = '';
+				value = null;
+			}
+		}
+		onCheckChanged?.(isChecked);
+	};
+
 	// Set the initial value
 	setValue(value ?? '');
+
+	$effect(() => {
+		if (!value) {
+			// Use untrack to prevent writes to isChecked/value from triggering this effect again
+			untrack(() => {
+				if (nullable) isChecked = false;
+			});
+		} else {
+			// Initialize lastValue if we have an initial value
+			if (!lastValue) {
+				lastValue = value;
+			}
+		}
+	});
 
 	$effect(() => {
 		// Only trigger when the phone number parts change
@@ -155,19 +215,26 @@
 </script>
 
 <FormField {size} {label} id="{id}-areaCode" {required} {disabled} {helperText} {feedback}>
-	<div class="input">
+	<FormInputWrapper
+		{disabled}
+		{nullable}
+		nullText={effectiveNullText}
+		onCheckChanged={checkChanged}
+	>
 		<span class="areaCode segment">
 			<span>(</span>
 			<input
 				id="{id}-areaCode"
 				type="text"
+				{placeholder}
 				oninput={valueChanged}
 				onkeyup={keyUp}
 				onchange={valueChanged}
 				bind:value={areaCode}
 				name="areaCode"
 				data-maxlength="3"
-				{disabled}
+				disabled={inputDisabled}
+				{readonly}
 				{required}
 			/>
 			<span>)</span>
@@ -176,13 +243,15 @@
 			<input
 				id="{id}-localExt"
 				type="text"
+				{placeholder}
 				oninput={valueChanged}
 				onchange={valueChanged}
 				onkeyup={keyUp}
 				bind:value={localExt}
 				name="localExt"
 				data-maxlength="3"
-				{disabled}
+				disabled={inputDisabled}
+				{readonly}
 				{required}
 			/>
 		</span>
@@ -191,82 +260,70 @@
 			<input
 				id="{id}-lastFour"
 				type="text"
+				{placeholder}
 				oninput={valueChanged}
 				onchange={valueChanged}
 				onkeyup={keyUp}
 				bind:value={lastFour}
 				name="lastFour"
 				data-maxlength="4"
-				{disabled}
+				disabled={inputDisabled}
+				{readonly}
 				{required}
-			/></span
-		>
-	</div>
+			/>
+		</span>
+	</FormInputWrapper>
 </FormField>
 
 <style lang="scss">
-	.input {
+	.segment {
+		position: relative;
 		display: flex;
 		align-items: center;
-		justify-content: flex-start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border-radius: var(--radius-md);
-		border: var(--border-thin) solid var(--form-input-border);
-		background-color: var(--form-input-bg);
-		color: var(--form-input-fg);
-		font-size: var(--font-md);
-		font-weight: 500;
-		line-height: 2rem;
-		padding-left: var(--spacing-base);
+		justify-content: center;
 		gap: var(--spacing-sm);
-		transition:
-			background-color var(--transition-base) var(--ease-in-out),
-			border-color var(--transition-base) var(--ease-in-out),
-			color var(--transition-base) var(--ease-in-out);
-		user-select: none;
-		white-space: nowrap;
+	}
 
-		.segment {
-			position: relative;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+	.areaCode {
+		flex-basis: 100px;
+		padding-left: var(--spacing-base);
+	}
+
+	.localExt {
+		flex-basis: 80px;
+	}
+
+	.lastFour {
+		flex-basis: 140px;
+	}
+
+	input {
+		background-color: transparent;
+		border: none;
+		line-height: 2rem;
+		font-size: var(--font-md);
+		width: 100%;
+		flex-grow: 1;
+		padding: 0;
+		margin: 0;
+		text-align: center;
+		color: inherit;
+
+		&:focus {
+			outline: none;
 		}
 
-		.areaCode {
-			flex-basis: 100px;
+		&:focus-visible {
+			outline: 2px solid var(--focus-ring, #007bff);
+			outline-offset: 2px;
 		}
 
-		.localExt {
-			flex-basis: 80px;
+		&:disabled {
+			cursor: not-allowed;
 		}
 
-		.lastFour {
-			flex-basis: 140px;
-		}
-
-		input {
-			background-color: transparent;
-			border: none;
-			line-height: 2rem;
-			font-size: var(--font-md);
-			width: 100%;
-			flex-grow: 1;
-			padding: 0;
-			margin: 0;
-			text-align: center;
-			color: inherit;
-
-			&:focus {
-				outline: none;
-			}
-
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: 2px;
-			}
+		&:read-only {
+			cursor: default;
 		}
 	}
 </style>

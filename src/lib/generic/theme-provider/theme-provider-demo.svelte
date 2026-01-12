@@ -13,7 +13,7 @@
 	import TextBox from '$lib/forms/text-box/text-box.svelte';
 	import TextArea from '$lib/forms/text-area/text-area.svelte';
 	import CheckBox from '$lib/forms/check-box/check-box.svelte';
-	import SwitchBox from '$lib/forms/switch-box/switch-box.svelte';
+	import BoolBox from '$lib/forms/bool-box/bool-box.svelte';
 
 	const theme = useTheme();
 
@@ -125,7 +125,12 @@
 
 						<CheckBox bind:isChecked={checked} label="Check Box Option" />
 
-						<SwitchBox bind:checked={switchOn}>Switch Option</SwitchBox>
+						<BoolBox
+							variant="switch"
+							bind:value={switchOn}
+							options={['On', 'Off']}
+							label="Switch Option"
+						/>
 					</div>
 				</div>
 			</Card>

@@ -4,18 +4,25 @@
 	import BoolBox from './bool-box.svelte';
 
 	/**
-	 * BoolBox component for selecting boolean values with customizable labels.
+	 * BoolBox component for selecting boolean values with customizable labels and variants.
 	 *
-	 * **Accessibility**: Uses ListBox component internally, which provides full keyboard navigation
-	 * and ARIA attributes. The component supports screen readers and keyboard-only navigation.
+	 * **Variants**:
+	 * - `dropdown`: Select-style dropdown (default)
+	 * - `switch`: Toggle switch
+	 * - `checkbox`: Standard checkbox
+	 * - `radio`: Radio button group
+	 *
+	 * **Accessibility**: Provides full keyboard navigation and ARIA attributes for all variants.
+	 * The component supports screen readers and keyboard-only navigation.
 	 *
 	 * **Usage**:
 	 * ```svelte
 	 * <BoolBox
+	 *   variant="switch"
 	 *   label="Enable notifications"
-	 *   options={['Yes', 'No']}
+	 *   options={['On', 'Off']}
 	 *   bind:value={enabled}
-	 *   helperText="Choose whether to receive notifications"
+	 *   helperText="Toggle to receive notifications"
 	 * />
 	 * ```
 	 */
@@ -30,6 +37,15 @@
 				table: {
 					type: { summary: 'boolean' },
 					defaultValue: { summary: 'false' }
+				}
+			},
+			variant: {
+				control: 'select',
+				options: ['dropdown', 'switch', 'checkbox', 'radio'],
+				description: 'Visual variant of the boolean input',
+				table: {
+					type: { summary: "'dropdown' | 'switch' | 'checkbox' | 'radio'" },
+					defaultValue: { summary: "'dropdown'" }
 				}
 			},
 			options: {
@@ -102,57 +118,176 @@
 	});
 </script>
 
-<Story name="Default" args={{}}>Default BoolBox with Yes/No options.</Story>
+<!-- Dropdown Variant (Default) -->
+<Story name="Dropdown" args={{ variant: 'dropdown' }}>
+	Default dropdown variant with Yes/No options.
+</Story>
 
-<Story name="YesNo" args={{ options: ['Yes', 'No'] }}>Standard Yes/No boolean selection.</Story>
+<Story name="DropdownYesNo" args={{ variant: 'dropdown', options: ['Yes', 'No'] }}>
+	Standard Yes/No boolean selection.
+</Story>
 
-<Story name="TrueFalse" args={{ options: ['True', 'False'] }}>
+<Story name="DropdownTrueFalse" args={{ variant: 'dropdown', options: ['True', 'False'] }}>
 	True/False boolean selection for technical contexts.
 </Story>
 
-<Story name="OnOff" args={{ options: ['On', 'Off'] }}>
-	On/Off toggle style for settings and switches.
+<Story name="DropdownOnOff" args={{ variant: 'dropdown', options: ['On', 'Off'] }}>
+	On/Off selection for settings.
 </Story>
 
-<Story name="EnabledDisabled" args={{ options: ['Enabled', 'Disabled'] }}>
-	Enabled/Disabled selection for feature toggles.
-</Story>
-
-<Story name="ActiveInactive" args={{ options: ['Active', 'Inactive'] }}>
-	Active/Inactive selection for status toggles.
-</Story>
-
-<Story name="VisibleHidden" args={{ options: ['Visible', 'Hidden'] }}>
-	Visible/Hidden selection for visibility controls.
+<!-- Switch Variant -->
+<Story name="Switch" args={{ variant: 'switch', value: true, options: ['On', 'Off'] }}>
+	Toggle switch variant ideal for on/off states.
 </Story>
 
 <Story
+	name="SwitchEnabled"
+	args={{ variant: 'switch', value: true, options: ['Enabled', 'Disabled'] }}
+>
+	Switch showing enabled/disabled state.
+</Story>
+
+<Story
+	name="SwitchSizes"
+	args={{ variant: 'switch', value: true, options: ['Active', 'Inactive'] }}
+>
+	Switch variant with different sizes.
+</Story>
+
+<Story name="SwitchSmall" args={{ variant: 'switch', size: 'sm', value: true, options: ['On', 'Off'] }}>
+	Small switch variant.
+</Story>
+
+<Story name="SwitchLarge" args={{ variant: 'switch', size: 'lg', value: true, options: ['On', 'Off'] }}>
+	Large switch variant.
+</Story>
+
+<Story name="SwitchXLarge" args={{ variant: 'switch', size: 'xl', value: true, options: ['On', 'Off'] }}>
+	Extra large switch variant.
+</Story>
+
+<!-- Checkbox Variant -->
+<Story name="Checkbox" args={{ variant: 'checkbox', value: true, options: ['Yes', 'No'] }}>
+	Checkbox variant for boolean selection.
+</Story>
+
+<Story
+	name="CheckboxAgree"
+	args={{ variant: 'checkbox', value: false, options: ['Agree', 'Disagree'] }}
+>
+	Checkbox showing agreement state.
+</Story>
+
+<Story
+	name="CheckboxVisible"
+	args={{ variant: 'checkbox', value: true, options: ['Visible', 'Hidden'] }}
+>
+	Checkbox for visibility toggle.
+</Story>
+
+<Story name="CheckboxSmall" args={{ variant: 'checkbox', size: 'sm', value: true, options: ['Yes', 'No'] }}>
+	Small checkbox variant.
+</Story>
+
+<Story name="CheckboxLarge" args={{ variant: 'checkbox', size: 'lg', value: true, options: ['Yes', 'No'] }}>
+	Large checkbox variant.
+</Story>
+
+<!-- Radio Variant -->
+<Story name="Radio" args={{ variant: 'radio', value: true, options: ['Yes', 'No'] }}>
+	Radio button variant for boolean selection.
+</Story>
+
+<Story name="RadioTrueFalse" args={{ variant: 'radio', value: false, options: ['True', 'False'] }}>
+	Radio buttons showing true/false options.
+</Story>
+
+<Story
+	name="RadioActiveInactive"
+	args={{ variant: 'radio', value: true, options: ['Active', 'Inactive'] }}
+>
+	Radio buttons for active/inactive state.
+</Story>
+
+<Story name="RadioSmall" args={{ variant: 'radio', size: 'sm', value: true, options: ['On', 'Off'] }}>
+	Small radio variant.
+</Story>
+
+<Story name="RadioLarge" args={{ variant: 'radio', size: 'lg', value: true, options: ['On', 'Off'] }}>
+	Large radio variant.
+</Story>
+
+<!-- With Labels and Helper Text -->
+<Story
 	name="WithLabel"
-	args={{ label: 'Enable notifications', helperText: 'Receive push notifications on your device' }}
+	args={{
+		variant: 'switch',
+		label: 'Enable notifications',
+		helperText: 'Receive push notifications on your device',
+		options: ['On', 'Off']
+	}}
 >
 	BoolBox with label and helper text.
 </Story>
 
 <Story
+	name="CheckboxWithLabel"
+	args={{
+		variant: 'checkbox',
+		label: 'Subscribe to newsletter',
+		helperText: 'Get weekly updates in your inbox',
+		options: ['Subscribe', 'Unsubscribe']
+	}}
+>
+	Checkbox with label and helper text.
+</Story>
+
+<Story
+	name="RadioWithLabel"
+	args={{
+		variant: 'radio',
+		label: 'Account status',
+		helperText: 'Select your account status',
+		options: ['Active', 'Inactive']
+	}}
+>
+	Radio buttons with label and helper text.
+</Story>
+
+<!-- States -->
+<Story
 	name="Required"
 	args={{
+		variant: 'switch',
 		label: 'Accept terms',
 		required: true,
-		helperText: 'You must accept the terms to continue'
+		helperText: 'You must accept the terms to continue',
+		options: ['Accept', 'Decline']
 	}}
 >
 	Required BoolBox field with validation indicator.
 </Story>
 
-<Story name="Disabled" args={{ label: 'Feature toggle', disabled: true, value: true }}>
+<Story
+	name="Disabled"
+	args={{
+		variant: 'switch',
+		label: 'Feature toggle',
+		disabled: true,
+		value: true,
+		options: ['Enabled', 'Disabled']
+	}}
+>
 	Disabled BoolBox that cannot be changed.
 </Story>
 
 <Story
 	name="WithError"
 	args={{
+		variant: 'checkbox',
 		label: 'Enable feature',
-		feedback: { text: 'This feature is currently unavailable', isError: true }
+		feedback: { text: 'This feature is currently unavailable', isError: true },
+		options: ['Enable', 'Disable']
 	}}
 >
 	BoolBox with error feedback message.

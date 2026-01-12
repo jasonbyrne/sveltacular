@@ -15,6 +15,7 @@
 		size = 'full' as FormFieldSizeOptions,
 		disabled = false,
 		required = false,
+		readonly = false,
 		searchable = false,
 		search = undefined as SearchFunction | undefined,
 		placeholder = '',
@@ -32,6 +33,7 @@
 		size?: FormFieldSizeOptions;
 		disabled?: boolean;
 		required?: boolean;
+		readonly?: boolean;
 		searchable?: boolean;
 		search?: SearchFunction | undefined;
 		placeholder?: string;
@@ -132,7 +134,7 @@
 
 	// Open/close dropdown
 	const openDropdown = () => {
-		if (!disabled) {
+		if (!disabled && !readonly) {
 			isMenuOpen = true;
 			if (browser && inputElement) {
 				inputElement.focus();
@@ -174,7 +176,7 @@
 
 	// Handle clicks on the input (for non-searchable mode)
 	const handleInputClick = (e: MouseEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		// For non-searchable mode, clicking the input should open the dropdown
 		if (!isSearchable && !isMenuOpen) {
 			e.preventDefault();
@@ -184,7 +186,7 @@
 
 	// Handle key presses in the input
 	const onInputKeyDown = (e: KeyboardEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 
 		if (e.key === 'Escape') {
 			e.preventDefault();
@@ -269,7 +271,7 @@
 	const clear = (e: MouseEvent | KeyboardEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (disabled) return;
+		if (disabled || readonly) return;
 		isUserTyping = false;
 		text = '';
 		value = null;
@@ -295,7 +297,7 @@
 		}
 	});
 
-	let open = $derived(isMenuOpen && !disabled);
+	let open = $derived(isMenuOpen && !disabled && !readonly);
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
@@ -319,7 +321,7 @@
 			{required}
 			{disabled}
 			{placeholder}
-			readonly={!isSearchable}
+			readonly={readonly || !isSearchable}
 			role="combobox"
 			aria-expanded={open}
 			aria-controls={listboxId}
@@ -345,7 +347,7 @@
 			class="icon"
 			onclick={clickArrow}
 			onkeydown={clickArrow}
-			{disabled}
+			disabled={disabled || readonly}
 			aria-label={open ? 'Close options' : 'Open options'}
 			tabindex="-1"
 		>
@@ -362,7 +364,7 @@
 				class="clear"
 				onclick={clear}
 				onkeydown={clear}
-				{disabled}
+				disabled={disabled || readonly}
 				aria-label="Clear selection"
 				tabindex="-1"
 			>
@@ -398,7 +400,7 @@
 		justify-content: flex-start;
 		position: relative;
 		width: 100%;
-		height: 100%;
+		min-height: 2.125rem;
 		border-radius: var(--radius-md);
 		border: var(--border-thin) solid var(--form-input-border);
 		background-color: var(--form-input-bg);
@@ -406,6 +408,7 @@
 		font-size: var(--font-md);
 		font-weight: 500;
 		line-height: 2rem;
+		padding: 0;
 		transition:
 			background-color var(--transition-base) var(--ease-in-out),
 			border-color var(--transition-base) var(--ease-in-out),

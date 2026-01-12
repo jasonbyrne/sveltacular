@@ -72,8 +72,7 @@ npm i sveltacular
 - **PhoneBox** - Phone number input with formatting
 - **FileBox** / **FileArea** - File upload with drag-and-drop
 - **Slider** - Range slider with tooltip and value display
-- **SwitchBox** - Toggle switch component
-- **BoolBox** - Boolean input component
+- **BoolBox** - Boolean input component with multiple variants (dropdown, switch, checkbox, radio)
 - **MoneyBox** - Currency input with formatting
 - **TagBox** - Tag input with chip display
 - **UrlBox** - URL input with validation
