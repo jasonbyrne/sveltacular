@@ -61,8 +61,8 @@
 		onChange?: ((value: string | null) => void) | undefined;
 		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
 		onInput?: ((value: string | null) => void) | undefined;
-		onFocus?: ((e: FocusEvent) => void) | undefined;
-		onBlur?: ((e: FocusEvent) => void) | undefined;
+		onFocus?: ((value: string | null) => void) | undefined;
+		onBlur?: ((value: string | null) => void) | undefined;
 		label?: string;
 		nullText?: string;
 	} = $props();
@@ -87,7 +87,6 @@
 				: 'near-limit'
 			: ''
 	);
-	let showInput = $derived(!nullable || isChecked);
 
 	// Update describedByIds array when helper/feedback changes
 	$effect(() => {
@@ -111,7 +110,7 @@
 	});
 
 	// Don't allow certain characters to be typed into the input
-	const onKeyPress = (e: KeyboardEvent) => {
+	const handleKeyPress = (e: KeyboardEvent) => {
 		if (!allowSpaces && e.key === ' ') {
 			e.preventDefault();
 		}
@@ -170,6 +169,14 @@
 		handleInputChange();
 	};
 
+	const handleFocus = (e: FocusEvent) => {
+		onFocus?.(value);
+	};
+
+	const handleBlur = (e: FocusEvent) => {
+		onBlur?.(value);
+	};
+
 	$effect(() => {
 		if (!value) {
 			// Use untrack to prevent writes to isChecked/value from triggering this effect again
@@ -214,10 +221,10 @@
 			aria-required={required}
 			aria-invalid={hasError}
 			aria-busy={isLoading}
-			onkeypress={onKeyPress}
+			onkeypress={handleKeyPress}
 			oninput={handleInput}
-			onfocus={onFocus}
-			onblur={onBlur}
+			onfocus={handleFocus}
+			onblur={handleBlur}
 		/>
 	</FormInputWrapper>
 	{#if showCharacterCount && maxlength}

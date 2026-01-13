@@ -36,6 +36,7 @@
 		color: var(--table-row-even-fg, #000);
 		border-bottom: solid 1px var(--table-row-even-border, #ddd);
 		transition: background-color 0.15s ease;
+		position: relative;
 	}
 
 	tr:nth-of-type(odd) {

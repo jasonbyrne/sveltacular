@@ -171,3 +171,20 @@
 <Story name="NoData" args={{ rows: [], cols }}>Employees (No Data)</Story>
 
 <Story name="Loading" args={{ rows: undefined, cols }}>Employees (Loading...)</Story>
+
+<Story name="WithActionsBottomRow" args={{ rows, cols: colsNoSort, actions: multiAction }}>
+	Employees with Actions (test dropdown on last rows)
+</Story>
+
+<Story
+	name="WithPaginationAndActions"
+	args={{
+		rows: Countries,
+		cols: countryCols,
+		pagination: countriesPagination,
+		actions: multiAction,
+		enableSorting: true
+	}}
+>
+	Countries with Pagination and Actions (test dropdown on last row of each page)
+</Story>

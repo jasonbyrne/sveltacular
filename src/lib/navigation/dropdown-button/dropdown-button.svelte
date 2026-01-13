@@ -3,6 +3,7 @@
 	import { Icon } from '$src/lib/index.js';
 	import { hasContext } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
+	import { dropdownManager } from './dropdown-manager.svelte.js';
 
 	let {
 		open = $bindable(false),
@@ -22,25 +23,112 @@
 	const buttonId = `dropdown-button-${id}`;
 	const menuId = `dropdown-menu-${id}`;
 
+	// DOM element refs for bind:this - these don't need $state() as they're not reactive state
+	let containerRef: HTMLDivElement | null = $state(null);
+	let menuRef: HTMLDivElement | null = $state(null);
+
+	let openUpward = $state(false);
+
 	const onClick = () => {
-		open = !open;
+		// Use the global manager to handle open/close
+		const shouldOpen = dropdownManager.open(id);
+		open = shouldOpen;
 	};
+
+	// Sync with global manager state
+	$effect(() => {
+		const isOpen = dropdownManager.isOpen(id);
+		if (isOpen !== open) {
+			open = isOpen;
+		}
+	});
+
+	// Close this dropdown when another one opens
+	$effect(() => {
+		if (!dropdownManager.isOpen(id) && open) {
+			open = false;
+		}
+	});
 
 	const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key === 'Escape' && open) {
 			e.preventDefault();
+			dropdownManager.close(id);
 			open = false;
 			// Return focus to button
 			document.getElementById(buttonId)?.focus();
 		}
 	};
 
+	// Handle clicks outside dropdown
+	$effect(() => {
+		if (!open) return;
+
+		const handleClickOutside = (e: MouseEvent) => {
+			if (containerRef && !containerRef.contains(e.target as Node)) {
+				dropdownManager.close(id);
+				open = false;
+			}
+		};
+
+		// Add listener after a small delay to avoid immediate closure from the opening click
+		const timeoutId = setTimeout(() => {
+			document.addEventListener('click', handleClickOutside);
+		}, 0);
+
+		return () => {
+			clearTimeout(timeoutId);
+			document.removeEventListener('click', handleClickOutside);
+		};
+	});
+
+	// Cleanup on unmount
+	$effect(() => {
+		return () => {
+			dropdownManager.close(id);
+		};
+	});
+
+	// Detect if menu should open upward to prevent overflow
+	$effect(() => {
+		if (open && containerRef && menuRef) {
+			const containerRect = containerRef.getBoundingClientRect();
+			const menuHeight = menuRef.offsetHeight;
+
+			// Check both viewport and any scrollable parent container
+			let spaceBelow = window.innerHeight - containerRect.bottom;
+			let spaceAbove = containerRect.top;
+
+			// Find the nearest scrollable parent
+			let scrollParent = containerRef.parentElement;
+			while (scrollParent) {
+				const overflowY = window.getComputedStyle(scrollParent).overflowY;
+				if (overflowY === 'auto' || overflowY === 'scroll') {
+					const parentRect = scrollParent.getBoundingClientRect();
+					const parentSpaceBelow = parentRect.bottom - containerRect.bottom;
+					const parentSpaceAbove = containerRect.top - parentRect.top;
+
+					// Use the more restrictive space constraint
+					if (parentSpaceBelow < spaceBelow) spaceBelow = parentSpaceBelow;
+					if (parentSpaceAbove < spaceAbove) spaceAbove = parentSpaceAbove;
+					break;
+				}
+				scrollParent = scrollParent.parentElement;
+			}
+
+			// If there's not enough space below but more space above, open upward
+			openUpward = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+		}
+	});
+
 	let hasText = $derived(text && text.length > 0);
 </script>
 
 <div
+	bind:this={containerRef}
 	class="dropdown-button {variant} icon-{icon}"
 	class:open
+	class:open-upward={openUpward}
 	role="presentation"
 	onkeydown={handleKeyDown}
 >
@@ -68,7 +156,7 @@
 		{/if}
 	</button>
 	{#if open}
-		<div id={menuId} class="menu" role="menu">
+		<div bind:this={menuRef} id={menuId} class="menu" role="menu">
 			{@render children?.()}
 		</div>
 	{/if}
@@ -145,14 +233,32 @@
 			border-style: solid;
 			border-width: 1px;
 			border-color: var(--button-secondary-border, #aaa);
-			z-index: 999;
+			z-index: 1000;
 			text-align: center;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 		}
 
 		&.open {
 			.icon {
 				transition: transform 0.3s linear;
 				transform: rotate(180deg);
+			}
+		}
+
+		&.open-upward {
+			button {
+				border-radius: 0 0 0.5rem 0.5rem;
+			}
+
+			.menu {
+				top: auto;
+				bottom: 100%;
+			}
+
+			&.open {
+				.icon {
+					transform: rotate(0deg);
+				}
 			}
 		}
 

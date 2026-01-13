@@ -62,6 +62,8 @@
 
 		&.actions {
 			white-space: nowrap;
+			position: relative;
+			overflow: visible;
 		}
 	}
 </style>
