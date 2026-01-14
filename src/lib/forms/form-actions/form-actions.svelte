@@ -82,9 +82,9 @@
 	.form-actions {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-end; /* Align both sections to bottom */
 		justify-content: space-between;
-		gap: var(--spacing-md);
+		gap: var(--spacing-xl);
 
 		/* Vertical spacing - separate form from actions and actions from content below */
 		margin-top: var(--spacing-xl);
@@ -96,36 +96,32 @@
 
 		.content {
 			display: flex;
-			flex-direction: row;
-			align-items: center;
-			gap: var(--spacing-sm);
-			flex: 0 1 auto; /* Don't grow, can shrink, auto basis */
+			flex-direction: column;
+			align-items: flex-start; /* Align content to left */
+			gap: var(--spacing-md);
+			flex: 1;
 		}
 
 		.buttons {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			justify-content: flex-end; /* Align buttons to right */
 			gap: var(--spacing-sm);
-			flex: 0 0 auto; /* Don't grow, don't shrink, auto basis */
-			margin-left: auto; /* Push to the right */
+			flex: 1;
 		}
 
 		/* Responsive: Stack on mobile */
 		@include breakpoint-down('phablet') {
 			flex-direction: column;
-			align-items: stretch;
+			align-items: center;
 			gap: var(--spacing-md);
 
 			.content,
 			.buttons {
 				width: 100%;
-				justify-content: flex-start;
-			}
-
-			.buttons {
-				margin-left: 0;
-				justify-content: flex-end;
+				align-items: center;
+				justify-content: center;
 			}
 		}
 	}
