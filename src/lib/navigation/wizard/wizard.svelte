@@ -126,7 +126,7 @@
 	<footer>
 		<div>
 			{#if !isFirstStep}
-				<Button type="button" variant="secondary" onClick={previous} {disabled} label="Previous" />
+				<Button type="button" variant="secondary" onClick={previous} {disabled}>Previous</Button>
 			{/if}
 		</div>
 		<div>
@@ -134,9 +134,9 @@
 		</div>
 		<div>
 			{#if isLastStep}
-				<Button type="submit" variant="primary" onClick={done} {disabled} label="Done" />
+				<Button type="submit" variant="primary" onClick={done} {disabled}>Done</Button>
 			{:else}
-				<Button type="button" variant="primary" onClick={next} {disabled} label="Next" />
+				<Button type="button" variant="primary" onClick={next} {disabled}>Next</Button>
 			{/if}
 		</div>
 	</footer>

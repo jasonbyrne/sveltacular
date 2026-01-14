@@ -22,7 +22,7 @@
 	 * ```svelte
 	 * <Form action="/submit" method="post" onSubmit={handleSubmit}>
 	 *   <TextBox label="Name" bind:value={name} />
-	 *   <Button type="submit" variant="primary" label="Submit" />
+	 *   <Button type="submit" variant="primary">Submit</Button>
 	 * </Form>
 	 * ```
 	 */
@@ -81,6 +81,6 @@
 		</FormRow>
 	</FormSection>
 	<FormFooter>
-		<Button variant="primary" label="Submit" />
+		<Button variant="primary">Submit</Button>
 	</FormFooter>
 </Story>

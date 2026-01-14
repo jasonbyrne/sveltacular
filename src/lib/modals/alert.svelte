@@ -54,10 +54,10 @@
 			<DialogBody>
 				{@render children?.()}
 			</DialogBody>
-			<Divider />
-			<DialogFooter>
-				<Button onClick={close} size="full" variant={buttonVariant} label={buttonText} />
-			</DialogFooter>
+		<Divider />
+		<DialogFooter>
+			<Button onClick={close} size="full" variant={buttonVariant}>{buttonText}</Button>
+		</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}

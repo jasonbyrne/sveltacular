@@ -6,10 +6,9 @@
 	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
 	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import Spinner from '$src/lib/generic/spinner/spinner.svelte';
 
 	let {
-		/** Button label text */
-		label,
 		/** Optional href for navigation */
 		href = undefined,
 		/** Button size */
@@ -26,7 +25,7 @@
 		disabled = $bindable(false),
 		/** Loading state */
 		loading = false,
-		/** ARIA label override */
+		/** ARIA label for accessibility (required if button content is not text) */
 		ariaLabel = undefined,
 		/** Remove margins */
 		noMargin = false,
@@ -36,10 +35,9 @@
 		repeatSubmitDelay = 500,
 		/** Click handler */
 		onClick = undefined,
-		/** Optional children snippet */
+		/** Button content */
 		children
 	}: {
-		label?: string;
 		href?: string | undefined;
 		size?: FormFieldSizeOptions;
 		variant?: ButtonVariant;
@@ -53,12 +51,12 @@
 		collapse?: boolean;
 		repeatSubmitDelay?: number | 'infinite';
 		onClick?: ((e?: Event) => void) | undefined;
-		children?: Snippet;
+		children: Snippet;
 	} = $props();
 
 	let isDisabled = $derived(disabled || loading);
 
-	const click = (e: Event) => {
+	const handleClick = (e: Event) => {
 		if (isDisabled) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -79,25 +77,23 @@
 
 <button
 	{type}
-	onclick={click}
+	onclick={handleClick}
 	class="{size} {variant} {flex ? 'flex' : ''}"
 	class:block
 	class:noMargin
 	class:collapse
 	class:loading
 	disabled={isDisabled}
-	aria-label={ariaLabel || label}
+	aria-label={ariaLabel}
 	aria-busy={loading}
 	aria-disabled={isDisabled}
 >
 	{#if loading}
-		<span class="loading-indicator" aria-hidden="true">⏳</span>
+		<span class="spinner-wrapper" aria-hidden="true">
+			<Spinner {size} variant={variant === 'outline' ? 'secondary' : 'primary'} />
+		</span>
 	{/if}
-	{#if children}
-		{@render children()}
-	{:else if label}
-		<span class="label">{label}</span>
-	{/if}
+	{@render children()}
 </button>
 
 <style lang="scss">
@@ -261,6 +257,13 @@
 			&:hover {
 				color: var(--base-link-hover-fg);
 			}
+		}
+
+		.spinner-wrapper {
+			display: inline-flex;
+			align-items: center;
+			margin-right: var(--spacing-xs);
+			vertical-align: middle;
 		}
 	}
 </style>

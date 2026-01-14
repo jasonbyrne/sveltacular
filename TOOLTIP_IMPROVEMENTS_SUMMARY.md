@@ -41,12 +41,12 @@ Add an optional title that displays prominently above the tooltip content:
 ```svelte
 <!-- Title + Text -->
 <Tooltip title="Pro Tip" text="Keyboard shortcuts save time">
-	<Button label="Help" />
+	<Button>Help</Button>
 </Tooltip>
 
 <!-- Title only -->
 <Tooltip title="New Feature">
-	<Badge text="Beta" />
+	<Badge text="Beta</Button>
 </Tooltip>
 
 <!-- Title with custom content -->
@@ -57,7 +57,7 @@ Add an optional title that displays prominently above the tooltip content:
 			<li>Item 2</li>
 		</ul>
 	{/snippet}
-	<Button label="Info" />
+	<Button>Info</Button>
 </Tooltip>
 ```
 
@@ -73,22 +73,22 @@ The title is styled with:
 ```svelte
 <!-- Hover (default) -->
 <Tooltip text="Hover to see" trigger="hover">
-	<Button label="Hover me" />
+	<Button>Hover me</Button>
 </Tooltip>
 
 <!-- Focus (keyboard accessible) -->
 <Tooltip text="Focus to see" trigger="focus">
-	<Button label="Tab to me" />
+	<Button>Tab to me</Button>
 </Tooltip>
 
 <!-- Click (toggle) -->
 <Tooltip text="Click to toggle" trigger="click">
-	<Button label="Click me" />
+	<Button>Click me</Button>
 </Tooltip>
 
 <!-- Manual (controlled) -->
 <Tooltip text="Controlled" trigger="manual" bind:open={myState}>
-	<Button label="Controlled" />
+	<Button>Controlled</Button>
 </Tooltip>
 ```
 
@@ -97,17 +97,17 @@ The title is styled with:
 ```svelte
 <!-- Open after 500ms -->
 <Tooltip text="Delayed" openDelay={500}>
-	<Button label="Hover me" />
+	<Button>Hover me</Button>
 </Tooltip>
 
 <!-- Close after 300ms -->
 <Tooltip text="Stays open" closeDelay={300}>
-	<Button label="Hover me" />
+	<Button>Hover me</Button>
 </Tooltip>
 
 <!-- Both delays -->
 <Tooltip text="Both delays" openDelay={300} closeDelay={300}>
-	<Button label="Hover me" />
+	<Button>Hover me</Button>
 </Tooltip>
 ```
 
@@ -116,17 +116,17 @@ The title is styled with:
 ```svelte
 <!-- Simple text -->
 <Tooltip text="Simple text">
-	<Button label="Button" />
+	<Button>Button</Button>
 </Tooltip>
 
 <!-- Title + Text -->
 <Tooltip title="Pro Tip" text="Keyboard shortcuts speed up your workflow">
-	<Button label="Title + Text" />
+	<Button>Title + Text</Button>
 </Tooltip>
 
 <!-- Title only -->
 <Tooltip title="Important!">
-	<Button label="Title only" />
+	<Button>Title only</Button>
 </Tooltip>
 
 <!-- Rich content with snippets (for complex layouts) -->
@@ -137,7 +137,7 @@ The title is styled with:
 			<p>Use Ctrl+K for shortcuts</p>
 		</div>
 	{/snippet}
-	<Button label="Rich content" />
+	<Button>Rich content</Button>
 </Tooltip>
 ```
 
@@ -163,7 +163,7 @@ type Placement =
 
 ```svelte
 <Tooltip text="Positioned" placement="bottom-start">
-	<Button label="Button" />
+	<Button>Button</Button>
 </Tooltip>
 ```
 
@@ -171,7 +171,7 @@ type Placement =
 
 ```svelte
 <Tooltip text="Won't show" disabled>
-	<Button label="Disabled" />
+	<Button>Disabled</Button>
 </Tooltip>
 ```
 
@@ -179,7 +179,7 @@ type Placement =
 
 ```svelte
 <Tooltip text="Custom" class="my-tooltip">
-	<Button label="Button" />
+	<Button>Button</Button>
 </Tooltip>
 ```
 
@@ -194,20 +194,20 @@ Tooltips automatically validate content and will **not appear** if:
 ```svelte
 <!-- These will NOT show tooltips -->
 <Tooltip text="">
-	<Button label="Empty" />
+	<Button>Empty</Button>
 </Tooltip>
 
 <Tooltip text={undefined}>
-	<Button label="Undefined" />
+	<Button>Undefined</Button>
 </Tooltip>
 
 <Tooltip text="   ">
-	<Button label="Whitespace" />
+	<Button>Whitespace</Button>
 </Tooltip>
 
 <!-- This WILL show (title is valid) -->
 <Tooltip title="Warning!">
-	<Button label="Has title" />
+	<Button>Has title</Button>
 </Tooltip>
 ```
 
@@ -242,17 +242,17 @@ The tooltip supports three types of content that can be used together:
 ```svelte
 <!-- ✅ Good: Title + Text for structured info -->
 <Tooltip title="Password Requirements" text="At least 8 characters with one number">
-	<Button label="Help" />
+	<Button>Help</Button>
 </Tooltip>
 
 <!-- ✅ Good: Title only for brief labels -->
 <Tooltip title="New Feature">
-	<Badge text="Beta" />
+	<Badge text="Beta</Button>
 </Tooltip>
 
 <!-- ✅ Good: Text only for simple tooltips -->
 <Tooltip text="Click to copy">
-	<Icon name="copy" />
+	<Icon name="copy</Button>
 </Tooltip>
 
 <!-- ✅ Good: Content snippet for complex layouts -->
@@ -263,7 +263,7 @@ The tooltip supports three types of content that can be used together:
 			<li>Feature 2</li>
 		</ul>
 	{/snippet}
-	<Button label="Features" />
+	<Button>Features</Button>
 </Tooltip>
 
 <!-- ❌ Avoid: Title in content snippet (use title prop) -->
@@ -272,7 +272,7 @@ The tooltip supports three types of content that can be used together:
 		<strong>Title</strong>
 		<p>Text</p>
 	{/snippet}
-	<Button label="Bad" />
+	<Button>Bad</Button>
 </Tooltip>
 ```
 
@@ -416,7 +416,7 @@ The new stories showcase:
 
 ```svelte
 <Tooltip text="My tooltip" position="top" autoPosition={true} arrow={true}>
-	<Button label="Button" />
+	<Button>Button</Button>
 </Tooltip>
 ```
 
@@ -424,7 +424,7 @@ The new stories showcase:
 
 ```svelte
 <Tooltip text="My tooltip" placement="top" arrow={true}>
-	<Button label="Button" />
+	<Button>Button</Button>
 </Tooltip>
 ```
 

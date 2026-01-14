@@ -152,14 +152,11 @@
 		</FormInputWrapper>
 		{#if steps.length > 0}
 			<span class="steps">
-				{#each steps as step}
-					<Button
-						noMargin={true}
-						collapse={true}
-						onClick={() => incrementValue(step)}
-						label={step.label}
-					/>
-				{/each}
+			{#each steps as step}
+				<Button noMargin={true} collapse={true} onClick={() => incrementValue(step)}>
+					{step.label}
+				</Button>
+			{/each}
 			</span>
 		{/if}
 	</div>

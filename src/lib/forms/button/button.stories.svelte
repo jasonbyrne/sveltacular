@@ -1,17 +1,20 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import Button from './button.svelte';
+	import type { ComponentProps } from 'svelte';
+
+	type ButtonProps = ComponentProps<typeof Button>;
 
 	/**
 	 * Button component with multiple variants and sizes.
 	 *
 	 * **Accessibility**: Buttons support keyboard navigation and include proper ARIA attributes.
-	 * Use `aria-label` when the button only contains an icon.
+	 * Use `ariaLabel` when the button only contains an icon.
 	 *
 	 * **Usage**:
 	 * ```svelte
-	 * <Button variant="primary" label="Submit" onClick={handleSubmit} />
+	 * <Button variant="primary" onClick={handleSubmit}>Submit</Button>
 	 * ```
 	 */
 	const { Story } = defineMeta({
@@ -37,16 +40,17 @@
 					defaultValue: { summary: 'md' }
 				}
 			},
-			label: {
-				control: 'text',
-				description: 'Button label text',
-				table: {
-					type: { summary: 'string' }
-				}
-			},
 			disabled: {
 				control: 'boolean',
 				description: 'Whether the button is disabled',
+				table: {
+					type: { summary: 'boolean' },
+					defaultValue: { summary: 'false' }
+				}
+			},
+			loading: {
+				control: 'boolean',
+				description: 'Whether the button is in loading state',
 				table: {
 					type: { summary: 'boolean' },
 					defaultValue: { summary: 'false' }
@@ -71,53 +75,100 @@
 		args: {
 			onClick: fn(),
 			variant: 'secondary',
-			size: 'md',
-			label: 'Click Me'
+			size: 'md'
 		}
 	});
 </script>
 
-<Story name="Primary" args={{ variant: 'primary', label: 'Click Me' }}>
-	Primary button variant for main actions.
+<Story name="Primary" args={{ variant: 'primary' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Click Me</Button>
+			<p>Primary button variant for main actions.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Secondary" args={{ variant: 'secondary', label: 'Click Me' }}>
-	Secondary button variant for secondary actions.
+<Story name="Secondary" args={{ variant: 'secondary' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Click Me</Button>
+			<p>Secondary button variant for secondary actions.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Danger" args={{ variant: 'danger', label: 'Delete' }}>
-	Danger button variant for destructive actions.
+<Story name="Danger" args={{ variant: 'danger' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Delete</Button>
+			<p>Danger button variant for destructive actions.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Positive" args={{ variant: 'positive', label: 'Save' }}>
-	Positive button variant for positive actions like save or confirm.
+<Story name="Positive" args={{ variant: 'positive' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Save</Button>
+			<p>Positive button variant for positive actions like save or confirm.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Outline" args={{ variant: 'outline', label: 'Cancel' }}>
-	Outline button variant for less prominent actions.
+<Story name="Outline" args={{ variant: 'outline' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Cancel</Button>
+			<p>Outline button variant for less prominent actions.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Sizes" args={{ variant: 'primary', label: 'Button' }}>
-	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<Button variant="primary" size="sm" label="Small" />
-		<Button variant="primary" size="md" label="Medium" />
-		<Button variant="primary" size="lg" label="Large" />
-		<Button variant="primary" size="xl" label="Extra Large" />
-		<Button variant="primary" size="full" label="Full Width" />
-	</div>
+<Story name="Sizes" args={{ variant: 'primary' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div style="display: flex; flex-direction: column; gap: 1rem;">
+			<Button variant="primary" size="sm">Small</Button>
+			<Button variant="primary" size="md">Medium</Button>
+			<Button variant="primary" size="lg">Large</Button>
+			<Button variant="primary" size="xl">Extra Large</Button>
+			<Button variant="primary" size="full">Full Width</Button>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Disabled" args={{ variant: 'primary', label: 'Disabled', disabled: true }}>
-	Disabled buttons cannot be clicked and have reduced opacity.
+<Story name="Disabled" args={{ variant: 'primary', disabled: true }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Disabled</Button>
+			<p>Disabled buttons cannot be clicked and have reduced opacity.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story name="Block" args={{ variant: 'primary', label: 'Block Button', block: true }}>
-	Block buttons span the full width of their container.
+<Story name="Block" args={{ variant: 'primary', block: true }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Block Button</Button>
+			<p>Block buttons span the full width of their container.</p>
+		</div>
+	{/snippet}
 </Story>
 
-<Story
-	name="SingleClick"
-	args={{ variant: 'primary', repeatSubmitDelay: 'infinite', label: 'Single Click' }}
->
-	Button with infinite repeat submit delay prevents double-clicks.
+<Story name="Loading" args={{ variant: 'primary', loading: true }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Loading Button</Button>
+			<p>Loading buttons show a spinner and are disabled.</p>
+		</div>
+	{/snippet}
+</Story>
+
+<Story name="SingleClick" args={{ variant: 'primary', repeatSubmitDelay: 'infinite' }}>
+	{#snippet children(args: Partial<ButtonProps>)}
+		<div>
+			<Button {...args}>Single Click</Button>
+			<p>Button with infinite repeat submit delay prevents double-clicks.</p>
+		</div>
+	{/snippet}
 </Story>

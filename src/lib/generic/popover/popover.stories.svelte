@@ -14,7 +14,7 @@
 	 * ```svelte
 	 * <Popover bind:open={isOpen} position="bottom">
 	 *   {#snippet trigger()}
-	 *     <Button label="Open popover" />
+	 *     <Button>Open popover</Button>
 	 *   {/snippet}
 	 *   {#snippet children()}
 	 *     <div>Popover content</div>
@@ -94,7 +94,7 @@
 </script>
 
 {#snippet triggerSnippet()}
-	<Button label="Click me" />
+	<Button>Click me</Button>
 {/snippet}
 
 <Story name="Bottom" args={{ position: 'bottom', trigger: triggerSnippet }}>

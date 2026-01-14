@@ -50,7 +50,7 @@ npm i sveltacular
 	import { Button } from 'sveltacular';
 </script>
 
-<Button variant="primary" label="Hello World" />
+<Button variant="primary">Hello World</Button>
 ```
 
 **Note**: The stylesheet import is required for components to render with default styling. Import it once at the app level (not in individual components). If you prefer to provide your own theme, you can skip this import and define your own CSS variables (see [Theming](#theming) below).

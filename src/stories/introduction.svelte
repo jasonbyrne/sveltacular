@@ -111,7 +111,7 @@
 	import { Button } from 'sveltacular';
 </script>
 
-<Button variant="primary" label="Hello World" />`}</CodeBlock
+<Button variant="primary">Hello World</Button>`}</CodeBlock
 				>
 			</Card>
 		</CardContainer>

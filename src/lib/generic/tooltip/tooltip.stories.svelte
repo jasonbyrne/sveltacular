@@ -15,7 +15,7 @@
 	 * **Usage**:
 	 * ```svelte
 	 * <Tooltip text="Helpful information">
-	 *   <Button label="Hover me" />
+	 *   <Button>Hover me</Button>
 	 * </Tooltip>
 	 * ```
 	 */
@@ -132,7 +132,7 @@
 <Story name="Default (Hover Top)">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="This is a tooltip on top">
-			<Button label="Hover me" />
+			<Button>Hover me</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -143,13 +143,13 @@
 			<h4 style="margin-bottom: 1rem;">Top</h4>
 			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 				<Tooltip text="Top start" placement="top-start">
-					<Button label="Top Start" size="sm" />
+					<Button size="sm">Top Start</Button>
 				</Tooltip>
 				<Tooltip text="Top center" placement="top">
-					<Button label="Top Center" size="sm" />
+					<Button size="sm">Top Center</Button>
 				</Tooltip>
 				<Tooltip text="Top end" placement="top-end">
-					<Button label="Top End" size="sm" />
+					<Button size="sm">Top End</Button>
 				</Tooltip>
 			</div>
 		</div>
@@ -158,13 +158,13 @@
 			<h4 style="margin-bottom: 1rem;">Bottom</h4>
 			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 				<Tooltip text="Bottom start" placement="bottom-start">
-					<Button label="Bottom Start" size="sm" />
+					<Button size="sm">Bottom Start</Button>
 				</Tooltip>
 				<Tooltip text="Bottom center" placement="bottom">
-					<Button label="Bottom Center" size="sm" />
+					<Button size="sm">Bottom Center</Button>
 				</Tooltip>
 				<Tooltip text="Bottom end" placement="bottom-end">
-					<Button label="Bottom End" size="sm" />
+					<Button size="sm">Bottom End</Button>
 				</Tooltip>
 			</div>
 		</div>
@@ -173,13 +173,13 @@
 			<h4 style="margin-bottom: 1rem;">Left</h4>
 			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 				<Tooltip text="Left start" placement="left-start">
-					<Button label="Left Start" size="sm" />
+					<Button size="sm">Left Start</Button>
 				</Tooltip>
 				<Tooltip text="Left center" placement="left">
-					<Button label="Left Center" size="sm" />
+					<Button size="sm">Left Center</Button>
 				</Tooltip>
 				<Tooltip text="Left end" placement="left-end">
-					<Button label="Left End" size="sm" />
+					<Button size="sm">Left End</Button>
 				</Tooltip>
 			</div>
 		</div>
@@ -188,13 +188,13 @@
 			<h4 style="margin-bottom: 1rem;">Right</h4>
 			<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 				<Tooltip text="Right start" placement="right-start">
-					<Button label="Right Start" size="sm" />
+					<Button size="sm">Right Start</Button>
 				</Tooltip>
 				<Tooltip text="Right center" placement="right">
-					<Button label="Right Center" size="sm" />
+					<Button size="sm">Right Center</Button>
 				</Tooltip>
 				<Tooltip text="Right end" placement="right-end">
-					<Button label="Right End" size="sm" />
+					<Button size="sm">Right End</Button>
 				</Tooltip>
 			</div>
 		</div>
@@ -205,7 +205,7 @@
 <Story name="Trigger: Hover">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Appears on hover" trigger="hover">
-			<Button label="Hover me" />
+			<Button>Hover me</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -213,7 +213,7 @@
 <Story name="Trigger: Focus">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Appears on focus (Tab to me)" trigger="focus">
-			<Button label="Focus me" />
+			<Button>Focus me</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -221,7 +221,7 @@
 <Story name="Trigger: Click">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Click to toggle tooltip" trigger="click">
-			<Button label="Click me" />
+			<Button>Click me</Button>
 		</Tooltip>
 		<p style="margin-left: 2rem; color: #666;">
 			Click the button to toggle. Click outside or press Escape to close.
@@ -253,7 +253,7 @@
 <Story name="With Open Delay">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Appears after 500ms" openDelay={500}>
-			<Button label="Hover me (delayed)" />
+			<Button>Hover me (delayed)</Button>
 		</Tooltip>
 		<p style="margin-left: 2rem; color: #666;">Tooltip appears after 500ms delay</p>
 	</div>
@@ -262,7 +262,7 @@
 <Story name="With Close Delay">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Closes after 500ms" closeDelay={500}>
-			<Button label="Hover me" />
+			<Button>Hover me</Button>
 		</Tooltip>
 		<p style="margin-left: 2rem; color: #666;">Tooltip closes after 500ms delay</p>
 	</div>
@@ -271,7 +271,7 @@
 <Story name="With Both Delays">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="Opens and closes with delay" openDelay={300} closeDelay={300}>
-			<Button label="Hover me" />
+			<Button>Hover me</Button>
 		</Tooltip>
 		<p style="margin-left: 2rem; color: #666;">300ms delay for both open and close</p>
 	</div>
@@ -281,7 +281,7 @@
 <Story name="Without Arrow">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="No arrow tooltip" arrow={false}>
-			<Button label="Hover me" />
+			<Button>Hover me</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -291,16 +291,16 @@
 		style="padding: 100px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem; place-items: center;"
 	>
 		<Tooltip text="Tooltip with arrow on top" placement="top" arrow={true}>
-			<Button label="Top Arrow" />
+			<Button>Top Arrow</Button>
 		</Tooltip>
 		<Tooltip text="Tooltip with arrow on bottom" placement="bottom" arrow={true}>
-			<Button label="Bottom Arrow" />
+			<Button>Bottom Arrow</Button>
 		</Tooltip>
 		<Tooltip text="Tooltip with arrow on left" placement="left" arrow={true}>
-			<Button label="Left Arrow" />
+			<Button>Left Arrow</Button>
 		</Tooltip>
 		<Tooltip text="Tooltip with arrow on right" placement="right" arrow={true}>
-			<Button label="Right Arrow" />
+			<Button>Right Arrow</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -309,17 +309,17 @@
 <Story name="With Title">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
 		<Tooltip title="Pro Tip" text="Keyboard shortcuts can speed up your workflow">
-			<Button label="Title + Text" />
+			<Button>Title + Text</Button>
 		</Tooltip>
 		<Tooltip
 			title="Important!"
 			text="Save your work regularly to avoid data loss"
 			placement="bottom"
 		>
-			<Button label="Title + Text (Bottom)" />
+			<Button>Title + Text (Bottom)</Button>
 		</Tooltip>
 		<Tooltip title="Quick Info" placement="right">
-			<Button label="Title Only" />
+			<Button>Title Only</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -329,7 +329,7 @@
 		<Tooltip
 			text="This is a much longer tooltip text that demonstrates how the tooltip handles wrapping and maximum width constraints. It should wrap nicely and remain readable."
 		>
-			<Button label="Long content" />
+			<Button>Long content</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -340,7 +340,7 @@
 			title="Detailed Information"
 			text="This is a much longer tooltip text with a title that demonstrates how the tooltip handles wrapping and maximum width constraints when both title and body text are present."
 		>
-			<Button label="Long title + text" />
+			<Button>Long title + text</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -359,7 +359,7 @@
 					>
 				</div>
 			{/snippet}
-			<Button label="Rich content" />
+			<Button>Rich content</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -378,7 +378,7 @@
 					</ul>
 				</div>
 			{/snippet}
-			<Button label="Feature list" />
+			<Button>Feature list</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -387,7 +387,7 @@
 <Story name="Disabled">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center;">
 		<Tooltip text="This tooltip won't show" disabled>
-			<Button label="Disabled tooltip" />
+			<Button>Disabled tooltip</Button>
 		</Tooltip>
 		<p style="margin-left: 2rem; color: #666;">Tooltip is disabled and won't appear</p>
 	</div>
@@ -399,7 +399,7 @@
 		style="padding: 60px; display: flex; gap: 2rem; justify-content: center; align-items: center;"
 	>
 		<Tooltip text="Button tooltip">
-			<Button label="Button" />
+			<Button>Button</Button>
 		</Tooltip>
 
 		<Tooltip text="Badge tooltip" placement="bottom">
@@ -421,22 +421,22 @@
 	<div style="position: relative; height: 400px;">
 		<div style="position: absolute; top: 10px; left: 10px;">
 			<Tooltip text="Flips to stay visible" placement="top">
-				<Button label="Top Left" size="sm" />
+				<Button size="sm">Top Left</Button>
 			</Tooltip>
 		</div>
 		<div style="position: absolute; top: 10px; right: 10px;">
 			<Tooltip text="Flips to stay visible" placement="top">
-				<Button label="Top Right" size="sm" />
+				<Button size="sm">Top Right</Button>
 			</Tooltip>
 		</div>
 		<div style="position: absolute; bottom: 10px; left: 10px;">
 			<Tooltip text="Flips to stay visible" placement="bottom">
-				<Button label="Bottom Left" size="sm" />
+				<Button size="sm">Bottom Left</Button>
 			</Tooltip>
 		</div>
 		<div style="position: absolute; bottom: 10px; right: 10px;">
 			<Tooltip text="Flips to stay visible" placement="bottom">
-				<Button label="Bottom Right" size="sm" />
+				<Button size="sm">Bottom Right</Button>
 			</Tooltip>
 		</div>
 	</div>
@@ -446,19 +446,19 @@
 <Story name="Multiple Tooltips">
 	<div style="padding: 60px; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
 		<Tooltip text="First tooltip">
-			<Button label="Button 1" size="sm" />
+			<Button size="sm">Button 1</Button>
 		</Tooltip>
 		<Tooltip text="Second tooltip">
-			<Button label="Button 2" size="sm" />
+			<Button size="sm">Button 2</Button>
 		</Tooltip>
 		<Tooltip text="Third tooltip">
-			<Button label="Button 3" size="sm" />
+			<Button size="sm">Button 3</Button>
 		</Tooltip>
 		<Tooltip text="Fourth tooltip">
-			<Button label="Button 4" size="sm" />
+			<Button size="sm">Button 4</Button>
 		</Tooltip>
 		<Tooltip text="Fifth tooltip">
-			<Button label="Button 5" size="sm" />
+			<Button size="sm">Button 5</Button>
 		</Tooltip>
 	</div>
 </Story>
@@ -481,13 +481,13 @@
 		</div>
 		<div style="display: flex; gap: 1rem; justify-content: center;">
 			<Tooltip text="Focus me with Tab" trigger="focus">
-				<Button label="Button 1" />
+				<Button>Button 1</Button>
 			</Tooltip>
 			<Tooltip text="Click me or use Enter/Space" trigger="click">
-				<Button label="Button 2 (Click)" />
+				<Button>Button 2 (Click)</Button>
 			</Tooltip>
 			<Tooltip text="Focus me too" trigger="focus">
-				<Button label="Button 3" />
+				<Button>Button 3</Button>
 			</Tooltip>
 		</div>
 	</div>
@@ -503,13 +503,13 @@
 		</div>
 		<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
 			<Tooltip text="">
-				<Button label="Empty String" />
+				<Button>Empty String</Button>
 			</Tooltip>
 			<Tooltip text="   ">
-				<Button label="Whitespace Only" />
+				<Button>Whitespace Only</Button>
 			</Tooltip>
 			<Tooltip text={undefined}>
-				<Button label="Undefined" />
+				<Button>Undefined</Button>
 			</Tooltip>
 		</div>
 	</div>

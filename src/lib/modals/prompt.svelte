@@ -78,11 +78,11 @@
 					{@render children()}
 				{/if}
 			</DialogBody>
-			<Divider />
-			<DialogFooter>
-				<Button onClick={no} variant={cancelVariant} size="full" label={cancelText} />
-				<Button onClick={yes} variant={okVariant} size="full" label={okText} />
-			</DialogFooter>
+		<Divider />
+		<DialogFooter>
+			<Button onClick={no} variant={cancelVariant} size="full">{cancelText}</Button>
+			<Button onClick={yes} variant={okVariant} size="full">{okText}</Button>
+		</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}
