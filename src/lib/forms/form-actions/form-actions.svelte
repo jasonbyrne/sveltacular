@@ -3,26 +3,57 @@
 	import Button from '../button/button.svelte';
 	import type { ButtonVariant } from '$src/lib/types';
 
-	export interface ButtonOpts {
-		type?: 'submit' | 'button';
+	export type AdditionalButton = {
+		type?: 'button' | 'submit' | 'reset';
 		variant?: ButtonVariant;
 		text: string;
-		onClick?: () => void;
-	}
+		onClick?: ((e?: Event) => void) | undefined;
+		disabled?: boolean;
+	};
 
 	let {
 		children,
-		buttons = [
-			{
-				type: 'submit',
-				variant: 'primary',
-				text: 'Save'
-			}
-		]
+		disabled = false,
+		onCancel = undefined,
+		onSubmit = undefined,
+		cancelText = 'Cancel',
+		cancelVariant = 'secondary',
+		submitText = 'Submit',
+		submitVariant = 'primary',
+		additionalButtons = []
 	}: {
 		children?: Snippet;
-		buttons?: ButtonOpts[];
+		disabled?: boolean;
+		onCancel?: (() => void) | undefined;
+		cancelText?: string;
+		cancelVariant?: ButtonVariant;
+		submitText?: string;
+		submitVariant?: ButtonVariant;
+		onSubmit?: (() => void) | undefined;
+		additionalButtons?: AdditionalButton[];
 	} = $props();
+
+	const buttons = $derived(
+		[
+			onCancel
+				? {
+						type: 'button' as const,
+						variant: cancelVariant,
+						text: cancelText,
+						onClick: onCancel,
+						disabled
+					}
+				: undefined,
+			...additionalButtons.map((btn) => ({ ...btn, disabled: btn.disabled || disabled })),
+			{
+				type: 'submit' as const,
+				variant: submitVariant,
+				text: submitText,
+				onClick: onSubmit,
+				disabled
+			}
+		].filter(Boolean) as AdditionalButton[]
+	);
 </script>
 
 <div class="form-actions">
@@ -34,9 +65,10 @@
 	<div class="buttons">
 		{#each buttons as button}
 			<Button
-				type={button.type ?? 'submit'}
+				type={button.type ?? 'button'}
 				variant={button.variant ?? 'secondary'}
-				onClick={button.onClick ?? undefined}
+				onClick={button.onClick}
+				disabled={button.disabled}
 			>
 				{button.text}
 			</Button>

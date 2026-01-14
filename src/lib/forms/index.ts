@@ -26,12 +26,16 @@ export * from './radio-group/index.js';
 
 // Form structure components
 export { default as Form } from './form.svelte';
+export { default as FormActions } from './form-actions/form-actions.svelte';
 export { default as FormField } from './form-field/form-field.svelte';
 export { default as FormFooter } from './form-footer.svelte';
 export { default as FormHeader } from './form-header.svelte';
 export { default as FormLabel } from './form-label/form-label.svelte';
 export { default as FormSection } from './form-section/form-section.svelte';
 export { default as FormRow } from './form-row/form-row.svelte';
+
+// Form types
+export type { AdditionalButton } from './form-actions/form-actions.svelte';
 
 // Validation utilities
 export * from './validation.js';
