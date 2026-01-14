@@ -3,6 +3,7 @@
 	import { fn } from 'storybook/test';
 	import FormActions from './form-actions.svelte';
 	import type { AdditionalButton } from './form-actions.svelte';
+	import ListBox from '../list-box/list-box.svelte';
 
 	/**
 	 * FormActions component provides a consistent layout for form action buttons.
@@ -93,9 +94,13 @@
 	<div style="background: var(--body-bg); padding: 2rem; border-radius: var(--radius-md);">
 		<p style="margin: 0 0 1rem 0;">Form content goes here...</p>
 		<FormActions onCancel={fn()}>
-			<span style="color: var(--gray-500); font-size: var(--font-sm);">
-				Last saved: 2 minutes ago
-			</span>
+			<ListBox
+				label="Select an item"
+				items={[
+					{ name: 'Item 1', value: 'item1' },
+					{ name: 'Item 2', value: 'item2' }
+				]}
+			/>
 		</FormActions>
 	</div>
 </Story>
@@ -111,7 +116,7 @@
 				{ text: 'Save Progress', variant: 'secondary', onClick: fn() },
 				{ text: 'Validate', variant: 'outline', onClick: fn() }
 			]}
-		/>
+		></FormActions>
 	</div>
 </Story>
 

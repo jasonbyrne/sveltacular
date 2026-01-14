@@ -97,7 +97,6 @@
 		.content {
 			display: flex;
 			flex-direction: column;
-			align-items: flex-start; /* Align content to left */
 			gap: var(--spacing-md);
 			flex: 1;
 		}
@@ -114,6 +113,7 @@
 		/* Responsive: Stack on mobile */
 		@include breakpoint-down('phablet') {
 			flex-direction: column;
+			justify-content: space-around;
 			align-items: center;
 			gap: var(--spacing-md);
 
