@@ -1,11 +1,11 @@
 import type { Component } from 'svelte';
 
-type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | JSONValue[];
-
-export type JsonObject = { [x: string]: JSONValue };
+export type Primitive = string | number | boolean | null | undefined;
+export type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | JSONValue[];
+export type PlainObject = Record<string, any>;
 
 // Base column configuration
-interface BaseColumn<T extends JsonObject = JsonObject> {
+interface BaseColumn<T extends PlainObject = PlainObject> {
 	key: keyof T & string;
 	label: string;
 	width?: string | number;
@@ -17,21 +17,21 @@ interface BaseColumn<T extends JsonObject = JsonObject> {
 }
 
 // Text column
-export interface TextColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface TextColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'text';
 	format?: (value: string, row: T) => string;
 	link?: (row: T) => string;
 }
 
 // Number column
-export interface NumberColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface NumberColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'number';
 	format?: (value: number, row: T) => string;
 	link?: (row: T) => string;
 }
 
 // Currency column
-export interface CurrencyColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface CurrencyColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'currency';
 	currency?: string;
 	format?: (value: number, row: T) => string;
@@ -39,21 +39,21 @@ export interface CurrencyColumn<T extends JsonObject = JsonObject> extends BaseC
 }
 
 // Date column
-export interface DateColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface DateColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'date';
 	format?: (value: string | Date, row: T) => string;
 	link?: (row: T) => string;
 }
 
 // DateTime column
-export interface DateTimeColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface DateTimeColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'date-time';
 	format?: (value: string | Date, row: T) => string;
 	link?: (row: T) => string;
 }
 
 // Boolean/Check column
-export interface BooleanColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface BooleanColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'boolean' | 'check';
 	trueText?: string;
 	falseText?: string;
@@ -61,13 +61,13 @@ export interface BooleanColumn<T extends JsonObject = JsonObject> extends BaseCo
 }
 
 // Email column
-export interface EmailColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface EmailColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'email';
 	format?: (value: string, row: T) => string;
 }
 
 // Array column for iterating over array values
-export interface ArrayColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface ArrayColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'array';
 	// For object arrays - which property to display
 	displayKey?: string;
@@ -80,7 +80,7 @@ export interface ArrayColumn<T extends JsonObject = JsonObject> extends BaseColu
 }
 
 // Cell renderer props for custom components
-export interface CellRendererProps<T extends JsonObject = JsonObject> {
+export interface CellRendererProps<T extends PlainObject = PlainObject> {
 	row: T;
 	value: unknown;
 	column: ColumnDef<T>;
@@ -88,7 +88,7 @@ export interface CellRendererProps<T extends JsonObject = JsonObject> {
 }
 
 // Custom column with render function
-export interface CustomColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+export interface CustomColumn<T extends PlainObject = PlainObject> extends BaseColumn<T> {
 	type: 'custom';
 	// Option A: Simple string output (existing)
 	render?: (row: T) => string | number | boolean;
@@ -97,7 +97,7 @@ export interface CustomColumn<T extends JsonObject = JsonObject> extends BaseCol
 }
 
 // Discriminated union of all column types
-export type ColumnDef<T extends JsonObject = JsonObject> =
+export type ColumnDef<T extends PlainObject = PlainObject> =
 	| TextColumn<T>
 	| NumberColumn<T>
 	| CurrencyColumn<T>
@@ -115,8 +115,8 @@ export type DataCol = {
 	type?: string;
 	nullText?: string;
 	emptyText?: string;
-	format?: (row: JsonObject, key: string) => string;
-	link?: (row: JsonObject, key: string) => string;
+	format?: (row: PlainObject, key: string) => string;
+	link?: (row: PlainObject, key: string) => string;
 	hide?: boolean;
 	width?: number | string;
 };
@@ -139,7 +139,7 @@ export interface SelectionState<T = string | number> {
 }
 
 // Action configuration for DataGrid rows
-export interface DataGridAction<T extends JsonObject = JsonObject> {
+export interface DataGridAction<T extends PlainObject = PlainObject> {
 	text: string;
 	variant?: string; // ButtonVariant from form types
 	href?: (row: T) => string;
@@ -147,7 +147,7 @@ export interface DataGridAction<T extends JsonObject = JsonObject> {
 }
 
 // Actions configuration for DataGrid
-export interface DataGridActions<T extends JsonObject = JsonObject> {
+export interface DataGridActions<T extends PlainObject = PlainObject> {
 	text?: string;
 	type?: 'buttons' | 'dropdown';
 	variant?: string; // ButtonVariant | 'default'

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { CellRendererProps } from '$src/lib/types/data.js';
 
-	let {
-		row
-	}: CellRendererProps<{
+	interface MyData {
 		name: string;
-	}> = $props();
+	}
+
+	let { row }: CellRendererProps<MyData> = $props();
 </script>
 
 <div>foobar {row.name}</div>
