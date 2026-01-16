@@ -143,3 +143,21 @@ export interface SelectionState<T = string | number> {
 	selectedIds: Set<T>;
 	lastSelectedIndex: number | null;
 }
+
+// Action configuration for DataGrid rows
+export interface DataGridAction<T extends JsonObject = JsonObject> {
+	text: string;
+	variant?: string; // ButtonVariant from form types
+	href?: (row: T) => string;
+	onClick?: (row: T) => unknown;
+}
+
+// Actions configuration for DataGrid
+export interface DataGridActions<T extends JsonObject = JsonObject> {
+	text?: string;
+	type?: 'buttons' | 'dropdown';
+	variant?: string; // ButtonVariant | 'default'
+	size?: string; // FormFieldSizeOptions
+	align?: 'left' | 'center' | 'right';
+	items: DataGridAction<T>[];
+}

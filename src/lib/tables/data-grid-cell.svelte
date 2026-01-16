@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T extends JsonObject">
 	import type { Snippet } from 'svelte';
 	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
 	import TableCell from './table-cell.svelte';
@@ -12,10 +12,10 @@
 		formatArrayCell
 	} from './cell-renderers.js';
 
-	interface CellContext<T extends JsonObject = JsonObject> {
-		row: T;
+	interface CellContext<TRow extends JsonObject = JsonObject> {
+		row: TRow;
 		value: unknown;
-		column: ColumnDef<T>;
+		column: ColumnDef<TRow>;
 		rowIndex: number;
 	}
 
@@ -26,10 +26,10 @@
 		cellSnippet = undefined,
 		width = undefined
 	}: {
-		row: JsonObject;
-		column: ColumnDef;
+		row: T;
+		column: ColumnDef<T>;
 		rowIndex: number;
-		cellSnippet?: Snippet<[CellContext]>;
+		cellSnippet?: Snippet<[CellContext<T>]>;
 		width?: number | string;
 	} = $props();
 

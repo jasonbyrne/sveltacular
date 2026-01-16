@@ -1,26 +1,10 @@
-<script lang="ts">
-	import type { JsonObject } from '$src/lib/types/data.js';
+<script lang="ts" generics="T extends JsonObject">
+	import type { JsonObject, DataGridActions } from '$src/lib/types/data.js';
 	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import TableCell from './table-cell.svelte';
 	import Button from '../forms/button/button.svelte';
 	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
 	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
-
-	interface Action {
-		text: string;
-		variant?: ButtonVariant;
-		href?: (row: JsonObject) => string;
-		onClick?: (row: JsonObject) => unknown;
-	}
-
-	interface Actions {
-		text?: string;
-		type?: 'buttons' | 'dropdown';
-		variant?: ButtonVariant | 'default';
-		size?: FormFieldSizeOptions;
-		align?: 'left' | 'center' | 'right';
-		items: Action[];
-	}
 
 	let {
 		actions,
@@ -29,8 +13,8 @@
 		actionButtonSize = 'sm',
 		actionAlign = 'center'
 	}: {
-		actions: Actions;
-		row: JsonObject;
+		actions: DataGridActions<T>;
+		row: T;
 		actionButtonVariant?: ButtonVariant;
 		actionButtonSize?: FormFieldSizeOptions;
 		actionAlign?: 'left' | 'center' | 'right';

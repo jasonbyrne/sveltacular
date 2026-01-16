@@ -32,3 +32,6 @@ export {
 } from './cell-renderers.js';
 
 export type { ArrayCellResult, CellRenderContext } from './cell-renderers.js';
+
+// Types
+export type { CellRendererProps } from '$src/lib/types/data.js';

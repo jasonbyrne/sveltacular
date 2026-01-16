@@ -1,11 +1,16 @@
-<script lang="ts">
+<script lang="ts" generics="T extends JsonObject">
 	import TableCell from '$src/lib/tables/table-cell.svelte';
 	import TableHeaderCell from '$src/lib/tables/table-header-cell.svelte';
 	import TableHeader from '$src/lib/tables/table-header.svelte';
 	import Table from '$src/lib/tables/table.svelte';
 	import TableSelectionHeaderCell from './table-selection-header-cell.svelte';
 	import DataGridRow from './data-grid-row.svelte';
-	import type { ColumnDef, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
+	import type {
+		ColumnDef,
+		JsonObject,
+		PaginationProperties,
+		DataGridActions
+	} from '$src/lib/types/data.js';
 	import Empty from '../generic/empty/empty.svelte';
 	import Icon from '../icons/icon.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
@@ -18,27 +23,11 @@
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
 
-	interface CellContext<T extends JsonObject = JsonObject> {
-		row: T;
+	interface CellContext<TRow extends JsonObject = JsonObject> {
+		row: TRow;
 		value: unknown;
-		column: ColumnDef<T>;
+		column: ColumnDef<TRow>;
 		rowIndex: number;
-	}
-
-	interface Action {
-		text: string;
-		variant?: ButtonVariant;
-		href?: (row: JsonObject) => string;
-		onClick?: (row: JsonObject) => unknown;
-	}
-
-	interface Actions {
-		text?: string;
-		type?: 'buttons' | 'dropdown';
-		variant?: ButtonVariant | 'default';
-		size?: FormFieldSizeOptions;
-		align?: 'left' | 'center' | 'right';
-		items: Action[];
 	}
 
 	let {
@@ -64,20 +53,20 @@
 	}: {
 		captionSide?: 'top' | 'bottom';
 		captionAlign?: 'left' | 'center' | 'right';
-		rows?: JsonObject[];
-		cols: ColumnDef[];
+		rows?: T[];
+		cols: ColumnDef<T>[];
 		pagination?: PaginationProperties;
-		actions?: Actions;
+		actions?: DataGridActions<T>;
 		stickyHeader?: boolean;
 		enableSorting?: boolean;
 		selectionMode?: 'none' | 'single' | 'multi';
 		rowIdKey?: string;
 		onPageChange?: PaginationEvent | null;
 		onSort?: (column: string, direction: 'asc' | 'desc') => void;
-		onSelectionChange?: (selectedRows: JsonObject[]) => void;
+		onSelectionChange?: (selectedRows: T[]) => void;
 		selectedCount?: number;
 		children?: Snippet;
-		cells?: Record<string, Snippet<[CellContext]>>;
+		cells?: Record<string, Snippet<[CellContext<T>]>>;
 		virtualScroll?: boolean;
 		rowHeight?: number;
 		maxHeight?: string;
@@ -173,7 +162,7 @@
 
 	// Virtual scrolling setup (only when pagination is disabled)
 	let tbodyRef: HTMLElement | null = null;
-	let virtual = $state<ReturnType<typeof useVirtualList<JsonObject>> | null>(null);
+	let virtual = $state<ReturnType<typeof useVirtualList<T>> | null>(null);
 
 	// Initialize virtual list
 	$effect(() => {

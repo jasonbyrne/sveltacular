@@ -1,10 +1,10 @@
-<script context="module" lang="ts">
-	import type { StoryContext } from '$src/lib/types/storybook.js';
+<script module lang="ts">
+	import { defineMeta } from '@storybook/addon-svelte-csf';
 
-	export const meta = {
+	const { Story } = defineMeta({
 		title: 'Forms/Alignment Test',
 		tags: ['autodocs']
-	};
+	});
 </script>
 
 <script lang="ts">

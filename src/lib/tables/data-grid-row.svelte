@@ -1,33 +1,17 @@
-<script lang="ts">
+<script lang="ts" generics="T extends JsonObject">
 	import type { Snippet } from 'svelte';
-	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
+	import type { ColumnDef, JsonObject, DataGridActions } from '$src/lib/types/data.js';
 	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import TableRow from './table-row.svelte';
 	import TableSelectionCell from './table-selection-cell.svelte';
 	import DataGridCell from './data-grid-cell.svelte';
 	import DataGridActionsCell from './data-grid-actions-cell.svelte';
 
-	interface CellContext<T extends JsonObject = JsonObject> {
-		row: T;
+	interface CellContext<TRow extends JsonObject = JsonObject> {
+		row: TRow;
 		value: unknown;
-		column: ColumnDef<T>;
+		column: ColumnDef<TRow>;
 		rowIndex: number;
-	}
-
-	interface Action {
-		text: string;
-		variant?: ButtonVariant;
-		href?: (row: JsonObject) => string;
-		onClick?: (row: JsonObject) => unknown;
-	}
-
-	interface Actions {
-		text?: string;
-		type?: 'buttons' | 'dropdown';
-		variant?: ButtonVariant | 'default';
-		size?: FormFieldSizeOptions;
-		align?: 'left' | 'center' | 'right';
-		items: Action[];
 	}
 
 	let {
@@ -42,13 +26,13 @@
 		actionButtonSize = 'sm',
 		actionAlign = 'center'
 	}: {
-		row: JsonObject;
+		row: T;
 		rowIndex: number;
-		visibleCols: ColumnDef[];
+		visibleCols: ColumnDef<T>[];
 		hasSelectionCol?: boolean;
 		hasActionCol?: boolean;
-		actions?: Actions;
-		cells?: Record<string, Snippet<[CellContext]>>;
+		actions?: DataGridActions<T>;
+		cells?: Record<string, Snippet<[CellContext<T>]>>;
 		actionButtonVariant?: ButtonVariant;
 		actionButtonSize?: FormFieldSizeOptions;
 		actionAlign?: 'left' | 'center' | 'right';
