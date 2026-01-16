@@ -1,3 +1,5 @@
+import type { Component } from 'svelte';
+
 export type JsonValue =
 	| string
 	| number
@@ -70,10 +72,34 @@ export interface EmailColumn<T extends JsonObject = JsonObject> extends BaseColu
 	format?: (value: string, row: T) => string;
 }
 
+// Array column for iterating over array values
+export interface ArrayColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
+	type: 'array';
+	// For object arrays - which property to display
+	displayKey?: string;
+	// Format each element
+	format?: (element: unknown, row: T, index: number) => string;
+	// Generate link for each element
+	link?: (element: unknown, row: T, index: number) => string | null;
+	// Separator between elements
+	separator?: 'comma' | 'semicolon' | 'line' | 'pill';
+}
+
+// Cell renderer props for custom components
+export interface CellRendererProps<T extends JsonObject = JsonObject> {
+	row: T;
+	value: unknown;
+	column: ColumnDef<T>;
+	rowIndex: number;
+}
+
 // Custom column with render function
 export interface CustomColumn<T extends JsonObject = JsonObject> extends BaseColumn<T> {
 	type: 'custom';
-	render: (row: T) => string | number | boolean;
+	// Option A: Simple string output (existing)
+	render?: (row: T) => string | number | boolean;
+	// Option B: Full Svelte component
+	component?: Component<CellRendererProps<T>>;
 }
 
 // Discriminated union of all column types
@@ -85,6 +111,7 @@ export type ColumnDef<T extends JsonObject = JsonObject> =
 	| DateTimeColumn<T>
 	| BooleanColumn<T>
 	| EmailColumn<T>
+	| ArrayColumn<T>
 	| CustomColumn<T>;
 
 // Legacy type for backward compatibility (deprecated)

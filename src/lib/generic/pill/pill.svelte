@@ -8,7 +8,8 @@
 		shape = 'rounded' as 'circular' | 'square' | 'rounded' | 'badge' | 'circle',
 		fill = 'solid' as 'solid' | 'outline',
 		compact = false,
-		label
+		label,
+		children
 	}: {
 		size?: FormFieldSizeOptions;
 		variant?: 'standard' | 'positive' | 'negative';
@@ -16,11 +17,15 @@
 		fill?: 'solid' | 'outline';
 		compact?: boolean;
 		label?: string;
+		children?: Snippet;
 	} = $props();
 </script>
 
 <div class="pill {size} {variant} {shape} {fill}" class:compact>
-	<span>{label}</span>
+	<span>
+		{label}
+		{@render children?.()}
+	</span>
 </div>
 
 <style lang="scss">

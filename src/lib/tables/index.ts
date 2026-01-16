@@ -21,6 +21,7 @@ export {
 	formatDateTimeCell,
 	formatBooleanCell,
 	formatEmailCell,
+	formatArrayCell,
 	formatCustomCell,
 	getCellValue,
 	getCellLink,
@@ -29,3 +30,5 @@ export {
 	sortRows,
 	compareValues
 } from './cell-renderers.js';
+
+export type { ArrayCellResult, CellRenderContext } from './cell-renderers.js';

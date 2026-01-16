@@ -4,6 +4,9 @@
 	import DataGrid from './data-grid.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
 	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
+	import Pill from '../generic/pill/pill.svelte';
+	import Icon from '../icons/icon.svelte';
+	import ExampleStatusCell from './example-status-cell.svelte';
 
 	interface Employee extends JsonObject {
 		id: number;
@@ -13,6 +16,15 @@
 		isActive: boolean;
 		salary: number;
 		updatedAt: string;
+	}
+
+	interface Project extends JsonObject {
+		id: number;
+		name: string;
+		tags: string[];
+		team: Array<{ id: number; name: string }>;
+		status: 'active' | 'completed' | 'on-hold';
+		budget: number;
 	}
 
 	const rows: Employee[] = [
@@ -122,6 +134,52 @@
 		]
 	};
 
+	// Data for array column examples
+	const projects: Project[] = [
+		{
+			id: 1,
+			name: 'Website Redesign',
+			tags: ['design', 'frontend', 'urgent'],
+			team: [
+				{ id: 1, name: 'Alice' },
+				{ id: 2, name: 'Bob' }
+			],
+			status: 'active',
+			budget: 50000
+		},
+		{
+			id: 2,
+			name: 'Mobile App',
+			tags: ['mobile', 'react-native'],
+			team: [
+				{ id: 3, name: 'Charlie' },
+				{ id: 4, name: 'Diana' },
+				{ id: 5, name: 'Eve' }
+			],
+			status: 'active',
+			budget: 120000
+		},
+		{
+			id: 3,
+			name: 'API Integration',
+			tags: ['backend', 'api', 'security'],
+			team: [{ id: 6, name: 'Frank' }],
+			status: 'completed',
+			budget: 30000
+		},
+		{
+			id: 4,
+			name: 'Database Migration',
+			tags: ['database', 'devops'],
+			team: [
+				{ id: 7, name: 'Grace' },
+				{ id: 8, name: 'Henry' }
+			],
+			status: 'on-hold',
+			budget: 25000
+		}
+	];
+
 	const { Story } = defineMeta({
 		component: DataGrid,
 		title: 'Tables/DataGrid',
@@ -187,4 +245,128 @@
 	}}
 >
 	Countries with Pagination and Actions (test dropdown on last row of each page)
+</Story>
+
+<Story
+	name="WithArrayColumns"
+	args={{
+		rows: projects,
+		cols: [
+			{ key: 'name', label: 'Project', type: 'text' },
+			{
+				key: 'tags',
+				label: 'Tags (Pills)',
+				type: 'array',
+				separator: 'pill',
+				link: (tag: string) => `/tags/${tag}`
+			},
+			{
+				key: 'team',
+				label: 'Team (Comma)',
+				type: 'array',
+				displayKey: 'name',
+				separator: 'comma',
+				link: (member: any) => `/users/${member.id}`
+			},
+			{ key: 'budget', label: 'Budget', type: 'currency' }
+		] as ColumnDef<Project>[]
+	}}
+>
+	Projects with Array Columns (Pills & Comma separated with links)
+</Story>
+
+<Story
+	name="WithArrayColumnsSemicolon"
+	args={{
+		rows: projects,
+		cols: [
+			{ key: 'name', label: 'Project', type: 'text' },
+			{
+				key: 'tags',
+				label: 'Tags',
+				type: 'array',
+				separator: 'semicolon',
+				format: (tag: string) => tag.toUpperCase()
+			},
+			{
+				key: 'team',
+				label: 'Team Members',
+				type: 'array',
+				displayKey: 'name',
+				separator: 'line'
+			}
+		] as ColumnDef<Project>[]
+	}}
+>
+	Projects with Semicolon and Line separators
+</Story>
+
+{#snippet nameCell({ row, value }: { row: Project; value: unknown })}
+	<div style="display: flex; flex-direction: column; gap: 0.25rem;">
+		<a href="/projects/{row.id}" style="font-weight: 600; color: var(--primary-500);">
+			{value}
+		</a>
+		<small style="color: var(--text-muted); font-size: 0.85em;">Budget: ${row.budget.toLocaleString()}</small>
+	</div>
+{/snippet}
+
+{#snippet statusCell({ row, value }: { row: Project; value: unknown })}
+	{#if value === 'active'}
+		<Pill variant="positive" compact label="✓ Active" />
+	{:else if value === 'completed'}
+		<Pill variant="standard" compact label="✓ Completed" />
+	{:else}
+		<Pill variant="negative" compact label="⚠ On Hold" />
+	{/if}
+{/snippet}
+
+<Story
+	name="WithCellSnippets"
+	args={{
+		rows: projects,
+		cols: [
+			{ key: 'name', label: 'Project', type: 'text' },
+			{ key: 'status', label: 'Status', type: 'text', align: 'center' },
+			{ key: 'budget', label: 'Budget', type: 'currency' },
+			{
+				key: 'tags',
+				label: 'Tags',
+				type: 'array',
+				separator: 'pill'
+			}
+		] as ColumnDef<Project>[],
+		cells: {
+			name: nameCell,
+			status: statusCell
+		}
+	}}
+>
+	Projects with Custom Cell Snippets (name with email, status with icons)
+</Story>
+
+<Story
+	name="WithComponentCells"
+	args={{
+		rows: projects,
+		cols: [
+			{ key: 'name', label: 'Project', type: 'text' },
+			{
+				key: 'status',
+				label: 'Status',
+				type: 'custom',
+				component: ExampleStatusCell,
+				align: 'center'
+			},
+			{
+				key: 'tags',
+				label: 'Tags',
+				type: 'array',
+				separator: 'pill',
+				link: (tag: string) => `/tags/${tag}`
+			},
+			{ key: 'budget', label: 'Budget', type: 'currency' }
+		] as ColumnDef<Project>[]
+	}}
+>
+	Projects with Component-Based Custom Cells (reusable StatusCell component)
 </Story>

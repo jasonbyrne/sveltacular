@@ -2,32 +2,28 @@
 	import TableCell from '$src/lib/tables/table-cell.svelte';
 	import TableHeaderCell from '$src/lib/tables/table-header-cell.svelte';
 	import TableHeader from '$src/lib/tables/table-header.svelte';
-	import TableRow from '$src/lib/tables/table-row.svelte';
 	import Table from '$src/lib/tables/table.svelte';
-	import TableSelectionCell from './table-selection-cell.svelte';
 	import TableSelectionHeaderCell from './table-selection-header-cell.svelte';
+	import DataGridRow from './data-grid-row.svelte';
 	import type { ColumnDef, JsonObject, PaginationProperties } from '$src/lib/types/data.js';
-	import Button from '../forms/button/button.svelte';
-	import DropdownItem from '../generic/dropdown-item/dropdown-item.svelte';
 	import Empty from '../generic/empty/empty.svelte';
-	import Pill from '../generic/pill/pill.svelte';
 	import Icon from '../icons/icon.svelte';
-	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
-	import {
-		formatCell,
-		getCellLink,
-		getCellAlignment,
-		getCellTypeClass,
-		sortRows
-	} from './cell-renderers.js';
+	import { getCellAlignment, sortRows } from './cell-renderers.js';
 	import type { Snippet } from 'svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
 	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
+
+	interface CellContext<T extends JsonObject = JsonObject> {
+		row: T;
+		value: unknown;
+		column: ColumnDef<T>;
+		rowIndex: number;
+	}
 
 	interface Action {
 		text: string;
@@ -61,6 +57,7 @@
 		onSelectionChange = undefined,
 		selectedCount = $bindable(0),
 		children = undefined,
+		cells = undefined,
 		virtualScroll = false,
 		rowHeight = 48,
 		maxHeight = '600px'
@@ -80,6 +77,7 @@
 		onSelectionChange?: (selectedRows: JsonObject[]) => void;
 		selectedCount?: number;
 		children?: Snippet;
+		cells?: Record<string, Snippet<[CellContext]>>;
 		virtualScroll?: boolean;
 		rowHeight?: number;
 		maxHeight?: string;
@@ -257,7 +255,7 @@
 			: ''}
 	>
 		{#if !filteredRows?.length}
-			<TableRow>
+			<tr>
 				<TableCell colspan={colCount}>
 					<div class="empty" role="status" aria-live="polite">
 						{#if rows === undefined}
@@ -269,7 +267,7 @@
 						{/if}
 					</div>
 				</TableCell>
-			</TableRow>
+			</tr>
 		{:else if virtualScroll && !pagination && virtual}
 			<!-- Virtual scrolling mode -->
 			<tr style="height: {virtual.totalHeight}px; position: relative;">
@@ -280,57 +278,18 @@
 						<div
 							style="position: absolute; top: {vItem.offsetTop}px; height: {vItem.height}px; width: 100%; display: table; table-layout: fixed;"
 						>
-							<TableRow {row} rowIndex={index} selectable={hasSelectionCol}>
-								{#if hasSelectionCol}
-									<TableSelectionCell {row} rowIndex={index} />
-								{/if}
-								{#each visibleCols as col}
-									{@const cellValue = formatCell(row, col)}
-									{@const cellLink = getCellLink(row, col)}
-									{@const cellAlign = getCellAlignment(col)}
-									<TableCell type={getCellTypeClass(col)} width={col.width} align={cellAlign}>
-										{#if cellLink}
-											<a href={cellLink}>{cellValue}</a>
-										{:else if col.type === 'check' || col.type === 'boolean'}
-											{#if row[col.key]}
-												<Pill shape="circle" variant="positive" compact label="✔" />
-											{/if}
-										{:else}
-											{cellValue}
-										{/if}
-									</TableCell>
-								{/each}
-								{#if hasActionCol && actions}
-									<TableCell type="actions" align={actionAlign}>
-										{#if actions.type === 'dropdown'}
-											<DropdownButton text={actions.text ?? ''} variant="ghost">
-												{#each actions.items as action}
-													<DropdownItem
-														href={action.href ? action.href(row) : undefined}
-														onClick={action.onClick ? () => action.onClick?.(row) : undefined}
-														>{action.text}</DropdownItem
-													>
-												{/each}
-											</DropdownButton>
-										{:else}
-											<div class="actions">
-												{#each actions.items as action}
-													{@const buttonVariant = action.variant ?? actionButtonVariant}
-													<Button
-														collapse={true}
-														type="button"
-														variant={buttonVariant}
-														size={actionButtonSize}
-														href={action.href ? action.href(row) : undefined}
-														onClick={action.onClick ? () => action.onClick?.(row) : undefined}
-														label={action.text}
-													/>
-												{/each}
-											</div>
-										{/if}
-									</TableCell>
-								{/if}
-							</TableRow>
+							<DataGridRow
+								{row}
+								rowIndex={index}
+								{visibleCols}
+								{hasSelectionCol}
+								{hasActionCol}
+								{actions}
+								{cells}
+								{actionButtonVariant}
+								{actionButtonSize}
+								{actionAlign}
+							/>
 						</div>
 					{/each}
 				</td>
@@ -338,56 +297,18 @@
 		{:else}
 			<!-- Regular rendering mode -->
 			{#each filteredRows as row, index}
-				<TableRow {row} rowIndex={index} selectable={hasSelectionCol}>
-					{#if hasSelectionCol}
-						<TableSelectionCell {row} rowIndex={index} />
-					{/if}
-					{#each visibleCols as col}
-						{@const cellValue = formatCell(row, col)}
-						{@const cellLink = getCellLink(row, col)}
-						{@const cellAlign = getCellAlignment(col)}
-						<TableCell type={getCellTypeClass(col)} width={col.width} align={cellAlign}>
-							{#if cellLink}
-								<a href={cellLink}>{cellValue}</a>
-							{:else if col.type === 'check' || col.type === 'boolean'}
-								{#if row[col.key]}
-									<Pill shape="circle" variant="positive" compact label="✔" />
-								{/if}
-							{:else}
-								{cellValue}
-							{/if}
-						</TableCell>
-					{/each}
-					{#if hasActionCol && actions}
-						<TableCell type="actions" align={actionAlign}>
-							{#if actions.type === 'dropdown'}
-								<DropdownButton text={actions.text ?? ''} variant="ghost">
-									{#each actions.items as action}
-										<DropdownItem
-											href={action.href ? action.href(row) : undefined}
-											onClick={action.onClick ? () => action.onClick?.(row) : undefined}
-											>{action.text}</DropdownItem
-										>
-									{/each}
-								</DropdownButton>
-							{:else}
-								<div class="actions">
-									{#each actions.items as action}
-										{@const buttonVariant = action.variant ?? actionButtonVariant}
-										<Button
-											type="button"
-											variant={buttonVariant}
-											size={actionButtonSize}
-											href={action.href ? action.href(row) : undefined}
-											onClick={action.onClick ? () => action.onClick?.(row) : undefined}
-											label={action.text}
-										/>
-									{/each}
-								</div>
-							{/if}
-						</TableCell>
-					{/if}
-				</TableRow>
+				<DataGridRow
+					{row}
+					rowIndex={index}
+					{visibleCols}
+					{hasSelectionCol}
+					{hasActionCol}
+					{actions}
+					{cells}
+					{actionButtonVariant}
+					{actionButtonSize}
+					{actionAlign}
+				/>
 			{/each}
 		{/if}
 	</tbody>
@@ -419,15 +340,6 @@
 		letter-spacing: 0.2rem;
 	}
 
-	a {
-		color: var(--table-link-fg, rgb(0, 0, 200));
-		text-decoration: none;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
 	tfoot {
 		background: var(--table-footer-bg);
 		color: var(--table-footer-fg);
@@ -444,10 +356,5 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.actions {
-		display: flex;
-		gap: 0.5rem;
 	}
 </style>
