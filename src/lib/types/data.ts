@@ -1,14 +1,8 @@
 import type { Component } from 'svelte';
 
-export type JsonValue =
-	| string
-	| number
-	| boolean
-	| null
-	| { [key: string]: JsonValue }
-	| JsonValue[];
+type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | JSONValue[];
 
-export type JsonObject = { [key: string]: JsonValue };
+export type JsonObject = { [x: string]: JSONValue };
 
 // Base column configuration
 interface BaseColumn<T extends JsonObject = JsonObject> {
