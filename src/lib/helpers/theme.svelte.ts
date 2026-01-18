@@ -25,7 +25,7 @@ const STORAGE_KEY = 'sveltacular-theme';
 const MEDIA_QUERY = '(prefers-color-scheme: dark)';
 
 class ThemeManager {
-	current = $state<Theme>('system');
+	current = $state<Theme>('light');
 	resolved = $state<ResolvedTheme>('light');
 
 	private mediaQuery: MediaQueryList | null = null;
@@ -41,9 +41,9 @@ class ThemeManager {
 		if (this.initialized) return;
 		this.initialized = true;
 
-		// Load saved preference or default to 'system'
+		// Load saved preference or default to 'light'
 		const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
-		this.current = saved || 'system';
+		this.current = saved || 'light';
 
 		// Set up media query listener for system preference
 		this.mediaQuery = window.matchMedia(MEDIA_QUERY);
