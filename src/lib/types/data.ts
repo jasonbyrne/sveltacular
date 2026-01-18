@@ -1,8 +1,10 @@
 import type { Component } from 'svelte';
+import type { ButtonVariant, FormFieldSizeOptions } from './form';
 
 export type Primitive = string | number | boolean | null | undefined;
 export type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | JSONValue[];
 export type PlainObject = Record<string, any>;
+export type JsonObject = Record<string, JSONValue>;
 
 // Base column configuration
 interface BaseColumn<T extends PlainObject = PlainObject> {
@@ -141,7 +143,7 @@ export interface SelectionState<T = string | number> {
 // Action configuration for DataGrid rows
 export interface DataGridAction<T extends PlainObject = PlainObject> {
 	text: string;
-	variant?: string; // ButtonVariant from form types
+	variant?: ButtonVariant;
 	href?: (row: T) => string;
 	onClick?: (row: T) => unknown;
 }
@@ -150,8 +152,8 @@ export interface DataGridAction<T extends PlainObject = PlainObject> {
 export interface DataGridActions<T extends PlainObject = PlainObject> {
 	text?: string;
 	type?: 'buttons' | 'dropdown';
-	variant?: string; // ButtonVariant | 'default'
-	size?: string; // FormFieldSizeOptions
+	variant?: ButtonVariant | 'default';
+	size?: FormFieldSizeOptions;
 	align?: 'left' | 'center' | 'right';
 	items: DataGridAction<T>[];
 }

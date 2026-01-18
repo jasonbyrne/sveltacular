@@ -1,13 +1,15 @@
 <script lang="ts">
-	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
-	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import Menu from '$src/lib/generic/menu/menu.svelte';
-	import Icon from '$src/lib/icons/icon.svelte';
-	import debounce from '$src/lib/helpers/debounce.js';
+	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$lib/types/form.js';
+	import FormField, { type FormFieldFeedback } from '$lib/forms/form-field/form-field.svelte';
+	import { uniqueId } from '$lib/helpers/unique-id.js';
+	import Menu from '$lib/generic/menu/menu.svelte';
+	import Icon from '$lib/icons/icon.svelte';
+	import debounce from '$lib/helpers/debounce.js';
 	import { browser } from '$app/environment';
 	import { onMount, untrack } from 'svelte';
-	import type { SearchFunction } from './list-box.js';
+	import type { SearchFunction, CreateNewFunction } from './list-box.js';
+	import Prompt from '$lib/modals/prompt.svelte';
+	import { ucfirst } from '$lib/helpers/ucfirst.js';
 
 	let {
 		value = $bindable(null as string | null),
@@ -26,7 +28,9 @@
 		helperText = undefined,
 		feedback = undefined,
 		virtualScroll = false,
-		itemHeight = 40
+		itemHeight = 40,
+		createNew = undefined as CreateNewFunction | undefined,
+		resourceName = undefined
 	}: {
 		value?: string | null;
 		items?: DropdownOption[];
@@ -45,6 +49,8 @@
 		feedback?: FormFieldFeedback;
 		virtualScroll?: boolean;
 		itemHeight?: number;
+		createNew?: CreateNewFunction | undefined;
+		resourceName?: string;
 	} = $props();
 
 	const id = uniqueId();
@@ -64,6 +70,10 @@
 	let containerElement: HTMLDivElement | null = $state(null);
 	let isUserTyping = $state(false);
 	let isLoading = $state(false);
+	let showPrompt = $state(false);
+	let isCreating = $state(false);
+	let createError = $state<string | null>(null);
+	let promptKey = $state(0);
 
 	// Initialize localItems when items prop changes (only when no search function)
 	$effect(() => {
@@ -114,10 +124,17 @@
 
 	// Reset highlight when filter changes
 	$effect(() => {
-		if (highlightIndex >= filteredItems.length) {
-			highlightIndex = -1;
+		// Account for "Create new..." option if it exists
+		const maxIndex = filteredItems.length - 1;
+		if (highlightIndex > maxIndex) {
+			highlightIndex = maxIndex;
 		}
 	});
+
+	let open = $derived(isMenuOpen && !disabled && !readonly);
+
+	// Check if we should show "Create new..." option
+	let showCreateNew = $derived(!!createNew && open);
 
 	// When an item is selected from the dropdown menu
 	const onSelect = (item: MenuOption) => {
@@ -199,8 +216,11 @@
 
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
+			if (isMenuOpen && highlightIndex >= 0 && highlightIndex < filteredItems.length && filteredItems[highlightIndex]) {
 				onSelect(filteredItems[highlightIndex]);
+			} else if (isMenuOpen && createNew && highlightIndex === filteredItems.length) {
+				// "Create new..." is highlighted
+				openCreatePrompt();
 			} else if (isMenuOpen && isSearchable && filteredItems.length > 0) {
 				// In searchable mode with matches but no highlight, select first item
 				onSelect(filteredItems[0]);
@@ -211,9 +231,13 @@
 		}
 
 		if (e.key === 'Tab') {
-			if (isMenuOpen && highlightIndex >= 0 && filteredItems[highlightIndex]) {
+			if (isMenuOpen && highlightIndex >= 0 && highlightIndex < filteredItems.length && filteredItems[highlightIndex]) {
 				e.preventDefault();
 				onSelect(filteredItems[highlightIndex]);
+			} else if (isMenuOpen && createNew && highlightIndex === filteredItems.length) {
+				// "Create new..." is highlighted
+				e.preventDefault();
+				openCreatePrompt();
 			} else if (isMenuOpen && isSearchable && filteredItems.length > 0) {
 				// In searchable mode with matches but no highlight, select first item
 				e.preventDefault();
@@ -227,16 +251,22 @@
 			if (!isMenuOpen) {
 				openDropdown();
 			}
-			if (filteredItems.length > 0) {
-				highlightIndex = Math.min(highlightIndex + 1, filteredItems.length - 1);
+			// Allow highlighting "Create new..." option if it exists
+			const maxIndex = createNew ? filteredItems.length : filteredItems.length - 1;
+			if (maxIndex >= 0) {
+				highlightIndex = Math.min(highlightIndex + 1, maxIndex);
 			}
 			return;
 		}
 
 		if (e.key === 'ArrowUp') {
 			e.preventDefault();
-			if (isMenuOpen && filteredItems.length > 0) {
-				highlightIndex = Math.max(highlightIndex - 1, 0);
+			if (isMenuOpen) {
+				// Allow highlighting "Create new..." option if it exists
+				const maxIndex = createNew ? filteredItems.length : filteredItems.length - 1;
+				if (maxIndex >= 0) {
+					highlightIndex = Math.max(highlightIndex - 1, 0);
+				}
 			}
 			return;
 		}
@@ -281,6 +311,54 @@
 		}
 	};
 
+	const handleCreateNew = async (name: string) => {
+		if (!createNew) return;
+
+		isCreating = true;
+		createError = null;
+
+		try {
+			const result = await createNew(name);
+
+			if (result) {
+				items = [...items, result];
+				localItems = [...localItems, result];
+
+				// Select the newly created item
+				value = result.value;
+				onChange?.(value);
+				text = result.name;
+				isMenuOpen = false;
+				showPrompt = false;
+			} else {
+				// Handle error - show message to user
+				createError = 'Failed to create new item';
+				// Keep prompt open so user can try again
+			}
+		} catch (error) {
+			createError = error instanceof Error ? error.message : 'An error occurred';
+			// Keep prompt open so user can try again
+		} finally {
+			isCreating = false;
+		}
+	};
+
+	const openCreatePrompt = () => {
+		createError = null;
+		// Increment key to force Prompt to remount and reset its value
+		promptKey++;
+		showPrompt = true;
+		// Close dropdown when opening prompt
+		isMenuOpen = false;
+	};
+
+	// Reset error when prompt closes
+	$effect(() => {
+		if (!showPrompt) {
+			createError = null;
+		}
+	});
+
 	// Close dropdown when clicking outside
 	onMount(() => {
 		const handleClickOutside = (e: MouseEvent) => {
@@ -296,8 +374,6 @@
 			};
 		}
 	});
-
-	let open = $derived(isMenuOpen && !disabled && !readonly);
 </script>
 
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
@@ -374,7 +450,8 @@
 		<div class="dropdown">
 			{#if hasNoResults && open}
 				<div class="no-results" role="status">No results found</div>
-			{:else}
+			{/if}
+			{#if !hasNoResults || !open}
 				<Menu
 					items={filteredItems}
 					{open}
@@ -389,9 +466,55 @@
 					{itemHeight}
 				/>
 			{/if}
+			{#if showCreateNew}
+				<button
+					type="button"
+					class="create-new"
+					class:selected={highlightIndex === filteredItems.length}
+					onclick={openCreatePrompt}
+					role="option"
+					id={listboxId ? `${listboxId}-option-create` : undefined}
+					aria-selected={highlightIndex === filteredItems.length}
+				>
+					<Icon type="plus" size="sm" />
+					<span>
+						{#if resourceName}
+							Create new {resourceName}...
+						{:else}
+							Create new...
+						{/if}
+					</span>
+				</button>
+			{/if}
 		</div>
 	</div>
 </FormField>
+
+{#key promptKey}
+	<Prompt
+		bind:open={showPrompt}
+		title={resourceName ? `Create New ${ucfirst(resourceName)}` : 'Create New'}
+		placeholder="Enter name"
+		required={true}
+		okText={resourceName ? `Create ${ucfirst(resourceName)}` : 'Create'}
+		cancelText="Cancel"
+		onOk={handleCreateNew}
+		onCancel={() => {
+			createError = null;
+		}}
+	>
+		{#if createError}
+			<div class="create-error" role="alert">
+				{createError}
+			</div>
+		{/if}
+		{#if isCreating}
+			<div class="creating-indicator" aria-live="polite">
+				Creating...
+			</div>
+		{/if}
+	</Prompt>
+{/key}
 
 <style lang="scss">
 	.listbox-container {
@@ -537,6 +660,44 @@
 			border-radius: var(--radius-md);
 		}
 
+		.create-new {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.5rem 1rem;
+			border: none;
+			background-color: var(--form-input-bg);
+			color: var(--form-input-fg);
+			font-size: var(--font-sm, 0.875rem);
+			cursor: pointer;
+			border-top: var(--border-thin) solid var(--form-input-border);
+			transition:
+				background-color var(--transition-base) var(--ease-in-out),
+				color var(--transition-base) var(--ease-in-out);
+
+			&:hover,
+			&.selected {
+				background: var(--form-input-selected-bg, #003c75);
+				color: var(--form-input-selected-fg, white);
+			}
+			border: var(--border-thin) solid var(--form-input-border);
+			border-top: none;
+
+			&:focus {
+				outline: none;
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--focus-ring, #007bff);
+				outline-offset: -2px;
+			}
+
+			span {
+				flex: 1;
+			}
+		}
+
 		:global(.menu) {
 			font-size: var(--font-sm, 0.875rem);
 
@@ -572,5 +733,21 @@
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+.create-error {
+	color: var(--color-danger, #dc3545);
+	font-size: var(--font-sm, 0.875rem);
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+	background-color: var(--color-danger-bg, #f8d7da);
+	border-radius: var(--radius-sm, 0.25rem);
+}
+
+.creating-indicator {
+	color: var(--text-muted, #6c757d);
+	font-size: var(--font-sm, 0.875rem);
+	margin-top: 0.5rem;
+	font-style: italic;
 }
 </style>

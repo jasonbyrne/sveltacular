@@ -1,0 +1,20 @@
+<script>
+	// Force light mode for Storybook - ignore system preference
+	// This ensures components always render in light mode in Storybook
+	document.documentElement.setAttribute('data-theme', 'light');
+	
+	// Override localStorage to prevent dark mode from being applied
+	if (typeof localStorage !== 'undefined') {
+		localStorage.setItem('sveltacular-theme', 'light');
+	}
+</script>
+
+<style>
+	/* Force light theme for all Storybook previews */
+	html,
+	body,
+	#storybook-root {
+		background-color: #fafafa !important;
+		color: #2d3748 !important;
+	}
+</style>

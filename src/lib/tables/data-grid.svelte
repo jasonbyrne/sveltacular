@@ -106,10 +106,10 @@
 	let colCount = $derived(
 		Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0) + (hasSelectionCol ? 1 : 0)
 	);
-	let actionButtonVariant = $derived.by(() => {
-		return !actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant;
+	let actionButtonVariant: ButtonVariant = $derived.by(() => {
+		return (!actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant) as ButtonVariant;
 	});
-	let actionButtonSize = $derived(actions?.size ?? 'sm');
+	let actionButtonSize: FormFieldSizeOptions = $derived((actions?.size ?? 'sm') as FormFieldSizeOptions);
 	let actionAlign = $derived(actions?.align ?? 'center');
 
 	// Track selected count from selection change callbacks

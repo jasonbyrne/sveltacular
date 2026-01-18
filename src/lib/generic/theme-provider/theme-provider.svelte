@@ -22,7 +22,6 @@
 	 */
 
 	import { useTheme, type Theme } from '$lib/helpers/theme.svelte';
-	import { onMount } from 'svelte';
 
 	interface Props {
 		/**
@@ -48,23 +47,18 @@
 
 	const theme = useTheme();
 
-	onMount(() => {
-		// Set initial theme if provided
+	// Set initial theme and ensure theme attribute is set synchronously
+	// This prevents FOUC (Flash of Unstyled Content) by ensuring CSS variables are available immediately
+	$effect(() => {
+		if (typeof document === 'undefined') return;
+
+		// Set initial theme if provided (only on first run)
 		if (initialTheme) {
 			theme.set(initialTheme);
 		}
 
-		// Apply theme to document
-		if (typeof document !== 'undefined') {
-			document.documentElement.setAttribute('data-theme', theme.resolved);
-		}
-	});
-
-	// Watch for theme changes and update document
-	$effect(() => {
-		if (typeof document !== 'undefined') {
-			document.documentElement.setAttribute('data-theme', theme.resolved);
-		}
+		// Always ensure theme attribute is set on document element
+		document.documentElement.setAttribute('data-theme', theme.resolved);
 	});
 </script>
 

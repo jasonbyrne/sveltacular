@@ -35,10 +35,9 @@
 	{:else}
 		<div class="actions">
 			{#each actions.items as action}
-				{@const buttonVariant = action.variant ?? actionButtonVariant}
 				<Button
 					type="button"
-					variant={buttonVariant}
+					variant={(action.variant ?? actionButtonVariant) as ButtonVariant}
 					size={actionButtonSize}
 					href={action.href ? action.href(row) : undefined}
 					onClick={action.onClick ? () => action.onClick?.(row) : undefined}

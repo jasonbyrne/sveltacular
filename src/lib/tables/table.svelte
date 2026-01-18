@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { JsonObject } from '$src/lib/types/data.js';
+	import type { PlainObject } from '$src/lib/types/data.js';
 	import { createTableContext, type TableContextConfig } from './table-context.svelte.js';
 	import { untrack } from 'svelte';
 
@@ -15,7 +15,7 @@
 		onSelectionChange = undefined
 	}: {
 		children?: Snippet;
-		rows?: JsonObject[];
+		rows?: PlainObject[];
 		enableSorting?: boolean;
 		selectionMode?: 'none' | 'single' | 'multi';
 		rowIdKey?: string;
@@ -26,7 +26,7 @@
 
 	// Create table context for child components
 	// Using untrack() to indicate we intentionally want non-reactive initial values
-	const config: TableContextConfig<JsonObject> = {
+	const config: TableContextConfig<PlainObject> = {
 		enableSorting: untrack(() => enableSorting),
 		selectionMode: untrack(() => selectionMode),
 		rowIdKey: untrack(() => rowIdKey),

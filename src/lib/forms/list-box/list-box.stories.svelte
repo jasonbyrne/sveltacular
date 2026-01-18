@@ -1,9 +1,10 @@
-<script module>
+<script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import ListBox from './list-box.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
 	import { US_States } from '$src/lib/data/united-states.js';
+	import type { DropdownOption } from '$src/lib/types/form.js';
 
 	const items = [
 		{ name: 'SvelteKit', value: 'svelte' },
@@ -19,6 +20,15 @@
 		{ name: 'Vue', value: 'vue' },
 		{ name: 'None', value: null }
 	];
+
+	const createNewHandler = async (name: string): Promise<DropdownOption | null> => {
+		// Simulate API call
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		return {
+			value: name.toLowerCase().replace(/\s+/g, '-'),
+			name: name
+		} satisfies DropdownOption;
+	};
 
 	const { Story } = defineMeta({
 		component: ListBox,
@@ -49,5 +59,15 @@
 		disabled: true,
 		value: 'USA',
 		label: 'Countries'
+	}}
+/>
+
+<Story
+	name="WithCreateNew"
+	args={{
+		items,
+		label: 'Framework (with Create)',
+		createNew: createNewHandler,
+		resourceName: 'Framework'
 	}}
 />

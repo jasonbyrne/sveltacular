@@ -142,3 +142,9 @@ export function useTheme(): ThemeManager {
 	}
 	return themeManager;
 }
+
+// Auto-initialize theme when module loads to prevent FOUC (Flash of Unstyled Content)
+// This ensures the data-theme attribute is set before any components render
+if (typeof window !== 'undefined') {
+	useTheme();
+}

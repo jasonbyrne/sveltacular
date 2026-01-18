@@ -13,13 +13,16 @@
 		children?: Snippet;
 	} = $props();
 
-	const handleClick = () => {
-		onClick?.();
+	const handleClick = (event: MouseEvent) => {
+		// Only close if clicking directly on the overlay background, not on child elements
+		if (event.target === event.currentTarget) {
+			onClick?.();
+		}
 	};
 
 	const onKeyPress = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
-			handleClick();
+			onClick?.();
 		}
 	};
 </script>

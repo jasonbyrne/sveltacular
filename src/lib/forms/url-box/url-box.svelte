@@ -73,9 +73,8 @@
 	{size}
 	onInput={handleInput}
 	onChange={handleChange}
-	{onCheckChanged}
-	{onFocus}
-	{onBlur}
+	onFocus={onFocus ? (_value) => onFocus?.(new FocusEvent('focus')) : undefined}
+	onBlur={onBlur ? (_value) => onBlur?.(new FocusEvent('blur')) : undefined}
 	allowSpaces={false}
 	{label}
 	{helperText}
