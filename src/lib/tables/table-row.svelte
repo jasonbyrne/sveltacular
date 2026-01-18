@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { JsonObject } from '$src/lib/types/data.js';
+	import type { PlainObject } from '$src/lib/types/data.js';
 	import { getTableContext } from './table-context.svelte.js';
 
 	let {
@@ -10,7 +10,7 @@
 		selectable = false
 	}: {
 		children?: Snippet;
-		row?: JsonObject;
+		row?: PlainObject;
 		rowIndex?: number;
 		selectable?: boolean;
 	} = $props();

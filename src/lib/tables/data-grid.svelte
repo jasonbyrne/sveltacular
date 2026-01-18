@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends JsonObject">
+<script lang="ts" generics="T extends PlainObject">
 	import TableCell from '$src/lib/tables/table-cell.svelte';
 	import TableHeaderCell from '$src/lib/tables/table-header-cell.svelte';
 	import TableHeader from '$src/lib/tables/table-header.svelte';
@@ -7,9 +7,9 @@
 	import DataGridRow from './data-grid-row.svelte';
 	import type {
 		ColumnDef,
-		JsonObject,
+		PlainObject,
 		PaginationProperties,
-		DataGridActions
+		RowActions
 	} from '$src/lib/types/data.js';
 	import Empty from '../generic/empty/empty.svelte';
 	import Icon from '../icons/icon.svelte';
@@ -23,7 +23,7 @@
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
 
-	interface CellContext<TRow extends JsonObject = JsonObject> {
+	interface CellContext<TRow extends PlainObject = PlainObject> {
 		row: TRow;
 		value: unknown;
 		column: ColumnDef<TRow>;
@@ -56,7 +56,7 @@
 		rows?: T[];
 		cols: ColumnDef<T>[];
 		pagination?: PaginationProperties;
-		actions?: DataGridActions<T>;
+		actions?: RowActions<T>;
 		stickyHeader?: boolean;
 		enableSorting?: boolean;
 		selectionMode?: 'none' | 'single' | 'multi';
@@ -107,9 +107,13 @@
 		Math.max(1, visibleCols.length) + (hasActionCol ? 1 : 0) + (hasSelectionCol ? 1 : 0)
 	);
 	let actionButtonVariant: ButtonVariant = $derived.by(() => {
-		return (!actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant) as ButtonVariant;
+		return (
+			!actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant
+		) as ButtonVariant;
 	});
-	let actionButtonSize: FormFieldSizeOptions = $derived((actions?.size ?? 'sm') as FormFieldSizeOptions);
+	let actionButtonSize: FormFieldSizeOptions = $derived(
+		(actions?.size ?? 'sm') as FormFieldSizeOptions
+	);
 	let actionAlign = $derived(actions?.align ?? 'center');
 
 	// Track selected count from selection change callbacks

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { JsonObject } from '$src/lib/types/data.js';
+	import type { PlainObject } from '$src/lib/types/data.js';
 	import { getTableContext } from './table-context.svelte.js';
 	import CheckBox from '../forms/check-box/check-box.svelte';
 	import RadioBox from '../forms/radio-group/radio-box.svelte';
@@ -8,7 +8,7 @@
 		row = undefined,
 		rowIndex = undefined
 	}: {
-		row?: JsonObject;
+		row?: PlainObject;
 		rowIndex?: number;
 	} = $props();
 

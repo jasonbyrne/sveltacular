@@ -4,10 +4,10 @@
 	 * It shows how TypeScript will catch errors at compile time.
 	 */
 	import DataGrid from './data-grid.svelte';
-	import type { ColumnDef, JsonObject, DataGridActions } from '$src/lib/types/data.js';
+	import type { ColumnDef, PlainObject, RowActions } from '$src/lib/types/data.js';
 
 	// Define a strongly-typed interface for our data
-	interface Product extends JsonObject {
+	interface Product extends PlainObject {
 		id: number;
 		name: string;
 		price: number;
@@ -57,7 +57,7 @@
 	];
 
 	// Type-safe actions with typed row parameter
-	const actions: DataGridActions<Product> = {
+	const actions: RowActions<Product> = {
 		type: 'dropdown',
 		items: [
 			{
@@ -87,7 +87,7 @@
 
 	// Type-safe selection handler
 	function handleSelectionChange(selectedProducts: Product[]) {
-		// selectedProducts is typed as Product[], not JsonObject[]
+		// selectedProducts is typed as Product[], not PlainObject[]
 		selectedProducts.forEach((product) => {
 			console.log(`Selected: ${product.name} - $${product.price}`);
 			// Full type safety and autocomplete here

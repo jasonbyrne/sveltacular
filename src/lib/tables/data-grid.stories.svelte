@@ -3,12 +3,12 @@
 	import { fn } from 'storybook/test';
 	import DataGrid from './data-grid.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
-	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
+	import type { ColumnDef, PlainObject } from '$src/lib/types/data.js';
 	import Pill from '../generic/pill/pill.svelte';
 	import Icon from '../icons/icon.svelte';
 	import ExampleStatusCell from './example-status-cell.svelte';
 
-	interface Employee extends JsonObject {
+	interface Employee extends PlainObject {
 		id: number;
 		name: string;
 		age: number;
@@ -18,7 +18,7 @@
 		updatedAt: string;
 	}
 
-	interface Project extends JsonObject {
+	interface Project extends PlainObject {
 		id: number;
 		name: string;
 		tags: string[];

@@ -6,12 +6,12 @@ The DataGrid components now support full type safety through TypeScript generics
 
 ### Define Your Row Type
 
-First, define an interface for your row data that extends `JsonObject`:
+First, define an interface for your row data that extends `PlainObject`:
 
 ```typescript
-import type { JsonObject } from '$src/lib/types/data.js';
+import type { PlainObject } from '$src/lib/types/data.js';
 
-interface Employee extends JsonObject {
+interface Employee extends PlainObject {
   id: number;
   name: string;
   age: number;
@@ -78,9 +78,9 @@ The `key` property will be type-checked against your `Employee` interface, ensur
 Actions are also type-safe and receive properly typed row data:
 
 ```typescript
-import type { DataGridActions } from '$src/lib/types/data.js';
+import type { RowActions } from '$src/lib/types/data.js';
 
-const actions: DataGridActions<Employee> = {
+const actions: RowActions<Employee> = {
   type: 'dropdown',
   items: [
     {
@@ -107,8 +107,8 @@ When creating custom cell renderer components, use the generic `CellRendererProp
 
 ```svelte
 <!-- StatusCell.svelte -->
-<script lang="ts" generics="T extends JsonObject">
-  import type { CellRendererProps, JsonObject } from '$src/lib/types/data.js';
+<script lang="ts" generics="T extends PlainObject">
+  import type { CellRendererProps, PlainObject } from '$src/lib/types/data.js';
   import Pill from '$lib/generic/pill/pill.svelte';
   
   let { row, value }: CellRendererProps<T> = $props();
@@ -165,7 +165,7 @@ When using cell snippets, the context is fully typed:
 For array columns, you get type-safe access to array elements:
 
 ```typescript
-interface Project extends JsonObject {
+interface Project extends PlainObject {
   id: number;
   name: string;
   tags: string[];
@@ -226,4 +226,4 @@ If you have existing DataGrid usage without explicit types, you can gradually ad
 3. Add types to your action callbacks if you use them
 4. Add types to custom cell renderers if you use them
 
-All existing code will continue to work (it will use `JsonObject` as the default type), but you'll get better type safety by adding explicit types.
+All existing code will continue to work (it will use `PlainObject` as the default type), but you'll get better type safety by adding explicit types.

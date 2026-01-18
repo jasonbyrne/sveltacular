@@ -1,9 +1,9 @@
 import { getContext, setContext } from 'svelte';
-import type { JsonObject, SortDirection, SortState } from '$src/lib/types/data.js';
+import type { PlainObject, SortDirection, SortState } from '$src/lib/types/data.js';
 
 const TABLE_CONTEXT_KEY = Symbol('table-context');
 
-export interface TableContextConfig<T extends JsonObject = JsonObject> {
+export interface TableContextConfig<T extends PlainObject = PlainObject> {
 	enableSorting?: boolean;
 	selectionMode?: 'none' | 'single' | 'multi';
 	rowIdKey?: keyof T & string;
@@ -12,7 +12,7 @@ export interface TableContextConfig<T extends JsonObject = JsonObject> {
 	rows?: T[]; // Needed to compute selectedRows from selectedIds
 }
 
-export class TableContext<T extends JsonObject = JsonObject> {
+export class TableContext<T extends PlainObject = PlainObject> {
 	// Sort state
 	sortColumn = $state<string | null>(null);
 	sortDirection = $state<SortDirection>('asc');
@@ -228,7 +228,7 @@ export class TableContext<T extends JsonObject = JsonObject> {
 	}
 }
 
-export function createTableContext<T extends JsonObject = JsonObject>(
+export function createTableContext<T extends PlainObject = PlainObject>(
 	config?: TableContextConfig<T>
 ): TableContext<T> {
 	const context = new TableContext<T>(config);
@@ -236,6 +236,6 @@ export function createTableContext<T extends JsonObject = JsonObject>(
 	return context;
 }
 
-export function getTableContext<T extends JsonObject = JsonObject>(): TableContext<T> | undefined {
+export function getTableContext<T extends PlainObject = PlainObject>(): TableContext<T> | undefined {
 	return getContext(TABLE_CONTEXT_KEY);
 }

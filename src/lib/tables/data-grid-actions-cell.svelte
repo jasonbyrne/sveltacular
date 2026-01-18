@@ -1,5 +1,5 @@
-<script lang="ts" generics="T extends JsonObject">
-	import type { JsonObject, DataGridActions } from '$src/lib/types/data.js';
+<script lang="ts" generics="T extends PlainObject">
+	import type { PlainObject, RowActions } from '$src/lib/types/data.js';
 	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
 	import TableCell from './table-cell.svelte';
 	import Button from '../forms/button/button.svelte';
@@ -13,7 +13,7 @@
 		actionButtonSize = 'sm',
 		actionAlign = 'center'
 	}: {
-		actions: DataGridActions<T>;
+		actions: RowActions<T>;
 		row: T;
 		actionButtonVariant?: ButtonVariant;
 		actionButtonSize?: FormFieldSizeOptions;

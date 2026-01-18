@@ -1,6 +1,6 @@
-<script lang="ts" generics="T extends JsonObject">
+<script lang="ts" generics="T extends PlainObject">
 	import type { Snippet } from 'svelte';
-	import type { ColumnDef, JsonObject } from '$src/lib/types/data.js';
+	import type { ColumnDef, PlainObject } from '$src/lib/types/data.js';
 	import TableCell from './table-cell.svelte';
 	import Pill from '../generic/pill/pill.svelte';
 	import {
@@ -12,7 +12,7 @@
 		formatArrayCell
 	} from './cell-renderers.js';
 
-	interface CellContext<TRow extends JsonObject = JsonObject> {
+	interface CellContext<TRow extends PlainObject = PlainObject> {
 		row: TRow;
 		value: unknown;
 		column: ColumnDef<TRow>;

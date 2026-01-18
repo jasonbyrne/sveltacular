@@ -1,5 +1,5 @@
 import type {
-	JsonObject,
+	PlainObject,
 	ColumnDef,
 	TextColumn,
 	NumberColumn,
@@ -12,7 +12,7 @@ import type {
 	CustomColumn
 } from '$src/lib/types/data.js';
 
-export interface CellRenderContext<T extends JsonObject = JsonObject> {
+export interface CellRenderContext<T extends PlainObject = PlainObject> {
 	row: T;
 	column: ColumnDef<T>;
 	value: unknown;
@@ -20,7 +20,7 @@ export interface CellRenderContext<T extends JsonObject = JsonObject> {
 }
 
 // Helper to safely get value from row
-export function getCellValue<T extends JsonObject>(row: T, key: string): unknown {
+export function getCellValue<T extends PlainObject>(row: T, key: string): unknown {
 	return row[key];
 }
 
@@ -35,14 +35,14 @@ export function isEmpty(value: unknown): boolean {
 }
 
 // Generic formatter factory to reduce repetition
-interface FormatterConfig<T extends JsonObject, V = unknown> {
+interface FormatterConfig<T extends PlainObject, V = unknown> {
 	getValue: (row: T, column: ColumnDef<T>) => V;
 	checkEmpty?: (value: V) => boolean;
 	defaultFormat: (value: V) => string;
 	customFormat?: (value: V, row: T) => string;
 }
 
-function createFormatter<T extends JsonObject, C extends ColumnDef<T>, V = unknown>(
+function createFormatter<T extends PlainObject, C extends ColumnDef<T>, V = unknown>(
 	config: FormatterConfig<T, V>
 ) {
 	return (row: T, column: C): string => {
@@ -71,7 +71,7 @@ function createFormatter<T extends JsonObject, C extends ColumnDef<T>, V = unkno
 }
 
 // Format text column
-export function formatTextCell<T extends JsonObject>(row: T, column: TextColumn<T>): string {
+export function formatTextCell<T extends PlainObject>(row: T, column: TextColumn<T>): string {
 	const formatter = createFormatter<T, TextColumn<T>, unknown>({
 		getValue: (row, column) => getCellValue(row, column.key),
 		checkEmpty: isEmpty,
@@ -82,7 +82,7 @@ export function formatTextCell<T extends JsonObject>(row: T, column: TextColumn<
 }
 
 // Format number column
-export function formatNumberCell<T extends JsonObject>(row: T, column: NumberColumn<T>): string {
+export function formatNumberCell<T extends PlainObject>(row: T, column: NumberColumn<T>): string {
 	const formatter = createFormatter<T, NumberColumn<T>, number>({
 		getValue: (row, column) => {
 			const value = getCellValue(row, column.key);
@@ -96,7 +96,7 @@ export function formatNumberCell<T extends JsonObject>(row: T, column: NumberCol
 }
 
 // Format currency column
-export function formatCurrencyCell<T extends JsonObject>(
+export function formatCurrencyCell<T extends PlainObject>(
 	row: T,
 	column: CurrencyColumn<T>
 ): string {
@@ -117,7 +117,7 @@ export function formatCurrencyCell<T extends JsonObject>(
 }
 
 // Format date column
-export function formatDateCell<T extends JsonObject>(row: T, column: DateColumn<T>): string {
+export function formatDateCell<T extends PlainObject>(row: T, column: DateColumn<T>): string {
 	const formatter = createFormatter<T, DateColumn<T>, unknown>({
 		getValue: (row, column) => getCellValue(row, column.key),
 		checkEmpty: isEmpty,
@@ -135,7 +135,7 @@ export function formatDateCell<T extends JsonObject>(row: T, column: DateColumn<
 }
 
 // Format datetime column
-export function formatDateTimeCell<T extends JsonObject>(
+export function formatDateTimeCell<T extends PlainObject>(
 	row: T,
 	column: DateTimeColumn<T>
 ): string {
@@ -156,7 +156,7 @@ export function formatDateTimeCell<T extends JsonObject>(
 }
 
 // Format boolean column
-export function formatBooleanCell<T extends JsonObject>(row: T, column: BooleanColumn<T>): string {
+export function formatBooleanCell<T extends PlainObject>(row: T, column: BooleanColumn<T>): string {
 	const value = getCellValue(row, column.key);
 
 	if (isNullish(value) && column.nullText) {
@@ -177,7 +177,7 @@ export function formatBooleanCell<T extends JsonObject>(row: T, column: BooleanC
 }
 
 // Format email column
-export function formatEmailCell<T extends JsonObject>(row: T, column: EmailColumn<T>): string {
+export function formatEmailCell<T extends PlainObject>(row: T, column: EmailColumn<T>): string {
 	const formatter = createFormatter<T, EmailColumn<T>, unknown>({
 		getValue: (row, column) => getCellValue(row, column.key),
 		checkEmpty: isEmpty,
@@ -194,7 +194,7 @@ export interface ArrayCellResult {
 }
 
 // Format array column
-export function formatArrayCell<T extends JsonObject>(
+export function formatArrayCell<T extends PlainObject>(
 	row: T,
 	column: ArrayColumn<T>
 ): ArrayCellResult {
@@ -220,7 +220,7 @@ export function formatArrayCell<T extends JsonObject>(
 }
 
 // Format custom column
-export function formatCustomCell<T extends JsonObject>(row: T, column: CustomColumn<T>): string {
+export function formatCustomCell<T extends PlainObject>(row: T, column: CustomColumn<T>): string {
 	if (isNullish(row) && column.nullText) {
 		return column.nullText;
 	}
@@ -234,7 +234,7 @@ export function formatCustomCell<T extends JsonObject>(row: T, column: CustomCol
 }
 
 // Main formatter that dispatches to specific formatters
-export function formatCell<T extends JsonObject>(row: T, column: ColumnDef<T>): string {
+export function formatCell<T extends PlainObject>(row: T, column: ColumnDef<T>): string {
 	switch (column.type) {
 		case 'text':
 			return formatTextCell(row, column);
@@ -261,7 +261,7 @@ export function formatCell<T extends JsonObject>(row: T, column: ColumnDef<T>): 
 }
 
 // Get link for a cell if applicable
-export function getCellLink<T extends JsonObject>(row: T, column: ColumnDef<T>): string | null {
+export function getCellLink<T extends PlainObject>(row: T, column: ColumnDef<T>): string | null {
 	// Array columns handle their own links via formatArrayCell
 	if (column.type === 'array') {
 		return null;
@@ -286,7 +286,7 @@ export function getCellLink<T extends JsonObject>(row: T, column: ColumnDef<T>):
 }
 
 // Get alignment for a cell
-export function getCellAlignment<T extends JsonObject>(
+export function getCellAlignment<T extends PlainObject>(
 	column: ColumnDef<T>
 ): 'left' | 'center' | 'right' {
 	if (column.align) {
@@ -307,7 +307,7 @@ export function getCellAlignment<T extends JsonObject>(
 }
 
 // Get CSS class for cell type
-export function getCellTypeClass<T extends JsonObject>(column: ColumnDef<T>): string {
+export function getCellTypeClass<T extends PlainObject>(column: ColumnDef<T>): string {
 	return column.type;
 }
 
@@ -340,7 +340,7 @@ export function compareValues(a: unknown, b: unknown, direction: 'asc' | 'desc')
 }
 
 // Sort rows by column
-export function sortRows<T extends JsonObject>(
+export function sortRows<T extends PlainObject>(
 	rows: T[],
 	column: ColumnDef<T>,
 	direction: 'asc' | 'desc'
