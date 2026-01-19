@@ -1,23 +1,43 @@
 <script lang="ts">
+	import Icon from '$src/lib/icons/icon.svelte';
 	import type { ComponentSize } from '$src/lib/types/size.js';
+	import type { Snippet } from 'svelte';
 
 	let {
 		label,
+		tooltip = undefined,
 		removable = false,
 		size = 'md' as ComponentSize,
 		variant = 'standard' as 'standard' | 'positive' | 'negative',
-		onRemove = undefined
+		onRemove = undefined,
+		link = undefined,
+		children = undefined
 	}: {
 		label: string;
+		tooltip?: string;
+		link?: { url: string; target?: string };
 		removable?: boolean;
 		size?: ComponentSize;
 		variant?: 'standard' | 'positive' | 'negative';
 		onRemove?: (() => void) | undefined;
+		children?: Snippet;
 	} = $props();
 </script>
 
-<div class="chip {size} {variant}">
+<div class="chip {size} {variant}" title={tooltip}>
 	<span class="label">{label}</span>
+	{#if children}
+		<span class="children">
+			{@render children?.()}
+		</span>
+	{/if}
+
+	{#if link}
+		<a class="link" href={link.url} target={link.target || '_blank'} rel="noopener noreferrer">
+			<Icon type="external-link" size="xs" />
+		</a>
+	{/if}
+
 	{#if removable}
 		<button type="button" class="remove" onclick={onRemove} aria-label="Remove {label}"> × </button>
 	{/if}
@@ -33,10 +53,26 @@
 		background-color: var(--chip-bg, #e0e0e0);
 		color: var(--chip-fg, #000);
 		font-size: 0.875rem;
-		font-weight: 500;
 
 		.label {
 			line-height: 1.5;
+			font-weight: 500;
+		}
+
+		.children {
+			font-size: 80%;
+			font-style: italic;
+			opacity: 0.5;
+		}
+
+		.link {
+			display: inline-block;
+			vertical-align: middle;
+			line-height: 1;
+			margin-left: 0.25rem;
+			margin-right: 0.25rem;
+			padding: 0;
+			border: none;
 		}
 
 		.remove {

@@ -19,6 +19,7 @@ export type IconType =
 	| 'envelope'
 	| 'envelope-full'
 	| 'export'
+	| 'external-link'
 	| 'eye'
 	| 'folder-open'
 	| 'hamburger'

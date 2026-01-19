@@ -11,6 +11,7 @@ export { default as NewOrExistingCombo } from './combo/new-or-existing-combo.sve
 export { default as NumberBox } from './number-box/number-box.svelte';
 export { default as NumberRangeBox } from './number-range-box/number-range-box.svelte';
 export { default as PhoneBox } from './phone-box/phone-box.svelte';
+export { default as ReferenceBox } from './reference-box/reference-box.svelte';
 export { default as Slider } from './slider/slider.svelte';
 export { default as TagBox } from './tag-box/tag-box.svelte';
 export { default as TextArea } from './text-area/text-area.svelte';
@@ -23,6 +24,7 @@ export * from './check-box/index.js';
 export * from './list-box/index.js';
 export * from './phone-box/index.js';
 export * from './radio-group/index.js';
+export * from './reference-box/index.js';
 
 // Form structure components
 export { default as Form } from './form.svelte';

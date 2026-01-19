@@ -25,7 +25,8 @@
 		strict = false,
 		caseInsensitive = true,
 		maxTags = undefined as number | undefined,
-		onChange = undefined as ((value: string[]) => void) | undefined
+		onChange = undefined as ((value: string[]) => void) | undefined,
+		deleteOnBackspace = false
 	}: {
 		value?: string[];
 		placeholder?: string;
@@ -42,6 +43,7 @@
 		caseInsensitive?: boolean;
 		maxTags?: number | undefined;
 		onChange?: ((value: string[]) => void) | undefined;
+		deleteOnBackspace?: boolean;
 	} = $props();
 
 	let newTag = $state('');
@@ -118,7 +120,7 @@
 
 	function addTag(tagToAdd?: string) {
 		const tag = (tagToAdd || newTag).trim();
-		
+
 		// Prevent empty tags
 		if (!tag) {
 			newTag = '';
@@ -151,7 +153,7 @@
 		isMenuOpen = false;
 		highlightIndex = -1;
 		onChange?.(value);
-		
+
 		// Focus back on input
 		if (browser && inputElement) {
 			inputElement.focus();
@@ -208,7 +210,9 @@
 
 		// Backspace - remove last tag if input is empty
 		if (event.key === 'Backspace' && newTag === '' && value.length > 0) {
-			removeTag(value[value.length - 1]);
+			if (deleteOnBackspace) {
+				removeTag(value[value.length - 1]);
+			}
 			return;
 		}
 
@@ -312,7 +316,8 @@
 	<!-- ARIA live region for screen reader announcements -->
 	<div class="sr-only" role="status" aria-live="polite" aria-atomic="true">
 		{#if isMenuOpen && filteredSuggestions.length > 0}
-			{filteredSuggestions.length} {filteredSuggestions.length === 1 ? 'suggestion' : 'suggestions'} available
+			{filteredSuggestions.length}
+			{filteredSuggestions.length === 1 ? 'suggestion' : 'suggestions'} available
 		{:else if invalidTagAttempt}
 			{#if isMaxTagsReached()}
 				Maximum {maxTags} tags reached
@@ -326,7 +331,11 @@
 
 	<div class="tag-box" bind:this={containerElement}>
 		<div class="input-container">
-			<div class="input {disabled ? 'disabled' : 'enabled'} {invalidTagAttempt ? 'invalid' : ''} {isMenuOpen ? 'open' : ''}">
+			<div
+				class="input {disabled ? 'disabled' : 'enabled'} {invalidTagAttempt
+					? 'invalid'
+					: ''} {isMenuOpen ? 'open' : ''}"
+			>
 				<input
 					{id}
 					type="text"
@@ -398,31 +407,31 @@
 			gap: var(--spacing-sm);
 			align-items: stretch;
 
-		.input {
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			position: relative;
-			width: 100%;
-			min-height: 2.125rem;
-			border-radius: var(--radius-md);
-			border: var(--border-thin) solid var(--form-input-border);
-			background-color: var(--form-input-bg);
-			color: var(--form-input-fg);
-			font-size: var(--font-md);
-			font-weight: 500;
-			line-height: 2rem;
-			padding: 0;
-			transition:
-				background-color var(--transition-base) var(--ease-in-out),
-				border-color var(--transition-base) var(--ease-in-out),
-				color var(--transition-base) var(--ease-in-out),
-				fill var(--transition-base) var(--ease-in-out),
-				stroke var(--transition-base) var(--ease-in-out),
-				box-shadow var(--transition-base) var(--ease-in-out);
-			user-select: none;
-			white-space: nowrap;
-			flex: 1;
+			.input {
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				position: relative;
+				width: 100%;
+				min-height: 2.125rem;
+				border-radius: var(--radius-md);
+				border: var(--border-thin) solid var(--form-input-border);
+				background-color: var(--form-input-bg);
+				color: var(--form-input-fg);
+				font-size: var(--font-md);
+				font-weight: 500;
+				line-height: 2rem;
+				padding: 0;
+				transition:
+					background-color var(--transition-base) var(--ease-in-out),
+					border-color var(--transition-base) var(--ease-in-out),
+					color var(--transition-base) var(--ease-in-out),
+					fill var(--transition-base) var(--ease-in-out),
+					stroke var(--transition-base) var(--ease-in-out),
+					box-shadow var(--transition-base) var(--ease-in-out);
+				user-select: none;
+				white-space: nowrap;
+				flex: 1;
 
 				&.disabled {
 					opacity: 0.5;
@@ -440,29 +449,29 @@
 					box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
 				}
 
-			input {
-				background-color: transparent;
-				border: none;
-				line-height: 2rem;
-				height: 2rem;
-				font-size: var(--font-md);
-				width: 100%;
-				flex-grow: 1;
-				padding: 0 var(--spacing-base);
-				margin: 0;
+				input {
+					background-color: transparent;
+					border: none;
+					line-height: 2rem;
+					height: 2rem;
+					font-size: var(--font-md);
+					width: 100%;
+					flex-grow: 1;
+					padding: 0 var(--spacing-base);
+					margin: 0;
 
-				&:focus {
-					outline: none;
-				}
+					&:focus {
+						outline: none;
+					}
 
-				&:disabled {
-					cursor: not-allowed;
-				}
+					&:disabled {
+						cursor: not-allowed;
+					}
 
-				&::placeholder {
-					color: var(--form-input-placeholder);
+					&::placeholder {
+						color: var(--form-input-placeholder);
+					}
 				}
-			}
 			}
 
 			.add-button {

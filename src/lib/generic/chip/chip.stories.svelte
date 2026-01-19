@@ -52,6 +52,20 @@
 					defaultValue: { summary: "'standard'" }
 				}
 			},
+			link: {
+				control: 'object',
+				description: 'Link configuration with url and optional target',
+				table: {
+					type: { summary: '{ url: string; target?: string }' }
+				}
+			},
+			children: {
+				control: false,
+				description: 'Snippet for additional content',
+				table: {
+					type: { summary: 'Snippet' }
+				}
+			},
 			onRemove: {
 				action: 'removed',
 				description: 'Called when the chip is removed',
@@ -84,4 +98,47 @@
 
 <Story name="WithRemoveHandler" args={{ label: 'Click to remove', removable: true }}>
 	Removable chip with remove handler for demonstration.
+</Story>
+
+<Story name="WithLink" args={{ label: 'External Resource', link: { url: 'https://example.com' } }}>
+	Chip with an external link icon that opens in a new tab.
+</Story>
+
+<Story
+	name="WithLinkAndCustomTarget"
+	args={{ label: 'Same Tab Link', link: { url: 'https://example.com', target: '_self' } }}
+>
+	Chip with a link that opens in the same tab (target="_self").
+</Story>
+
+<Story name="WithChildren">
+	<Chip label="User Profile">
+		{#snippet children()}
+			john.doe@example.com
+		{/snippet}
+	</Chip>
+	Chip with children snippet displaying additional information below the label.
+</Story>
+
+<Story name="WithLinkAndChildren">
+	<Chip label="Documentation" link={{ url: 'https://docs.example.com' }}>
+		{#snippet children()}
+			v2.0.1
+		{/snippet}
+	</Chip>
+	Chip combining a link with additional children content.
+</Story>
+
+<Story name="RemovableWithLinkAndChildren">
+	<Chip
+		label="Team Member"
+		removable={true}
+		link={{ url: 'https://profile.example.com/johndoe' }}
+		onRemove={fn()}
+	>
+		{#snippet children()}
+			Senior Developer
+		{/snippet}
+	</Chip>
+	Fully-featured chip with label, children content, link, and remove button.
 </Story>
