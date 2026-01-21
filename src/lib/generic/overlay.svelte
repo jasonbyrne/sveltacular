@@ -4,11 +4,13 @@
 	let {
 		show = true,
 		onClick = undefined,
+		onEscape = undefined,
 		blur = false,
 		children
 	}: {
 		show?: boolean;
 		onClick?: (() => void) | undefined;
+		onEscape?: (() => void) | undefined;
 		blur?: boolean;
 		children?: Snippet;
 	} = $props();
@@ -22,7 +24,7 @@
 
 	const onKeyPress = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
-			onClick?.();
+			onEscape?.();
 		}
 	};
 </script>

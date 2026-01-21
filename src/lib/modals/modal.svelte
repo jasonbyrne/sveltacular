@@ -80,7 +80,7 @@
 </script>
 
 {#if open}
-	<Overlay {blur} onClick={close}>
+	<Overlay {blur} onEscape={dismissable ? close : undefined}>
 		<div bind:this={dialogElement}>
 			<Dialog {size} {glass} role="dialog" aria-modal="true" aria-labelledby={titleId}>
 				<DialogCloseButton show={_showCloseButton} onClick={close} />

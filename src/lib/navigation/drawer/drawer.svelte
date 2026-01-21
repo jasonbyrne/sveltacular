@@ -42,7 +42,7 @@
 </script>
 
 {#if open}
-	<Overlay onClick={close}>
+	<Overlay onEscape={dismissable ? close : undefined}>
 		<div
 			bind:this={drawerElement}
 			class="drawer {position}"

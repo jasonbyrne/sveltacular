@@ -48,7 +48,7 @@
 </script>
 
 {#if open}
-	<Overlay onClick={no}>
+	<Overlay onEscape={no}>
 		<Dialog
 			{size}
 			role="alertdialog"
