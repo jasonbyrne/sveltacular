@@ -28,16 +28,18 @@
 		message?: string;
 		description?: string;
 		icon?: IconType;
-		iconSize?: 'sm' | 'md' | 'lg' | 'xl';
+		iconSize?: 'default' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		size?: 'sm' | 'md' | 'lg' | 'xl';
 		children?: Snippet;
 	} = $props();
+
+	const _iconSize = $derived(iconSize === 'default' ? size : iconSize);
 </script>
 
 <div class="empty {size}">
 	{#if icon}
 		<div class="icon-wrapper">
-			<Icon type={icon} size={iconSize} variant="secondary" />
+			<Icon type={icon} size={_iconSize} variant="secondary" />
 		</div>
 	{/if}
 

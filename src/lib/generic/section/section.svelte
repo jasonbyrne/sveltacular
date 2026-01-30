@@ -3,19 +3,19 @@
 	import { setContext } from 'svelte';
 	import type { SectionLevel } from '$src/lib/types/generic.js';
 	import Header from '../header/header.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { ComponentWidth } from '$src/lib/index.js';
 
 	let {
 		title = undefined,
 		level = 2 as SectionLevel,
-		size = 'xl' as FormFieldSizeOptions,
+		size = 'full',
 		hidden = false,
 		align = 'left' as 'left' | 'center' | 'right',
 		children
 	}: {
 		title?: string;
 		level?: SectionLevel;
-		size?: FormFieldSizeOptions;
+		size?: ComponentWidth;
 		hidden?: boolean;
 		align?: 'left' | 'center' | 'right';
 		children: Snippet;
@@ -57,6 +57,11 @@
 			display: none;
 		}
 
+		.auto {
+			width: auto;
+			flex-shrink: 1;
+		}
+
 		&.sm {
 			max-width: 25rem;
 		}
@@ -75,6 +80,8 @@
 
 		&.full {
 			width: 100%;
+			max-width: 100%;
+			flex: 1;
 		}
 	}
 </style>

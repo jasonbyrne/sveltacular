@@ -3,15 +3,15 @@
 	import DialogBody from '$src/lib/modals/dialog-body.svelte';
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentWidth } from '$src/lib/types/form.js';
 	import DialogCloseButton from './dialog-close-button.svelte';
 	import { trapFocus, storeFocus, restoreFocus } from '$src/lib/helpers/focus.js';
-	import { animateFadeIn, animateScaleIn } from '$src/lib/helpers/animations.js';
+	import { animateScaleIn } from '$src/lib/helpers/animations.js';
 	import { browser } from '$app/environment';
 
 	let {
 		open = $bindable(false),
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md',
 		showCloseButton = true,
 		dismissable = true,
 		blur = false,
@@ -21,7 +21,7 @@
 		children
 	}: {
 		open?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentWidth;
 		showCloseButton?: boolean;
 		dismissable?: boolean;
 		blur?: boolean;
@@ -81,8 +81,8 @@
 
 {#if open}
 	<Overlay {blur} onEscape={dismissable ? close : undefined}>
-		<div bind:this={dialogElement}>
-			<Dialog {size} {glass} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+		<div bind:this={dialogElement} class="modal-wrapper {size}">
+			<Dialog {size} {glass} role="dialog" ariaLabelledby={titleId}>
 				<DialogCloseButton show={_showCloseButton} onClick={close} />
 				<DialogBody>
 					{@render children?.()}
@@ -91,3 +91,12 @@
 		</div>
 	</Overlay>
 {/if}
+
+<style lang="scss">
+	.modal-wrapper {
+		&.full {
+			width: 100%;
+			height: 100%;
+		}
+	}
+</style>

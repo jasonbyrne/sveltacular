@@ -32,8 +32,6 @@
 		loading = false,
 		/** ARIA label for accessibility (required if button content is not text) */
 		ariaLabel = undefined,
-		/** Remove margins */
-		noMargin = false,
 		/** Collapse padding */
 		collapse = false,
 		/** Delay before re-enabling after click (prevents double-clicks) */
@@ -45,6 +43,8 @@
 		iconSize = 'default',
 		/** Click handler */
 		onClick = undefined,
+		/** Margin around button */
+		margin = 'sm',
 		/** Button content */
 		children
 	}: {
@@ -58,12 +58,12 @@
 		disabled?: boolean;
 		loading?: boolean;
 		ariaLabel?: string | undefined;
-		noMargin?: boolean;
 		collapse?: boolean;
 		repeatSubmitDelay?: number | 'infinite';
 		icon?: IconType | undefined;
 		iconAlign?: 'left' | 'right' | 'above' | 'below';
 		iconSize?: 'default' | ComponentSize;
+		margin?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 		onClick?: ((e?: Event) => void) | undefined;
 		children?: Snippet;
 	} = $props();
@@ -94,9 +94,8 @@
 <button
 	{type}
 	onclick={handleClick}
-	class="{size} w-{width} {variant} {flex ? 'flex' : ''} icon-{iconAlign}"
+	class="{size} w-{width} {variant} {flex ? 'flex' : ''} icon-{iconAlign} margin-{margin}"
 	class:block
-	class:noMargin
 	class:collapse
 	class:loading
 	class:has-icon={!!icon}
@@ -162,8 +161,29 @@
 			cursor: not-allowed;
 		}
 
-		&.noMargin {
+		&.margin-none {
 			margin: 0;
+		}
+
+		&.margin-xs {
+			margin-top: var(--spacing-xs);
+			margin-bottom: var(--spacing-xs);
+		}
+		&.margin-sm {
+			margin-top: var(--spacing-sm);
+			margin-bottom: var(--spacing-sm);
+		}
+		&.margin-md {
+			margin-top: var(--spacing-md);
+			margin-bottom: var(--spacing-md);
+		}
+		&.margin-lg {
+			margin-top: var(--spacing-lg);
+			margin-bottom: var(--spacing-lg);
+		}
+		&.margin-xl {
+			margin-top: var(--spacing-xl);
+			margin-bottom: var(--spacing-xl);
 		}
 
 		&.collapse {

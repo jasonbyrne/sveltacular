@@ -1,17 +1,20 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentWidth } from '../types';
+	import type { AriaRole } from 'svelte/elements';
 
 	let {
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md',
 		glass = false,
-		children,
-		...restProps
+		role = 'dialog',
+		ariaLabelledby = undefined,
+		children
 	}: {
-		size?: FormFieldSizeOptions;
+		size?: ComponentWidth;
 		glass?: boolean;
+		role?: AriaRole;
+		ariaLabelledby?: string;
 		children: Snippet;
-		[key: string]: any;
 	} = $props();
 
 	const captureClick = (e: Event) => {
@@ -21,7 +24,13 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="{size} {glass ? 'glass' : ''}" onclick={captureClick} {...restProps}>
+<div
+	class="{size} {glass ? 'glass' : ''}"
+	onclick={captureClick}
+	{role}
+	aria-modal="true"
+	aria-labelledby={ariaLabelledby}
+>
 	{@render children?.()}
 </div>
 
@@ -70,8 +79,11 @@
 		}
 
 		&.full {
-			width: 98%;
-			max-width: 98%;
+			max-width: 100%;
+			width: 100%;
+			height: 100%;
+			border-radius: 0;
+			border: none;
 		}
 	}
 
