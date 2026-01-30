@@ -12,7 +12,6 @@
 		RowActions
 	} from '$src/lib/types/data.js';
 	import Empty from '../generic/empty/empty.svelte';
-	import Icon from '../icons/icon.svelte';
 	import Pagination from '../navigation/pagination/pagination.svelte';
 	import Loading from '../placeholders/loading.svelte';
 	import TableCaption from './table-caption.svelte';
@@ -254,9 +253,7 @@
 						{#if rows === undefined}
 							<Loading />
 						{:else}
-							<Empty>
-								<Icon type="folder-open" size="lg" />
-							</Empty>
+							<Empty icon="folder-open" iconSize="lg" />
 						{/if}
 					</div>
 				</TableCell>

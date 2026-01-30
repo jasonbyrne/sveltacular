@@ -1,16 +1,31 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
+	import { fn } from 'storybook/test';
 	import Empty from './empty.svelte';
+	import Button from '$src/lib/forms/button/button.svelte';
 
 	/**
-	 * Empty component for displaying empty states when there's no data to show.
+	 * Empty state component for displaying messages when no data is available.
+	 * Use this component to provide clear feedback and actionable next steps to users
+	 * when there's no content to display (e.g., empty search results, no items yet, etc.).
+	 *
+	 * **Key Features**:
+	 * - Built-in icon support
+	 * - Hierarchical messaging (title, message, description)
+	 * - Custom content via children snippet (buttons, links, etc.)
+	 * - Multiple size variants
 	 *
 	 * **Accessibility**: Empty states provide clear messaging to users about why
-	 * content is missing. Use descriptive text to help users understand the context.
+	 * content is missing. Use descriptive text to help users understand the context
+	 * and provide clear actions they can take.
 	 *
 	 * **Usage**:
 	 * ```svelte
-	 * <Empty text="No results found" size="lg" />
+	 * <Empty icon="folder-open" message="You haven't added any binders yet.">
+	 *   <Button variant="primary" onClick={handleCreate}>
+	 *     Create Your First Binder
+	 *   </Button>
+	 * </Empty>
 	 * ```
 	 */
 	const { Story } = defineMeta({
@@ -18,90 +33,248 @@
 		title: 'Generic/Empty',
 		tags: ['autodocs'],
 		argTypes: {
-			text: {
+			title: {
 				control: 'text',
-				description: 'Text message to display',
+				description: 'Primary heading/title',
+				table: {
+					type: { summary: 'string' }
+				}
+			},
+			message: {
+				control: 'text',
+				description: 'Main message text',
 				table: {
 					type: { summary: 'string' },
 					defaultValue: { summary: "'No data to display'" }
 				}
 			},
+			description: {
+				control: 'text',
+				description: 'Optional secondary description',
+				table: {
+					type: { summary: 'string' }
+				}
+			},
+			icon: {
+				control: 'select',
+				options: [
+					undefined,
+					'folder-open',
+					'envelope',
+					'home',
+					'check',
+					'upload',
+					'link',
+					'phone',
+					'mobile-phone'
+				],
+				description: 'Built-in icon type from framework',
+				table: {
+					type: { summary: 'IconType' }
+				}
+			},
+			iconSize: {
+				control: 'select',
+				options: ['sm', 'md', 'lg', 'xl'],
+				description: 'Icon size',
+				table: {
+					type: { summary: "'sm' | 'md' | 'lg' | 'xl'" },
+					defaultValue: { summary: "'xl'" }
+				}
+			},
 			size: {
 				control: 'select',
 				options: ['sm', 'md', 'lg', 'xl'],
-				description: 'Size of the empty state',
+				description: 'Component size (affects padding and text sizing)',
 				table: {
 					type: { summary: "'sm' | 'md' | 'lg' | 'xl'" },
 					defaultValue: { summary: "'md'" }
-				}
-			},
-			orientation: {
-				control: 'select',
-				options: ['horizontal', 'vertical'],
-				description:
-					'Layout orientation (vertical stacks icon/text, horizontal places them side by side)',
-				table: {
-					type: { summary: "'horizontal' | 'vertical'" },
-					defaultValue: { summary: "'vertical'" }
-				}
-			},
-			reverse: {
-				control: 'boolean',
-				description: 'Reverse the order of icon and text (horizontal orientation only)',
-				table: {
-					type: { summary: 'boolean' },
-					defaultValue: { summary: 'false' }
-				}
-			},
-			align: {
-				control: 'select',
-				options: ['center', 'start', 'end'],
-				description: 'Vertical alignment of content',
-				table: {
-					type: { summary: "'center' | 'start' | 'end'" },
-					defaultValue: { summary: "'center'" }
 				}
 			}
 		}
 	});
 </script>
 
+<!-- Default Examples -->
 <Story name="Default" args={{}}>Default empty state with standard message.</Story>
 
-<Story name="WithMessage" args={{ text: 'No results found' }}>
+<Story name="SimpleMessage" args={{ message: 'No results found' }}>
 	Empty state with custom message text.
 </Story>
 
-<Story name="Horizontal" args={{ text: 'No results found', orientation: 'horizontal' }}>
-	Empty state with horizontal layout (icon and text side by side).
+<!-- With Icons -->
+<Story name="WithIcon" args={{ icon: 'folder-open', message: 'No items to display' }}>
+	Empty state with a built-in icon.
 </Story>
 
-<Story name="XLarge" args={{ text: 'No results found', size: 'xl' }}>
-	Extra large empty state for prominent display.
+<Story
+	name="SearchResults"
+	args={{
+		icon: 'envelope',
+		message: 'No messages found',
+		description: 'Try adjusting your search filters or check back later.'
+	}}
+>
+	Empty state with icon and description.
 </Story>
 
-<Story name="Large" args={{ text: 'No results found', size: 'lg' }}>
-	Large empty state for important empty states.
+<!-- With Title -->
+<Story
+	name="WithTitle"
+	args={{
+		icon: 'folder-open',
+		title: 'No Projects Yet',
+		message: 'Get started by creating your first project.'
+	}}
+>
+	Empty state with title, icon, and message.
 </Story>
 
-<Story name="Medium" args={{ text: 'No results found', size: 'md' }}>
-	Medium empty state (default size).
-</Story>
-
-<Story name="Small" args={{ text: 'No results found', size: 'sm' }}>
-	Small empty state for compact spaces.
-</Story>
-
-<Story name="WithCustomIcon" args={{ text: 'No items yet' }}>
+<!-- With Actions - Your Example! -->
+<Story
+	name="WithSingleAction"
+	args={{ icon: 'folder-open', message: "You haven't added any binders yet." }}
+>
 	{#snippet children()}
-		<span style="font-size: 3rem;">📦</span>
+		<Button variant="primary" onClick={fn()}>Create Your First Binder</Button>
 	{/snippet}
 </Story>
 
-<Story name="AlignedStart" args={{ text: 'No results found', align: 'start' }}>
-	Empty state aligned to the start (top).
+<Story
+	name="WithPrimaryAndSecondary"
+	args={{
+		icon: 'upload',
+		title: 'No Files Uploaded',
+		message: 'Upload your files to get started.',
+		description: 'Supported formats: PDF, DOC, DOCX, JPG, PNG'
+	}}
+>
+	{#snippet children()}
+		<Button variant="primary" onClick={fn()}>Upload Files</Button>
+		<Button variant="outline" onClick={fn()}>Learn More</Button>
+	{/snippet}
 </Story>
 
-<Story name="AlignedEnd" args={{ text: 'No results found', align: 'end' }}>
-	Empty state aligned to the end (bottom).
+<Story
+	name="WithMultipleActions"
+	args={{
+		icon: 'home',
+		title: 'Welcome to Your Dashboard',
+		message: 'Choose an option to get started.'
+	}}
+>
+	{#snippet children()}
+		<Button variant="primary" onClick={fn()}>Create Project</Button>
+		<Button variant="secondary" onClick={fn()}>Import Data</Button>
+		<Button variant="outline" onClick={fn()}>View Tutorial</Button>
+	{/snippet}
+</Story>
+
+<!-- Size Variants -->
+<Story
+	name="Small"
+	args={{
+		size: 'sm',
+		icon: 'check',
+		message: 'All caught up!',
+		description: 'You have no pending items.'
+	}}
+>
+	Small empty state for compact spaces.
+</Story>
+
+<Story
+	name="Medium"
+	args={{
+		size: 'md',
+		icon: 'envelope',
+		message: 'No new messages',
+		description: 'Your inbox is empty.'
+	}}
+>
+	Medium empty state (default size).
+</Story>
+
+<Story
+	name="Large"
+	args={{
+		size: 'lg',
+		icon: 'folder-open',
+		title: 'No Documents',
+		message: "You haven't created any documents yet."
+	}}
+>
+	{#snippet children()}
+		<Button variant="primary" onClick={fn()}>Create Document</Button>
+	{/snippet}
+</Story>
+
+<Story
+	name="ExtraLarge"
+	args={{
+		size: 'xl',
+		icon: 'home',
+		title: 'Welcome!',
+		message: 'Your workspace is ready to go.',
+		description: 'Start by creating your first project or importing existing data.'
+	}}
+>
+	{#snippet children()}
+		<Button variant="primary" onClick={fn()}>Get Started</Button>
+		<Button variant="secondary" onClick={fn()}>Import</Button>
+	{/snippet}
+</Story>
+
+<!-- Real-world Examples -->
+<Story
+	name="EmptyInbox"
+	args={{
+		icon: 'envelope',
+		title: 'Inbox Zero!',
+		message: "You've read all your messages.",
+		description: 'Great job staying on top of your inbox.'
+	}}
+>
+	Empty inbox success state.
+</Story>
+
+<Story
+	name="NoSearchResults"
+	args={{
+		icon: 'envelope',
+		message: 'No results for "quantum physics"',
+		description: 'Try different keywords or check your spelling.'
+	}}
+>
+	{#snippet children()}
+		<Button variant="secondary" onClick={fn()}>Clear Filters</Button>
+	{/snippet}
+</Story>
+
+<Story
+	name="FirstTimeUser"
+	args={{
+		size: 'lg',
+		icon: 'home',
+		title: 'Welcome to TaskFlow',
+		message: "You're all set! Create your first task to get organized."
+	}}
+>
+	{#snippet children()}
+		<Button variant="primary" onClick={fn()}>Create Task</Button>
+		<Button variant="outline" onClick={fn()}>Watch Tutorial</Button>
+	{/snippet}
+</Story>
+
+<Story
+	name="DeletedAll"
+	args={{ icon: 'check', message: 'All items deleted', description: 'Your list is now empty.' }}
+>
+	{#snippet children()}
+		<Button variant="secondary" onClick={fn()}>Undo</Button>
+	{/snippet}
+</Story>
+
+<Story name="NoNotifications" args={{ size: 'sm', icon: 'check', message: 'No new notifications' }}>
+	Small empty state for notifications.
 </Story>

@@ -22,8 +22,7 @@
 			sm: 1,
 			md: 2,
 			lg: 3,
-			xl: 4,
-			full: 4 // Map full to same as xl for backwards compatibility
+			xl: 4
 		};
 		return flexMap[size];
 	};

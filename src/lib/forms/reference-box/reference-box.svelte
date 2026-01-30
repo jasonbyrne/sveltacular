@@ -7,15 +7,11 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import debounce from '$src/lib/helpers/debounce.js';
-	import type {
-		ReferenceItem,
-		SearchFunction,
-		CreateNewFunction,
-		LinkBuilderFunction
-	} from './reference-box.js';
 	import Prompt from '$src/lib/modals/prompt.svelte';
 	import { ucfirst } from '$src/lib/helpers/ucfirst.js';
 	import Icon from '$src/lib/icons/icon.svelte';
+	import type { SearchFunction, CreateNewFunction } from '$src/lib/types/form.js';
+	import type { ReferenceItem, LinkBuilderFunction } from './reference-box.js';
 
 	const id = uniqueId();
 	const listboxId = `${id}-listbox`;
@@ -23,8 +19,8 @@
 	let {
 		value = $bindable([] as ReferenceItem[]),
 		items = [] as ReferenceItem[],
-		search = undefined as SearchFunction | undefined,
-		createNew = undefined as CreateNewFunction | undefined,
+		search = undefined,
+		createNew = undefined,
 		linkBuilder = undefined as LinkBuilderFunction | undefined,
 		resourceName = undefined as string | undefined,
 		placeholder = 'Search and add items...',
@@ -39,8 +35,8 @@
 	}: {
 		value?: ReferenceItem[];
 		items?: ReferenceItem[];
-		search?: SearchFunction | undefined;
-		createNew?: CreateNewFunction | undefined;
+		search?: SearchFunction<ReferenceItem> | undefined;
+		createNew?: CreateNewFunction<ReferenceItem> | undefined;
 		linkBuilder?: LinkBuilderFunction | undefined;
 		resourceName?: string | undefined;
 		placeholder?: string;

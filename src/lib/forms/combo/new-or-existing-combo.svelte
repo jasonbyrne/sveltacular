@@ -8,7 +8,7 @@
 		TextBox
 	} from '$src/lib/index.js';
 	import FlexCol from '$src/lib/layout/flex-col.svelte';
-	import type { SearchFunction } from '../list-box/list-box.js';
+	import type { SearchFunction } from '$src/lib/types/form.js';
 
 	let {
 		mode = $bindable('existing' as 'new' | 'existing'),
@@ -19,7 +19,7 @@
 		disabled = false,
 		required = false,
 		searchable = false,
-		search = undefined as SearchFunction | undefined,
+		search = undefined,
 		searchPlaceholder = 'Search',
 		newPlaceholder = 'New'
 	}: {
@@ -31,7 +31,7 @@
 		disabled?: boolean;
 		required?: boolean;
 		searchable?: boolean;
-		search?: SearchFunction | undefined;
+		search?: SearchFunction<DropdownOption> | undefined;
 		searchPlaceholder?: string;
 		newPlaceholder?: string;
 	} = $props();

@@ -5,19 +5,24 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
-	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, ComponentWidth, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { IconType } from '$src/lib/icons/types.js';
 	import Spinner from '$src/lib/generic/spinner/spinner.svelte';
+	import Icon from '$src/lib/icons/icon.svelte';
+	import type { ComponentSize } from '$src/lib/types';
 
 	let {
 		/** Optional href for navigation */
 		href = undefined,
-		/** Button size */
+		/** Button size (controls font size and padding) */
 		size = 'md',
+		/** Button width */
+		width = 'md',
 		/** Button variant/style */
 		variant = 'secondary',
 		/** HTML button type */
 		type = 'button',
-		/** Display as block (full width) */
+		/** Display as block (full width) - DEPRECATED: use width="full" instead */
 		block = false,
 		/** Allow flex growth */
 		flex = false,
@@ -33,6 +38,11 @@
 		collapse = false,
 		/** Delay before re-enabling after click (prevents double-clicks) */
 		repeatSubmitDelay = 500,
+		/** Icon to display */
+		icon = undefined,
+		/** Icon alignment */
+		iconAlign = 'left',
+		iconSize = 'default',
 		/** Click handler */
 		onClick = undefined,
 		/** Button content */
@@ -40,6 +50,7 @@
 	}: {
 		href?: string | undefined;
 		size?: FormFieldSizeOptions;
+		width?: ComponentWidth;
 		variant?: ButtonVariant;
 		type?: 'button' | 'submit' | 'reset';
 		block?: boolean;
@@ -50,8 +61,11 @@
 		noMargin?: boolean;
 		collapse?: boolean;
 		repeatSubmitDelay?: number | 'infinite';
+		icon?: IconType | undefined;
+		iconAlign?: 'left' | 'right' | 'above' | 'below';
+		iconSize?: 'default' | ComponentSize;
 		onClick?: ((e?: Event) => void) | undefined;
-		children: Snippet;
+		children?: Snippet;
 	} = $props();
 
 	let isDisabled = $derived(disabled || loading);
@@ -73,16 +87,19 @@
 			navigateTo(href);
 		}
 	};
+
+	const _iconSize = $derived<ComponentSize>(iconSize === 'default' ? size : iconSize);
 </script>
 
 <button
 	{type}
 	onclick={handleClick}
-	class="{size} {variant} {flex ? 'flex' : ''}"
+	class="{size} w-{width} {variant} {flex ? 'flex' : ''} icon-{iconAlign}"
 	class:block
 	class:noMargin
 	class:collapse
 	class:loading
+	class:has-icon={!!icon}
 	disabled={isDisabled}
 	aria-label={ariaLabel}
 	aria-busy={loading}
@@ -93,13 +110,26 @@
 			<Spinner {size} variant={variant === 'outline' ? 'secondary' : 'primary'} />
 		</span>
 	{/if}
-	{@render children()}
+	{#if icon && (iconAlign === 'above' || iconAlign === 'left')}
+		<span class="icon-wrapper" aria-hidden="true">
+			<Icon type={icon} size={_iconSize} fill="currentColor" />
+		</span>
+	{/if}
+	{#if children}
+		<span class="button-content">
+			{@render children()}
+		</span>
+	{/if}
+	{#if icon && (iconAlign === 'below' || iconAlign === 'right')}
+		<span class="icon-wrapper" aria-hidden="true">
+			<Icon type={icon} size={_iconSize} fill="currentColor" />
+		</span>
+	{/if}
 </button>
 
 <style lang="scss">
 	button {
 		display: inline-block;
-		min-width: 10rem;
 		cursor: pointer;
 		margin-top: var(--spacing-sm);
 		margin-bottom: var(--spacing-sm);
@@ -123,6 +153,9 @@
 		white-space: nowrap;
 		font-family: var(--base-font-family);
 		text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 
 		&[disabled] {
 			opacity: 0.5;
@@ -147,30 +180,71 @@
 			width: 100%;
 		}
 
+		// Size classes - control font size and padding only
+		&.xs {
+			font-size: var(--font-xs);
+			line-height: 0.875rem;
+			padding: var(--spacing-xs) var(--spacing-sm);
+			gap: 0;
+		}
 		&.sm {
 			font-size: var(--font-sm);
 			line-height: 1rem;
 			padding: var(--spacing-xs) var(--spacing-sm);
+			gap: 0;
+		}
+
+		&.md {
+			font-size: var(--font-base);
+			line-height: 1.25rem;
+			padding: var(--spacing-sm) var(--spacing-base);
+			gap: var(--spacing-xs);
 		}
 
 		&.lg {
 			font-size: var(--font-md);
 			line-height: 1.5rem;
 			padding: var(--spacing-md) var(--spacing-lg);
+			gap: var(--spacing-sm);
 		}
 
 		&.xl {
 			font-size: var(--font-xl);
 			line-height: 1.75rem;
 			padding: var(--spacing-base) var(--spacing-xl);
+			gap: var(--spacing-md);
 		}
 
-		&.full {
+		// Width classes - control horizontal space only
+		&.w-auto {
+			min-width: auto;
+			width: auto;
+		}
+
+		&.w-sm {
+			min-width: 5rem;
+			display: inline-block;
+		}
+
+		&.w-md {
+			min-width: 10rem;
+			display: inline-block;
+		}
+
+		&.w-lg {
+			min-width: 20rem;
+			display: inline-block;
+		}
+
+		&.w-xl {
+			min-width: 30rem;
+			display: inline-block;
+		}
+
+		&.w-full {
 			width: 100%;
-			padding: var(--spacing-sm) 0;
 			display: block;
 			min-width: auto;
-			flex-grow: 1;
 		}
 
 		&:hover {
@@ -259,11 +333,62 @@
 			}
 		}
 
+		&.ghost {
+			background-color: transparent;
+			border-color: transparent;
+			color: var(--body-fg);
+			text-shadow: none;
+
+			&:hover {
+				background-color: var(--button-secondary-bg);
+				border-color: var(--button-secondary-border);
+				color: var(--button-secondary-fg);
+				text-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.5);
+			}
+		}
+
 		.spinner-wrapper {
 			display: inline-flex;
 			align-items: center;
 			margin-right: var(--spacing-xs);
 			vertical-align: middle;
+		}
+
+		.button-content {
+			display: inline;
+		}
+
+		.icon-wrapper {
+			display: inline-flex;
+			align-items: center;
+			vertical-align: middle;
+		}
+
+		// Icon alignment layouts
+		&.icon-left {
+			.icon-wrapper {
+				margin-right: var(--spacing-xs);
+			}
+		}
+
+		&.icon-right {
+			.icon-wrapper {
+				margin-left: var(--spacing-xs);
+			}
+		}
+
+		&.icon-above,
+		&.icon-below {
+			display: inline-flex;
+			flex-direction: column;
+			align-items: center;
+			gap: var(--spacing-xs);
+		}
+
+		&.icon-above {
+			.icon-wrapper {
+				order: -1;
+			}
 		}
 	}
 </style>

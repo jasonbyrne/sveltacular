@@ -24,7 +24,7 @@
 		argTypes: {
 			variant: {
 				control: 'select',
-				options: ['primary', 'secondary', 'positive', 'danger', 'outline'],
+				options: ['primary', 'secondary', 'positive', 'danger', 'outline', 'ghost'],
 				description: 'Visual style variant of the button',
 				table: {
 					type: { summary: 'ButtonVariant' },
@@ -33,10 +33,19 @@
 			},
 			size: {
 				control: 'select',
-				options: ['sm', 'md', 'lg', 'xl', 'full'],
-				description: 'Size of the button',
+				options: ['sm', 'md', 'lg', 'xl'],
+				description: 'Size of the button (controls font size and padding)',
 				table: {
 					type: { summary: 'ComponentSize' },
+					defaultValue: { summary: 'md' }
+				}
+			},
+			width: {
+				control: 'select',
+				options: ['auto', 'sm', 'md', 'lg', 'xl', 'full'],
+				description: 'Width of the button (auto=content-based, xs-xl=fixed widths, full=100%)',
+				table: {
+					type: { summary: 'ComponentWidth' },
 					defaultValue: { summary: 'md' }
 				}
 			},
@@ -58,7 +67,7 @@
 			},
 			block: {
 				control: 'boolean',
-				description: 'Display as block (full width)',
+				description: 'Display as block (full width) - DEPRECATED: use width="full" instead',
 				table: {
 					type: { summary: 'boolean' },
 					defaultValue: { summary: 'false' }
@@ -70,105 +79,100 @@
 				table: {
 					type: { summary: '() => void' }
 				}
+			},
+			icon: {
+				control: 'select',
+				options: [
+					undefined,
+					'check',
+					'plus',
+					'minus',
+					'trash',
+					'edit',
+					'download',
+					'upload',
+					'search',
+					'heart',
+					'star',
+					'home',
+					'user',
+					'settings'
+				],
+				description: 'Icon to display in the button',
+				table: {
+					type: { summary: 'IconType' }
+				}
+			},
+			iconAlign: {
+				control: 'select',
+				options: ['left', 'right', 'above', 'below'],
+				description: 'Alignment of the icon relative to text',
+				table: {
+					type: { summary: "'left' | 'right' | 'above' | 'below'" },
+					defaultValue: { summary: 'left' }
+				}
+			},
+			iconSize: {
+				control: 'select',
+				options: ['default', 'xs', 'sm', 'md', 'lg', 'xl'],
+				description: 'Size of the icon (default=size of button)',
+				table: {
+					type: { summary: "'default' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'" },
+					defaultValue: { summary: 'default' }
+				}
 			}
 		},
 		args: {
 			onClick: fn(),
 			variant: 'secondary',
-			size: 'md'
+			size: 'md',
+			width: 'md',
+			iconAlign: 'left'
 		}
 	});
 </script>
 
-<Story name="Primary" args={{ variant: 'primary' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Click Me</Button>
-			<p>Primary button variant for main actions.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Primary" args={{ variant: 'primary' }}>Click Me</Story>
 
-<Story name="Secondary" args={{ variant: 'secondary' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Click Me</Button>
-			<p>Secondary button variant for secondary actions.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Secondary" args={{ variant: 'secondary' }}>Click Me</Story>
 
-<Story name="Danger" args={{ variant: 'danger' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Delete</Button>
-			<p>Danger button variant for destructive actions.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Danger" args={{ variant: 'danger' }}>Delete</Story>
 
-<Story name="Positive" args={{ variant: 'positive' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Save</Button>
-			<p>Positive button variant for positive actions like save or confirm.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Positive" args={{ variant: 'positive' }}>Save</Story>
 
-<Story name="Outline" args={{ variant: 'outline' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Cancel</Button>
-			<p>Outline button variant for less prominent actions.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Outline" args={{ variant: 'outline' }}>Cancel</Story>
 
-<Story name="Sizes" args={{ variant: 'primary' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div style="display: flex; flex-direction: column; gap: 1rem;">
-			<Button variant="primary" size="sm">Small</Button>
-			<Button variant="primary" size="md">Medium</Button>
-			<Button variant="primary" size="lg">Large</Button>
-			<Button variant="primary" size="xl">Extra Large</Button>
-			<Button variant="primary" size="full">Full Width</Button>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Ghost" args={{ variant: 'ghost' }}>Ghost Button</Story>
 
-<Story name="Disabled" args={{ variant: 'primary', disabled: true }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Disabled</Button>
-			<p>Disabled buttons cannot be clicked and have reduced opacity.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Disabled" args={{ variant: 'primary', disabled: true }}>Disabled</Story>
 
-<Story name="Block" args={{ variant: 'primary', block: true }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Block Button</Button>
-			<p>Block buttons span the full width of their container.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Block" args={{ variant: 'primary', width: 'full' }}>Full Width Button</Story>
 
-<Story name="Loading" args={{ variant: 'primary', loading: true }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Loading Button</Button>
-			<p>Loading buttons show a spinner and are disabled.</p>
-		</div>
-	{/snippet}
-</Story>
+<Story name="Loading" args={{ variant: 'primary', loading: true }}>Loading Button</Story>
 
 <Story name="SingleClick" args={{ variant: 'primary', repeatSubmitDelay: 'infinite' }}>
-	{#snippet children(args: Partial<ButtonProps>)}
-		<div>
-			<Button {...args}>Single Click</Button>
-			<p>Button with infinite repeat submit delay prevents double-clicks.</p>
-		</div>
-	{/snippet}
+	Single Click
+</Story>
+
+<Story name="WithIconLeft" args={{ variant: 'primary', icon: 'plus', iconAlign: 'left' }}>
+	Add Item
+</Story>
+
+<Story
+	name="WithIconRight"
+	args={{ variant: 'secondary', icon: 'arrow-right', iconAlign: 'right' }}
+>
+	Next
+</Story>
+
+<Story name="WithIconAbove" args={{ variant: 'positive', icon: 'check', iconAlign: 'above' }}>
+	Complete
+</Story>
+
+<Story name="WithIconBelow" args={{ variant: 'danger', icon: 'trash', iconAlign: 'below' }}>
+	Delete
+</Story>
+
+<Story name="IconOnly" args={{ variant: 'outline', icon: 'search', ariaLabel: 'Search' }}>
+	{' '}
 </Story>

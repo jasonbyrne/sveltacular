@@ -18,13 +18,7 @@ export { default as TextArea } from './text-area/text-area.svelte';
 export { default as TextBox } from './text-box/text-box.svelte';
 export { default as TimeBox } from './time-box/time-box.svelte';
 export { default as UrlBox } from './url-box/url-box.svelte';
-
-// Form components with barrel files
-export * from './check-box/index.js';
-export * from './list-box/index.js';
-export * from './phone-box/index.js';
-export * from './radio-group/index.js';
-export * from './reference-box/index.js';
+export { default as ListBox } from './list-box/list-box.svelte';
 
 // Form structure components
 export { default as Form } from './form.svelte';
@@ -38,6 +32,11 @@ export { default as FormRow } from './form-row/form-row.svelte';
 
 // Form types
 export type { AdditionalButton } from './form-actions/form-actions.svelte';
+
+// Form components with barrel files
+export * from './check-box/index.js';
+export * from './phone-box/index.js';
+export * from './radio-group/index.js'
 
 // Validation utilities
 export * from './validation.js';

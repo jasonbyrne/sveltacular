@@ -2,7 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import ReferenceBox from './reference-box.svelte';
-	import type { ReferenceItem, SearchFunction, CreateNewFunction } from './reference-box.js';
+	import type { ReferenceItem, CreateNewFunction, SearchFunction } from './reference-box.js';
 
 	// Sample static items
 	const staticItems: ReferenceItem[] = [
@@ -67,7 +67,9 @@
 	};
 
 	// Create new function
-	const createNewFunction: CreateNewFunction = async (name: string): Promise<ReferenceItem | null> => {
+	const createNewFunction: CreateNewFunction = async (
+		name: string
+	): Promise<ReferenceItem | null> => {
 		// Simulate API call
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		return {

@@ -41,7 +41,7 @@
 			// Reassign instead of mutate to avoid circular dependency
 			const newItems = currentItems.map((item) => ({
 				...item,
-				isChecked: currentGroup.includes(item.value ?? '')
+				isChecked: currentGroup.includes(item.value != null ? String(item.value) : '')
 			}));
 			itemsWithState = newItems;
 		});
@@ -65,7 +65,7 @@
 		{#each itemsWithState as item}
 			<CheckBox
 				{disabled}
-				value={item.value ?? undefined}
+				value={item.value != null ? String(item.value) : undefined}
 				bind:isChecked={item.isChecked}
 				onChange={handleCheckboxChange}
 				label={item.name}

@@ -34,7 +34,7 @@
 	} = $props();
 
 	const selectItem = (item: MenuOption) => {
-		value = item.value;
+		value = item.value != null ? String(item.value) : null;
 		onSelect?.(item);
 		if (closeAfterSelect) open = false;
 	};

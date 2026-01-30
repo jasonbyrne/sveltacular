@@ -7,9 +7,9 @@
 	import debounce from '$lib/helpers/debounce.js';
 	import { browser } from '$app/environment';
 	import { onMount, untrack } from 'svelte';
-	import type { SearchFunction, CreateNewFunction } from './list-box.js';
 	import Prompt from '$lib/modals/prompt.svelte';
 	import { ucfirst } from '$lib/helpers/ucfirst.js';
+	import type { CreateNewFunction, SearchFunction } from '$lib/types/form.js';
 
 	let {
 		value = $bindable(null as string | null),
@@ -19,7 +19,7 @@
 		required = false,
 		readonly = false,
 		searchable = false,
-		search = undefined as SearchFunction | undefined,
+		search = undefined,
 		placeholder = '',
 		onChange = undefined,
 		onFocus = undefined,
@@ -29,7 +29,7 @@
 		feedback = undefined,
 		virtualScroll = false,
 		itemHeight = 40,
-		createNew = undefined as CreateNewFunction | undefined,
+		createNew = undefined,
 		resourceName = undefined
 	}: {
 		value?: string | null;
@@ -39,7 +39,7 @@
 		required?: boolean;
 		readonly?: boolean;
 		searchable?: boolean;
-		search?: SearchFunction | undefined;
+		search?: SearchFunction<DropdownOption> | undefined;
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
 		onFocus?: ((e: FocusEvent) => void) | undefined;
@@ -49,7 +49,7 @@
 		feedback?: FormFieldFeedback;
 		virtualScroll?: boolean;
 		itemHeight?: number;
-		createNew?: CreateNewFunction | undefined;
+		createNew?: CreateNewFunction<DropdownOption> | undefined;
 		resourceName?: string;
 	} = $props();
 
@@ -113,7 +113,9 @@
 	});
 
 	// Check if there are no results when searching
-	let hasNoResults = $derived(isSearchable && text.trim() && filteredItems.length === 0 && !isLoading);
+	let hasNoResults = $derived(
+		isSearchable && text.trim() && filteredItems.length === 0 && !isLoading
+	);
 
 	// Get the ID of the highlighted option for ARIA
 	let activeDescendant = $derived(
@@ -139,7 +141,7 @@
 	// When an item is selected from the dropdown menu
 	const onSelect = (item: MenuOption) => {
 		isUserTyping = false;
-		value = item.value;
+		value = item.value != null ? String(item.value) : null;
 		onChange?.(value);
 		text = getText();
 		isMenuOpen = false;
@@ -216,7 +218,12 @@
 
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			if (isMenuOpen && highlightIndex >= 0 && highlightIndex < filteredItems.length && filteredItems[highlightIndex]) {
+			if (
+				isMenuOpen &&
+				highlightIndex >= 0 &&
+				highlightIndex < filteredItems.length &&
+				filteredItems[highlightIndex]
+			) {
 				onSelect(filteredItems[highlightIndex]);
 			} else if (isMenuOpen && createNew && highlightIndex === filteredItems.length) {
 				// "Create new..." is highlighted
@@ -231,7 +238,12 @@
 		}
 
 		if (e.key === 'Tab') {
-			if (isMenuOpen && highlightIndex >= 0 && highlightIndex < filteredItems.length && filteredItems[highlightIndex]) {
+			if (
+				isMenuOpen &&
+				highlightIndex >= 0 &&
+				highlightIndex < filteredItems.length &&
+				filteredItems[highlightIndex]
+			) {
 				e.preventDefault();
 				onSelect(filteredItems[highlightIndex]);
 			} else if (isMenuOpen && createNew && highlightIndex === filteredItems.length) {
@@ -325,7 +337,7 @@
 				localItems = [...localItems, result];
 
 				// Select the newly created item
-				value = result.value;
+				value = result.value != null ? String(result.value) : null;
 				onChange?.(value);
 				text = result.name;
 				isMenuOpen = false;
@@ -509,9 +521,7 @@
 			</div>
 		{/if}
 		{#if isCreating}
-			<div class="creating-indicator" aria-live="polite">
-				Creating...
-			</div>
+			<div class="creating-indicator" aria-live="polite">Creating...</div>
 		{/if}
 	</Prompt>
 {/key}
@@ -609,145 +619,145 @@
 				}
 			}
 
-		&.clear {
+			&.clear {
+				right: calc(var(--spacing-base) + 2rem);
+				width: 1.25rem;
+				height: 1.25rem;
+				font-size: var(--font-sm);
+				font-weight: 600;
+			}
+		}
+
+		&.open .icon {
+			transform: rotate(0deg);
+		}
+
+		.loading-indicator {
+			position: absolute;
 			right: calc(var(--spacing-base) + 2rem);
 			width: 1.25rem;
 			height: 1.25rem;
-			font-size: var(--font-sm);
-			font-weight: 600;
-		}
-	}
-
-	&.open .icon {
-		transform: rotate(0deg);
-	}
-
-	.loading-indicator {
-		position: absolute;
-		right: calc(var(--spacing-base) + 2rem);
-		width: 1.25rem;
-		height: 1.25rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 2;
-
-		.spinner {
-			width: 1rem;
-			height: 1rem;
-			border: 2px solid var(--form-input-border);
-			border-top-color: var(--form-input-fg);
-			border-radius: 50%;
-			animation: spin 0.8s linear infinite;
-		}
-	}
-
-	.dropdown {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		width: 100%;
-		z-index: 1000;
-		margin-top: 0.25rem;
-
-		.no-results {
-			padding: 1rem;
-			text-align: center;
-			color: var(--text-muted, #6c757d);
-			font-size: var(--font-sm, 0.875rem);
-			background-color: var(--form-input-bg);
-			border: var(--border-thin) solid var(--form-input-border);
-			border-radius: var(--radius-md);
-		}
-
-		.create-new {
-			width: 100%;
 			display: flex;
 			align-items: center;
-			gap: 0.5rem;
-			padding: 0.5rem 1rem;
-			border: none;
-			background-color: var(--form-input-bg);
-			color: var(--form-input-fg);
-			font-size: var(--font-sm, 0.875rem);
-			cursor: pointer;
-			border-top: var(--border-thin) solid var(--form-input-border);
-			transition:
-				background-color var(--transition-base) var(--ease-in-out),
-				color var(--transition-base) var(--ease-in-out);
+			justify-content: center;
+			z-index: 2;
 
-			&:hover,
-			&.selected {
-				background: var(--form-input-selected-bg, #003c75);
-				color: var(--form-input-selected-fg, white);
-			}
-			border: var(--border-thin) solid var(--form-input-border);
-			border-top: none;
-
-			&:focus {
-				outline: none;
-			}
-
-			&:focus-visible {
-				outline: 2px solid var(--focus-ring, #007bff);
-				outline-offset: -2px;
-			}
-
-			span {
-				flex: 1;
+			.spinner {
+				width: 1rem;
+				height: 1rem;
+				border: 2px solid var(--form-input-border);
+				border-top-color: var(--form-input-fg);
+				border-radius: 50%;
+				animation: spin 0.8s linear infinite;
 			}
 		}
 
-		:global(.menu) {
-			font-size: var(--font-sm, 0.875rem);
+		.dropdown {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			width: 100%;
+			z-index: 1000;
+			margin-top: 0.25rem;
 
-			:global(li) {
-				:global(div) {
-					padding: 0.25rem 0.5rem;
-					line-height: 1.25;
-					font-size: var(--font-sm, 0.875rem);
+			.no-results {
+				padding: 1rem;
+				text-align: center;
+				color: var(--text-muted, #6c757d);
+				font-size: var(--font-sm, 0.875rem);
+				background-color: var(--form-input-bg);
+				border: var(--border-thin) solid var(--form-input-border);
+				border-radius: var(--radius-md);
+			}
+
+			.create-new {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.5rem 1rem;
+				border: none;
+				background-color: var(--form-input-bg);
+				color: var(--form-input-fg);
+				font-size: var(--font-sm, 0.875rem);
+				cursor: pointer;
+				border-top: var(--border-thin) solid var(--form-input-border);
+				transition:
+					background-color var(--transition-base) var(--ease-in-out),
+					color var(--transition-base) var(--ease-in-out);
+
+				&:hover,
+				&.selected {
+					background: var(--form-input-selected-bg, #003c75);
+					color: var(--form-input-selected-fg, white);
+				}
+				border: var(--border-thin) solid var(--form-input-border);
+				border-top: none;
+
+				&:focus {
+					outline: none;
+				}
+
+				&:focus-visible {
+					outline: 2px solid var(--focus-ring, #007bff);
+					outline-offset: -2px;
+				}
+
+				span {
+					flex: 1;
+				}
+			}
+
+			:global(.menu) {
+				font-size: var(--font-sm, 0.875rem);
+
+				:global(li) {
+					:global(div) {
+						padding: 0.25rem 0.5rem;
+						line-height: 1.25;
+						font-size: var(--font-sm, 0.875rem);
+					}
 				}
 			}
 		}
 	}
-}
 
-// Screen reader only content
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border-width: 0;
-}
-
-// Animation for loading spinner
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
+	// Screen reader only content
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
 	}
-	to {
-		transform: rotate(360deg);
+
+	// Animation for loading spinner
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
 	}
-}
 
-.create-error {
-	color: var(--color-danger, #dc3545);
-	font-size: var(--font-sm, 0.875rem);
-	margin-top: 0.5rem;
-	padding: 0.5rem;
-	background-color: var(--color-danger-bg, #f8d7da);
-	border-radius: var(--radius-sm, 0.25rem);
-}
+	.create-error {
+		color: var(--color-danger, #dc3545);
+		font-size: var(--font-sm, 0.875rem);
+		margin-top: 0.5rem;
+		padding: 0.5rem;
+		background-color: var(--color-danger-bg, #f8d7da);
+		border-radius: var(--radius-sm, 0.25rem);
+	}
 
-.creating-indicator {
-	color: var(--text-muted, #6c757d);
-	font-size: var(--font-sm, 0.875rem);
-	margin-top: 0.5rem;
-	font-style: italic;
-}
+	.creating-indicator {
+		color: var(--text-muted, #6c757d);
+		font-size: var(--font-sm, 0.875rem);
+		margin-top: 0.5rem;
+		font-style: italic;
+	}
 </style>
