@@ -1,15 +1,15 @@
 <script lang="ts">
 	import Icon from '$src/lib/icons/icon.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { ComponentSize } from '$src/lib/index.js';
 	import FormField from '../form-field/form-field.svelte';
 
 	let {
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		value,
 		href = undefined,
 		label = undefined
 	}: {
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		value: string | null;
 		href?: string;
 		label?: string;

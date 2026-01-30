@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { ComponentSize } from '$src/lib/index.js';
 	import type { HttpProtocol } from '$src/lib/types/generic.js';
 	import TextBox from '../text-box/text-box.svelte';
 
 	let {
 		protocol = $bindable('https' as HttpProtocol),
 		value = $bindable('' as string | null),
-		size = 'lg' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		placeholder = 'example.com',
 		label = undefined,
 		helperText = undefined,
@@ -28,7 +28,7 @@
 	}: {
 		protocol?: HttpProtocol;
 		value?: string | null;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		placeholder?: string;
 		label?: string;
 		helperText?: string;

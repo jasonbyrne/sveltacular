@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
+	import { uniqueId, type ComponentSize } from '$src/lib/index.js';
 	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 
 	let {
 		value = $bindable('' as string | null),
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		placeholder = '',
 		onChange = undefined,
 		onCheckChanged = undefined,
@@ -20,7 +20,7 @@
 		nullText = ''
 	}: {
 		value?: string | null;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
 		onCheckChanged?: ((isChecked: boolean) => void) | undefined;

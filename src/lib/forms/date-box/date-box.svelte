@@ -10,7 +10,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
-	import type { DateUnit, FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { DateUnit, ComponentSize } from '$src/lib/index.js';
 	import Button from '../button/button.svelte';
 
 	type DateIncrementStep = { label: string; value: number; unit: DateUnit };
@@ -20,7 +20,7 @@
 	let {
 		value = $bindable(undefined as string | undefined | null),
 		defaultValue = undefined,
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		placeholder = '',
 		nullable = false,
 		disabled = false,
@@ -40,7 +40,7 @@
 	}: {
 		value?: string | undefined | null;
 		defaultValue?: string | undefined;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		placeholder?: string;
 		nullable?: boolean;
 		disabled?: boolean;
@@ -152,11 +152,11 @@
 		</FormInputWrapper>
 		{#if steps.length > 0}
 			<span class="steps">
-			{#each steps as step}
-				<Button noMargin={true} collapse={true} onClick={() => incrementValue(step)}>
-					{step.label}
-				</Button>
-			{/each}
+				{#each steps as step}
+					<Button noMargin={true} collapse={true} onClick={() => incrementValue(step)}>
+						{step.label}
+					</Button>
+				{/each}
 			</span>
 		{/if}
 	</div>

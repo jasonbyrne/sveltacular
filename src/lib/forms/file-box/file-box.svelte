@@ -3,14 +3,14 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
 	let {
 		value = $bindable(''),
 		placeholder = '',
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
 		readonly = false,
@@ -21,7 +21,7 @@
 	}: {
 		value?: string;
 		placeholder?: string;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;

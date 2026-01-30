@@ -1,19 +1,19 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
-	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
+	import { uniqueId, type ComponentSize } from '$src/lib/index.js';
 	import { getContext } from 'svelte';
 	import type { CardContainerContext } from './card-container.js';
 
 	let {
 		title,
 		href,
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		children
 	}: {
 		title?: string;
 		href?: string;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		children?: Snippet;
 	} = $props();
 

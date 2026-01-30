@@ -4,7 +4,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 	const id = uniqueId();
 
 	type AllowedInputTypes = 'number' | 'currency';
@@ -12,7 +12,7 @@
 	let {
 		value = $bindable(0 as number | null),
 		placeholder = '',
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		type = 'number' as AllowedInputTypes,
 		min = 0,
 		max = 1000000,
@@ -36,7 +36,7 @@
 	}: {
 		value?: number | null;
 		placeholder?: string;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		type?: AllowedInputTypes;
 		min?: number;
 		max?: number;

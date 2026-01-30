@@ -2,12 +2,13 @@
 	import { untrack } from 'svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
 	let {
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		value = $bindable('' as string | null),
 		placeholder = '',
 		rows = 4,
@@ -30,7 +31,7 @@
 		onFocus = undefined,
 		onBlur = undefined
 	}: {
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		value?: string | null;
 		placeholder?: string;
 		rows?: number;

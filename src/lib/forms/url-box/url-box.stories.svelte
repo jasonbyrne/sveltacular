@@ -66,7 +66,7 @@
 				options: ['sm', 'md', 'lg', 'xl', 'full'],
 				description: 'Size of the input field',
 				table: {
-					type: { summary: 'FormFieldSizeOptions' },
+					type: { summary: 'ComponentSize' },
 					defaultValue: { summary: "'lg'" }
 				}
 			},
@@ -141,7 +141,10 @@
 	UrlBox with a pre-filled value.
 </Story>
 
-<Story name="Required" args={{ label: 'Website URL', required: true, placeholder: 'www.svelte.dev' }}>
+<Story
+	name="Required"
+	args={{ label: 'Website URL', required: true, placeholder: 'www.svelte.dev' }}
+>
 	Required UrlBox field with validation indicator.
 </Story>
 
@@ -183,8 +186,8 @@
 		helperText: 'Uncheck if you do not have a personal website'
 	}}
 >
-	UrlBox with nullable support. Toggle the checkbox to enable/disable the field. When unchecked,
-	the value clears but is remembered if you re-check it.
+	UrlBox with nullable support. Toggle the checkbox to enable/disable the field. When unchecked, the
+	value clears but is remembered if you re-check it.
 </Story>
 
 <Story

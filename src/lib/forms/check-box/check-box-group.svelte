@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { DropdownOption, ComponentSize } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
@@ -10,7 +10,7 @@
 	let {
 		group = $bindable([] as string[]),
 		items = [],
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
 		onChange,
@@ -18,7 +18,7 @@
 	}: {
 		group?: string[];
 		items?: DropdownOption[];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		onChange?: ((selected: string[]) => void) | undefined;

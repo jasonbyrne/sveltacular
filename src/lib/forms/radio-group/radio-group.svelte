@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DropdownOption, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { DropdownOption, ComponentSize } from '$src/lib/types/form.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import RadioBox from './radio-box.svelte';
@@ -9,7 +9,7 @@
 	let {
 		group = '',
 		items = [],
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
 		label = undefined,
@@ -19,7 +19,7 @@
 	}: {
 		group?: string;
 		items?: DropdownOption[];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		label?: string;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uniqueId, type FormFieldSizeOptions } from '$src/lib/index.js';
+	import { uniqueId, type ComponentSize } from '$src/lib/index.js';
 	import FormField, { type FormFieldFeedback } from '../form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import { untrack } from 'svelte';
@@ -13,7 +13,7 @@
 		currency = 'USD',
 		allowCents = true,
 		placeholder = '',
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		units = 'ones' as 'ones' | 'cents',
 		min = 0,
 		max = null as number | null,
@@ -36,7 +36,7 @@
 		currency?: string;
 		allowCents?: boolean;
 		placeholder?: string;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		units?: 'ones' | 'cents';
 		min?: number;
 		max?: number | null;

@@ -6,14 +6,14 @@
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 	import DialogCloseButton from './dialog-close-button.svelte';
 
 	let {
 		open = $bindable(false),
 		title = undefined,
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		buttonText = 'OK',
 		buttonVariant = 'primary' as 'primary' | 'secondary' | 'danger',
 		showCloseButton = true,
@@ -22,7 +22,7 @@
 	}: {
 		open?: boolean;
 		title?: string | undefined;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		buttonText?: string;
 		buttonVariant?: 'primary' | 'secondary' | 'danger';
 		showCloseButton?: boolean;
@@ -38,12 +38,7 @@
 
 {#if open}
 	<Overlay onEscape={close}>
-		<Dialog
-			{size}
-			role="alertdialog"
-			aria-modal="true"
-			aria-labelledby={title ? 'alert-title' : undefined}
-		>
+		<Dialog {size} role="alertdialog" ariaLabelledby={title ? 'alert-title' : undefined}>
 			{#if title}
 				<DialogHeader id="alert-title">
 					{title}

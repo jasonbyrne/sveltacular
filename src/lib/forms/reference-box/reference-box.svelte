@@ -3,7 +3,7 @@
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import Chip from '$src/lib/generic/chip/chip.svelte';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
-	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
+	import type { ComponentSize, MenuOption } from '$src/lib/types/form.js';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import debounce from '$src/lib/helpers/debounce.js';
@@ -26,7 +26,7 @@
 		placeholder = 'Search and add items...',
 		required = false,
 		disabled = false,
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md',
 		label = undefined as string | undefined,
 		helperText = undefined as string | undefined,
 		feedback = undefined as FormFieldFeedback | undefined,
@@ -42,7 +42,7 @@
 		placeholder?: string;
 		required?: boolean;
 		disabled?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		label?: string;
 		helperText?: string;
 		feedback?: FormFieldFeedback | undefined;

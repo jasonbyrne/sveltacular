@@ -5,7 +5,7 @@
 	import DialogHeader from '$src/lib/modals/dialog-header.svelte';
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { AllowedTextInputTypes, ComponentSize } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import TextBox from '../forms/text-box/text-box.svelte';
@@ -14,7 +14,7 @@
 	let {
 		open = $bindable(false),
 		title = undefined,
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		okText = 'Yes',
 		cancelText = 'No',
 		okVariant = 'primary' as 'primary' | 'secondary' | 'danger',
@@ -29,7 +29,7 @@
 	}: {
 		open?: boolean;
 		title?: string | undefined;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		okText?: string;
 		cancelText?: string;
 		okVariant?: 'primary' | 'secondary' | 'danger';
@@ -59,12 +59,7 @@
 
 {#if open}
 	<Overlay onEscape={no}>
-		<Dialog
-			{size}
-			role="dialog"
-			aria-modal="true"
-			aria-labelledby={title ? 'prompt-title' : undefined}
-		>
+		<Dialog {size} role="dialog" ariaLabelledby={title ? 'prompt-title' : undefined}>
 			{#if title}
 				<DialogHeader id="prompt-title">
 					{title}

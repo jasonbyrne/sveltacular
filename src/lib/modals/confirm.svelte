@@ -5,7 +5,7 @@
 	import DialogHeader from '$src/lib/modals/dialog-header.svelte';
 	import Dialog from '$src/lib/modals/dialog-window.svelte';
 	import Overlay from '$src/lib/generic/overlay.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 	import Button from '../forms/button/button.svelte';
 	import Divider from '$src/lib/generic/divider/divider.svelte';
 	import DialogCloseButton from './dialog-close-button.svelte';
@@ -13,7 +13,7 @@
 	let {
 		open = $bindable(false),
 		title = undefined,
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		yesText = 'Yes',
 		noText = 'No',
 		yesVariant = 'primary' as 'primary' | 'secondary' | 'danger',
@@ -25,7 +25,7 @@
 	}: {
 		open?: boolean;
 		title?: string | undefined;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		yesText?: string;
 		noText?: string;
 		yesVariant?: 'primary' | 'secondary' | 'danger';
@@ -49,12 +49,7 @@
 
 {#if open}
 	<Overlay onEscape={no}>
-		<Dialog
-			{size}
-			role="alertdialog"
-			aria-modal="true"
-			aria-labelledby={title ? 'confirm-title' : undefined}
-		>
+		<Dialog {size} role="alertdialog" ariaLabelledby={title ? 'confirm-title' : undefined}>
 			{#if title}
 				<DialogHeader id="confirm-title">
 					{title}

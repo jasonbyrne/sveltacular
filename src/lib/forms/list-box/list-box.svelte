@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DropdownOption, FormFieldSizeOptions, MenuOption } from '$lib/types/form.js';
+	import type { DropdownOption, ComponentSize, MenuOption } from '$lib/types/form.js';
 	import FormField, { type FormFieldFeedback } from '$lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$lib/helpers/unique-id.js';
 	import Menu from '$lib/generic/menu/menu.svelte';
@@ -14,7 +14,7 @@
 	let {
 		value = $bindable(null as string | null),
 		items = [] as DropdownOption[],
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md',
 		disabled = false,
 		required = false,
 		readonly = false,
@@ -34,7 +34,7 @@
 	}: {
 		value?: string | null;
 		items?: DropdownOption[];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;

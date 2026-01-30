@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends PlainObject">
 	import type { PlainObject, RowActions } from '$src/lib/types/data.js';
-	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, ComponentSize } from '$src/lib/types/form.js';
 	import TableCell from './table-cell.svelte';
 	import Button from '../forms/button/button.svelte';
 	import DropdownButton from '../navigation/dropdown-button/dropdown-button.svelte';
@@ -16,7 +16,7 @@
 		actions: RowActions<T>;
 		row: T;
 		actionButtonVariant?: ButtonVariant;
-		actionButtonSize?: FormFieldSizeOptions;
+		actionButtonSize?: ComponentSize;
 		actionAlign?: 'left' | 'center' | 'right';
 	} = $props();
 </script>

@@ -19,10 +19,11 @@
 	 */
 	const getFlexGrow = (size: ComponentSize): number => {
 		const flexMap: Record<ComponentSize, number> = {
-			sm: 1,
-			md: 2,
-			lg: 3,
-			xl: 4
+			xs: 1,
+			sm: 2,
+			md: 3,
+			lg: 6,
+			xl: 8
 		};
 		return flexMap[size];
 	};

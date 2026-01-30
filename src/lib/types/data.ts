@@ -1,5 +1,5 @@
 import type { Component } from 'svelte';
-import type { ButtonVariant, FormFieldSizeOptions } from './form';
+import type { ButtonVariant, ComponentSize } from './form';
 
 export type Primitive = string | number | boolean | null | undefined;
 export type JSONValue = string | number | boolean | null | { [x: string]: JSONValue } | JSONValue[];
@@ -152,7 +152,7 @@ export interface RowActions<T extends PlainObject = PlainObject> {
 	text?: string;
 	type?: 'buttons' | 'dropdown';
 	variant?: ButtonVariant | 'default';
-	size?: FormFieldSizeOptions;
+	size?: ComponentSize;
 	align?: 'left' | 'center' | 'right';
 	items: DataGridAction<T>[];
 }

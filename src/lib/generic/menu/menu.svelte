@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '$src/lib/icons/icon.svelte';
-	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/index.js';
+	import type { ComponentSize, MenuOption } from '$src/lib/index.js';
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
@@ -10,7 +10,7 @@
 		value = $bindable(null as string | null),
 		instructions = '',
 		open = $bindable(false),
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		closeAfterSelect = true,
 		searchText = '',
 		highlightIndex = $bindable(0),
@@ -23,7 +23,7 @@
 		value?: string | null;
 		instructions?: string;
 		open?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		closeAfterSelect?: boolean;
 		searchText?: string;
 		highlightIndex?: number;

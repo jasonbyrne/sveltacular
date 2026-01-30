@@ -2,7 +2,7 @@
 	import ListBox from '../list-box/list-box.svelte';
 	import FormField from '../form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { ComponentSize } from '$src/lib/index.js';
 	import type { FormFieldFeedback } from '../form-field/form-field.svelte';
 
 	type BoolBoxVariant = 'dropdown' | 'switch' | 'checkbox' | 'radio';
@@ -10,7 +10,7 @@
 	let {
 		value = $bindable(false),
 		options = ['Yes', 'No'] as [yes: string, no: string],
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		onChange = undefined,
 		label = undefined,
 		helperText = undefined,
@@ -21,7 +21,7 @@
 	}: {
 		value?: boolean;
 		options?: [yes: string, no: string];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		onChange?: ((value: boolean) => void) | undefined;
 		label?: string;
 		helperText?: string;

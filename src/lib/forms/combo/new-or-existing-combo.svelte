@@ -4,7 +4,7 @@
 		ListBox,
 		RadioBox,
 		type DropdownOption,
-		type FormFieldSizeOptions,
+		type ComponentSize,
 		TextBox
 	} from '$src/lib/index.js';
 	import FlexCol from '$src/lib/layout/flex-col.svelte';
@@ -15,7 +15,7 @@
 		newValue = $bindable('' as string | null),
 		existingValue = $bindable('' as string | null),
 		items = [] as DropdownOption[],
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
 		searchable = false,
@@ -27,7 +27,7 @@
 		newValue?: string | null;
 		existingValue?: string | null;
 		items?: DropdownOption[];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		searchable?: boolean;

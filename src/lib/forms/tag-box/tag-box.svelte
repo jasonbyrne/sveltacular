@@ -3,7 +3,7 @@
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import Chip from '$src/lib/generic/chip/chip.svelte';
 	import Menu from '$src/lib/generic/menu/menu.svelte';
-	import type { FormFieldSizeOptions, MenuOption } from '$src/lib/types/form.js';
+	import type { ComponentSize, MenuOption } from '$src/lib/types/form.js';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
@@ -17,7 +17,7 @@
 		disabled = false,
 		autocomplete = [] as string[],
 		separators = [',', ';'] as string[],
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		label = undefined as string | undefined,
 		helperText = undefined as string | undefined,
 		feedback = undefined as FormFieldFeedback | undefined,
@@ -34,7 +34,7 @@
 		disabled?: boolean;
 		autocomplete?: string[];
 		separators?: string[];
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		label?: string;
 		helperText?: string;
 		feedback?: FormFieldFeedback;

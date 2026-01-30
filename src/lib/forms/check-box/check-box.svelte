@@ -3,7 +3,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import Icon from '$src/lib/icons/icon.svelte';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 
 	let {
 		value = '',
@@ -14,7 +14,7 @@
 		label,
 		ariaLabel,
 		children,
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		helperText = undefined,
 		feedback = undefined,
 		required = false,
@@ -28,7 +28,7 @@
 		label?: string;
 		ariaLabel?: string;
 		children?: Snippet;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		helperText?: string;
 		feedback?: FormFieldFeedback;
 		required?: boolean;

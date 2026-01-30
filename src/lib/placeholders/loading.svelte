@@ -5,20 +5,37 @@
 
 	let {
 		type = 'spinner' as 'spinner' | 'block',
-		spinnerSize = 'md' as ComponentSize,
+		size = 'md' as ComponentSize,
 		spinnerVariant = 'primary' as 'primary' | 'secondary',
 		children
 	}: {
 		type?: 'spinner' | 'block';
-		spinnerSize?: ComponentSize;
+		size?: ComponentSize;
 		spinnerVariant?: 'primary' | 'secondary';
 		children?: Snippet;
 	} = $props();
+
+	const iconSize = $derived.by(() => {
+		switch (size) {
+			case 'xs':
+				return 'sm';
+			case 'sm':
+				return 'md';
+			case 'md':
+				return 'lg';
+			case 'lg':
+				return 'xl';
+			case 'xl':
+				return 'xl';
+			default:
+				return 'md';
+		}
+	});
 </script>
 
-<div class={type}>
+<div class="{type} {size}">
 	{#if type === 'spinner'}
-		<Spinner size={spinnerSize} variant={spinnerVariant} />
+		<Spinner size={iconSize} variant={spinnerVariant} />
 		<span class="spinner-text">
 			{@render children?.()}
 		</span>
@@ -32,6 +49,23 @@
 <style lang="scss">
 	div {
 		text-align: center;
+		font-family: var(--base-font-family, sans-serif);
+
+		&.xl {
+			font-size: 1.25rem;
+		}
+		.lg {
+			font-size: 1rem;
+		}
+		&.md {
+			font-size: 0.875rem;
+		}
+		&.sm {
+			font-size: 0.75rem;
+		}
+		&.xs {
+			font-size: 0.625rem;
+		}
 
 		span {
 			display: block;

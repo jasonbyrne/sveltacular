@@ -61,7 +61,7 @@
 				options: ['sm', 'md', 'lg', 'xl', 'full'],
 				description: 'Size of the input field',
 				table: {
-					type: { summary: 'FormFieldSizeOptions' },
+					type: { summary: 'ComponentSize' },
 					defaultValue: { summary: "'md'" }
 				}
 			},
@@ -154,15 +154,24 @@
 	Switch variant with different sizes.
 </Story>
 
-<Story name="SwitchSmall" args={{ variant: 'switch', size: 'sm', value: true, options: ['On', 'Off'] }}>
+<Story
+	name="SwitchSmall"
+	args={{ variant: 'switch', size: 'sm', value: true, options: ['On', 'Off'] }}
+>
 	Small switch variant.
 </Story>
 
-<Story name="SwitchLarge" args={{ variant: 'switch', size: 'lg', value: true, options: ['On', 'Off'] }}>
+<Story
+	name="SwitchLarge"
+	args={{ variant: 'switch', size: 'lg', value: true, options: ['On', 'Off'] }}
+>
 	Large switch variant.
 </Story>
 
-<Story name="SwitchXLarge" args={{ variant: 'switch', size: 'xl', value: true, options: ['On', 'Off'] }}>
+<Story
+	name="SwitchXLarge"
+	args={{ variant: 'switch', size: 'xl', value: true, options: ['On', 'Off'] }}
+>
 	Extra large switch variant.
 </Story>
 
@@ -185,11 +194,17 @@
 	Checkbox for visibility toggle.
 </Story>
 
-<Story name="CheckboxSmall" args={{ variant: 'checkbox', size: 'sm', value: true, options: ['Yes', 'No'] }}>
+<Story
+	name="CheckboxSmall"
+	args={{ variant: 'checkbox', size: 'sm', value: true, options: ['Yes', 'No'] }}
+>
 	Small checkbox variant.
 </Story>
 
-<Story name="CheckboxLarge" args={{ variant: 'checkbox', size: 'lg', value: true, options: ['Yes', 'No'] }}>
+<Story
+	name="CheckboxLarge"
+	args={{ variant: 'checkbox', size: 'lg', value: true, options: ['Yes', 'No'] }}
+>
 	Large checkbox variant.
 </Story>
 
@@ -209,11 +224,17 @@
 	Radio buttons for active/inactive state.
 </Story>
 
-<Story name="RadioSmall" args={{ variant: 'radio', size: 'sm', value: true, options: ['On', 'Off'] }}>
+<Story
+	name="RadioSmall"
+	args={{ variant: 'radio', size: 'sm', value: true, options: ['On', 'Off'] }}
+>
 	Small radio variant.
 </Story>
 
-<Story name="RadioLarge" args={{ variant: 'radio', size: 'lg', value: true, options: ['On', 'Off'] }}>
+<Story
+	name="RadioLarge"
+	args={{ variant: 'radio', size: 'lg', value: true, options: ['On', 'Off'] }}
+>
 	Large radio variant.
 </Story>
 

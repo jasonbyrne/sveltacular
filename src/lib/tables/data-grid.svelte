@@ -18,7 +18,7 @@
 	import { getCellAlignment, sortRows } from './cell-renderers.js';
 	import type { Snippet } from 'svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
-	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, ComponentSize } from '$src/lib/types/form.js';
 
 	type PaginationEvent = (pagination: PaginationProperties) => void;
 
@@ -110,9 +110,7 @@
 			!actions?.variant || actions.variant === 'default' ? 'outline' : actions.variant
 		) as ButtonVariant;
 	});
-	let actionButtonSize: FormFieldSizeOptions = $derived(
-		(actions?.size ?? 'sm') as FormFieldSizeOptions
-	);
+	let actionButtonSize: ComponentSize = $derived((actions?.size ?? 'sm') as ComponentSize);
 	let actionAlign = $derived(actions?.align ?? 'center');
 
 	// Track selected count from selection change callbacks

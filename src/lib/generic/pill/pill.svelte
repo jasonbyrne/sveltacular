@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 
 	let {
-		size = 'md' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		variant = 'standard' as 'standard' | 'positive' | 'negative',
 		shape = 'rounded' as 'circular' | 'square' | 'rounded' | 'badge' | 'circle',
 		fill = 'solid' as 'solid' | 'outline',
@@ -11,7 +11,7 @@
 		label,
 		children
 	}: {
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		variant?: 'standard' | 'positive' | 'negative';
 		shape?: 'circular' | 'square' | 'rounded' | 'badge' | 'circle';
 		fill?: 'solid' | 'outline';

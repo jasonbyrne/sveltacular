@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
@@ -12,7 +12,7 @@
 		step = 1,
 		disabled = false,
 		required = false,
-		size = 'full' as FormFieldSizeOptions,
+		size = 'md' as ComponentSize,
 		showTooltip = true,
 		showValue = true,
 		formatValue = undefined,
@@ -27,7 +27,7 @@
 		step?: number;
 		disabled?: boolean;
 		required?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		showTooltip?: boolean;
 		showValue?: boolean;
 		formatValue?: ((value: number) => string) | undefined;

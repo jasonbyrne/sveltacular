@@ -5,11 +5,10 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import { navigateTo } from '$src/lib/helpers/navigate-to.js';
-	import type { ButtonVariant, ComponentWidth, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, ComponentWidth, ComponentSize } from '$src/lib/types/form.js';
 	import type { IconType } from '$src/lib/icons/types.js';
 	import Spinner from '$src/lib/generic/spinner/spinner.svelte';
 	import Icon from '$src/lib/icons/icon.svelte';
-	import type { ComponentSize } from '$src/lib/types';
 
 	let {
 		/** Optional href for navigation */
@@ -49,7 +48,7 @@
 		children
 	}: {
 		href?: string | undefined;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		width?: ComponentWidth;
 		variant?: ButtonVariant;
 		type?: 'button' | 'submit' | 'reset';
@@ -88,7 +87,9 @@
 		}
 	};
 
-	const _iconSize = $derived<ComponentSize>(iconSize === 'default' ? size : iconSize);
+	const _iconSize = $derived<ComponentSize>(
+		iconSize === 'default' ? (size as ComponentSize) : iconSize
+	);
 </script>
 
 <button

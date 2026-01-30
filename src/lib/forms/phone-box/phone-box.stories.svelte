@@ -48,7 +48,7 @@
 				options: ['sm', 'md', 'lg', 'xl', 'full'],
 				description: 'Size of the input field',
 				table: {
-					type: { summary: 'FormFieldSizeOptions' },
+					type: { summary: 'ComponentSize' },
 					defaultValue: { summary: "'md'" }
 				}
 			},

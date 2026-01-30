@@ -1,19 +1,19 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ComponentSize } from '$src/lib/types/form.js';
 	import { setContext } from 'svelte';
 
 	let {
 		isFixed = true,
 		position = 'top' as 'top' | 'bottom',
-		size = 'md' as FormFieldSizeOptions | 'xs',
-		padding = 'md' as 'none' | FormFieldSizeOptions,
+		size = 'md' as ComponentSize | 'xs',
+		padding = 'md' as 'none' | ComponentSize,
 		children
 	}: {
 		isFixed?: boolean;
 		position?: 'top' | 'bottom';
-		size?: FormFieldSizeOptions | 'xs';
-		padding?: 'none' | FormFieldSizeOptions;
+		size?: ComponentSize | 'xs';
+		padding?: 'none' | ComponentSize;
 		children: Snippet;
 	} = $props();
 

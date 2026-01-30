@@ -1,7 +1,7 @@
 <script lang="ts" generics="T extends PlainObject">
 	import type { Snippet } from 'svelte';
 	import type { ColumnDef, PlainObject, RowActions } from '$src/lib/types/data.js';
-	import type { ButtonVariant, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { ButtonVariant, ComponentSize } from '$src/lib/types/form.js';
 	import TableRow from './table-row.svelte';
 	import TableSelectionCell from './table-selection-cell.svelte';
 	import DataGridCell from './data-grid-cell.svelte';
@@ -34,7 +34,7 @@
 		actions?: RowActions<T>;
 		cells?: Record<string, Snippet<[CellContext<T>]>>;
 		actionButtonVariant?: ButtonVariant;
-		actionButtonSize?: FormFieldSizeOptions;
+		actionButtonSize?: ComponentSize;
 		actionAlign?: 'left' | 'center' | 'right';
 	} = $props();
 </script>

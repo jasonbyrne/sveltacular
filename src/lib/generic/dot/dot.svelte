@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { FormFieldSizeOptions } from '$src/lib/index.js';
+	import type { ComponentSize } from '$src/lib/index.js';
 
 	let {
 		color = '#b7b7b7',
 		shadow = false,
-		size = 'md' as FormFieldSizeOptions
+		size = 'md' as ComponentSize
 	}: {
 		color?: string;
 		shadow?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 	} = $props();
 </script>
 

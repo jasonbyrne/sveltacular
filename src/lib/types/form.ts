@@ -1,5 +1,5 @@
-// Re-export ComponentSize for backward compatibility
-export type { ComponentSize as FormFieldSizeOptions, ComponentWidth } from './size.js';
+// Export size types for forms
+export type { ComponentSize, ComponentWidth } from './size.js';
 
 /**
  * Button variant options

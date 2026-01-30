@@ -3,7 +3,7 @@
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
-	import type { AllowedTextInputTypes, FormFieldSizeOptions } from '$src/lib/types/form.js';
+	import type { AllowedTextInputTypes, ComponentSize } from '$src/lib/types/form.js';
 
 	const id = uniqueId();
 
@@ -43,7 +43,7 @@
 		feedback?: FormFieldFeedback;
 		isLoading?: boolean;
 		showCharacterCount?: boolean;
-		size?: FormFieldSizeOptions;
+		size?: ComponentSize;
 		type?: AllowedTextInputTypes;
 		disabled?: boolean;
 		required?: boolean;
