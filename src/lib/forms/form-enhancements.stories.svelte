@@ -73,7 +73,6 @@
 			helperText="We'll check if this email is available"
 			feedback={emailFeedback}
 			isLoading={isValidating}
-			size="full"
 			onInput={() => {
 				emailFeedback = undefined;
 			}}
@@ -95,7 +94,6 @@
 			helperText="Keep it short and sweet"
 			maxlength={100}
 			showCharacterCount={true}
-			size="full"
 		/>
 	</section>
 
@@ -113,7 +111,6 @@
 			autoResize={true}
 			minRows={3}
 			maxRows={10}
-			size="full"
 		/>
 
 		<div style="margin-top: 1rem;">
@@ -155,7 +152,6 @@
 			step={1}
 			showTooltip={true}
 			showValue={true}
-			size="full"
 		/>
 
 		<div style="margin-top: 1.5rem;">
@@ -168,7 +164,6 @@
 				showTooltip={true}
 				showValue={true}
 				formatValue={formatSliderValue}
-				size="full"
 			/>
 		</div>
 	</section>
@@ -211,7 +206,6 @@
 				helperText="Must be 3-20 characters"
 				maxlength={20}
 				showCharacterCount={true}
-				size="full"
 			/>
 
 			<TextArea
@@ -220,10 +214,9 @@
 				autoResize={true}
 				minRows={2}
 				maxRows={8}
-				size="full"
 			/>
 
-			<Slider label="Priority" min={1} max={10} step={1} showTooltip={true} size="full" />
+			<Slider label="Priority" min={1} max={10} step={1} showTooltip={true} />
 
 			<div style="height: 150px;">
 				<FileArea fileLimit={3} />

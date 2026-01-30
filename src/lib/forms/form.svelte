@@ -7,7 +7,7 @@
 		method = 'get',
 		title = undefined,
 		action = undefined,
-		size = 'full',
+		size = 'md',
 		onSubmit = undefined,
 		children
 	}: {

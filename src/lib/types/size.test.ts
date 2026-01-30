@@ -18,10 +18,6 @@ describe('size utilities', () => {
 		it('should return correct width for xl', () => {
 			expect(getMaxWidth('xl')).toBe('auto');
 		});
-
-		it('should return correct width for full', () => {
-			expect(getMaxWidth('full')).toBe('100%');
-		});
 	});
 
 	describe('getDisplayType', () => {
@@ -31,9 +27,8 @@ describe('size utilities', () => {
 			expect(getDisplayType('lg')).toBe('inline-block');
 		});
 
-		it('should return block for xl and full', () => {
+		it('should return block for xl', () => {
 			expect(getDisplayType('xl')).toBe('block');
-			expect(getDisplayType('full')).toBe('block');
 		});
 	});
 });

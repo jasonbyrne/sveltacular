@@ -377,7 +377,6 @@
 					closeAfterSelect={true}
 					searchText={newTag}
 					onSelect={onSelectFromMenu}
-					size="full"
 					bind:highlightIndex
 					{listboxId}
 				/>

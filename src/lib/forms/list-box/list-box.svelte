@@ -470,7 +470,6 @@
 					closeAfterSelect={true}
 					searchText={isSearchable ? text : ''}
 					{onSelect}
-					size="full"
 					bind:highlightIndex
 					bind:value
 					{listboxId}

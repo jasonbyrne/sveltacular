@@ -42,7 +42,7 @@
 			</Paragraph>
 		</Section>
 
-		<Section title="Key Features" size="full">
+		<Section title="Key Features">
 			<CardContainer spacing="compact">
 				<Card title="🎨 100+ Components" size="md">
 					<Paragraph>
@@ -95,10 +95,10 @@
 
 		<Section title="Quick Start" size="lg">
 			<CardContainer spacing="compact">
-				<Card title="Installation" size="full">
+				<Card title="Installation">
 					<CodeBlock lang="bash">npm i sveltacular</CodeBlock>
 				</Card>
-				<Card title="Import Styles" size="full">
+				<Card title="Import Styles">
 					<Paragraph>
 						<strong>For SvelteKit</strong>, add this to <code>src/routes/+layout.svelte</code>:
 					</Paragraph>
@@ -118,7 +118,7 @@
 </script>`}</CodeBlock
 					>
 				</Card>
-				<Card title="Use Components" size="full">
+				<Card title="Use Components">
 					<CodeBlock lang="svelte"
 						>{`<script lang="ts">
 	import { Button } from 'sveltacular';
@@ -130,7 +130,7 @@
 			</CardContainer>
 		</Section>
 
-		<Section title="Component Categories" size="full">
+		<Section title="Component Categories">
 			<CardContainer spacing="compact">
 				<Card title="Forms" size="md">
 					<Paragraph>

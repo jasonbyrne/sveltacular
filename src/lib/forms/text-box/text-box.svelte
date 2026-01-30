@@ -14,7 +14,7 @@
 		feedback = undefined,
 		isLoading = false,
 		showCharacterCount = false,
-		size = 'full',
+		size = 'md',
 		type = 'text',
 		disabled = false,
 		required = false,

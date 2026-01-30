@@ -8,7 +8,7 @@
 	let {
 		title = undefined,
 		level = 2 as SectionLevel,
-		size = 'full' as FormFieldSizeOptions,
+		size = 'xl' as FormFieldSizeOptions,
 		hidden = false,
 		align = 'left' as 'left' | 'center' | 'right',
 		children

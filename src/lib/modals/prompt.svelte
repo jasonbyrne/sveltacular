@@ -73,16 +73,16 @@
 			{/if}
 			<DialogCloseButton show={showCloseButton} onClick={no} />
 			<DialogBody>
-				<TextBox bind:value {placeholder} {type} {required} size="full" />
+				<TextBox bind:value {placeholder} {type} {required} />
 				{#if children}
 					{@render children()}
 				{/if}
 			</DialogBody>
-		<Divider />
-		<DialogFooter>
-			<Button onClick={no} variant={cancelVariant} size="full">{cancelText}</Button>
-			<Button onClick={yes} variant={okVariant} size="full">{okText}</Button>
-		</DialogFooter>
+			<Divider />
+			<DialogFooter>
+				<Button onClick={no} variant={cancelVariant}>{cancelText}</Button>
+				<Button onClick={yes} variant={okVariant}>{okText}</Button>
+			</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}

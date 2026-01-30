@@ -65,11 +65,11 @@
 			<DialogBody>
 				{@render children?.()}
 			</DialogBody>
-		<Divider />
-		<DialogFooter>
-			<Button onClick={no} variant={noVariant} size="full">{noText}</Button>
-			<Button onClick={yes} variant={yesVariant} size="full">{yesText}</Button>
-		</DialogFooter>
+			<Divider />
+			<DialogFooter>
+				<Button onClick={no} variant={noVariant}>{noText}</Button>
+				<Button onClick={yes} variant={yesVariant}>{yesText}</Button>
+			</DialogFooter>
 		</Dialog>
 	</Overlay>
 {/if}
