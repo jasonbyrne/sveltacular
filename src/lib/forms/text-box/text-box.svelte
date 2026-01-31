@@ -4,6 +4,7 @@
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import FormInputWrapper from '$src/lib/forms/form-input-wrapper';
 	import type { AllowedTextInputTypes, ComponentSize } from '$src/lib/types/form.js';
+	import type { IconType } from '$src/lib/icons/types.js';
 
 	const id = uniqueId();
 
@@ -25,6 +26,8 @@
 		pattern = undefined,
 		prefix = undefined,
 		suffix = undefined,
+		icon = undefined,
+		iconAlign = 'left',
 		allowSpaces = true,
 		allowNumbers = true,
 		allowLetters = true,
@@ -34,6 +37,7 @@
 		onInput = undefined,
 		onFocus = undefined,
 		onBlur = undefined,
+		onSubmit = undefined,
 		label = undefined,
 		nullText = ''
 	}: {
@@ -54,6 +58,8 @@
 		pattern?: string | undefined;
 		prefix?: string | undefined;
 		suffix?: string | undefined;
+		icon?: IconType | undefined;
+		iconAlign?: 'left' | 'right';
 		allowSpaces?: boolean;
 		allowNumbers?: boolean;
 		allowLetters?: boolean;
@@ -63,6 +69,7 @@
 		onInput?: ((value: string | null) => void) | undefined;
 		onFocus?: ((value: string | null) => void) | undefined;
 		onBlur?: ((value: string | null) => void) | undefined;
+		onSubmit?: ((value: string | null) => void) | undefined;
 		label?: string;
 		nullText?: string;
 	} = $props();
@@ -177,6 +184,14 @@
 		onBlur?.(value);
 	};
 
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter' && onSubmit) {
+			e.preventDefault();
+			const currentValue = !nullable || isChecked ? value : null;
+			onSubmit(currentValue);
+		}
+	};
+
 	$effect(() => {
 		if (!value) {
 			// Use untrack to prevent writes to isChecked/value from triggering this effect again
@@ -201,10 +216,14 @@
 		success={hasSuccess}
 		{prefix}
 		{suffix}
+		{icon}
+		{iconAlign}
 		{nullable}
 		nullText={effectiveNullText}
 		{isLoading}
+		{value}
 		onCheckChanged={checkChanged}
+		{onSubmit}
 	>
 		<input
 			{id}
@@ -222,6 +241,7 @@
 			aria-invalid={hasError}
 			aria-busy={isLoading}
 			onkeypress={handleKeyPress}
+			onkeydown={handleKeyDown}
 			oninput={handleInput}
 			onfocus={handleFocus}
 			onblur={handleBlur}

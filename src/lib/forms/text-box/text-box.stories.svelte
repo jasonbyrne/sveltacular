@@ -146,6 +146,34 @@
 				table: {
 					type: { summary: '(isChecked: boolean) => void' }
 				}
+			},
+			icon: {
+				control: 'select',
+				options: [
+					undefined,
+					'search',
+					'envelope',
+					'phone',
+					'link',
+					'user',
+					'info',
+					'warning',
+					'check',
+					'close'
+				],
+				description: 'Optional icon to display in the input',
+				table: {
+					type: { summary: 'IconType | undefined' }
+				}
+			},
+			iconAlign: {
+				control: 'select',
+				options: ['left', 'right'],
+				description: 'Alignment of the icon (left or right)',
+				table: {
+					type: { summary: "'left' | 'right'" },
+					defaultValue: { summary: 'left' }
+				}
 			}
 		},
 		args: {
@@ -323,4 +351,143 @@
 	}}
 >
 	TextBox with custom null text displayed when unchecked.
+</Story>
+
+<Story
+	name="WithIconLeft"
+	args={{
+		type: 'search',
+		placeholder: 'Search...',
+		label: 'Search',
+		icon: 'search',
+		iconAlign: 'left'
+	}}
+>
+	TextBox with a search icon on the left side.
+</Story>
+
+<Story
+	name="WithIconRight"
+	args={{
+		type: 'email',
+		placeholder: 'Enter your email',
+		label: 'Email',
+		icon: 'envelope',
+		iconAlign: 'right'
+	}}
+>
+	TextBox with an envelope icon on the right side.
+</Story>
+
+<Story
+	name="WithIconAndPrefix"
+	args={{
+		type: 'text',
+		placeholder: 'Enter amount',
+		label: 'Price',
+		prefix: '$',
+		icon: 'info',
+		iconAlign: 'left'
+	}}
+>
+	TextBox with both a prefix and an icon on the left side.
+</Story>
+
+<Story
+	name="WithIconAndSuffix"
+	args={{
+		type: 'text',
+		placeholder: 'Enter distance',
+		label: 'Distance',
+		suffix: 'km',
+		icon: 'info',
+		iconAlign: 'right'
+	}}
+>
+	TextBox with both a suffix and an icon on the right side.
+</Story>
+
+<Story
+	name="WithIconPrefixAndSuffix"
+	args={{
+		type: 'text',
+		placeholder: 'Enter value',
+		label: 'Value',
+		prefix: '$',
+		suffix: 'USD',
+		icon: 'info',
+		iconAlign: 'left'
+	}}
+>
+	TextBox with prefix, suffix, and icon all together.
+</Story>
+
+<Story
+	name="PhoneWithIcon"
+	args={{
+		type: 'tel',
+		placeholder: 'Enter phone number',
+		label: 'Phone',
+		icon: 'phone',
+		iconAlign: 'left'
+	}}
+>
+	TextBox with phone icon for phone number input.
+</Story>
+
+<Story
+	name="URLWithIcon"
+	args={{
+		type: 'url',
+		placeholder: 'Enter website URL',
+		label: 'Website',
+		icon: 'link',
+		iconAlign: 'left'
+	}}
+>
+	TextBox with link icon for URL input.
+</Story>
+
+<Story
+	name="SearchWithClickableIcon"
+	args={{
+		type: 'search',
+		placeholder: 'Search...',
+		label: 'Search',
+		icon: 'search',
+		iconAlign: 'right',
+		onSubmit: fn()
+	}}
+>
+	TextBox with clickable search icon. Click the icon or press Enter to submit the search value.
+	The `onSubmit` callback is provided, making the icon interactive.
+</Story>
+
+<Story
+	name="EmailWithSubmitIcon"
+	args={{
+		type: 'email',
+		placeholder: 'Enter your email',
+		label: 'Email',
+		icon: 'envelope',
+		iconAlign: 'right',
+		onSubmit: fn()
+	}}
+>
+	TextBox with clickable envelope icon. The icon acts as a submit button when onSubmit is provided. Press Enter or click the icon to trigger submission.
+</Story>
+
+<Story
+	name="ClickableIconDisabled"
+	args={{
+		type: 'search',
+		placeholder: 'Search...',
+		label: 'Search',
+		icon: 'search',
+		iconAlign: 'right',
+		onSubmit: fn(),
+		disabled: true
+	}}
+>
+	TextBox with icon and onSubmit, but disabled. The icon is not clickable when the input is disabled.
 </Story>

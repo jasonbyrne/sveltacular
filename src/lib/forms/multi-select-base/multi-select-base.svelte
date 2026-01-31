@@ -170,7 +170,7 @@
 			return;
 		}
 
-		// Enter - select from dropdown
+		// Enter - select from dropdown or handle as separator
 		if (event.key === 'Enter') {
 			event.preventDefault();
 			if (isMenuOpen && highlightIndex >= 0 && filteredOptions[highlightIndex]) {
@@ -179,6 +179,12 @@
 			} else if (isMenuOpen && filteredOptions.length === 1) {
 				// Auto-select if only one suggestion
 				addItem(adapter.fromMenuOption(filteredOptions[0]));
+			} else if (inputText.trim()) {
+				// If no menu open or no selection, treat Enter like a separator
+				// Keep the trimmed text in inputText and notify parent to handle
+				const trimmedText = inputText.trim();
+				inputText = trimmedText;
+				onInputChange?.(trimmedText + '\n'); // Use newline to indicate Enter
 			}
 			return;
 		}
@@ -240,8 +246,8 @@
 				if (textBeforeSeparator) {
 					inputText = textBeforeSeparator;
 					// Notify parent (e.g., TagBox will try to add the tag)
-					onInputChange?.(inputText);
-					inputText = ''; // Clear after handling
+					// Parent is responsible for clearing the input after processing
+					onInputChange?.(inputText + lastChar); // Include separator so parent knows it was triggered
 				} else {
 					inputText = '';
 				}

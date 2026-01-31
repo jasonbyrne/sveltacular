@@ -104,6 +104,20 @@
 			return;
 		}
 
+		// Check for duplicate
+		const isDuplicate = value.some((existingTag) => {
+			if (caseInsensitive) {
+				return existingTag.toLowerCase() === tag.toLowerCase();
+			}
+			return existingTag === tag;
+		});
+
+		if (isDuplicate) {
+			showInvalidFeedback();
+			baseComponent.clearInput();
+			return;
+		}
+
 		// Try to add from available options
 		const success = baseComponent.addFromInput(tag);
 		if (success) {
@@ -149,8 +163,13 @@
 	function onInputChangeWithSeparators(text: string) {
 		handleInputChange(text);
 
-		// Check if we should handle separator (happens in the base component's handleInput)
-		if (separators.length > 0 && text.endsWith(separators[0])) {
+		// Check if we should handle separator or Enter key
+		// MultiSelectBase sends text ending with separator char or '\n' for Enter
+		const lastChar = text[text.length - 1];
+		const isSeparator = separators.includes(lastChar);
+		const isEnter = lastChar === '\n';
+		
+		if (isSeparator || isEnter) {
 			handleSeparatorInput();
 		}
 	}
@@ -167,6 +186,20 @@
 		// Check if valid in strict mode
 		if (!isValidTag(tag)) {
 			showInvalidFeedback();
+			return;
+		}
+
+		// Check for duplicate
+		const isDuplicate = value.some((existingTag) => {
+			if (caseInsensitive) {
+				return existingTag.toLowerCase() === tag.toLowerCase();
+			}
+			return existingTag === tag;
+		});
+
+		if (isDuplicate) {
+			showInvalidFeedback();
+			baseComponent.clearInput();
 			return;
 		}
 

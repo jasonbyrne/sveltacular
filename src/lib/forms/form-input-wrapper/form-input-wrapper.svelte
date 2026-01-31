@@ -3,6 +3,7 @@
 	import { untrack } from 'svelte';
 	import { animateShake, animateScaleIn } from '$src/lib/helpers/animations.js';
 	import Icon from '$src/lib/icons/icon.svelte';
+	import type { IconType } from '$src/lib/icons/types.js';
 
 	let {
 		disabled = false,
@@ -10,10 +11,14 @@
 		success = false,
 		prefix = undefined,
 		suffix = undefined,
+		icon = undefined,
+		iconAlign = 'left',
 		nullable = false,
 		nullText = '--',
 		isLoading = false,
+		value = undefined,
 		onCheckChanged = undefined,
+		onSubmit = undefined,
 		children
 	}: {
 		disabled?: boolean;
@@ -21,10 +26,14 @@
 		success?: boolean;
 		prefix?: string | undefined;
 		suffix?: string | undefined;
+		icon?: IconType | undefined;
+		iconAlign?: 'left' | 'right';
 		nullable?: boolean;
 		nullText?: string;
 		isLoading?: boolean;
+		value?: string | null | undefined;
 		onCheckChanged?: ((isChecked: boolean) => void) | undefined;
+		onSubmit?: ((value: string | null) => void) | undefined;
 		children: Snippet;
 	} = $props();
 
@@ -64,6 +73,12 @@
 	const checkChanged = () => {
 		onCheckChanged?.(isChecked);
 	};
+
+	const handleIconClick = () => {
+		if (onSubmit) {
+			onSubmit(value ?? null);
+		}
+	};
 </script>
 
 <div
@@ -76,6 +91,22 @@
 >
 	{#if prefix}
 		<div class="prefix">{prefix}</div>
+	{/if}
+	{#if icon && iconAlign === 'left'}
+		{#if onSubmit}
+			<button
+				type="button"
+				class="icon-container icon-left"
+				onclick={handleIconClick}
+				{disabled}
+			>
+				<Icon type={icon} size="sm" />
+			</button>
+		{:else}
+			<div class="icon-container icon-left">
+				<Icon type={icon} size="sm" />
+			</div>
+		{/if}
 	{/if}
 	{#if showInput}
 		{@render children()}
@@ -92,6 +123,22 @@
 		<div class="success-indicator" bind:this={successIconElement}>
 			<Icon type="check" size="sm" />
 		</div>
+	{/if}
+	{#if icon && iconAlign === 'right'}
+		{#if onSubmit}
+			<button
+				type="button"
+				class="icon-container icon-right"
+				onclick={handleIconClick}
+				{disabled}
+			>
+				<Icon type={icon} size="sm" />
+			</button>
+		{:else}
+			<div class="icon-container icon-right">
+				<Icon type={icon} size="sm" />
+			</div>
+		{/if}
 	{/if}
 	{#if suffix}
 		<div class="suffix">{suffix}</div>
@@ -164,12 +211,57 @@
 			}
 		}
 
+		.icon-container,
 		.loading-indicator,
 		.success-indicator {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			padding: 0 var(--spacing-base);
+		}
+
+		.icon-container {
+			color: var(--form-input-accent-fg);
+			opacity: 0.5;
+			transition: opacity var(--transition-base) var(--ease-in-out);
+
+			// Button-specific styles (when clickable)
+			&:is(button) {
+				background: none;
+				border: none;
+				cursor: pointer;
+
+				&:not(:disabled) {
+					&:hover {
+						opacity: 1;
+					}
+
+					&:active {
+						opacity: 0.6;
+					}
+				}
+
+				&:disabled {
+					cursor: default;
+					pointer-events: none;
+					opacity: 0.5;
+				}
+			}
+
+			// Div-specific styles (when not clickable)
+			&:is(div) {
+				cursor: default;
+			}
+
+			&.icon-left {
+				padding-left: var(--spacing-base);
+				padding-right: var(--spacing-xs);
+			}
+
+			&.icon-right {
+				padding-left: var(--spacing-xs);
+				padding-right: var(--spacing-base);
+			}
 		}
 
 		.loading-indicator {
