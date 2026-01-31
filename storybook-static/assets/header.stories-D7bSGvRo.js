@@ -1,0 +1,17 @@
+import{p as L,f as h,a as w,t as a,b as r,s as n,c as b}from"./iframe-D7RYvwF5.js";import{c as C}from"./create-runtime-stories-z04xijIr.js";import{d as x}from"./index-CU8YG541.js";import{H as S}from"./header-HUhkViHE.js";import{i as P}from"./lifecycle-CSFJvVh_.js";import"./preload-helper-ckwbz45p.js";import"./attributes-AHszVgQG.js";import"./class-CSG4cUfb.js";import"./style-OEUvFely.js";import"./headline-CIaj2uGK.js";import"./text-AqgJ9I0K.js";import"./subtitle-GbSccjrP.js";import"./paragraph-CHHUMgDW.js";const D={component:S,title:"Generic/Header",tags:["autodocs"]},{Story:s}=x();var U=h("<!> <!> <!> <!> <!> <!> <!> <!>",1);function $(f,m){L(m,!1),P();var d=U(),v=w(d);s(v,{name:"Default",args:{title:"Headline",subtitle:"Subtitle"},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var i=n(v,2);s(i,{name:"Underline",args:{title:"Header",subtitle:"Subtitle",underline:!0},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var u=n(i,2);s(u,{name:"Level1",args:{title:"Header",subtitle:"Subtitle",level:1},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var _=n(u,2);s(_,{name:"Level2",args:{title:"Header",subtitle:"Subtitle",level:2},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var c=n(_,2);s(c,{name:"Level3",args:{title:"Header",subtitle:"Subtitle",level:3},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var g=n(c,2);s(g,{name:"Level4",args:{title:"Header",subtitle:"Subtitle",level:4},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var H=n(g,2);s(H,{name:"Level5",args:{title:"Header",subtitle:"Subtitle",level:5},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}});var p=n(H,2);s(p,{name:"Level6",args:{title:"Header",subtitle:"Subtitle",level:6},children:(e,o)=>{var t=a("Header content would go here");r(e,t)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Header {...args}>
+  Header content would go here
+</Header>`}}}),r(f,d),b()}$.__docgen={data:[],name:"header.stories.svelte"};const l=C($,D),I=["Default","Underline","Level1","Level2","Level3","Level4","Level5","Level6"],J={...l.Default,tags:["svelte-csf-v5"]},K={...l.Underline,tags:["svelte-csf-v5"]},N={...l.Level1,tags:["svelte-csf-v5"]},Q={...l.Level2,tags:["svelte-csf-v5"]},T={...l.Level3,tags:["svelte-csf-v5"]},V={...l.Level4,tags:["svelte-csf-v5"]},W={...l.Level5,tags:["svelte-csf-v5"]},X={...l.Level6,tags:["svelte-csf-v5"]};export{J as Default,N as Level1,Q as Level2,T as Level3,V as Level4,W as Level5,X as Level6,K as Underline,I as __namedExportsOrder,D as default};

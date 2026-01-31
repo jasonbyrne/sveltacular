@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { ReferenceItem, ComponentSize } from '$lib/types/form.js';
+	import type { ReferenceItem, ComponentSize, FieldNameMapping } from '$lib/types/form.js';
+	import { createFieldMapper } from '$lib/types/form.js';
 	import FormField, { type FormFieldFeedback } from '$lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$lib/helpers/unique-id.js';
 	import Menu from '$lib/generic/menu/menu.svelte';
@@ -12,8 +13,9 @@
 	import type { CreateNewFunction, SearchFunction } from '$lib/types/form.js';
 
 	let {
-		value = $bindable(null as string | null),
-		items = [] as ReferenceItem[],
+		value = $bindable(null as string | number | null),
+		items = [] as any[],
+		fieldNames = undefined as FieldNameMapping | undefined,
 		size = 'md',
 		disabled = false,
 		required = false,
@@ -32,8 +34,21 @@
 		createNew = undefined,
 		resourceName = undefined
 	}: {
-		value?: string | null;
-		items?: ReferenceItem[];
+		value?: string | number | null;
+		items?: any[];
+		/**
+		 * Maps database field names to ReferenceItem properties.
+		 * Use this when your data uses different field names (e.g., 'name' instead of 'label').
+		 * 
+		 * @example
+		 * // Basic usage
+		 * fieldNames={{ label: 'name', value: 'id' }}
+		 * 
+		 * @example
+		 * // With description field
+		 * fieldNames={{ label: 'title', value: 'id', description: 'subtitle' }}
+		 */
+		fieldNames?: FieldNameMapping | undefined;
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
@@ -41,7 +56,7 @@
 		searchable?: boolean;
 		search?: SearchFunction | undefined;
 		placeholder?: string;
-		onChange?: ((value: string | null) => void) | undefined;
+		onChange?: ((value: string | number | null) => void) | undefined;
 		onFocus?: ((e: FocusEvent) => void) | undefined;
 		onBlur?: ((e: FocusEvent) => void) | undefined;
 		label?: string;
@@ -56,9 +71,17 @@
 	const id = uniqueId();
 	const listboxId = `${id}-listbox`;
 
-	// Use local items state when search function is provided, otherwise use prop
+	// Create field mapper
+	const mapper = $derived(createFieldMapper<any>(fieldNames));
+
+	// Transform items for internal use (always work with ReferenceItem internally)
+	const referenceItems = $derived(
+		fieldNames ? items.map(item => mapper.toReferenceItem(item)) : items as ReferenceItem[]
+	);
+
+	// Use local items state when search function is provided, otherwise use transformed items
 	let localItems = $state<ReferenceItem[]>([]);
-	let currentItems = $derived(search ? localItems : items);
+	let currentItems = $derived(search ? localItems : referenceItems);
 
 	const getText = () => currentItems.find((item) => item.value == value)?.label || '';
 
@@ -78,8 +101,16 @@
 	// Initialize localItems when items prop changes (only when no search function)
 	$effect(() => {
 		if (!search) {
-			localItems = [...items];
+			localItems = [...referenceItems];
 		}
+	});
+
+	// Internal value for Menu component (always string | null)
+	let internalValue = $state<string | null>(value != null ? String(value) : null);
+
+	// Sync internal value from external value
+	$effect(() => {
+		internalValue = value != null ? String(value) : null;
 	});
 
 	// Initialize text from value on mount and when value/items change (but not when user is typing)
@@ -141,7 +172,8 @@
 	// When an item is selected from the dropdown menu
 	const onSelect = (item: ReferenceItem) => {
 		isUserTyping = false;
-		value = item.value != null ? String(item.value) : null;
+		// Keep value as-is (string | number | null)
+		value = item.value;
 		onChange?.(value);
 		text = getText();
 		isMenuOpen = false;
@@ -337,11 +369,12 @@
 			const result = await createNew(name);
 
 			if (result) {
-				items = [...items, result];
+				// Note: items prop is read-only, so we can't update it
+				// Just add to localItems for display
 				localItems = [...localItems, result];
 
 				// Select the newly created item
-				value = result.value != null ? String(result.value) : null;
+				value = result.value;
 				onChange?.(value);
 				text = result.label;
 				isMenuOpen = false;
@@ -475,7 +508,7 @@
 					searchText={isSearchable ? text : ''}
 					{onSelect}
 					bind:highlightIndex
-					bind:value
+					bind:value={internalValue}
 					{listboxId}
 					{virtualScroll}
 					{itemHeight}

@@ -96,6 +96,26 @@
 		return `https://example.com/users/${item.value}`;
 	};
 
+	// Database types for field mapping examples
+	type Topic = { id: number; name: string; slug: string };
+	type Category = { id: number; title: string; description: string };
+
+	// Sample database objects
+	const topics: Topic[] = [
+		{ id: 1, name: 'AI & Machine Learning', slug: 'ai-ml' },
+		{ id: 2, name: 'Web Development', slug: 'web-dev' },
+		{ id: 3, name: 'Cloud Computing', slug: 'cloud' },
+		{ id: 4, name: 'Data Science', slug: 'data-science' },
+		{ id: 5, name: 'Mobile Development', slug: 'mobile' }
+	];
+
+	const categories: Category[] = [
+		{ id: 1, title: 'Technology', description: 'Latest tech trends and innovations' },
+		{ id: 2, title: 'Business', description: 'Business strategies and insights' },
+		{ id: 3, title: 'Science', description: 'Scientific discoveries and research' },
+		{ id: 4, title: 'Health', description: 'Health and wellness topics' }
+	];
+
 	const { Story } = defineMeta({
 		component: ReferenceBox,
 		title: 'Forms/ReferenceBox',
@@ -428,5 +448,41 @@
 		search: searchFunction,
 		linkBuilder: linkBuilder,
 		helperText: 'Async search with links to company details'
+	}}
+/>
+
+
+<Story
+	name="WithDatabaseObjects"
+	args={{
+		label: 'Topics (Database Objects)',
+		placeholder: 'Search and add topics...',
+		items: topics,
+		fieldNames: { label: 'name', value: 'id' },
+		value: [topics[0], topics[2]],
+		helperText: 'Using fieldNames to map database objects directly - no transformation needed!'
+	}}
+/>
+
+<Story
+	name="WithFieldMappingAndDescription"
+	args={{
+		label: 'Categories (with Description Field)',
+		placeholder: 'Search categories...',
+		items: categories,
+		fieldNames: { label: 'title', value: 'id', description: 'description' },
+		value: [categories[0]],
+		helperText: 'Map custom field names including description field'
+	}}
+/>
+
+<Story
+	name="FieldMappingBackwardsCompatible"
+	args={{
+		label: 'Products (Traditional ReferenceItem)',
+		placeholder: 'Search products...',
+		items: staticItems,
+		value: [staticItems[0], staticItems[1]],
+		helperText: 'Without fieldNames prop, component works exactly as before'
 	}}
 />

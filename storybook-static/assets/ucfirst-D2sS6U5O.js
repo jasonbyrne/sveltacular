@@ -1,0 +1,1 @@
+import{ag as o,ah as t,ai as i}from"./iframe-D7RYvwF5.js";function f(a,r,s){var n=new i(a),c=!t();o(()=>{var e=r();c&&e!==null&&typeof e=="object"&&(e={}),n.ensure(e,s)})}const l=a=>a.charAt(0).toUpperCase()+a.slice(1);export{f as k,l as u};

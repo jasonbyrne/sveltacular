@@ -1,0 +1,13 @@
+import{p as g,f as T,a as v,t as a,b as t,s as n,c as $}from"./iframe-D7RYvwF5.js";import{c as x}from"./create-runtime-stories-z04xijIr.js";import{d as C}from"./index-CU8YG541.js";import{T as L}from"./text-AqgJ9I0K.js";import{i as q}from"./lifecycle-CSFJvVh_.js";import"./preload-helper-ckwbz45p.js";import"./class-CSG4cUfb.js";const w={component:L,title:"Typography/Text",tags:["autodocs"]},{Story:r}=C();var h=T("<!> <!> <!> <!>",1);function p(d,f){g(f,!1),q();var l=h(),m=v(l);r(m,{name:"Default",children:(e,o)=>{var s=a(`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies
+	aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl. Sed euismod, nisl eget
+	ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl.`);t(e,s)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Text {...args}>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies
+aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl. Sed euismod, nisl eget
+ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc sit amet nisl.
+</Text>`}}});var u=n(m,2);r(u,{name:"TransformUppercase",args:{transform:"uppercase"},children:(e,o)=>{var s=a("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.");t(e,s)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Text {...args}>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.
+</Text>`}}});var c=n(u,2);r(c,{name:"TransformCapitalize",args:{transform:"capitalize"},children:(e,o)=>{var s=a("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.");t(e,s)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Text {...args}>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.
+</Text>`}}});var _=n(c,2);r(_,{name:"TransformLowercase",args:{transform:"lowercase"},children:(e,o)=>{var s=a("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.");t(e,s)},$$slots:{default:!0},parameters:{__svelteCsf:{rawCode:`<Text {...args}>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod.
+</Text>`}}}),t(d,l),$()}p.__docgen={data:[],name:"text.stories.svelte"};const i=x(p,w),b=["Default","TransformUppercase","TransformCapitalize","TransformLowercase"],E={...i.Default,tags:["svelte-csf-v5"]},M={...i.TransformUppercase,tags:["svelte-csf-v5"]},O={...i.TransformCapitalize,tags:["svelte-csf-v5"]},R={...i.TransformLowercase,tags:["svelte-csf-v5"]};export{E as Default,O as TransformCapitalize,R as TransformLowercase,M as TransformUppercase,b as __namedExportsOrder,w as default};

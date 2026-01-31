@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T = ReferenceItem">
 	import MultiSelectBase, {
 		type MultiSelectAdapter
 	} from '../multi-select-base/multi-select-base.svelte';
@@ -8,15 +8,18 @@
 		ReferenceItem,
 		SearchFunction,
 		CreateNewFunction,
-		LinkBuilderFunction
+		LinkBuilderFunction,
+		FieldNameMapping
 	} from '$src/lib/types/form.js';
+	import { createFieldMapper } from '$src/lib/types/form.js';
 	import Prompt from '$src/lib/modals/prompt.svelte';
 	import { ucfirst } from '$src/lib/helpers/ucfirst.js';
 	import Icon from '$src/lib/icons/icon.svelte';
 
 	let {
-		value = $bindable([] as ReferenceItem[]),
-		items = [] as ReferenceItem[],
+		value = $bindable([] as T[]),
+		items = [] as T[],
+		fieldNames = undefined as FieldNameMapping | undefined,
 		search = undefined,
 		createNew = undefined,
 		linkBuilder = undefined as LinkBuilderFunction | undefined,
@@ -29,10 +32,23 @@
 		helperText = undefined as string | undefined,
 		feedback = undefined as FormFieldFeedback | undefined,
 		maxItems = undefined as number | undefined,
-		onChange = undefined as ((value: ReferenceItem[]) => void) | undefined
+		onChange = undefined as ((value: T[]) => void) | undefined
 	}: {
-		value?: ReferenceItem[];
-		items?: ReferenceItem[];
+		value?: T[];
+		items?: T[];
+		/**
+		 * Maps database field names to ReferenceItem properties.
+		 * Use this when your data uses different field names (e.g., 'name' instead of 'label').
+		 * 
+		 * @example
+		 * // Basic usage
+		 * fieldNames={{ label: 'name', value: 'id' }}
+		 * 
+		 * @example
+		 * // With description field
+		 * fieldNames={{ label: 'title', value: 'id', description: 'subtitle' }}
+		 */
+		fieldNames?: FieldNameMapping | undefined;
 		search?: SearchFunction | undefined;
 		createNew?: CreateNewFunction<ReferenceItem> | undefined;
 		linkBuilder?: LinkBuilderFunction | undefined;
@@ -45,7 +61,7 @@
 		helperText?: string;
 		feedback?: FormFieldFeedback | undefined;
 		maxItems?: number | undefined;
-		onChange?: ((value: ReferenceItem[]) => void) | undefined;
+		onChange?: ((value: T[]) => void) | undefined;
 	} = $props();
 
 	let baseComponent: MultiSelectBase<ReferenceItem> | null = $state(null);
@@ -57,10 +73,40 @@
 	let promptKey = $state(0);
 	let currentSearchText = $state('');
 
-	// Use local items when search function is provided, otherwise use static items
-	let currentItems = $derived(search ? localItems : items);
+	// Create field mapper
+	const mapper = $derived(createFieldMapper<T>(fieldNames));
 
-	// Convert ReferenceItem[] to menu options format
+	// Transform items for internal use (always work with ReferenceItem internally)
+	const referenceItems = $derived(
+		fieldNames ? items.map(item => mapper.toReferenceItem(item)) : items as unknown as ReferenceItem[]
+	);
+
+	// Internal value state (always ReferenceItem[])
+	let internalValue = $state<ReferenceItem[]>([]);
+
+	// Sync internal value from external value
+	$effect(() => {
+		if (fieldNames) {
+			internalValue = value.map(item => mapper.toReferenceItem(item));
+		} else {
+			internalValue = value as unknown as ReferenceItem[];
+		}
+	});
+
+	// Update external value from internal value
+	function updateExternalValue(newInternalValue: ReferenceItem[]) {
+		if (fieldNames) {
+			value = newInternalValue.map(ref => mapper.fromReferenceItem(ref));
+		} else {
+			value = newInternalValue as unknown as T[];
+		}
+		onChange?.(value);
+	}
+
+	// Use local items when search function is provided, otherwise use transformed items
+	let currentItems = $derived(search ? localItems : referenceItems);
+
+	// Convert to menu options format
 	let menuOptions = $derived(currentItems);
 
 	// Adapter to work with ReferenceItems
@@ -69,7 +115,15 @@
 		getKey: (item: ReferenceItem) => String(item.value ?? item.label),
 		equals: (a: ReferenceItem, b: ReferenceItem) => a.value === b.value,
 		fromMenuOption: (option: ReferenceItem) => option,
-		getLink: linkBuilder ? (item: ReferenceItem) => linkBuilder(item) : undefined,
+		getLink: linkBuilder 
+			? (item: ReferenceItem) => {
+				// Find original item to pass to linkBuilder
+				const original = fieldNames 
+					? value.find(v => mapper.toReferenceItem(v).value === item.value)
+					: item;
+				return linkBuilder(original as any);
+			}
+			: undefined,
 		getTooltip: (item: ReferenceItem) => item.description
 	});
 
@@ -122,9 +176,10 @@
 					localItems = [...localItems, result];
 				}
 
-				// Add the newly created item to value
-				value = [...value, result];
-				onChange?.(value);
+				// Add the newly created item to internal value, then sync to external
+				const newInternalValue = [...internalValue, result];
+				internalValue = newInternalValue;
+				updateExternalValue(newInternalValue);
 				showPrompt = false;
 			} else {
 				createError = 'Failed to create new item';
@@ -158,7 +213,7 @@
 
 <MultiSelectBase
 	bind:this={baseComponent}
-	bind:value
+	bind:value={internalValue}
 	adapter={referenceAdapter}
 	{placeholder}
 	{required}
@@ -169,7 +224,7 @@
 	{helperText}
 	{feedback}
 	{maxItems}
-	{onChange}
+	onChange={updateExternalValue}
 	onInputChange={handleInputChange}
 	{isLoading}
 	filterSuggestions={!search}

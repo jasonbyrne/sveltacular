@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import type { ReferenceItem, ComponentSize } from '$src/lib/types/form.js';
+	import type { ReferenceItem, ComponentSize, FieldNameMapping } from '$src/lib/types/form.js';
+	import { createFieldMapper } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
@@ -8,22 +9,44 @@
 	const id = uniqueId();
 
 	let {
-		group = $bindable([] as string[]),
+		group = $bindable([] as (string | number)[]),
 		items = [],
+		fieldNames = undefined as FieldNameMapping | undefined,
 		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
 		onChange,
 		label
 	}: {
-		group?: string[];
-		items?: ReferenceItem[];
+		group?: (string | number)[];
+		items?: any[];
+		/**
+		 * Maps database field names to ReferenceItem properties.
+		 * Use this when your data uses different field names (e.g., 'name' instead of 'label').
+		 * 
+		 * @example
+		 * // Basic usage
+		 * fieldNames={{ label: 'name', value: 'id' }}
+		 * 
+		 * @example
+		 * // With description field
+		 * fieldNames={{ label: 'title', value: 'id', description: 'subtitle' }}
+		 */
+		fieldNames?: FieldNameMapping | undefined;
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
-		onChange?: ((selected: string[]) => void) | undefined;
+		onChange?: ((selected: (string | number)[]) => void) | undefined;
 		label?: string;
 	} = $props();
+
+	// Create field mapper
+	const mapper = $derived(createFieldMapper<any>(fieldNames));
+
+	// Transform items for internal use (always work with ReferenceItem internally)
+	const referenceItems = $derived(
+		fieldNames ? items.map(item => mapper.toReferenceItem(item)) : items as ReferenceItem[]
+	);
 
 	// Create reactive items with checked state, synced with group
 	let itemsWithState = $state<Array<ReferenceItem & { isChecked: boolean }>>([]);
@@ -31,17 +54,17 @@
 	// Sync itemsWithState when items or group changes (one-way: items/group -> itemsWithState)
 	// Reassign the entire array to avoid reading itemsWithState in the effect
 	$effect(() => {
-		// Track items and group as dependencies
-		const currentItems = items;
+		// Track referenceItems and group as dependencies
+		const currentItems = referenceItems;
 		const currentGroup = group;
 
 		// Use untrack to prevent writing to itemsWithState from triggering this effect again
 		untrack(() => {
-			// Rebuild itemsWithState from items, using group to determine checked state
+			// Rebuild itemsWithState from referenceItems, using group to determine checked state
 			// Reassign instead of mutate to avoid circular dependency
 			const newItems = currentItems.map((item) => ({
 				...item,
-				isChecked: currentGroup.includes(item.value != null ? String(item.value) : '')
+				isChecked: currentGroup.includes(item.value as any)
 			}));
 			itemsWithState = newItems;
 		});

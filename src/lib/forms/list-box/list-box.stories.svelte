@@ -6,14 +6,14 @@
 	import { US_States } from '$src/lib/data/united-states.js';
 	import type { ReferenceItem } from '$src/lib/types/form.js';
 
-	const items = [
+	const items: ReferenceItem[] = [
 		{ label: 'SvelteKit', value: 'svelte' },
 		{ label: 'Angular', value: 'angular' },
 		{ label: 'React', value: 'react=' },
 		{ label: 'Vue', value: 'vue' }
 	];
 
-	const itemsWithNull = [
+	const itemsWithNull: ReferenceItem[] = [
 		{ label: 'SvelteKit', value: 'svelte' },
 		{ label: 'Angular', value: 'angular' },
 		{ label: 'React', value: 'react=' },
@@ -29,6 +29,25 @@
 			label: name
 		} satisfies ReferenceItem;
 	};
+
+	// Database types for field mapping examples
+	type Category = { id: number; name: string; slug: string };
+	type Priority = { priorityId: string; title: string; sortOrder: number };
+
+	// Sample database objects
+	const categories: Category[] = [
+		{ id: 1, name: 'Technology', slug: 'tech' },
+		{ id: 2, name: 'Business', slug: 'business' },
+		{ id: 3, name: 'Science', slug: 'science' },
+		{ id: 4, name: 'Health', slug: 'health' }
+	];
+
+	const priorities: Priority[] = [
+		{ priorityId: 'low', title: 'Low Priority', sortOrder: 1 },
+		{ priorityId: 'medium', title: 'Medium Priority', sortOrder: 2 },
+		{ priorityId: 'high', title: 'High Priority', sortOrder: 3 },
+		{ priorityId: 'urgent', title: 'Urgent', sortOrder: 4 }
+	];
 
 	const { Story } = defineMeta({
 		component: ListBox,
@@ -69,5 +88,49 @@
 		label: 'Framework (with Create)',
 		createNew: createNewHandler,
 		resourceName: 'Framework'
+	}}
+/>
+
+
+<Story
+	name="WithDatabaseObjects"
+	args={{
+		items: categories,
+		fieldNames: { label: 'name', value: 'id' },
+		value: 2,
+		label: 'Category (Database Object)',
+		helperText: 'Using fieldNames to map database objects - returns just the ID'
+	}}
+/>
+
+<Story
+	name="WithCustomFieldNames"
+	args={{
+		items: priorities,
+		fieldNames: { label: 'title', value: 'priorityId' },
+		value: 'high',
+		label: 'Priority Level',
+		helperText: 'Map custom field names like priorityId and title'
+	}}
+/>
+
+<Story
+	name="FieldMappingSearchable"
+	args={{
+		items: categories,
+		fieldNames: { label: 'name', value: 'id' },
+		searchable: true,
+		label: 'Searchable Category',
+		helperText: 'Field mapping works with searchable ListBox too'
+	}}
+/>
+
+<Story
+	name="FieldMappingBackwardsCompatible"
+	args={{
+		items,
+		value: 'svelte',
+		label: 'Framework (Traditional)',
+		helperText: 'Without fieldNames, component works exactly as before'
 	}}
 />
