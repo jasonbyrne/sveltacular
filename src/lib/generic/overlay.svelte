@@ -15,11 +15,20 @@
 		children?: Snippet;
 	} = $props();
 
-	const handleClick = (event: MouseEvent) => {
-		// Only close if clicking directly on the overlay background, not on child elements
-		if (event.target === event.currentTarget) {
+	let mouseDownOnOverlay = false;
+
+	const handleMouseDown = (event: MouseEvent) => {
+		// Track if mousedown happened on the overlay itself (not on children)
+		mouseDownOnOverlay = event.target === event.currentTarget;
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		// Only trigger onClick if both mousedown AND mouseup happened on the overlay
+		// This prevents text selection drag from closing the modal
+		if (mouseDownOnOverlay && event.target === event.currentTarget) {
 			onClick?.();
 		}
+		mouseDownOnOverlay = false;
 	};
 
 	const onKeyPress = (event: KeyboardEvent) => {
@@ -30,7 +39,13 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class:show class:blur onclick={handleClick} onkeypress={onKeyPress}>
+<div
+	class:show
+	class:blur
+	onmousedown={handleMouseDown}
+	onmouseup={handleMouseUp}
+	onkeypress={onKeyPress}
+>
 	{@render children?.()}
 </div>
 

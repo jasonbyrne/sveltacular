@@ -4,30 +4,30 @@
 	import ListBox from './list-box.svelte';
 	import { Countries } from '$src/lib/data/countries.js';
 	import { US_States } from '$src/lib/data/united-states.js';
-	import type { DropdownOption } from '$src/lib/types/form.js';
+	import type { ReferenceItem } from '$src/lib/types/form.js';
 
 	const items = [
-		{ name: 'SvelteKit', value: 'svelte' },
-		{ name: 'Angular', value: 'angular' },
-		{ name: 'React', value: 'react=' },
-		{ name: 'Vue', value: 'vue' }
+		{ label: 'SvelteKit', value: 'svelte' },
+		{ label: 'Angular', value: 'angular' },
+		{ label: 'React', value: 'react=' },
+		{ label: 'Vue', value: 'vue' }
 	];
 
 	const itemsWithNull = [
-		{ name: 'SvelteKit', value: 'svelte' },
-		{ name: 'Angular', value: 'angular' },
-		{ name: 'React', value: 'react=' },
-		{ name: 'Vue', value: 'vue' },
-		{ name: 'None', value: null }
+		{ label: 'SvelteKit', value: 'svelte' },
+		{ label: 'Angular', value: 'angular' },
+		{ label: 'React', value: 'react=' },
+		{ label: 'Vue', value: 'vue' },
+		{ label: 'None', value: null }
 	];
 
-	const createNewHandler = async (name: string): Promise<DropdownOption | null> => {
+	const createNewHandler = async (name: string): Promise<ReferenceItem | null> => {
 		// Simulate API call
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		return {
 			value: name.toLowerCase().replace(/\s+/g, '-'),
-			name: name
-		} satisfies DropdownOption;
+			label: name
+		} satisfies ReferenceItem;
 	};
 
 	const { Story } = defineMeta({

@@ -14,20 +14,15 @@ export type ButtonVariant =
 	| 'ghost';
 
 /**
- * Dropdown option structure
+ * Reference item structure - unified type for dropdowns, menus, and selectable items
  */
-export type DropdownOption = {
+export type ReferenceItem = {
 	value: string | number | null;
-	name: string;
-	id?: string;
-	label?: string;
+	label: string;
+	description?: string;
 	disabled?: boolean;
+	index?: number;
 };
-
-/**
- * Menu option with optional index
- */
-export type MenuOption = DropdownOption & { index?: number };
 
 /**
  * Allowed text input types
@@ -41,16 +36,15 @@ export type RadioButtonValue = string | number | boolean | undefined;
 
 /**
  * Generic search function type
- * @template T The type of item returned (e.g., DropdownOption, ReferenceItem)
  */
-export type SearchFunction<T extends { name: string } = DropdownOption> = (
-	text: string
-) => Promise<T[]>;
+export type SearchFunction = (text: string) => Promise<ReferenceItem[]>;
 
 /**
  * Generic create new function type
- * @template T The type of item returned (e.g., DropdownOption, ReferenceItem)
  */
-export type CreateNewFunction<T extends { name: string } = DropdownOption> = (
-	inputName: string
-) => Promise<T | null>;
+export type CreateNewFunction<ReferenceItem> = (inputName: string) => Promise<ReferenceItem | null>;
+
+/**
+ * Link builder function type
+ */
+export type LinkBuilderFunction = (item: ReferenceItem) => string | undefined;

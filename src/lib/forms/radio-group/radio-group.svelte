@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DropdownOption, ComponentSize } from '$src/lib/types/form.js';
+	import type { ReferenceItem, ComponentSize } from '$src/lib/types/form.js';
 	import FormField, { type FormFieldFeedback } from '$src/lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
 	import RadioBox from './radio-box.svelte';
@@ -18,7 +18,7 @@
 		onChange = undefined
 	}: {
 		group?: string;
-		items?: DropdownOption[];
+		items?: ReferenceItem[];
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
@@ -32,7 +32,7 @@
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div>
 		{#each items as item}
-			<RadioBox bind:group {disabled} value={item.value} {onChange}>{item.name}</RadioBox>
+			<RadioBox bind:group {disabled} value={item.value} {onChange}>{item.label}</RadioBox>
 		{/each}
 	</div>
 </FormField>

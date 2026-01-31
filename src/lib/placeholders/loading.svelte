@@ -54,7 +54,7 @@
 		&.xl {
 			font-size: 1.25rem;
 		}
-		.lg {
+		&.lg {
 			font-size: 1rem;
 		}
 		&.md {

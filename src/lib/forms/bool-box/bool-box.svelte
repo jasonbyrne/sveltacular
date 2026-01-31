@@ -52,8 +52,8 @@
 	};
 
 	let items = $derived([
-		{ value: 'true', name: options[0] },
-		{ value: 'false', name: options[1] }
+		{ value: 'true', label: options[0] },
+		{ value: 'false', label: options[1] }
 	]);
 </script>
 

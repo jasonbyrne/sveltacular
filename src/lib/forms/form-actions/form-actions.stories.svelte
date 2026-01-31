@@ -97,8 +97,8 @@
 			<ListBox
 				label="Select an item"
 				items={[
-					{ name: 'Item 1', value: 'item1' },
-					{ name: 'Item 2', value: 'item2' }
+					{ label: 'Item 1', value: 'item1' },
+					{ label: 'Item 2', value: 'item2' }
 				]}
 			/>
 		</FormActions>

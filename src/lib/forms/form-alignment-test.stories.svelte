@@ -18,13 +18,13 @@
 	import PhoneBox from './phone-box/phone-box.svelte';
 	import ListBox from './list-box/list-box.svelte';
 	import Slider from './slider/slider.svelte';
-	import type { DropdownOption } from '$src/lib/types/form.js';
+	import type { ReferenceItem } from '$src/lib/types/form.js';
 
-	const dropdownOptions: DropdownOption[] = [
-		{ name: 'Option 1', value: '1' },
-		{ name: 'Option 2', value: '2' },
-		{ name: 'Option 3', value: '3' },
-		{ name: 'Option 4', value: '4' }
+	const dropdownOptions: ReferenceItem[] = [
+		{ label: 'Option 1', value: '1' },
+		{ label: 'Option 2', value: '2' },
+		{ label: 'Option 3', value: '3' },
+		{ label: 'Option 4', value: '4' }
 	];
 
 	let textValue = $state('');
@@ -121,11 +121,7 @@
 				label="Error State"
 				feedback={{ text: 'Invalid value', isError: true }}
 			/>
-			<DateBox
-				bind:value={dateValue}
-				label="Normal State"
-				helperText="This is helper text"
-			/>
+			<DateBox bind:value={dateValue} label="Normal State" helperText="This is helper text" />
 		</FormRow>
 	</FormSection>
 
@@ -200,8 +196,8 @@
 				<li><strong>Label:</strong> font-size: var(--font-base), margin: 0</li>
 				<li><strong>Input Area:</strong> Exactly 34px high (2rem line-height + 2px border)</li>
 				<li>
-					<strong>Helper/Feedback:</strong> font-size: var(--font-sm), line-height: 1.25rem,
-					padding: var(--spacing-xs)
+					<strong>Helper/Feedback:</strong> font-size: var(--font-sm), line-height: 1.25rem, padding:
+					var(--spacing-xs)
 				</li>
 				<li><strong>Gap between sections:</strong> 0.25rem (set by FormField)</li>
 			</ul>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DropdownOption, ComponentSize, MenuOption } from '$lib/types/form.js';
+	import type { ReferenceItem, ComponentSize } from '$lib/types/form.js';
 	import FormField, { type FormFieldFeedback } from '$lib/forms/form-field/form-field.svelte';
 	import { uniqueId } from '$lib/helpers/unique-id.js';
 	import Menu from '$lib/generic/menu/menu.svelte';
@@ -13,7 +13,7 @@
 
 	let {
 		value = $bindable(null as string | null),
-		items = [] as DropdownOption[],
+		items = [] as ReferenceItem[],
 		size = 'md',
 		disabled = false,
 		required = false,
@@ -33,13 +33,13 @@
 		resourceName = undefined
 	}: {
 		value?: string | null;
-		items?: DropdownOption[];
+		items?: ReferenceItem[];
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		readonly?: boolean;
 		searchable?: boolean;
-		search?: SearchFunction<DropdownOption> | undefined;
+		search?: SearchFunction | undefined;
 		placeholder?: string;
 		onChange?: ((value: string | null) => void) | undefined;
 		onFocus?: ((e: FocusEvent) => void) | undefined;
@@ -49,7 +49,7 @@
 		feedback?: FormFieldFeedback;
 		virtualScroll?: boolean;
 		itemHeight?: number;
-		createNew?: CreateNewFunction<DropdownOption> | undefined;
+		createNew?: CreateNewFunction<ReferenceItem> | undefined;
 		resourceName?: string;
 	} = $props();
 
@@ -57,10 +57,10 @@
 	const listboxId = `${id}-listbox`;
 
 	// Use local items state when search function is provided, otherwise use prop
-	let localItems = $state<DropdownOption[]>([]);
+	let localItems = $state<ReferenceItem[]>([]);
 	let currentItems = $derived(search ? localItems : items);
 
-	const getText = () => currentItems.find((item) => item.value == value)?.name || '';
+	const getText = () => currentItems.find((item) => item.value == value)?.label || '';
 
 	let text = $state('');
 	let isMenuOpen = $state(false);
@@ -94,7 +94,7 @@
 			return;
 		}
 
-		const newText = itemsForText.find((item) => item.value == currentValue)?.name || '';
+		const newText = itemsForText.find((item) => item.value == currentValue)?.label || '';
 		// Use untrack to read current text without making effect reactive to text changes
 		const currentText = untrack(() => text);
 		if (currentText !== newText) {
@@ -108,7 +108,7 @@
 		return searchText && isSearchable
 			? currentItems
 					.map((item, index) => ({ ...item, index }))
-					.filter((item) => item.name.toLowerCase().includes(searchText))
+					.filter((item) => item.label.toLowerCase().includes(searchText))
 			: currentItems.map((item, index) => ({ ...item, index }));
 	});
 
@@ -139,7 +139,7 @@
 	let showCreateNew = $derived(!!createNew && open);
 
 	// When an item is selected from the dropdown menu
-	const onSelect = (item: MenuOption) => {
+	const onSelect = (item: ReferenceItem) => {
 		isUserTyping = false;
 		value = item.value != null ? String(item.value) : null;
 		onChange?.(value);
@@ -171,6 +171,10 @@
 
 	const handleFocus = (e: FocusEvent) => {
 		onFocus?.(e);
+		// Select all text when input receives focus for easier replacement
+		if (browser && inputElement) {
+			inputElement.select();
+		}
 	};
 
 	const handleBlur = (e: FocusEvent) => {
@@ -339,7 +343,7 @@
 				// Select the newly created item
 				value = result.value != null ? String(result.value) : null;
 				onChange?.(value);
-				text = result.name;
+				text = result.label;
 				isMenuOpen = false;
 				showPrompt = false;
 			} else {
@@ -475,6 +479,7 @@
 					{listboxId}
 					{virtualScroll}
 					{itemHeight}
+					size="full"
 				/>
 			{/if}
 			{#if showCreateNew}

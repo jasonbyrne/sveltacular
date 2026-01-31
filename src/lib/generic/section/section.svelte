@@ -57,7 +57,7 @@
 			display: none;
 		}
 
-		.auto {
+		&.auto {
 			width: auto;
 			flex-shrink: 1;
 		}

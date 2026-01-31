@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Icon from '$src/lib/icons/icon.svelte';
-	import type { ComponentSize, MenuOption } from '$src/lib/index.js';
+	import type { ComponentSize, ComponentWidth, ReferenceItem } from '$src/lib/index.js';
 	import FlexItem from '$src/lib/layout/flex-item.svelte';
 	import FlexRow from '$src/lib/layout/flex-row.svelte';
 	import { useVirtualList } from '$src/lib/helpers/use-virtual-list.svelte.js';
 
 	let {
-		items = [] as MenuOption[],
+		items = [] as ReferenceItem[],
 		value = $bindable(null as string | null),
 		instructions = '',
 		open = $bindable(false),
-		size = 'md' as ComponentSize,
+		size = 'full',
 		closeAfterSelect = true,
 		searchText = '',
 		highlightIndex = $bindable(0),
@@ -19,21 +19,21 @@
 		itemHeight = 40,
 		listboxId = undefined
 	}: {
-		items?: MenuOption[];
+		items?: ReferenceItem[];
 		value?: string | null;
 		instructions?: string;
 		open?: boolean;
-		size?: ComponentSize;
+		size?: ComponentWidth;
 		closeAfterSelect?: boolean;
 		searchText?: string;
 		highlightIndex?: number;
-		onSelect?: ((item: MenuOption) => void) | undefined;
+		onSelect?: ((item: ReferenceItem) => void) | undefined;
 		virtualScroll?: boolean;
 		itemHeight?: number;
 		listboxId?: string | undefined;
 	} = $props();
 
-	const selectItem = (item: MenuOption) => {
+	const selectItem = (item: ReferenceItem) => {
 		value = item.value != null ? String(item.value) : null;
 		onSelect?.(item);
 		if (closeAfterSelect) open = false;
@@ -50,7 +50,7 @@
 
 	// Virtual scrolling setup
 	let containerRef: HTMLElement | null = null;
-	let virtual = $state<ReturnType<typeof useVirtualList<MenuOption>> | null>(null);
+	let virtual = $state<ReturnType<typeof useVirtualList<ReferenceItem>> | null>(null);
 
 	// Initialize virtual list
 	$effect(() => {
@@ -113,12 +113,12 @@
 						<FlexRow>
 							<FlexItem grow>
 								{#if searchText}
-									{@html item.name.replace(
+									{@html item.label.replace(
 										new RegExp(searchText, 'gi'),
-										(match) => `<strong>${match}</strong>`
+										(match: string) => `<strong>${match}</strong>`
 									)}
 								{:else}
-									{item.name}
+									{item.label}
 								{/if}
 							</FlexItem>
 							<FlexItem>
@@ -146,12 +146,12 @@
 					<FlexRow>
 						<FlexItem grow>
 							{#if searchText}
-								{@html item.name.replace(
+								{@html item.label.replace(
 									new RegExp(searchText, 'gi'),
-									(match) => `<strong>${match}</strong>`
+									(match: string) => `<strong>${match}</strong>`
 								)}
 							{:else}
-								{item.name}
+								{item.label}
 							{/if}
 						</FlexItem>
 						<FlexItem>
@@ -187,19 +187,23 @@
 		}
 
 		&.xl {
-			width: 20rem;
+			width: 25rem;
 		}
 
 		&.lg {
-			width: 16rem;
+			width: 20rem;
 		}
 
 		&.md {
-			width: 12rem;
+			width: 15rem;
 		}
 
 		&.sm {
-			width: 8rem;
+			width: 10rem;
+		}
+
+		&.xs {
+			width: 7rem;
 		}
 
 		&.full {

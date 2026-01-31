@@ -2,42 +2,47 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import ReferenceBox from './reference-box.svelte';
-	import type { ReferenceItem, CreateNewFunction, SearchFunction } from './reference-box.js';
+	import type {
+		ReferenceItem,
+		CreateNewFunction,
+		SearchFunction,
+		LinkBuilderFunction
+	} from '$lib/types/form.js';
 
 	// Sample static items
 	const staticItems: ReferenceItem[] = [
-		{ id: 1, name: 'Product A', description: 'High-quality product with excellent features' },
-		{ id: 2, name: 'Product B', description: 'Budget-friendly option for everyday use' },
-		{ id: 3, name: 'Product C', description: 'Premium choice with advanced capabilities' },
-		{ id: 4, name: 'Product D' },
-		{ id: 5, name: 'Product E', description: 'Latest model with cutting-edge technology' }
+		{ value: 1, label: 'Product A', description: 'High-quality product with excellent features' },
+		{ value: 2, label: 'Product B', description: 'Budget-friendly option for everyday use' },
+		{ value: 3, label: 'Product C', description: 'Premium choice with advanced capabilities' },
+		{ value: 4, label: 'Product D' },
+		{ value: 5, label: 'Product E', description: 'Latest model with cutting-edge technology' }
 	];
 
 	// Sample items with descriptions
 	const itemsWithDescriptions: ReferenceItem[] = [
 		{
-			id: 'user-1',
-			name: 'John Doe',
+			value: 'user-1',
+			label: 'John Doe',
 			description: 'Senior Developer - Frontend Team'
 		},
 		{
-			id: 'user-2',
-			name: 'Jane Smith',
+			value: 'user-2',
+			label: 'Jane Smith',
 			description: 'Product Manager - Product Team'
 		},
 		{
-			id: 'user-3',
-			name: 'Bob Johnson',
+			value: 'user-3',
+			label: 'Bob Johnson',
 			description: 'Designer - Design Team'
 		},
 		{
-			id: 'user-4',
-			name: 'Alice Williams',
+			value: 'user-4',
+			label: 'Alice Williams',
 			description: 'QA Engineer - Quality Team'
 		},
 		{
-			id: 'user-5',
-			name: 'Charlie Brown',
+			value: 'user-5',
+			label: 'Charlie Brown',
 			description: 'DevOps Engineer - Infrastructure Team'
 		}
 	];
@@ -49,46 +54,46 @@
 
 		const searchLower = text.toLowerCase();
 		const allItems: ReferenceItem[] = [
-			{ id: 1, name: 'Apple', description: 'Fruit company' },
-			{ id: 2, name: 'Amazon', description: 'E-commerce giant' },
-			{ id: 3, name: 'Microsoft', description: 'Software company' },
-			{ id: 4, name: 'Google', description: 'Search engine company' },
-			{ id: 5, name: 'Meta', description: 'Social media company' },
-			{ id: 6, name: 'Tesla', description: 'Electric vehicle company' },
-			{ id: 7, name: 'Netflix', description: 'Streaming service' },
-			{ id: 8, name: 'Spotify', description: 'Music streaming service' }
+			{ value: 1, label: 'Apple', description: 'Fruit company' },
+			{ value: 2, label: 'Amazon', description: 'E-commerce giant' },
+			{ value: 3, label: 'Microsoft', description: 'Software company' },
+			{ value: 4, label: 'Google', description: 'Search engine company' },
+			{ value: 5, label: 'Meta', description: 'Social media company' },
+			{ value: 6, label: 'Tesla', description: 'Electric vehicle company' },
+			{ value: 7, label: 'Netflix', description: 'Streaming service' },
+			{ value: 8, label: 'Spotify', description: 'Music streaming service' }
 		];
 
 		return allItems.filter(
 			(item) =>
-				item.name.toLowerCase().includes(searchLower) ||
+				item.label.toLowerCase().includes(searchLower) ||
 				item.description?.toLowerCase().includes(searchLower)
 		);
 	};
 
 	// Create new function
-	const createNewFunction: CreateNewFunction = async (
+	const createNewFunction: CreateNewFunction<ReferenceItem> = async (
 		name: string
 	): Promise<ReferenceItem | null> => {
 		// Simulate API call
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		return {
-			id: `new-${Date.now()}`,
-			name: name,
+			value: `new-${Date.now()}`,
+			label: name,
 			description: 'Newly created item'
 		};
 	};
 
 	// Link builder function for generating links to item details
-	const linkBuilder = (item: ReferenceItem): string | undefined => {
-		// Generate a link based on item ID
-		return `https://example.com/items/${item.id}`;
+	const linkBuilder: LinkBuilderFunction = (item: ReferenceItem): string | undefined => {
+		// Generate a link based on item value
+		return `https://example.com/items/${item.value}`;
 	};
 
 	// Link builder for users
-	const userLinkBuilder = (item: ReferenceItem): string | undefined => {
+	const userLinkBuilder: LinkBuilderFunction = (item: ReferenceItem): string | undefined => {
 		// Generate a link to user profile
-		return `https://example.com/users/${item.id}`;
+		return `https://example.com/users/${item.value}`;
 	};
 
 	const { Story } = defineMeta({

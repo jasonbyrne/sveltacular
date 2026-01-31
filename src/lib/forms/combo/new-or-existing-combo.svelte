@@ -3,7 +3,7 @@
 		FlexRow,
 		ListBox,
 		RadioBox,
-		type DropdownOption,
+		type ReferenceItem,
 		type ComponentSize,
 		TextBox
 	} from '$src/lib/index.js';
@@ -14,7 +14,7 @@
 		mode = $bindable('existing' as 'new' | 'existing'),
 		newValue = $bindable('' as string | null),
 		existingValue = $bindable('' as string | null),
-		items = [] as DropdownOption[],
+		items = [] as ReferenceItem[],
 		size = 'md' as ComponentSize,
 		disabled = false,
 		required = false,
@@ -26,12 +26,12 @@
 		mode?: 'new' | 'existing';
 		newValue?: string | null;
 		existingValue?: string | null;
-		items?: DropdownOption[];
+		items?: ReferenceItem[];
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
 		searchable?: boolean;
-		search?: SearchFunction<DropdownOption> | undefined;
+		search?: SearchFunction | undefined;
 		searchPlaceholder?: string;
 		newPlaceholder?: string;
 	} = $props();

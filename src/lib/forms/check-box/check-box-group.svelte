@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import type { DropdownOption, ComponentSize } from '$src/lib/types/form.js';
+	import type { ReferenceItem, ComponentSize } from '$src/lib/types/form.js';
 	import FormField from '$src/lib/forms/form-field/form-field.svelte';
 	import CheckBox from './check-box.svelte';
 	import { uniqueId } from '$src/lib/helpers/unique-id.js';
@@ -17,7 +17,7 @@
 		label
 	}: {
 		group?: string[];
-		items?: DropdownOption[];
+		items?: ReferenceItem[];
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
@@ -26,7 +26,7 @@
 	} = $props();
 
 	// Create reactive items with checked state, synced with group
-	let itemsWithState = $state<Array<DropdownOption & { isChecked: boolean }>>([]);
+	let itemsWithState = $state<Array<ReferenceItem & { isChecked: boolean }>>([]);
 
 	// Sync itemsWithState when items or group changes (one-way: items/group -> itemsWithState)
 	// Reassign the entire array to avoid reading itemsWithState in the effect
@@ -68,7 +68,7 @@
 				value={item.value != null ? String(item.value) : undefined}
 				bind:isChecked={item.isChecked}
 				onChange={handleCheckboxChange}
-				label={item.name}
+				label={item.label}
 				inline={true}
 			/>
 		{/each}
