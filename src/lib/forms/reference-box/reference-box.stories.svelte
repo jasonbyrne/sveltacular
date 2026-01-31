@@ -2,12 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import ReferenceBox from './reference-box.svelte';
-	import type {
-		ReferenceItem,
-		CreateNewFunction,
-		SearchFunction,
-		LinkBuilderFunction
-	} from '$lib/types/form.js';
+	import type { ReferenceItem } from '$lib/types/form.js';
 
 	// Sample static items
 	const staticItems: ReferenceItem[] = [
@@ -48,7 +43,7 @@
 	];
 
 	// Simulated async search function
-	const searchFunction: SearchFunction = async (text: string): Promise<ReferenceItem[]> => {
+	const searchFunction = async (text: string): Promise<ReferenceItem[]> => {
 		// Simulate API delay
 		await new Promise((resolve) => setTimeout(resolve, 300));
 
@@ -72,9 +67,7 @@
 	};
 
 	// Create new function
-	const createNewFunction: CreateNewFunction<ReferenceItem> = async (
-		name: string
-	): Promise<ReferenceItem | null> => {
+	const createNewFunction = async (name: string): Promise<ReferenceItem | null> => {
 		// Simulate API call
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		return {
@@ -85,13 +78,13 @@
 	};
 
 	// Link builder function for generating links to item details
-	const linkBuilder: LinkBuilderFunction = (item: ReferenceItem): string | undefined => {
+	const linkBuilder = (item: ReferenceItem): string | undefined => {
 		// Generate a link based on item value
 		return `https://example.com/items/${item.value}`;
 	};
 
 	// Link builder for users
-	const userLinkBuilder: LinkBuilderFunction = (item: ReferenceItem): string | undefined => {
+	const userLinkBuilder = (item: ReferenceItem): string | undefined => {
 		// Generate a link to user profile
 		return `https://example.com/users/${item.value}`;
 	};
@@ -115,6 +108,44 @@
 		{ id: 3, title: 'Science', description: 'Scientific discoveries and research' },
 		{ id: 4, title: 'Health', description: 'Health and wellness topics' }
 	];
+
+	// Example showing generic types with CardPlayer
+	type CardPlayer = { id: number; name: string; team: string; position: string };
+	
+	const cardPlayers: CardPlayer[] = [
+		{ id: 1, name: 'LeBron James', team: 'Los Angeles Lakers', position: 'Forward' },
+		{ id: 2, name: 'Stephen Curry', team: 'Golden State Warriors', position: 'Guard' },
+		{ id: 3, name: 'Kevin Durant', team: 'Phoenix Suns', position: 'Forward' },
+		{ id: 4, name: 'Giannis Antetokounmpo', team: 'Milwaukee Bucks', position: 'Forward' },
+		{ id: 5, name: 'Luka Dončić', team: 'Dallas Mavericks', position: 'Guard' }
+	];
+
+	// Generic type functions that work directly with CardPlayer type
+	const searchPlayers = async (text: string): Promise<CardPlayer[]> => {
+		await new Promise((resolve) => setTimeout(resolve, 300));
+		const searchLower = text.toLowerCase();
+		return cardPlayers.filter(
+			(player) =>
+				player.name.toLowerCase().includes(searchLower) ||
+				player.team.toLowerCase().includes(searchLower) ||
+				player.position.toLowerCase().includes(searchLower)
+		);
+	};
+
+	const createNewPlayer = async (name: string): Promise<CardPlayer | null> => {
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		return {
+			id: Date.now(),
+			name,
+			team: 'Free Agent',
+			position: 'Unknown'
+		};
+	};
+
+	const playerLinkBuilder = (player: CardPlayer): string | undefined => {
+		// This function receives CardPlayer directly, not ReferenceItem
+		return `https://example.com/players/${player.id}`;
+	};
 
 	const { Story } = defineMeta({
 		component: ReferenceBox,
@@ -156,14 +187,14 @@
 				control: false,
 				description: 'Async search function that returns ReferenceItem[]',
 				table: {
-					type: { summary: 'SearchFunction' }
+					type: { summary: '(text: string) => Promise<T[]>' }
 				}
 			},
 			createNew: {
 				control: false,
 				description: 'Async function to create new items',
 				table: {
-					type: { summary: 'CreateNewFunction' }
+					type: { summary: '(inputName: string) => Promise<T | null>' }
 				}
 			},
 			resourceName: {
@@ -224,7 +255,7 @@
 				control: false,
 				description: 'Function to generate links for selected items',
 				table: {
-					type: { summary: 'LinkBuilderFunction' }
+					type: { summary: '(item: T) => string | undefined' }
 				}
 			},
 			onChange: {
@@ -484,5 +515,20 @@
 		items: staticItems,
 		value: [staticItems[0], staticItems[1]],
 		helperText: 'Without fieldNames prop, component works exactly as before'
+	}}
+/>
+
+<Story
+	name="GenericTypeWithAllFeatures"
+	args={{
+		label: 'Card Players (Generic Types Demo)',
+		placeholder: 'Search players...',
+		fieldNames: { label: 'name', value: 'id' },
+		search: searchPlayers,
+		createNew: createNewPlayer,
+		linkBuilder: playerLinkBuilder,
+		resourceName: 'player',
+		value: [cardPlayers[0]],
+		helperText: 'Demonstrates generic types - search, createNew, and linkBuilder all work directly with CardPlayer type (not ReferenceItem)'
 	}}
 />

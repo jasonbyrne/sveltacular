@@ -6,9 +6,6 @@
 	import type {
 		ComponentSize,
 		ReferenceItem,
-		SearchFunction,
-		CreateNewFunction,
-		LinkBuilderFunction,
 		FieldNameMapping
 	} from '$src/lib/types/form.js';
 	import { createFieldMapper } from '$src/lib/types/form.js';
@@ -22,7 +19,7 @@
 		fieldNames = undefined as FieldNameMapping | undefined,
 		search = undefined,
 		createNew = undefined,
-		linkBuilder = undefined as LinkBuilderFunction | undefined,
+		linkBuilder = undefined,
 		resourceName = undefined as string | undefined,
 		placeholder = 'Search and add items...',
 		required = false,
@@ -49,9 +46,9 @@
 		 * fieldNames={{ label: 'title', value: 'id', description: 'subtitle' }}
 		 */
 		fieldNames?: FieldNameMapping | undefined;
-		search?: SearchFunction | undefined;
-		createNew?: CreateNewFunction<ReferenceItem> | undefined;
-		linkBuilder?: LinkBuilderFunction | undefined;
+		search?: ((text: string) => Promise<T[]>) | undefined;
+		createNew?: ((inputName: string) => Promise<T | null>) | undefined;
+		linkBuilder?: ((item: T) => string | undefined) | undefined;
 		resourceName?: string | undefined;
 		placeholder?: string;
 		required?: boolean;
@@ -134,7 +131,11 @@
 		if (search && searchText.trim()) {
 			isLoading = true;
 			try {
-				localItems = await search(searchText);
+				const results = await search(searchText);
+				// Convert T[] to ReferenceItem[] for internal use
+				localItems = fieldNames 
+					? results.map(item => mapper.toReferenceItem(item))
+					: results as unknown as ReferenceItem[];
 			} finally {
 				isLoading = false;
 			}
@@ -171,13 +172,18 @@
 			const result = await createNew(name);
 
 			if (result) {
+				// Convert T to ReferenceItem for internal use
+				const resultAsReferenceItem = fieldNames 
+					? mapper.toReferenceItem(result)
+					: result as unknown as ReferenceItem;
+
 				// Add to local items if using search (for display in dropdown)
 				if (search) {
-					localItems = [...localItems, result];
+					localItems = [...localItems, resultAsReferenceItem];
 				}
 
 				// Add the newly created item to internal value, then sync to external
-				const newInternalValue = [...internalValue, result];
+				const newInternalValue = [...internalValue, resultAsReferenceItem];
 				internalValue = newInternalValue;
 				updateExternalValue(newInternalValue);
 				showPrompt = false;
