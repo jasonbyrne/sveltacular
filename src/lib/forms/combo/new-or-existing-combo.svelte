@@ -8,7 +8,8 @@
 		TextBox
 	} from '$src/lib/index.js';
 	import FlexCol from '$src/lib/layout/flex-col.svelte';
-	import type { SearchFunction } from '$src/lib/types/form.js';
+	import type { FieldNameMapping, SearchFunction } from '$src/lib/types/form.js';
+	import type { FormFieldFeedback } from '../form-field/form-field.svelte';
 
 	let {
 		mode = $bindable('existing' as 'new' | 'existing'),
@@ -21,12 +22,19 @@
 		searchable = false,
 		search = undefined,
 		searchPlaceholder = 'Search',
-		newPlaceholder = 'New'
+		newPlaceholder = 'New',
+		newLabel = 'New',
+		existingLabel = 'Existing',
+		fieldNames = undefined as FieldNameMapping | undefined,
+		helperText = undefined,
+		feedback = undefined,
+		virtualScroll = false,
+		itemHeight = 40
 	}: {
 		mode?: 'new' | 'existing';
 		newValue?: string | null;
 		existingValue?: string | null;
-		items?: ReferenceItem[];
+		items?: Record<string, unknown>[];
 		size?: ComponentSize;
 		disabled?: boolean;
 		required?: boolean;
@@ -34,60 +42,91 @@
 		search?: SearchFunction | undefined;
 		searchPlaceholder?: string;
 		newPlaceholder?: string;
+		newLabel?: string;
+		existingLabel?: string;
+		fieldNames?: FieldNameMapping | undefined;
+		helperText?: string;
+		feedback?: FormFieldFeedback;
+		virtualScroll?: boolean;
+		itemHeight?: number;
 	} = $props();
 </script>
 
 <div class="group">
-	<FlexRow>
-		<div class="labels">
-			<FlexCol>
-				<div class="radio">
-					<RadioBox value="existing" bind:group={mode}>Existing:</RadioBox>
-				</div>
-				<div class="radio">
-					<RadioBox value="new" bind:group={mode}>New:</RadioBox>
-				</div>
-			</FlexCol>
+	<div class="labels">
+		<div class="radio">
+			<RadioBox value="existing" bind:group={mode}>{existingLabel}:</RadioBox>
 		</div>
-		<div class="inputs">
-			<FlexCol>
-				<div class="input">
-					<ListBox
-						bind:value={existingValue}
-						{searchable}
-						{search}
-						{required}
-						{items}
-						{size}
-						placeholder={searchPlaceholder}
-						disabled={disabled || mode == 'new'}
-					/>
-				</div>
-				<div class="input">
-					<TextBox
-						bind:value={newValue}
-						{size}
-						placeholder={newPlaceholder}
-						disabled={disabled || mode == 'existing'}
-					/>
-				</div>
-			</FlexCol>
+		<div class="radio">
+			<RadioBox value="new" bind:group={mode}>{newLabel}:</RadioBox>
 		</div>
-	</FlexRow>
+	</div>
+	<div class="inputs">
+		<div class="input">
+			<ListBox
+				bind:value={existingValue}
+				{searchable}
+				{search}
+				{required}
+				{items}
+				{size}
+				placeholder={searchPlaceholder}
+				disabled={disabled || mode == 'new'}
+				{itemHeight}
+				{virtualScroll}
+				{fieldNames}
+			/>
+		</div>
+		<div class="input">
+			<TextBox
+				bind:value={newValue}
+				{size}
+				placeholder={newPlaceholder}
+				disabled={disabled || mode == 'existing'}
+			/>
+		</div>
+		{#if helperText}
+			<div class="helper-text">{helperText}</div>
+		{/if}
+		{#if feedback}
+			<div class="feedback">{feedback.text}</div>
+		{/if}
+	</div>
 </div>
 
 <style>
+	.group {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5rem;
+	}
 	.labels {
-		flex-shrink: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 	.inputs {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		flex-grow: 1;
 	}
-	.radio,
 	.input {
-		height: 2.5rem;
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
 	}
-	.radio {
-		padding-top: 0.1rem;
+	.helper-text {
+		font-size: var(--font-sm);
+		line-height: 1.25rem;
+		padding: var(--spacing-xs);
+		color: var(--form-input-helper-text-fg, var(--body-fg-muted));
+	}
+	.feedback {
+		font-size: var(--font-sm);
+		line-height: 1.25rem;
+		padding: var(--spacing-xs);
+		color: var(--form-input-feedback-fg, var(--body-fg-muted));
 	}
 </style>

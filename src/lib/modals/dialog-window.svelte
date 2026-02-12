@@ -19,6 +19,7 @@
 
 	const captureClick = (e: Event) => {
 		e.stopPropagation();
+		e.preventDefault();
 	};
 </script>
 
