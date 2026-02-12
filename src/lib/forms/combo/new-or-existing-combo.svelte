@@ -50,9 +50,26 @@
 		virtualScroll?: boolean;
 		itemHeight?: number;
 	} = $props();
+
+	/**
+	 * Maps size to flex-grow value for relative sizing in flexbox containers (FormRow).
+	 * The size prop controls how much space the field takes relative to its siblings.
+	 */
+	const getFlexGrow = (size: ComponentSize): number => {
+		const flexMap: Record<ComponentSize, number> = {
+			xs: 1,
+			sm: 2,
+			md: 3,
+			lg: 6,
+			xl: 8
+		};
+		return flexMap[size];
+	};
+
+	let flexGrow = $derived(getFlexGrow(size));
 </script>
 
-<div class="group">
+<div class="group {size}" style="--flex-grow: {flexGrow};">
 	<div class="labels">
 		<div class="radio">
 			<RadioBox value="existing" bind:group={mode}>{existingLabel}:</RadioBox>
@@ -100,6 +117,9 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0.5rem;
+		flex-grow: var(--flex-grow, 1);
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 	.labels {
 		display: flex;
