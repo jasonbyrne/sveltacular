@@ -56,7 +56,7 @@
 	// Handle checkbox change - update context (source of truth)
 	function handleCheckboxChange(data: { isChecked: boolean; value: string }) {
 		if (rowId !== undefined && rowIndex !== undefined && context) {
-			const rows = context.config.rows ?? [];
+			const rows = context.rows ?? [];
 			// Toggle the row in context - context is the source of truth
 			context.toggleRow(rowId, rowIndex, false, rows);
 		}
@@ -65,7 +65,7 @@
 	// Handle radio button change
 	function handleRadioChange(value: string) {
 		if (context && selectionMode === 'single') {
-			const rows = context.config.rows ?? [];
+			const rows = context.rows ?? [];
 			// Toggle: if already selected, deselect; otherwise select
 			if (context.radioGroup === value) {
 				context.setRadioSelection(undefined, rows);

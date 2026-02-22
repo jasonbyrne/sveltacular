@@ -9,7 +9,7 @@
 	}
 
 	let selectionMode = $derived(context?.config.selectionMode ?? 'none');
-	let rows = $derived(context?.config.rows ?? []);
+	let rows = $derived(context?.rows ?? []);
 
 	// Compute whether all rows are selected - source of truth from context
 	let isAllSelectedInContext = $derived.by(() => {

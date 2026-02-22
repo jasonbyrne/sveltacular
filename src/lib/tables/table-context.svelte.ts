@@ -23,7 +23,11 @@ export class TableContext<T extends PlainObject = PlainObject> {
 	
 	// Radio button group state (for single selection mode)
 	radioGroup = $state<string | undefined>(undefined);
-	
+
+	// Current table rows (reactive) - single source of truth for "rows currently passed to the table"
+	// Updated by table.svelte when the rows prop changes; use this (not config.rows) for selection logic
+	rows = $state<T[]>([]);
+
 	// Reactive selected count
 	selectedCount = $derived(this.selectedIds.size);
 

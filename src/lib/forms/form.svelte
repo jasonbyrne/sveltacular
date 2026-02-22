@@ -20,8 +20,10 @@
 	} = $props();
 
 	const handleSubmit = (e: Event) => {
-		e.preventDefault();
-		onSubmit?.();
+		if (onSubmit) {
+			e.preventDefault();
+			onSubmit();
+		}
 	};
 
 	// HTML forms only support "get" and "post", so convert "put"/"delete" to "post"

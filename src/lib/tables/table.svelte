@@ -37,10 +37,11 @@
 
 	const context = createTableContext(config);
 
-	// Keep context.config.rows updated reactively when rows prop changes
-	// This is essential for selection features to work correctly
+	// Keep context.rows (reactive) updated when rows prop changes so selection header/cells
+	// always see the current table rows (e.g. after load or when rows change)
 	$effect(() => {
-		context.config.rows = rows;
+		context.rows = rows;
+		context.config.rows = rows; // backward compatibility
 	});
 </script>
 

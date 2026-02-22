@@ -2,6 +2,8 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { fn } from 'storybook/test';
 	import Confirm from './confirm.svelte';
+	import { US_States } from '../data/united-states';
+	import { NewOrExistingCombo } from '../forms';
 
 	const { Story } = defineMeta({
 		component: Confirm,
@@ -30,4 +32,17 @@
 	}}
 >
 	Form content would go here
+</Story>
+
+<Story
+	name="ConfirmWithForm"
+	args={{
+		title: 'Edit User',
+		open: true,
+		yesText: 'Save',
+		noText: 'Cancel',
+		size: 'lg'
+	}}
+>
+	<NewOrExistingCombo items={US_States} />
 </Story>
