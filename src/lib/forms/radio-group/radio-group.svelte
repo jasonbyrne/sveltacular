@@ -24,11 +24,11 @@
 		/**
 		 * Maps database field names to ReferenceItem properties.
 		 * Use this when your data uses different field names (e.g., 'name' instead of 'label').
-		 * 
+		 *
 		 * @example
 		 * // Basic usage
 		 * fieldNames={{ label: 'name', value: 'id' }}
-		 * 
+		 *
 		 * @example
 		 * // With description field
 		 * fieldNames={{ label: 'title', value: 'id', description: 'subtitle' }}
@@ -48,7 +48,7 @@
 
 	// Transform items for internal use (always work with ReferenceItem internally)
 	const referenceItems = $derived(
-		fieldNames ? items.map(item => mapper.toReferenceItem(item)) : items as ReferenceItem[]
+		fieldNames ? items.map((item) => mapper.toReferenceItem(item)) : (items as ReferenceItem[])
 	);
 
 	// Internal string group for binding to RadioBox components
@@ -75,7 +75,12 @@
 <FormField {size} {label} {id} {required} {disabled} {helperText} {feedback}>
 	<div>
 		{#each referenceItems as item}
-			<RadioBox bind:group={internalGroup} {disabled} value={item.value} onChange={handleChange}>{item.label}</RadioBox>
+			<RadioBox
+				bind:group={internalGroup}
+				{disabled}
+				value={String(item.value)}
+				onChange={handleChange}>{item.label}</RadioBox
+			>
 		{/each}
 	</div>
 </FormField>

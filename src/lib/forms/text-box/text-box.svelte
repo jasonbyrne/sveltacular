@@ -129,8 +129,9 @@
 		}
 	};
 
-	const checkChanged = () => {
+	const checkChanged = (nextChecked: boolean) => {
 		if (nullable) {
+			isChecked = nextChecked;
 			if (isChecked) {
 				// Restore last value if available, otherwise use empty string
 				value = lastValue || '';

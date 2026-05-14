@@ -70,8 +70,9 @@
 
 	let showInput = $derived(!nullable || isChecked);
 
-	const checkChanged = () => {
+	const checkChanged = (nextChecked: boolean) => {
 		if (nullable) {
+			isChecked = nextChecked;
 			if (isChecked) {
 				// Restore last value if available, otherwise use 0
 				value = lastValue !== undefined ? lastValue : 0;

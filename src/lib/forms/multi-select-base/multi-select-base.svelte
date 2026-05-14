@@ -356,7 +356,7 @@
 		{:else if isMenuOpen && filteredOptions.length > 0}
 			{filteredOptions.length}
 			{filteredOptions.length === 1 ? 'suggestion' : 'suggestions'} available
-		{:else if invalidAttempt}
+		{:else if invalidAttempt || invalidFeedbackMessage}
 			{#if invalidFeedbackMessage}
 				{invalidFeedbackMessage}
 			{:else if isMaxItemsReached()}
@@ -370,7 +370,7 @@
 	<div class="multi-select-base" bind:this={containerElement}>
 		<div class="input-container">
 			<div
-				class="input {disabled ? 'disabled' : 'enabled'} {invalidAttempt
+				class="input {disabled ? 'disabled' : 'enabled'} {invalidAttempt || invalidFeedbackMessage
 					? 'invalid'
 					: ''} {isMenuOpen ? 'open' : ''}"
 			>

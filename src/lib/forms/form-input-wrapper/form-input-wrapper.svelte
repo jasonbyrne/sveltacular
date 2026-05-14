@@ -39,7 +39,7 @@
 
 	// Track whether the nullable checkbox is checked (i.e., whether field has a value)
 	let isChecked = $state(true);
-	
+
 	// Show input when not nullable, or when nullable and checked
 	let showInput = $derived(!nullable || isChecked);
 
@@ -70,7 +70,9 @@
 		prevHasSuccess = success;
 	});
 
-	const checkChanged = () => {
+	const checkChanged = (event: Event) => {
+		const target = event.target as HTMLInputElement;
+		isChecked = target.checked;
 		onCheckChanged?.(isChecked);
 	};
 
@@ -94,12 +96,7 @@
 	{/if}
 	{#if icon && iconAlign === 'left'}
 		{#if onSubmit}
-			<button
-				type="button"
-				class="icon-container icon-left"
-				onclick={handleIconClick}
-				{disabled}
-			>
+			<button type="button" class="icon-container icon-left" onclick={handleIconClick} {disabled}>
 				<Icon type={icon} size="sm" />
 			</button>
 		{:else}
@@ -126,12 +123,7 @@
 	{/if}
 	{#if icon && iconAlign === 'right'}
 		{#if onSubmit}
-			<button
-				type="button"
-				class="icon-container icon-right"
-				onclick={handleIconClick}
-				{disabled}
-			>
+			<button type="button" class="icon-container icon-right" onclick={handleIconClick} {disabled}>
 				<Icon type={icon} size="sm" />
 			</button>
 		{:else}
@@ -322,5 +314,4 @@
 			border-left: var(--border-thin) solid var(--form-input-border);
 		}
 	}
-
 </style>
