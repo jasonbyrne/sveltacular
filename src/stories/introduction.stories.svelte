@@ -21,6 +21,13 @@
 		title: 'Introduction',
 		tags: ['autodocs']
 	});
+
+	const packageName = 'sveltacular';
+	const componentUsageSnippet = `<script lang="ts">
+	import { Button } from '${packageName}';
+<${'/'}script>
+
+<Button variant="primary">Hello World</Button>`;
 </script>
 
 <Story name="Welcome">
@@ -119,13 +126,7 @@
 					>
 				</Card>
 				<Card title="Use Components">
-					<CodeBlock lang="svelte"
-						>{`<script lang="ts">
-	import { Button } from 'sveltacular';
-</script>
-
-<Button variant="primary">Hello World</Button>`}</CodeBlock
-					>
+					<CodeBlock lang="svelte">{componentUsageSnippet}</CodeBlock>
 				</Card>
 			</CardContainer>
 		</Section>
